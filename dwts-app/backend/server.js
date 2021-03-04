@@ -18,8 +18,10 @@ connection.once('open', () => {
 });
 
 const prosRouter = require('./routes/pros');
+const usersRouter = require('./routes/users');
 
 app.use('/pros', prosRouter);
+app.use('/users', usersRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
