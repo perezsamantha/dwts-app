@@ -1,7 +1,7 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-import User from '../models/user.model.js'
+import User from '../models/user.model.js';
 
 export const signin = async (req, res) => {
     const { email, password } = req.body;
@@ -19,7 +19,7 @@ export const signin = async (req, res) => {
 
         res.status(200).json({ result: existingUser, token });
     } catch (error) {
-        res.status(500).json({ message: "Something went wrong. :(" });
+        res.status(500).json({ message: "Something went wrong. :(", email: email, password: password });
     }
 }
 
@@ -35,12 +35,13 @@ export const signup = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 12);
 
-        const result = await User.create({ email, password: hashedPassword });
+        const result = await User.create({ email: email, password: hashedPassword });
 
         const token = jwt.sign({ email: result.email, id: result._id }, process.env.SECRET_STRING, { expiresIn: "1h" });
 
         res.status(200).json({ result, token });
     } catch (error) {
+        console.log(error);
         res.status(500).json({ message: "Something went wrong. :(" });
     }
 }

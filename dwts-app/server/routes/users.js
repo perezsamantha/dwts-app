@@ -1,3 +1,4 @@
+/*
 const router = require('express').Router();
 let User = require('../models/user.model');
 
@@ -25,4 +26,16 @@ router.route('/add').post((req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
-module.exports = router;
+module.exports = router; 
+*/
+
+import express from 'express';
+
+import { signin, signup } from '../controllers/user.js';
+
+const router = express.Router();
+
+router.post('/signin', signin);
+router.post('/signup', signup);
+
+export default router;
