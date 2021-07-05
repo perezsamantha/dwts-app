@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
-import './Login.css';
-import Button from '@material-ui/core/Button';
+import React, { useState, useContext } from 'react';
+
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
 
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
@@ -14,27 +12,17 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { signin, signup } from '../../actions/auth';
+import { signin } from '../../actions/auth';
 
+import { BoxContainer, FormContainer, MutedLink, BoldLink, SubmitButton } from './common';
+import { AccountContext } from './AccountContext';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        '& > *': {
-            margin: '15ch',
-            width: '15ch',
-        },
-    },
-}));
+const initialState = { email: '', password: '' }
 
-const initialState = { email: '', password: '', confirmPassword: '' }
-
-const Login = () => {
-    const classes = useStyles();
+function Signin(props) {
 
     const [showPass, setShowPass] = useState(false);
 
-    const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
     const [formData, setFormData] = useState(initialState);
 
     const dispatch = useDispatch();
@@ -47,7 +35,6 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // currently just have sign in
         dispatch(signin(formData, history));
     }
 
@@ -71,9 +58,20 @@ const Login = () => {
         console.log('Google Sign In was unsuccessful');
     }
 
+    const { switchToSignup } = useContext(AccountContext);
+
     return (
-        <div>
-            <form className={classes.root} autoComplete="off" onSubmit={handleSubmit}>
+        <BoxContainer>
+            <FormContainer onSubmit={handleSubmit}>
+                <TextField required id="standard-basic" name="email" label="email" type="email" onChange={handleChange} style={{marginBottom: "0.5em"}}/>
+                <TextField required id="standard-password-input" name="password" label="password" type={showPass ? "text" : "password"} onChange={handleChange} handleShowPass={handleShowPass} style={{marginBottom: "0.5em"}}/>
+                <MutedLink href="#">Forgot your password?</MutedLink>
+                <SubmitButton type="submit">Sign In</SubmitButton>
+                <MutedLink href="#">Don't have an account? <BoldLink href="#" onClick={switchToSignup}>Sign up.</BoldLink></MutedLink>
+            </FormContainer>
+        </BoxContainer>
+        /* keep for when implementing google oauth
+        <form autoComplete="off" onSubmit={handleSubmit}>
                 <TextField required id="standard-basic" name="email" label="email" type="email" onChange={handleChange}/>
                 <TextField required id="standard-password-input" name="password" label="password" type={showPass ? "text" : "password"} onChange={handleChange} handleShowPass={handleShowPass} />
                 <Button type="submit" variant="contained" color="primary">sign in</Button>
@@ -90,11 +88,8 @@ const Login = () => {
                     cookiePolicy="single_host_origin"
                 />
             </form>
-
-        </div>
-    )
+            */
+    );
 }
 
-
-
-export default Login;
+export default Signin;
