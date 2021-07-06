@@ -69,8 +69,8 @@ function SearchBar() {
 const SearchContainer = styled.div`
     width: 100%;
     height: 200px;
-    background: rgb(9,121,87);
-    background: linear-gradient(90deg, rgba(9,121,87,1) 0%, rgba(4,153,162,1) 60%, rgba(0,184,235,1) 100%);
+    background: rgb(149,213,232);
+background: radial-gradient(circle, rgba(149,213,232,1) 0%, rgba(159,236,203,1) 100%);
     top: 0;
     position: relative;
     box-shadow: 0px 1px 100px grey;
@@ -89,17 +89,18 @@ const SearchTitle = styled.h2`
 const SearchBox = styled.input`
     width: 70%;
     height: 40px;
-    border: 2px solid white;
+    //border: 2px solid white;
+    border: none;
     border-radius: 20px;
-    padding: 0.5rem;
-    background: transparent;
+    padding: 0.5em 0em 0.5em 1.5em;
+    background: rgba(255, 255, 255, 0.4);
     color: white !important;
     display: block;
     margin: 0 auto;
     &:focus {
         outline: none;
     };
-    box-shadow: 0px 1px 250px white;
+    box-shadow: 0px 1px 150px white;
     ::placeholder {
         color: white;
         opacity: 1;
