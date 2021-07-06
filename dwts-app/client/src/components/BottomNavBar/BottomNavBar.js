@@ -27,10 +27,10 @@ function BottomNavBar() {
     return (
         <div>
             <BottomNavigation value={value} onChange={handleChange} className={classes.stickToBottom}>
-                <BottomNavigationAction component={Link} to="/dashboard" label="Home" value="/dashboard" icon={<HomeIcon />} />
-                <BottomNavigationAction component={Link} to="/favorites" label="Favorites" value="/favorites" icon={<FavoriteIcon />} />
-                <BottomNavigationAction component={Link} to="/search/dances" label="Search" value="/search/dances" icon={<SearchIcon />} />
-                <BottomNavigationAction component={Link} to="/account" label="Account" value="/account" icon={<AccountCircleIcon />} />
+                <BottomNavigationAction disableRipple component={Link} to="/dashboard" label="Home" value="/dashboard" icon={<HomeIcon />} />
+                <BottomNavigationAction disableRipple component={Link} to="/favorites" label="Favorites" value="/favorites" icon={<FavoriteIcon />} />
+                <BottomNavigationAction disableRipple component={Link} to="/search/dances" label="Search" value="/search/dances" icon={<SearchIcon />} />
+                <BottomNavigationAction disableRipple component={Link} to="/account" label="Account" value="/account" icon={<AccountCircleIcon />} />
             </BottomNavigation>
         </div>
     );

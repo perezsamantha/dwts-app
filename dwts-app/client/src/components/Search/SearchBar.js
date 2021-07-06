@@ -47,6 +47,7 @@ function SearchBar() {
     return (
         <SearchContainer>
             <SearchTitle>Search</SearchTitle>
+            
             <Paper className={classes.root}>
                 <Tabs 
                     classes={{ indicator: classes.indicator }}
@@ -56,9 +57,9 @@ function SearchBar() {
                     //textColor="primary"
                     centered
                 >
-                    <Tab component={Link} to="/search/dances" className={classes.tabs} label="DANCES" value="/search/dances" />
-                    <Tab component={Link} to="/search/cast" className={classes.tabs} label="CAST" value="/search/cast" />
-                    <Tab component={Link} to="/search/fans" className={classes.tabs} label="FANS" value="/search/fans" />
+                    <Tab disableRipple component={Link} to="/search/dances" className={classes.tabs} label="DANCES" value="/search/dances" />
+                    <Tab disableRipple component={Link} to="/search/cast" className={classes.tabs} label="CAST" value="/search/cast" />
+                    <Tab disableRipple component={Link} to="/search/fans" className={classes.tabs} label="FANS" value="/search/fans" />
                 </Tabs>
             </Paper>
         </SearchContainer>
