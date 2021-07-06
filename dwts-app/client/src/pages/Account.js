@@ -1,10 +1,11 @@
 import React from 'react';
 import BottomNavBar from '../components/BottomNavBar/BottomNavBar';
+import AccountHeader from '../components/Account/AccountHeader';
 
 function Account() {
     return(
         <div>
-            <h2>Account Page</h2>
+            <AccountHeader />
             <BottomNavBar />
         </div>
     )
