@@ -5,7 +5,7 @@ import Favorites from './pages/Favorites';
 import Search from './pages/Search';
 import Account from './pages/Account';
 import Landing from './pages/Landing';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
 function App() {
   //const [token, setToken] = useState();
@@ -27,12 +27,19 @@ function App() {
           <Route path="/favorites">
             <Favorites />
           </Route>
-          <Route path="/search">
-            <Search />
+          <Route path="/search/dances">
+            <Search value={1} />
+          </Route>
+          <Route path="/search/cast">
+            <Search value={2} />
+          </Route>
+          <Route path="/search/fans">
+            <Search value={3} />
           </Route>
           <Route path="/account">
             <Account />
           </Route>
+          <Redirect from="/search" to="/search/dances" />
         </Switch>
       </BrowserRouter>
     </div>

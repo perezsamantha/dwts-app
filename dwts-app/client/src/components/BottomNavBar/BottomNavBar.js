@@ -29,7 +29,7 @@ function BottomNavBar() {
             <BottomNavigation value={value} onChange={handleChange} className={classes.stickToBottom}>
                 <BottomNavigationAction component={Link} to="/dashboard" label="Home" value="/dashboard" icon={<HomeIcon />} />
                 <BottomNavigationAction component={Link} to="/favorites" label="Favorites" value="/favorites" icon={<FavoriteIcon />} />
-                <BottomNavigationAction component={Link} to="/search" label="Search" value="/search" icon={<SearchIcon />} />
+                <BottomNavigationAction component={Link} to="/search/dances" label="Search" value="/search/dances" icon={<SearchIcon />} />
                 <BottomNavigationAction component={Link} to="/account" label="Account" value="/account" icon={<AccountCircleIcon />} />
             </BottomNavigation>
         </div>
