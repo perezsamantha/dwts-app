@@ -47,7 +47,7 @@ function SearchBar() {
     return (
         <SearchContainer>
             <SearchTitle>Search</SearchTitle>
-            
+            <SearchBox type="search" placeholder="Search..." />
             <Paper className={classes.root}>
                 <Tabs 
                     classes={{ indicator: classes.indicator }}
@@ -74,6 +74,7 @@ const SearchContainer = styled.div`
     top: 0;
     position: relative;
     box-shadow: 0px 1px 100px grey;
+    align-items: center;
 `;
 
 const SearchTitle = styled.h2`
@@ -81,8 +82,31 @@ const SearchTitle = styled.h2`
     font-size: 30px;
     font-weight: 500;
     margin-top: 0;
-    padding: 1em 0;
+    padding: 1em 0 0.2em 0;
     text-align: center;
+`;
+
+const SearchBox = styled.input`
+    width: 70%;
+    height: 40px;
+    border: 2px solid white;
+    border-radius: 20px;
+    padding: 0.5rem;
+    background: transparent;
+    color: white !important;
+    display: block;
+    margin: 0 auto;
+    &:focus {
+        outline: none;
+    };
+    box-shadow: 0px 1px 250px white;
+    ::placeholder {
+        color: white;
+        opacity: 1;
+    };
+    ::-webkit-search-decoration, ::-webkit-search-cancel-button, ::-webkit-search-results-button, ::-webkit-search-results-decoration {
+        display: none;
+    };
 `;
 
 export default SearchBar;
