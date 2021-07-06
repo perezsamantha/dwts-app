@@ -4,6 +4,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
     stickToBottom: {
@@ -14,9 +15,10 @@ const useStyles = makeStyles({
     }
 })
 
-function Dashboard() {
+function BottomNavBar() {
     const classes = useStyles();
-    const [value, setValue] = useState('home');
+    const pathname = window.location.pathname;
+    const [value, setValue] = useState(pathname);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -24,15 +26,14 @@ function Dashboard() {
 
     return (
         <div>
-            <h2>Dashboard</h2>
             <BottomNavigation value={value} onChange={handleChange} className={classes.stickToBottom}>
-                <BottomNavigationAction label="Home" value="home" icon={<HomeIcon />} />
-                <BottomNavigationAction label="Favorites" value="favorites" icon={<FavoriteIcon />} />
-                <BottomNavigationAction label="Search" value="search" icon={<SearchIcon />} />
-                <BottomNavigationAction label="Account" value="account" icon={<AccountCircleIcon />} />
+                <BottomNavigationAction component={Link} to="/dashboard" label="Home" value="/dashboard" icon={<HomeIcon />} />
+                <BottomNavigationAction component={Link} to="/favorites" label="Favorites" value="/favorites" icon={<FavoriteIcon />} />
+                <BottomNavigationAction component={Link} to="/search" label="Search" value="/search" icon={<SearchIcon />} />
+                <BottomNavigationAction component={Link} to="/account" label="Account" value="/account" icon={<AccountCircleIcon />} />
             </BottomNavigation>
         </div>
     );
 }
 
-export default Dashboard;
+export default BottomNavBar;

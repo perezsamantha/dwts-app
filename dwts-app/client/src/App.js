@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import './App.css';
-import Dashboard from './components/Dashboard/Dashboard';
+import Dashboard from './pages/Dashboard';
+import Favorites from './pages/Favorites';
+import Search from './pages/Search';
+import Account from './pages/Account';
 import Landing from './pages/Landing';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
@@ -20,6 +23,15 @@ function App() {
           </Route>
           <Route path="/dashboard">
             <Dashboard />
+          </Route>
+          <Route path="/favorites">
+            <Favorites />
+          </Route>
+          <Route path="/search">
+            <Search />
+          </Route>
+          <Route path="/account">
+            <Account />
           </Route>
         </Switch>
       </BrowserRouter>
