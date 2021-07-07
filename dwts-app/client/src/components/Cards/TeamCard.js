@@ -77,7 +77,8 @@ class TeamCard extends Component {
 
 const Container = styled.div`
     width: 75%;
-    min-height: 300px;
+    min-height: 200px;
+    max-height: 300px;
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
     margin: 20px auto;
     display: flex;
@@ -87,7 +88,8 @@ const Container = styled.div`
     background: white;
     border: none;
     border-radius: 15px;
-    //overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 `;
 
 const TeamName = styled.h4`
