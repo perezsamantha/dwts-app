@@ -23,6 +23,8 @@ class AccountHeader extends Component {
                 </Background>
                 <AccountContainer>
                     <Avatar className={classes.avi} alt="default" />
+                    <Username>@username</Username>
+                    <StatsText>Watching since season 1</StatsText>
                 </AccountContainer>
             </Container>
         );
@@ -62,6 +64,20 @@ const AccountContainer = styled.div`
     align-items: center;
     display: flex;
     flex-direction: column;
+`;
+
+const Username = styled.h4`
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0.5em auto;
+    color: black;
+`;
+
+const StatsText = styled.h4`
+    font-size: 10px;
+    font-weight: 500;
+    margin: 0.2em auto;
+    color: grey;
 `;
 
 //export default AccountHeader;
