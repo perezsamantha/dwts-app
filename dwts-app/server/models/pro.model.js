@@ -1,15 +1,27 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
-const proSchema = new Schema({
-    name: { type: String, required: true },
-    seasonsAsPro: { type: Number, required: true},
-    seasonsOnTroupe: { type: Number, required: true},
+var proSchema = new Schema({
+    name: { type: String, required: true }, // do we want to break up into first and last name
+    seasonsPro: { type: Number, required: true},
+    seasonsTroupe: { type: Number, required: true},
+    firstSeason: { type: Number, required: true },
+    promoPic: { type: String, required: true },
+    //numPerfects: { type: Number, required: false },
+    socials: [
+        {
+            twitter: String,
+            instagram: String,
+            facebook: String
+        }
+    ]
 }, {
-    timstamps: true,
+    timestamps: true,
 });
 
-const Pro = mongoose.model('Pro', proSchema);
+//var Pro = mongoose.model('Pro', proSchema);
 
-module.exports = Pro;
+//module.exports = Pro;
+
+export default mongoose.model('Pro', proSchema);
