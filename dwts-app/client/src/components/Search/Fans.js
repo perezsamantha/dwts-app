@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import ProfileCard from '../Cards/ProfileCard';
 import FansPreview from '../Previews/FansPreview';
 
 
-function Fans() {
+function Fans(props) {
+    //console.log(props);
+    const [fans, setFans] = useState(null);
 
+    if (props.search == "" || props.search == null) {
+        // empty search, load all users
+    }
 
     return (
         <Container>

@@ -28,13 +28,13 @@ function App() {
             <Favorites />
           </Route>
           <Route path="/search/dances">
-            <Search value={1} />
+            <Search  />
           </Route>
           <Route path="/search/cast">
-            <Search value={2} />
+            <Search  />
           </Route>
           <Route path="/search/fans">
-            <Search value={3} />
+            <Search  />
           </Route>
           <Route path="/account">
             <Account />
