@@ -26,9 +26,11 @@ connection.once('open', () => {
 //const prosRouter = require('./routes/pros');
 //const usersRouter = require('./routes/users');
 import usersRouter from './routes/users.js';
+import fansRouter from './routes/fans.js';
 
 //app.use('/pros', prosRouter);
 app.use('/users', usersRouter);
+app.use('/fans', fansRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);

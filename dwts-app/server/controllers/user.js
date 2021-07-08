@@ -45,14 +45,3 @@ export const signup = async (req, res) => {
         res.status(500).json({ message: "Something went wrong. :(" });
     }
 }
-
-export const getAll = async (req, res) => { // eventually change to just fans?
-    try {
-        const users = await User.find();
-
-        res.status(200).json({ result: users });
-
-    } catch (error) {
-        res.status(500).json({ message: "Something went wrong. :("});
-    }
-}

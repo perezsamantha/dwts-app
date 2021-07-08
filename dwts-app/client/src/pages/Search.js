@@ -56,8 +56,6 @@ function Search(props) {
         //console.log(searchVal);
     }
 
-    
-
     return (
         <div>
             <SearchContainer>
