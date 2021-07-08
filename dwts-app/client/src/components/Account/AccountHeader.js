@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Avatar, withStyles } from '@material-ui/core';
+import * as actionType from '../../constants/actionTypes';
+import decode from 'jwt-decode';
+
 
 const useStyles = ({
     avi: {
@@ -12,9 +15,40 @@ const useStyles = ({
 })
 
 class AccountHeader extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            user: JSON.parse(localStorage.getItem('profile')),
+        }
+    };
+
+    componentDidMount() {
+        const { history, dispatch } = this.props;
+        const token = this.user?.token;
+
+        if (token) {
+            const decodedToken = decode(token);
+
+            // need to test functionality
+            if (decodedToken.exp * 1000 < new Date().getTime()) {
+                logout();
+            }
+        }
+
+        const logout = () => {
+            dispatch({ type: actionType.LOGOUT });
+
+            history.push("/");
+
+            this.setState({ user: null });
+        }
+
+        
+    };
 
     render() {
         const { classes } = this.props;
+        const user = this.state.user;
 
         return (
             <Container>
@@ -23,12 +57,12 @@ class AccountHeader extends Component {
                 </Background>
                 <AccountContainer>
                     <Avatar className={classes.avi} alt="default" />
-                    <Username>@username</Username>
+                    <Username>{user.result.email}</Username> 
                     <StatsText>Watching since season 1</StatsText>
                 </AccountContainer>
             </Container>
         );
-    }
+    };
 }
 
 const Container = styled.div`
