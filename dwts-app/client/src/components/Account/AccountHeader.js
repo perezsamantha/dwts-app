@@ -49,7 +49,7 @@ class AccountHeader extends Component {
     render() {
         const { classes } = this.props;
         const user = this.state.user;
-        console.log(user);
+        //console.log(user);
 
         return (
             <Container>
