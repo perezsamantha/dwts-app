@@ -15,7 +15,9 @@ var proSchema = new Schema({
             instagram: String,
             facebook: String
         }
-    ]
+    ],
+    //
+    likes: { type: [String], default: [] },
 }, {
     timestamps: true,
 });

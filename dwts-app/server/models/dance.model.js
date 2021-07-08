@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 var danceSchema = new Schema({
     pic: { type: String, required: true },
-    dancers: { type: Array, required: true },
+    dancers: { type: [String], required: true },
     season: { type: Number, required: true },
     week: { type: Number, required: true },
     night: { type: Number },
@@ -13,8 +13,8 @@ var danceSchema = new Schema({
     runningOrder: String,
     scores: [
         { 
-            judges: { type: Array, required: true },
-            values: { type: Array, required: true },
+            judges: { type: [String], required: true },
+            values: { type: [Number], required: true },
             extra: { type: String },
         }
     ],
@@ -26,6 +26,8 @@ var danceSchema = new Schema({
     ],
     link: String,
     extra: String,
+    //
+    likes: { type: [String], default: [] },
 }, {
     timestamps: true,
 });

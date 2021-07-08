@@ -11,7 +11,7 @@ const userSchema = new Schema({
     },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    //id: { type: String },
+    id: { type: String },
     profilePic: { type: String },
     emailVerified: { type: Boolean },
     watchingSince: { type: Number },
