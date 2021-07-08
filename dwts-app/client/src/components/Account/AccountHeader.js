@@ -49,6 +49,7 @@ class AccountHeader extends Component {
     render() {
         const { classes } = this.props;
         const user = this.state.user;
+        console.log(user);
 
         return (
             <Container>
@@ -56,9 +57,9 @@ class AccountHeader extends Component {
 
                 </Background>
                 <AccountContainer>
-                    <Avatar className={classes.avi} alt="default" />
+                    <Avatar className={classes.avi} alt="default" src={user.result.profilePic}>{user.result.email.charAt(0)}</Avatar>
                     <Username>{user.result.email}</Username> 
-                    <StatsText>Watching since season 1</StatsText>
+                    {user.result.watchingSince > 0 && <StatsText>Watching since season {user.result.watchingSince}</StatsText>}
                 </AccountContainer>
             </Container>
         );
