@@ -46,6 +46,7 @@ function Search(props) {
     const pathname = window.location.pathname;
     const [value, setValue] = useState(pathname);
     const [searchVal, setSearchVal] = useState("");
+    const [key, setKey] = useState(1);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -53,6 +54,7 @@ function Search(props) {
 
     const searchChange = (e) => {
         setSearchVal(e.target.value);
+        setKey(key + 1);
         //console.log(searchVal);
     }
 
@@ -74,9 +76,9 @@ function Search(props) {
                     </Tabs>
                 </Paper>
             </SearchContainer>
-            {value === "/search/dances" && <Dances search={searchVal}/>}
-            {value === "/search/cast" && <Cast search={searchVal}/>}
-            {value === "/search/fans" && <Fans search={searchVal}/>}
+            {value === "/search/dances" && <Dances key={key} search={searchVal}/>}
+            {value === "/search/cast" && <Cast key={key} search={searchVal}/>}
+            {value === "/search/fans" && <Fans key={key} search={searchVal}/>}
             <BottomNavBar />
         </div>
     )

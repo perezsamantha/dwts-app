@@ -21,9 +21,9 @@ export const searchFans = async (req, res) => { // eventually change to just fan
         if (!users) { // not working ?
             return res.status(400).json({ message: "No users match the search" });
         }
-
+        
         res.status(200).json(users);
-
+        
     } catch (error) {
         res.status(500).json({ message: "Something went wrong. :("});
     }
