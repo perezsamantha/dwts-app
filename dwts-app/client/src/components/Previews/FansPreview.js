@@ -18,7 +18,7 @@ function FansPreview(props) {
     // eventually need to bring in src file for avi
 
     return (
-        <Container>
+        <Container onClick={props.openProfile}>
             <Avatar className={classes.avi} alt="default" />
             <Text>@{props.user}</Text>
         </Container>

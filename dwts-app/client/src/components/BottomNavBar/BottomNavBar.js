@@ -12,8 +12,8 @@ const useStyles = makeStyles({
         position: 'fixed',
         bottom: 0,
         zIndex: 10,
-        background: "rgb(149,213,232)",
-        background: "radial-gradient(circle, rgba(149,213,232,1) 0%, rgba(159,236,203,1) 100%)",
+        background: "rgb(198,161,67)",
+background: "linear-gradient(99deg, rgba(198,161,67,1) 0%, rgba(232,216,136,1) 55%, rgba(198,161,67,1) 100%)",
         color: "white",
         //padding: '0 1em'
     },

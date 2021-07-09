@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Avatar, withStyles } from '@material-ui/core';
+import { Avatar, makeStyles } from '@material-ui/core';
 
-const useStyles = ({
+const useStyles = makeStyles({
     avi: {
         width: "75px",
         height: "75px",
@@ -11,18 +11,15 @@ const useStyles = ({
     }
 })
 
-class ProfileCard extends Component {
-    render() {
-        const { classes } = this.props;
-
-        return (
-            <Container>
-                <Avatar className={classes.avi} alt="default" />
-                <Username>@username</Username>
-            </Container>
-        );
-    };
-};
+function ProfileCard(props) {
+    const classes = useStyles();
+    return (
+        <Container>
+            <Avatar className={classes.avi} alt="default" />
+            <Username>@{props.user}</Username>
+        </Container>
+    );
+}
 
 const Container = styled.div`
     width: 70%;
@@ -31,7 +28,7 @@ const Container = styled.div`
     margin: 1em auto;
     display: flex;
     flex-direction: column;
-    position: absolute;
+    position: relative;
     align-items: center;
     background: white;
     border: none;
@@ -46,4 +43,4 @@ const Username = styled.h4`
 `;
 
 //export default ProfileCard;
-export default withStyles(useStyles)(ProfileCard);
+export default ProfileCard;

@@ -22,11 +22,23 @@ function Fans(props) {
         dispatch(searchfans(input));
     }, []);
 
+    const [currentUser, setCurrentUser] = useState(null);
+    const [isOpen, setIsOpen] = useState(false);
+
+    const openProfile = (id) => {
+        //console.log(id);
+        setCurrentUser(id);
+        setIsOpen(wasOpen => !wasOpen);
+    }
+
     return (
         <Container>
             <Spacer />
             {fans.map((fan) => (
-                <FansPreview user={fan.email} />
+                <InnerContainer>
+                    <FansPreview user={fan.email} openProfile={() => openProfile(fan._id)}/>
+                    {isOpen && (fan._id == currentUser) && <ProfileCard user={fan.email}/> }
+                </InnerContainer>
             ))}
         </Container>
     )
@@ -43,6 +55,14 @@ const Container = styled.div`
 
 const Spacer = styled.div`
     margin: 10px;
+`;
+
+const InnerContainer = styled.div`
+    //display: flex;
+    //flex-direction: column;
+    //margin: 0;
+    //padding: 0;
+    width: 100%;
 `;
 
 export default Fans;
