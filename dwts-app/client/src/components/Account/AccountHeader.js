@@ -13,7 +13,7 @@ const useStyles = makeStyles({
         width: "100px",
         height: "100px",
         marginTop: "-50px",
-        position: "relative",
+        position: "relative", 
     }
 })
 
