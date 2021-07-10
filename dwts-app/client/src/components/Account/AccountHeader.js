@@ -1,11 +1,14 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Avatar, withStyles } from '@material-ui/core';
+import { Avatar, makeStyles, Button } from '@material-ui/core';
 import * as actionType from '../../constants/actionTypes';
 import decode from 'jwt-decode';
+import AccountSettings from './AccountSettings';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 
-const useStyles = ({
+const useStyles = makeStyles({
     avi: {
         width: "100px",
         height: "100px",
@@ -14,17 +17,15 @@ const useStyles = ({
     }
 })
 
-class AccountHeader extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            user: JSON.parse(localStorage.getItem('profile')),
-        }
-    };
+function AccountHeader() {
+    const classes = useStyles();
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+    const [isLoading, setIsLoading] = useState(true);
+    const dispatch = useDispatch();
+    const history = useHistory();
 
-    componentDidMount() {
-        const { history, dispatch } = this.props;
-        const token = this.user?.token;
+    useEffect(() => {
+        const token = user.token;
 
         if (token) {
             const decodedToken = decode(token);
@@ -35,35 +36,37 @@ class AccountHeader extends Component {
             }
         }
 
-        const logout = () => {
-            dispatch({ type: actionType.LOGOUT });
-
-            history.push("/");
-
-            this.setState({ user: null });
+        if(user != null) {
+            setIsLoading(false);
         }
+    }, []);
 
-        
-    };
 
-    render() {
-        const { classes } = this.props;
-        const user = this.state.user;
-        //console.log(user);
+    const logout = () => {
+        console.log("hello");
+        dispatch({ type: actionType.LOGOUT });
 
-        return (
-            <Container>
-                <Background>
+        history.push("/");
 
-                </Background>
-                <AccountContainer>
-                    <Avatar className={classes.avi} alt="default" src={user.result.profilePic}>{user.result.email.charAt(0)}</Avatar>
-                    <Username>{user.result.email}</Username> 
-                    {user.result.watchingSince > 0 && <StatsText>Watching since season {user.result.watchingSince}</StatsText>}
-                </AccountContainer>
-            </Container>
-        );
-    };
+        setUser(null);
+    }
+
+    return (
+        (!isLoading ? <Container>
+            <Background>
+
+            </Background>
+            <AccountContainer>
+                <Avatar className={classes.avi} alt="default" src={user.result.profilePic}>{user.result.email.charAt(0)}</Avatar>
+                <Username>{user.result.email}</Username>
+                {user.result.watchingSince > 0 && <StatsText>Watching since season {user.result.watchingSince}</StatsText>}
+                <AccountSettings />
+                <Button variant="outlined" color="primary" onClick={logout}>
+                    Logout
+                </Button>
+            </AccountContainer>
+        </Container> : <div>uhm we-</div>)
+    );
 }
 
 const Container = styled.div`
@@ -115,5 +118,4 @@ const StatsText = styled.h4`
     color: grey;
 `;
 
-//export default AccountHeader;
-export default withStyles(useStyles)(AccountHeader);
+export default AccountHeader;
