@@ -57,8 +57,8 @@ function AccountHeader() {
 
             </Background>
             <AccountContainer>
-                <Avatar className={classes.avi} alt="default" src={user.result.profilePic}>{user.result.email.charAt(0)}</Avatar>
-                <Username>{user.result.email}</Username>
+                <Avatar className={classes.avi} alt="default" src={user.result.profilePic}>{user.result.username.charAt(0)}</Avatar>
+                <Username>{user.result.username}</Username>
                 {user.result.watchingSince > 0 && <StatsText>Watching since season {user.result.watchingSince}</StatsText>}
                 <AccountSettings />
                 <Button variant="outlined" color="primary" onClick={logout}>

@@ -36,8 +36,8 @@ function Fans(props) {
             <Spacer />
             {fans.map((fan) => (
                 <InnerContainer>
-                    <FansPreview user={fan.email} openProfile={() => openProfile(fan._id)}/>
-                    {isOpen && (fan._id == currentUser) && <ProfileCard user={fan.email}/> }
+                    <FansPreview username={fan.username} openProfile={() => openProfile(fan._id)}/>
+                    {isOpen && (fan._id == currentUser) && <ProfileCard username={fan.username}/> }
                 </InnerContainer>
             ))}
         </Container>

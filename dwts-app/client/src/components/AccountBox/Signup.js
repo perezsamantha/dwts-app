@@ -18,7 +18,7 @@ import { BoxContainer, FormContainer, MutedLink, BoldLink, SubmitButton } from '
 import { AccountContext } from './AccountContext';
 import { IconButton, InputAdornment } from '@material-ui/core';
 
-const initialState = { email: '', password: '', confirmPassword: '' }
+const initialState = { username: '', email: '', password: '', confirmPassword: '' }
 
 function Signup() {
 
@@ -64,7 +64,24 @@ function Signup() {
     return (
         <BoxContainer>
             <FormContainer onSubmit={handleSubmit}>
-                <TextField required id="email" name="email" label="email" type="email" onChange={handleChange} margin="dense"/>
+                <TextField  
+                    required 
+                    id="username" 
+                    name="username" 
+                    label="username" 
+                    type="text" 
+                    onChange={handleChange} 
+                    margin="dense"
+                />
+                <TextField  
+                    required 
+                    id="email" 
+                    name="email" 
+                    label="email" 
+                    type="email" 
+                    onChange={handleChange} 
+                    margin="dense"
+                />
                 <TextField 
                     required 
                     id="pass" 

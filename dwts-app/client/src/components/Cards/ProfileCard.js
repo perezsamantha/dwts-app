@@ -16,7 +16,7 @@ function ProfileCard(props) {
     return (
         <Container>
             <Avatar className={classes.avi} alt="default" />
-            <Username>@{props.user}</Username>
+            <Username>@{props.username}</Username>
         </Container>
     );
 }

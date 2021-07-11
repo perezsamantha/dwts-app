@@ -6,8 +6,10 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
     username: { 
         type: String,
-        unique: false,
-        minlength: 3
+        unique: true,
+        minlength: 3,
+        maxLength: 15,
+        required: true
     },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },

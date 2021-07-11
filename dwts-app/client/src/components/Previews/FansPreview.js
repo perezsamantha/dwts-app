@@ -20,7 +20,7 @@ function FansPreview(props) {
     return (
         <Container onClick={props.openProfile}>
             <Avatar className={classes.avi} alt="default" />
-            <Text>@{props.user}</Text>
+            <Text>@{props.username}</Text>
         </Container>
     );
 }
