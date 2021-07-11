@@ -16,6 +16,7 @@ import { signup } from '../../actions/auth';
 
 import { BoxContainer, FormContainer, MutedLink, BoldLink, SubmitButton } from './common';
 import { AccountContext } from './AccountContext';
+import { IconButton, InputAdornment } from '@material-ui/core';
 
 const initialState = { email: '', password: '', confirmPassword: '' }
 
@@ -63,9 +64,34 @@ function Signup() {
     return (
         <BoxContainer>
             <FormContainer onSubmit={handleSubmit}>
-                <TextField required id="standard-basic" name="email" label="email" type="email" onChange={handleChange} style={{marginBottom: "0.5em"}}/>
-                <TextField required id="standard-password-input" name="password" label="password" type={showPass ? "text" : "password"} onChange={handleChange} handleShowPass={handleShowPass} style={{marginBottom: "0.5em"}}/>
-                <TextField required id="standard-password-input" name="confirmPassword" label="confirm password" type="password" onChange={handleChange} style={{marginBottom: "0.5em"}}/>
+                <TextField required id="email" name="email" label="email" type="email" onChange={handleChange} margin="dense"/>
+                <TextField 
+                    required 
+                    id="pass" 
+                    name="password" 
+                    label="password" 
+                    type={showPass ? "text" : "password"} 
+                    onChange={handleChange} 
+                    handleShowPass={handleShowPass} 
+                    margin="dense"
+                    InputProps={{
+                        endAdornment:
+                        <InputAdornment position="end">
+                            <IconButton onClick={handleShowPass}>
+                                {showPass ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                        </InputAdornment>
+                    }}
+                />
+                <TextField 
+                    required 
+                    id="confirmPass" 
+                    name="confirmPassword" 
+                    label="confirm password" 
+                    type="password" 
+                    onChange={handleChange} 
+                    margin="dense"
+                />
                 <SubmitButton type="submit">Sign Up</SubmitButton>
                 <MutedLink href="#">Already have an account? <BoldLink href="#" onClick={switchToSignin}>Sign in.</BoldLink></MutedLink>
             </FormContainer>
