@@ -22,7 +22,8 @@ const userSchema = new Schema({
             twitter: String,
             instagram: String,
         }
-    ]
+    ],
+    isAdmin: { type: Boolean },
 }, {
     timestamps: true,
 });

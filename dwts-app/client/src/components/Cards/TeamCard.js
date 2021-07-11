@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Avatar, Grid, withStyles } from '@material-ui/core';
+import TeamSettings from '../Teams/TeamSettings';
 
 const useStyles = ({
     avi: {
@@ -32,12 +33,21 @@ const useStyles = ({
 })
 
 class TeamCard extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            user: JSON.parse(localStorage.getItem('profile'))
+        }
+    }
+
     render() {
         const { classes } = this.props;
+        console.log(this.state.user);
 
         return (
             <Container>
                 <Avatar className={classes.avi} alt="default" />
+                {this.state.user.result.isAdmin && <TeamSettings /> }
                 <TeamName>Celeb & Pro</TeamName>
                 <Season>Season 30</Season>
                 <Placement>1st Place</Placement>
