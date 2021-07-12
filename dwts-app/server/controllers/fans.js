@@ -15,8 +15,7 @@ export const searchFans = async (req, res) => { // eventually change to just fan
     const { search } = req.body;
     
     try {
-        // change to username 
-        const users = await User.find({ email: { $regex: search, '$options': 'i' } });
+        const users = await User.find({ username: { $regex: search, '$options': 'i' } });
 
         if (!users) { // not working ?
             return res.status(400).json({ message: "No users match the search" });
