@@ -36,22 +36,23 @@ class TeamCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: JSON.parse(localStorage.getItem('profile'))
+            user: JSON.parse(localStorage.getItem('profile')),
+            currentTeam: props.team,
         }
     }
 
     render() {
         const { classes } = this.props;
         //console.log(this.state.user);
-        const team = this.props.team;
+        const team = this.state.currentTeam;
 
         return (
             <Container>
                 <Avatar className={classes.avi} alt="default" />
-                {this.state.user.result.isAdmin && <TeamSettings /> }
+                {this.state.user.result.isAdmin && <TeamSettings team={team} /> }
                 <TeamName>{team.celeb} & {team.pro}</TeamName>
-                <Season>{team.season}</Season>
-                <Placement>1st Place</Placement>
+                <Season>Season {team.season}</Season>
+                {team.placement && <Placement>{team.placement} Place</Placement>}
                 <Grid className={classes.statsGrid} container spacing={1}>
                     <Grid className={classes.row} container item xs={14} spacing={2}>
                         <Grid className={classes.item} item xs={4}>
@@ -66,13 +67,13 @@ class TeamCard extends Component {
                     </Grid>
                     <Grid className={classes.row} container item xs={14} spacing={2}>
                         <Grid className={classes.item} item xs={4}>
-                            <BasicText>0</BasicText>
+                            <BasicText>{team.numDances}</BasicText>
                         </Grid>
                         <Grid className={classes.item} item xs={4}>
-                            <BasicText>0</BasicText>
+                            <BasicText>{team.numTens}</BasicText>
                         </Grid>
                         <Grid className={classes.item} item xs={4}>
-                            <BasicText>0</BasicText>
+                            <BasicText>{team.numPerfects}</BasicText>
                         </Grid>
                     </Grid>
                 </Grid>

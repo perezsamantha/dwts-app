@@ -27,9 +27,9 @@ function TeamAdd() {
         pro: '', 
         season: '', 
         placement: '',
-        numDances: '',
-        numTens: '',
-        numPerfects: '',    
+        numDances: 0,
+        numTens: 0,
+        numPerfects: 0,    
     };
     const [open, setOpen] = useState(false);
     const [formData, setFormData] = useState(initialState);
@@ -46,9 +46,10 @@ function TeamAdd() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
+        
         dispatch(addTeam(formData));
         setFormData(initialState);
+        handleClose();
     }
 
     const handleClose = () => {

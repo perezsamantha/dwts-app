@@ -9,9 +9,9 @@ const teamSchema = new Schema({
     placement: { type: String }, // because -st, -nd, -rd... would be difficult
     promoPic: { type: String },
     teamName: { type: String },
-    numDances: { type: Number },
-    numTens: { type: Number },
-    numPerfects: { type: Number },
+    numDances: { type: Number, default: 0 },
+    numTens: { type: Number, default: 0 },
+    numPerfects: { type: Number, default: 0 },
     dances: [{
         style: { type: String },
         score: { type: Number },

@@ -8,7 +8,7 @@ export const addTeam = async (req, res) => {
 
         if (existingTeam) return res.status(400).json({ message: "Team already exists" });
 
-        const result = await Team.create({ celeb, pro, season });
+        const result = await Team.create(req.body);
 
         res.status(200).json({ result });
     } catch (error) {
