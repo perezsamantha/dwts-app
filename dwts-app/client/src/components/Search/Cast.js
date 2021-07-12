@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import TeamCard from '../Cards/TeamCard';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { searchTeams } from '../../actions/teams';
 
-function Cast() {
+function Cast(props) {
+    const dispatch = useDispatch();
+    const input = { search: props.search };
+
+    const teams = useSelector(state => state.teams);
+
+    useEffect(() => {
+        dispatch(searchTeams(input));
+    }, []);
+
     return (
         <Container>
-            <TeamCard />
+            {teams.map((team) => (
+                <TeamCard team={team} />
+            ))}
         </Container>
     )
 }

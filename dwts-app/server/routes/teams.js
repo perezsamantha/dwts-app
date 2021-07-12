@@ -5,7 +5,7 @@ import { addTeam, fetchAll, searchTeams, updateTeam } from '../controllers/team.
 const router = express.Router();
 
 router.post('/add', addTeam);
-router.post('/update/:id', updateTeam);
+router.patch('/update/:id', updateTeam);
 router.get('/', fetchAll);
 router.post('/search', searchTeams)
 

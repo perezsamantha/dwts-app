@@ -42,14 +42,15 @@ class TeamCard extends Component {
 
     render() {
         const { classes } = this.props;
-        console.log(this.state.user);
+        //console.log(this.state.user);
+        const team = this.props.team;
 
         return (
             <Container>
                 <Avatar className={classes.avi} alt="default" />
                 {this.state.user.result.isAdmin && <TeamSettings /> }
-                <TeamName>Celeb & Pro</TeamName>
-                <Season>Season 30</Season>
+                <TeamName>{team.celeb} & {team.pro}</TeamName>
+                <Season>{team.season}</Season>
                 <Placement>1st Place</Placement>
                 <Grid className={classes.statsGrid} container spacing={1}>
                     <Grid className={classes.row} container item xs={14} spacing={2}>

@@ -22,7 +22,7 @@ export const fetchAll = async (req, res) => {
 
         res.status(200).json(teams);
     } catch (error) {
-        res.status(500).json({ message: error });
+        res.status(500).json({ message: error.message });
     }
 }
 
@@ -30,13 +30,22 @@ export const searchTeams = async (req, res) => {
     const { search } = req.body;
 
     try {
-        // both keep returning empty arrays :(((
-        const teams = await Team.find({ $text: { $search: search }})
+        // only works for full match
+        //const teams = await Team.find({ $text: { $search: search }})
+        // or operator doesn't seem to be working :(
         //const teams = await Team.find({$or: [ { celeb: { $regex: search, '$options': 'i' }, pro: { $regex: search, '$options': 'i' } } ] });
         
+        // doing manually for now, first search by celeb
+        var teams = await Team.find({ celeb: { $regex: search, '$options': 'i' } });
+
+        if (!teams || teams == "") {
+            // no celebs, now search by pro
+            teams = await Team.find({ pro: { $regex: search, '$options': 'i' } });
+        }
+
         res.status(200).json(teams);
     } catch (error) {
-        res.status(500).json({ message: error });
+        res.status(500).json({ message: error.message });
     }
 }
 
@@ -49,7 +58,7 @@ export const updateTeam = async (req, res) => {
 
         res.status(200).json({ result });
     } catch (error) {
-        res.status(500).json({ message: error });
+        res.status(500).json({ message: error.message });
     }
 
 }
