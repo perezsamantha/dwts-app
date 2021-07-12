@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 
 var danceSchema = new Schema({
     pic: { type: String, required: true },
+    date: { type: String, required: true },
     dancers: { type: [String], required: true },
     season: { type: Number, required: true },
     week: { type: Number, required: true },
