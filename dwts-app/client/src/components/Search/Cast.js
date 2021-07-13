@@ -3,13 +3,15 @@ import TeamCard from '../Cards/TeamCard';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { searchTeams } from '../../actions/teams';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles, TextField } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, makeStyles, TextField } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import TeamAdd from '../Teams/TeamAdd';
 import TeamsPreview from '../Previews/TeamsPreview';
 
 const useStyles = makeStyles({
-    
+    root: {
+        flexGrow: 1,
+    }
 })
 
 function Cast(props) {
@@ -17,7 +19,8 @@ function Cast(props) {
 
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const [currentTeam, setCurrentTeam] = useState(null);
-    const [isOpen, setIsOpen] = useState(false);
+    //const [isOpen, setIsOpen] = useState(false);
+    const [show, setShow] = useState(false);
 
     const dispatch = useDispatch();
     const input = { search: props.search };
@@ -28,9 +31,9 @@ function Cast(props) {
         dispatch(searchTeams(input));
     }, []);
 
-    const openTeam = (id) => {
-        setCurrentTeam(id);
-        setIsOpen(wasOpen => !wasOpen);
+    const openTeam = (team) => {
+        setCurrentTeam(team);
+        setShow(true);
     }
 
     return (
@@ -45,12 +48,19 @@ function Cast(props) {
                 }
             </SubtitleContainer>
             <Divider />
-            {teams.map((team) => (
-                <InnerContainer>
-                    <TeamsPreview team={team} openTeam={() => openTeam(team._id)}/>
-                    {isOpen && (team._id == currentTeam && <TeamCard team={team} />)}
-                </InnerContainer>
-            ))}
+
+            <ContentContainer>
+                <Grid container justify="center" className={classes.root} spacing={2}>
+                    {teams.map((team) => (
+                        <Grid item>
+                        <InnerContainer>
+                            <TeamsPreview team={team} openTeam={() => openTeam(team)}/>
+                        </InnerContainer>
+                        </Grid>
+                    ))}
+                </Grid>
+            </ContentContainer>
+            {show && <TeamCard team={currentTeam} show={show} closeTeam={() => setShow(false)} />}
         </Container>
     )
 }
@@ -88,9 +98,14 @@ const AdminAdd = styled.h2`
 
 const Divider = styled.div`
     width: 75%;
-    margin: 0 auto;
+    margin: 10px auto;
     height: 2px;
     background: rgba(0, 0, 0, 0.3);
+`;
+
+const ContentContainer = styled.div`
+    width: 75%;
+    margin: 10px auto;
 `;
 
 const InnerContainer = styled.div`

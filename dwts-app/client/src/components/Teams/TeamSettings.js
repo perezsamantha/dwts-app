@@ -59,7 +59,7 @@ function TeamSettings(props) {
             </Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle>Team Settings</DialogTitle>
-                <DialogContent className={classes.root} container direction="column" spacing={5}>
+                <DialogContent className={classes.root} >
                     <TextField
                         className={classes.names}
                         margin="dense"

@@ -11,6 +11,12 @@ const useStyles = makeStyles((theme) => ({
             marginRight: theme.spacing(1.5),
         }
     },
+    button: {
+        minHeight: "10px",
+        minWidth: "10px",
+        maxHeight: "10px",
+        maxWidth: "10px",
+    },
     names: {
         width: "20ch"
     },
@@ -58,7 +64,7 @@ function TeamAdd() {
 
     return (
         <div>
-            <Button disableRipple color="black" onClick={handleOpen}>
+            <Button className={classes.button} disableRipple color="primary" onClick={handleOpen}>
                 <AddIcon />
             </Button>
             <Dialog open={open} onClose={handleClose} >

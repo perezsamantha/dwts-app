@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Avatar, Grid, makeStyles } from '@material-ui/core';
+import { Avatar, Button, Grid, makeStyles } from '@material-ui/core';
 import TeamSettings from '../Teams/TeamSettings';
+import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles({
     avi: {
@@ -12,24 +13,7 @@ const useStyles = makeStyles({
     },
     statsGrid: {
         flexGrow: 1,
-        width: "fit-content",
-        height: "auto",
-        //overflow: "auto",
-        //height: "fit-content",
-        //margin: "-10px 0 0.5em 0",
-        //padding: "0 1.5em 0 1em",
-        //position: "relative"
     },
-    row: {
-        alignItems: "center",
-        //height: "2px",
-        //margin: "0",
-        //height: "2px",
-    },
-    item: {
-        //margin: "0",
-        //height: "0.2em",
-    }
 })
 
 function TeamCard(props) {
@@ -37,42 +21,43 @@ function TeamCard(props) {
 
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const [team, setTeam] = useState(props.team);
+    const [opacity, setOpacity] = useState(0);
 
     useEffect(() => {
-        setTeam(props.team);
-    }, [props.team])
+        if (props.show) {
+            setOpacity(1);
+        } else {
+
+        }
+        //setTeam(props.team);
+    }, [props.show])
 
     return (
-        <Container>
+        <Container opacity={opacity}>
+            <Button onClick={props.closeTeam}>
+                <CloseIcon />
+            </Button>
             <Avatar className={classes.avi} alt="default" />
             {user.result.isAdmin && <TeamSettings team={team} />}
             <TeamName>{team.celeb} & {team.pro}</TeamName>
             <Season>Season {team.season}</Season>
             {team.placement && <Placement>{team.placement} Place</Placement>}
-            <Grid className={classes.statsGrid} container spacing={1}>
-                <Grid className={classes.row} container item xs={14} spacing={2}>
-                    <Grid className={classes.item} item xs={4}>
-                        <BasicText>DANCES</BasicText>
-                    </Grid>
-                    <Grid className={classes.item} item xs={4}>
-                        <BasicText>TENS</BasicText>
-                    </Grid>
-                    <Grid className={classes.item} item xs={4}>
-                        <BasicText>PERFECTS</BasicText>
-                    </Grid>
+            
+            <Grid container justify="center" className={classes.statsGrid} spacing={2}>
+                <Grid item>
+                    <BasicText>DANCES</BasicText>
+                    <BasicText>{team.numDances}</BasicText>
                 </Grid>
-                <Grid className={classes.row} container item xs={14} spacing={2}>
-                    <Grid className={classes.item} item xs={4}>
-                        <BasicText>{team.numDances}</BasicText>
-                    </Grid>
-                    <Grid className={classes.item} item xs={4}>
-                        <BasicText>{team.numTens}</BasicText>
-                    </Grid>
-                    <Grid className={classes.item} item xs={4}>
-                        <BasicText>{team.numPerfects}</BasicText>
-                    </Grid>
+                <Grid item>
+                    <BasicText>TENS</BasicText>
+                    <BasicText>{team.numTens}</BasicText>
+                </Grid>
+                <Grid item>
+                    <BasicText>PERFECTS</BasicText>
+                    <BasicText>{team.numPerfects}</BasicText>
                 </Grid>
             </Grid>
+
             <BasicText>DANCES (IN ORDER)</BasicText>
             <DanceText>CHA CHA - (30) </DanceText>
             <DanceText>SAMBA - (30) </DanceText>
@@ -83,20 +68,30 @@ function TeamCard(props) {
 };
 
 const Container = styled.div`
+    opacity: ${props => props.opacity};
+    position: fixed;
+    margin: 25px auto;
+    min-height: 300px;
+    z-index: 100;
+    //top: 50px;
+    left: 12.5%;
+
     width: 75%;
-    min-height: 200px;
-    max-height: 300px;
+    //min-height: 200px;
+    max-height: 325px;
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
-    margin: 20px auto;
+    //margin: 20px auto;
     display: flex;
     flex-direction: column;
-    position: relative;
+    //position: relative;
     align-items: center;
     background: white;
     border: none;
     border-radius: 15px;
     overflow-y: auto;
     overflow-x: hidden;
+    text-align: center;
+    transform: scale(0.6);
 `;
 
 const TeamName = styled.h4`
