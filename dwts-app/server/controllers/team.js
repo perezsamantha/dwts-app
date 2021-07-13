@@ -50,15 +50,23 @@ export const searchTeams = async (req, res) => {
 }
 
 export const updateTeam = async (req, res) => {
-    
     try {
         const result = await Team.findByIdAndUpdate(req.params.id, {
             $set: req.body
-        });
+        }, { new: true });
 
         res.status(200).json({ result });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
+}
 
+export const deleteTeam = async (req, res) => {
+    try {
+        await Team.findByIdAndRemove(req.params.id);
+
+        res.status(200).json({ message: "Team successfully deleted."});
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 }

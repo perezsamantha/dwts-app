@@ -8,6 +8,8 @@ export default (teams = [], action) => {
             return teams.map((team) => (team._id === action.payload._id ? action.payload : team));
         case actionType.SEARCH:
             return action.payload;
+        case actionType.DELETE:
+            return teams.filter((team) => team._id !== action.payload);
         default:
             return teams;
     }

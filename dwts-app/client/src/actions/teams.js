@@ -31,6 +31,16 @@ export const searchTeams = (input) => async (dispatch) => {
     }
 }
 
+export const deleteTeam = (id) => async (dispatch) => {
+    try {
+        await await api.deleteTeam(id);
+
+        dispatch({ type: actionType.DELETE, payload: id });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 /*
 export const likeTeam = (id) => async (dispatch) => {
     const user = JSON.parse(localStorage.getItem('profile'));

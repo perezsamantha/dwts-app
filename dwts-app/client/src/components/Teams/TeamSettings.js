@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, Button, InputAdornment, IconButton, makeStyles } from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
 
-import { updateTeam } from '../../actions/teams';
+import { updateTeam, deleteTeam } from '../../actions/teams';
 import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
@@ -39,6 +39,7 @@ function TeamSettings(props) {
         e.preventDefault();
 
         dispatch(updateTeam(id, formData));
+        handleClose();
     }
 
     const handleClose = () => {
@@ -46,7 +47,9 @@ function TeamSettings(props) {
     };
 
     const handleDelete = () => {
-        // add a confirm deletion button and functionality
+        
+        dispatch(deleteTeam(id));
+        handleClose();
     }
 
     return (
