@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Avatar, Grid, makeStyles} from '@material-ui/core';
+import { Avatar, Grid, makeStyles } from '@material-ui/core';
 import TeamSettings from '../Teams/TeamSettings';
 
 const useStyles = makeStyles({
@@ -32,50 +32,54 @@ const useStyles = makeStyles({
     }
 })
 
-function TeamCard(props){
+function TeamCard(props) {
     const classes = useStyles();
 
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const [team, setTeam] = useState(props.team);
 
-        return (
-            <Container>
-                <Avatar className={classes.avi} alt="default" />
-                {user.result.isAdmin && <TeamSettings team={team} /> }
-                <TeamName>{team.celeb} & {team.pro}</TeamName>
-                <Season>Season {team.season}</Season>
-                {team.placement && <Placement>{team.placement} Place</Placement>}
-                <Grid className={classes.statsGrid} container spacing={1}>
-                    <Grid className={classes.row} container item xs={14} spacing={2}>
-                        <Grid className={classes.item} item xs={4}>
-                            <BasicText>DANCES</BasicText>
-                        </Grid>
-                        <Grid className={classes.item} item xs={4}>
-                            <BasicText>TENS</BasicText>
-                        </Grid>
-                        <Grid className={classes.item} item xs={4}>
-                            <BasicText>PERFECTS</BasicText>
-                        </Grid>
+    useEffect(() => {
+        setTeam(props.team);
+    }, [props.team])
+
+    return (
+        <Container>
+            <Avatar className={classes.avi} alt="default" />
+            {user.result.isAdmin && <TeamSettings team={team} />}
+            <TeamName>{team.celeb} & {team.pro}</TeamName>
+            <Season>Season {team.season}</Season>
+            {team.placement && <Placement>{team.placement} Place</Placement>}
+            <Grid className={classes.statsGrid} container spacing={1}>
+                <Grid className={classes.row} container item xs={14} spacing={2}>
+                    <Grid className={classes.item} item xs={4}>
+                        <BasicText>DANCES</BasicText>
                     </Grid>
-                    <Grid className={classes.row} container item xs={14} spacing={2}>
-                        <Grid className={classes.item} item xs={4}>
-                            <BasicText>{team.numDances}</BasicText>
-                        </Grid>
-                        <Grid className={classes.item} item xs={4}>
-                            <BasicText>{team.numTens}</BasicText>
-                        </Grid>
-                        <Grid className={classes.item} item xs={4}>
-                            <BasicText>{team.numPerfects}</BasicText>
-                        </Grid>
+                    <Grid className={classes.item} item xs={4}>
+                        <BasicText>TENS</BasicText>
+                    </Grid>
+                    <Grid className={classes.item} item xs={4}>
+                        <BasicText>PERFECTS</BasicText>
                     </Grid>
                 </Grid>
-                <BasicText>DANCES (IN ORDER)</BasicText>
-                <DanceText>CHA CHA - (30) </DanceText>
-                <DanceText>SAMBA - (30) </DanceText>
-                <DanceText>CHARLESTON - (30) </DanceText>
-                <BasicText>PICTURES</BasicText>
-            </Container>
-        );
+                <Grid className={classes.row} container item xs={14} spacing={2}>
+                    <Grid className={classes.item} item xs={4}>
+                        <BasicText>{team.numDances}</BasicText>
+                    </Grid>
+                    <Grid className={classes.item} item xs={4}>
+                        <BasicText>{team.numTens}</BasicText>
+                    </Grid>
+                    <Grid className={classes.item} item xs={4}>
+                        <BasicText>{team.numPerfects}</BasicText>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <BasicText>DANCES (IN ORDER)</BasicText>
+            <DanceText>CHA CHA - (30) </DanceText>
+            <DanceText>SAMBA - (30) </DanceText>
+            <DanceText>CHARLESTON - (30) </DanceText>
+            <BasicText>PICTURES</BasicText>
+        </Container>
+    );
 };
 
 const Container = styled.div`

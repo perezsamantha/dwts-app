@@ -10,7 +10,7 @@ export const addTeam = async (req, res) => {
 
         const result = await Team.create(req.body);
 
-        res.status(200).json({ result });
+        res.status(200).json(result);
     } catch (error) {
         res.status(500).json({ message: error });
     }
@@ -55,7 +55,7 @@ export const updateTeam = async (req, res) => {
             $set: req.body
         }, { new: true });
 
-        res.status(200).json({ result });
+        res.status(200).json(result);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
