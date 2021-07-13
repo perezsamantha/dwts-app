@@ -7,8 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { searchfans } from '../../actions/fans';
 
 function Fans(props) {
-    //console.log(props);
-    const [listFans, setListFans] = useState(null);
     const dispatch = useDispatch();
     const input = { search: props.search };
 
@@ -26,7 +24,6 @@ function Fans(props) {
     const [isOpen, setIsOpen] = useState(false);
 
     const openProfile = (id) => {
-        //console.log(id);
         setCurrentUser(id);
         setIsOpen(wasOpen => !wasOpen);
     }

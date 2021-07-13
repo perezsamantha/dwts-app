@@ -6,6 +6,7 @@ import { searchTeams } from '../../actions/teams';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles, TextField } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import TeamAdd from '../Teams/TeamAdd';
+import TeamsPreview from '../Previews/TeamsPreview';
 
 const useStyles = makeStyles({
     
@@ -15,6 +16,9 @@ function Cast(props) {
     const classes = useStyles();
 
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+    const [currentTeam, setCurrentTeam] = useState(null);
+    const [isOpen, setIsOpen] = useState(false);
+
     const dispatch = useDispatch();
     const input = { search: props.search };
 
@@ -23,6 +27,11 @@ function Cast(props) {
     useEffect(() => {
         dispatch(searchTeams(input));
     }, []);
+
+    const openTeam = (id) => {
+        setCurrentTeam(id);
+        setIsOpen(wasOpen => !wasOpen);
+    }
 
     return (
         <Container>
@@ -37,7 +46,10 @@ function Cast(props) {
             </SubtitleContainer>
             <Divider />
             {teams.map((team) => (
-                <TeamCard team={team} />
+                <InnerContainer>
+                    <TeamsPreview team={team} openTeam={() => openTeam(team._id)}/>
+                    {isOpen && (team._id == currentTeam && <TeamCard team={team} />)}
+                </InnerContainer>
             ))}
         </Container>
     )
@@ -54,7 +66,7 @@ const Container = styled.div`
 `;
 
 const Spacer = styled.div`
-    margin: 15px 0;
+    margin: 15px;
 `;
 
 const SubtitleContainer = styled.div`
@@ -79,6 +91,10 @@ const Divider = styled.div`
     margin: 0 auto;
     height: 2px;
     background: rgba(0, 0, 0, 0.3);
+`;
+
+const InnerContainer = styled.div`
+    width: 100%;
 `;
 
 export default Cast;
