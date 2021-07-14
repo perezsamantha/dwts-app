@@ -43,7 +43,6 @@ function AccountHeader() {
 
 
     const logout = () => {
-        console.log("hello");
         dispatch({ type: actionType.LOGOUT });
 
         history.push("/");

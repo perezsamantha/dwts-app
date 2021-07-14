@@ -10,6 +10,9 @@ import TeamsPreview from '../Previews/TeamsPreview';
 const useStyles = makeStyles({
     root: {
         flexGrow: 1,
+    },
+    progress: {
+        margin: "auto",
     }
 })
 
@@ -39,7 +42,6 @@ function Cast(props) {
     }
 
     return (
-        (!teams.length || teams[0]?.email != null) ? <CircularProgress /> : (
         <Container>
             <Spacer />
             <SubtitleContainer>
@@ -52,6 +54,7 @@ function Cast(props) {
             </SubtitleContainer>
             <Divider />
 
+            {(!teams.length || teams[0]?.email != null) ? <CircularProgress className={classes.progress}/> :
             <ContentContainer>
                 <Grid container justify="center" className={classes.root} spacing={2}>
                     {teams.map((team, index) => (
@@ -63,10 +66,10 @@ function Cast(props) {
                     ))}
                 </Grid>
             </ContentContainer>
+            }
             {show && <TeamCard team={teams[currentTeam]} show={show} closeTeam={() => setShow(false)} />}
             
         </Container>
-    )
     )
 }
 

@@ -5,8 +5,21 @@ import FansPreview from '../Previews/FansPreview';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { searchfans } from '../../actions/fans';
+import { CircularProgress, makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
+    root: {
+        flexGrow: 1,
+    },
+    progress: {
+        position: "absolute",
+        left: "50%",
+        top: "50%",
+    }
+})
 
 function Fans(props) {
+    const classes = useStyles();
     const dispatch = useDispatch();
     const input = { search: props.search };
 
@@ -29,15 +42,16 @@ function Fans(props) {
     }
 
     return (
+        (!fans.length || fans[0]?.celeb != null) ? <CircularProgress className={classes.progress}/> :
         <Container>
             <Spacer />
-            {fans.map((fan) => (
+            {fans.map((fan) => ( 
                 <InnerContainer>
                     <FansPreview username={fan.username} openProfile={() => openProfile(fan._id)}/>
                     {isOpen && (fan._id == currentUser) && <ProfileCard username={fan.username}/> }
                 </InnerContainer>
             ))}
-        </Container>
+        </Container>   
     )
 }
 
