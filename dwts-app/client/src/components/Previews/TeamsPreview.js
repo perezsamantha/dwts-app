@@ -28,10 +28,6 @@ function TeamsPreview(props) {
             <Text>{celebFirst[0]} & {proFirst[0]}</Text>
         </Container>
         </div>
-        // <Container onClick={props.openTeam}>
-        //     <Avatar className={classes.avi} alt="default" />
-        //     <Text>{celebFirst[0]} & {proFirst[0]}</Text>
-        // </Container>
     );
 }
 

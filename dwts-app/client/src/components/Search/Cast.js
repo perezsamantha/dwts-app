@@ -3,8 +3,7 @@ import TeamCard from '../Cards/TeamCard';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { searchTeams } from '../../actions/teams';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, makeStyles, TextField } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+import { Grid, makeStyles, CircularProgress } from '@material-ui/core';
 import TeamAdd from '../Teams/TeamAdd';
 import TeamsPreview from '../Previews/TeamsPreview';
 
@@ -21,6 +20,7 @@ function Cast(props) {
     const [currentTeam, setCurrentTeam] = useState(null);
     //const [isOpen, setIsOpen] = useState(false);
     const [show, setShow] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const dispatch = useDispatch();
     const input = { search: props.search };
@@ -30,6 +30,7 @@ function Cast(props) {
     useEffect(() => {
         dispatch(searchTeams(input));
         props.backgroundScroll(show);
+        setLoading(false);
     }, [show]);
 
     const openTeam = (team) => {
@@ -38,6 +39,7 @@ function Cast(props) {
     }
 
     return (
+        (!teams.length || teams[0]?.email != null) ? <CircularProgress /> : (
         <Container>
             <Spacer />
             <SubtitleContainer>
@@ -53,7 +55,7 @@ function Cast(props) {
             <ContentContainer>
                 <Grid container justify="center" className={classes.root} spacing={2}>
                     {teams.map((team, index) => (
-                        <Grid item>
+                        <Grid key={index} item>
                         <InnerContainer>
                             <TeamsPreview team={team} openTeam={() => openTeam(index)}/>
                         </InnerContainer>
@@ -64,6 +66,7 @@ function Cast(props) {
             {show && <TeamCard team={teams[currentTeam]} show={show} closeTeam={() => setShow(false)} />}
             
         </Container>
+    )
     )
 }
 
