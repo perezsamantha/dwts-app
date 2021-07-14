@@ -29,7 +29,8 @@ function Cast(props) {
 
     useEffect(() => {
         dispatch(searchTeams(input));
-    }, []);
+        props.backgroundScroll(show);
+    }, [show]);
 
     const openTeam = (team) => {
         setCurrentTeam(team);
@@ -51,16 +52,17 @@ function Cast(props) {
 
             <ContentContainer>
                 <Grid container justify="center" className={classes.root} spacing={2}>
-                    {teams.map((team) => (
+                    {teams.map((team, index) => (
                         <Grid item>
                         <InnerContainer>
-                            <TeamsPreview team={team} openTeam={() => openTeam(team)}/>
+                            <TeamsPreview team={team} openTeam={() => openTeam(index)}/>
                         </InnerContainer>
                         </Grid>
                     ))}
                 </Grid>
             </ContentContainer>
-            {show && <TeamCard team={currentTeam} show={show} closeTeam={() => setShow(false)} />}
+            {show && <TeamCard team={teams[currentTeam]} show={show} closeTeam={() => setShow(false)} />}
+            
         </Container>
     )
 }

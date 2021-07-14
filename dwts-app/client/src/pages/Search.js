@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 //import SearchBar from '../components/Search/SearchBar';
 import BottomNavBar from '../components/BottomNavBar/BottomNavBar';
@@ -47,6 +47,9 @@ function Search(props) {
     const [value, setValue] = useState(pathname);
     const [searchVal, setSearchVal] = useState("");
     const [key, setKey] = useState(1);
+    const [open, setOpen] = useState(false);
+    const [position, setPosition] = useState("");
+    const [overflow, setOverflow] = useState("");
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -55,11 +58,24 @@ function Search(props) {
     const searchChange = (e) => {
         setSearchVal(e.target.value);
         setKey(key + 1);
-        //console.log(searchVal);
     }
 
+    const scrollHandler = (show) => {
+        setOpen(show);
+    }
+
+    useEffect(() => {
+        if (open) {
+            setPosition("fixed");
+            setOverflow("hidden");
+        } else {
+            setPosition("");
+            setOverflow("");
+        }
+    }, [open])
+
     return (
-        <div>
+        <Page position={position} overflow={overflow}>
             <SearchContainer>
                 <SearchTitle>Search</SearchTitle>
                 <SearchBox type="search" placeholder="Search..." value={searchVal} onChange={searchChange} />
@@ -76,13 +92,19 @@ function Search(props) {
                     </Tabs>
                 </Paper>
             </SearchContainer>
-            {value === "/search/dances" && <Dances key={key} search={searchVal}/>}
-            {value === "/search/cast" && <Cast key={key} search={searchVal}/>}
-            {value === "/search/fans" && <Fans key={key} search={searchVal}/>}
+            {value === "/search/dances" && <Dances key={key} search={searchVal} backgroundScroll={scrollHandler}/>}
+            {value === "/search/cast" && <Cast key={key} search={searchVal} backgroundScroll={scrollHandler}/>}
+            {value === "/search/fans" && <Fans key={key} search={searchVal} backgroundScroll={scrollHandler}/>}
             <BottomNavBar />
-        </div>
+        </Page>
     )
 }
+
+const Page = styled.div`
+    width: 100%;
+    position: ${props => props.position};
+    overflow: ${props => props.overflow};
+`;
 
 const InnerContainer = styled.div`
     width: 100%;
