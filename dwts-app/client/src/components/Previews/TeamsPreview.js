@@ -24,7 +24,7 @@ function TeamsPreview(props) {
     return (
         <div>
         <Container onClick={props.openTeam}>
-            <Avatar className={classes.avi} alt="default" />
+            <Avatar className={classes.avi} alt="default" src={props.team.promoPic} />
             <Text>{celebFirst[0]} & {proFirst[0]}</Text>
         </Container>
         </div>

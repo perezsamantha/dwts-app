@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Team from '../models/team.model.js';
 
 export const addTeam = async (req, res) => {
@@ -51,9 +52,29 @@ export const searchTeams = async (req, res) => {
 
 export const updateTeam = async (req, res) => {
     try {
+        const id = req.params.id;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No team with id: ${id}`);
+
         const result = await Team.findByIdAndUpdate(req.params.id, {
             $set: req.body
         }, { new: true });
+
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+export const updatePic = async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No team with id: ${id}`);
+
+        const path = req.file.path.replace(/\\/g, "/");
+        
+        const result = await Team.findByIdAndUpdate(req.params.id, req.body = { promoPic: "http://localhost:5000/" + path }, { new: true });
 
         res.status(200).json(result);
     } catch (error) {

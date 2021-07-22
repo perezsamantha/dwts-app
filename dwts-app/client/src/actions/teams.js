@@ -21,6 +21,16 @@ export const updateTeam = (id, team) => async (dispatch) => {
     }
 }
 
+export const updatePic = (id, image) => async (dispatch) => {
+    try {
+        const { data } = await api.updatePic(id, image);
+
+        dispatch({ type: actionType.UPDATE, payload: data });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const searchTeams = (input) => async (dispatch) => {
     try {
         const { data } = await api.searchTeams(input);

@@ -1,13 +1,8 @@
-//const express = require('express');
-//const cors = require('cors');
-//const mongoose = require('mongoose');
-
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
-//require('dotenv').config();
 dotenv.config();
 
 const app = express();
@@ -23,6 +18,8 @@ connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
 });
 
+app.use('/uploads', express.static('uploads'));
+
 //const prosRouter = require('./routes/pros');
 //const usersRouter = require('./routes/users');
 import usersRouter from './routes/users.js';
@@ -37,3 +34,5 @@ app.use('/teams', teamsRouter);
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 });
+
+mongoose.set('useFindAndModify', false);

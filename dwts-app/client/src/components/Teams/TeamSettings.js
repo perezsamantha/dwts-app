@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, Button, InputAdornment, IconButton, makeStyles } from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
 
-import { updateTeam, deleteTeam } from '../../actions/teams';
+import { updateTeam, deleteTeam, updatePic } from '../../actions/teams';
 import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
@@ -23,6 +23,7 @@ function TeamSettings(props) {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [formData, setFormData] = useState(props.team);
+    const [fileData, setFileData] = useState(null);
     const id = formData._id;
 
     const dispatch = useDispatch();
@@ -35,8 +36,19 @@ function TeamSettings(props) {
         setOpen(true);
     };
 
+    const handleFile = (e) => {
+        setFileData(e.target.files[0]);
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        if (fileData != null) {
+            const data = new FormData();
+            data.append("promoPic", fileData);
+
+            dispatch(updatePic(id, data));
+        }
 
         dispatch(updateTeam(id, formData));
         handleClose();
@@ -60,6 +72,11 @@ function TeamSettings(props) {
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle>Team Settings</DialogTitle>
                 <DialogContent className={classes.root} >
+                    <input
+                        type="file"
+                        accept=".jpeg, .jpg, .png"
+                        onChange={handleFile}
+                    />
                     <TextField
                         className={classes.names}
                         margin="dense"
@@ -131,7 +148,7 @@ function TeamSettings(props) {
                     <Button onClick={handleSubmit} color="primary">
                         Update Team
                     </Button>
-                    <Button onClick={handleDelete} color="red">
+                    <Button onClick={handleDelete} color="secondary">
                         Delete Team
                     </Button>
                 </DialogActions>

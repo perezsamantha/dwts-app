@@ -30,7 +30,7 @@ function TeamCard(props) {
         if (props.show) {
             setOpacity(1);
         } else {
-
+            setOpacity(0);
         }
     }, [props.show, props.team])
 
@@ -40,7 +40,7 @@ function TeamCard(props) {
             <Button onClick={props.closeTeam}>
                 <CloseIcon />
             </Button>
-            <Avatar className={classes.avi} alt="default" />
+            <Avatar className={classes.avi} alt={team.celeb} src={team.promoPic}/>
             {user.result.isAdmin && <TeamSettings team={team} />}
             <TeamName>{team.celeb} & {team.pro}</TeamName>
             <Season>Season {team.season}</Season>
