@@ -8,7 +8,8 @@ import Fans from '../components/Search/Fans';
 
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper, Tab, Tabs } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
+import TeamCard from '../components/Cards/TeamCard';
 
 const useStyles = makeStyles({
     root: {
@@ -92,9 +93,27 @@ function Search(props) {
                     </Tabs>
                 </Paper>
             </SearchContainer>
-            {value === "/search/dances" && <Dances key={key} search={searchVal} backgroundScroll={scrollHandler}/>}
+            
+            {/* {value === "/search/dances" && <Dances key={key} search={searchVal} backgroundScroll={scrollHandler}/>}
             {value === "/search/cast" && <Cast key={key} search={searchVal} backgroundScroll={scrollHandler}/>}
             {value === "/search/fans" && <Fans key={key} search={searchVal} backgroundScroll={scrollHandler}/>}
+             */}
+            <Switch>
+                <Route exact path="/search/cast/teams/:id">
+                        <TeamCard key={key} />
+                    </Route>
+                    <Route path="/search/dances">
+                        <Dances key={key} search={searchVal} backgroundScroll={scrollHandler} />
+                    </Route>
+                    <Route path="/search/cast">
+                        <Cast key={key} search={searchVal} backgroundScroll={scrollHandler}/>
+                    </Route>
+                    
+                    <Route path="/search/fans">
+                        <Fans key={key} search={searchVal} backgroundScroll={scrollHandler} />
+                    </Route>
+                </Switch>
+            
             <BottomNavBar />
         </Page>
     )

@@ -4,7 +4,10 @@ import { Avatar, Button, Grid, makeStyles } from '@material-ui/core';
 import TeamSettings from '../Teams/TeamSettings';
 import CloseIcon from '@material-ui/icons/Close';
 
-import { Grow } from '@material-ui/core';
+import { Grow, CircularProgress } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { findTeamById } from '../../actions/teams';
+import { useHistory, useParams, Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
     avi: {
@@ -12,34 +15,50 @@ const useStyles = makeStyles({
         height: "75px",
         marginTop: "15px",
         position: "relative",
+        margin: "auto"
     },
     statsGrid: {
         flexGrow: 1,
     },
+    progress: {
+        margin: "auto",
+    },
+    back: {
+        margin: "10px 0",
+        position: "relative",
+        left: "0",
+        alignSelf: "left"
+        //top: "20px",
+    }
 })
 
 function TeamCard(props) {
     const classes = useStyles();
 
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
-    const [team, setTeam] = useState(props.team);
+    //const [team, setTeam] = useState(props.team);
     const [opacity, setOpacity] = useState(0);
 
+    const dispatch = useDispatch();
+    const history = useHistory();
+
+    const team = useSelector(state => state.teams);
+    const { id } = useParams();
+    console.log(id);
+
     useEffect(() => {
-        setTeam(props.team);
-        if (props.show) {
-            setOpacity(1);
-        } else {
-            setOpacity(0);
-        }
-    }, [props.show, props.team])
+        dispatch(findTeamById(id));
+        console.log("pls");
+        console.log(team);
+    }, [])
 
     return (
-        <Grow in={props.show} >
-        <Container opacity={opacity}>
-            <Button onClick={props.closeTeam}>
-                <CloseIcon />
-            </Button>
+        <Container >
+            {(team._id == null) ? <CircularProgress className={classes.progress}/> :
+            <div>
+            <Link to="/search/cast">
+                <CloseIcon className={classes.back} />
+            </Link>
             <Avatar className={classes.avi} alt={team.celeb} src={team.promoPic}/>
             {user.result.isAdmin && <TeamSettings team={team} />}
             <TeamName>{team.celeb} & {team.pro}</TeamName>
@@ -66,22 +85,22 @@ function TeamCard(props) {
             <DanceText>SAMBA - (30) </DanceText>
             <DanceText>CHARLESTON - (30) </DanceText>
             <BasicText>PICTURES</BasicText>
+            </div> }
         </Container>
-        </Grow>
     );
 };
 
 const Container = styled.div`
-    opacity: ${props => props.opacity};
-    position: fixed;
-    margin: 5vh auto;
+    //opacity: ${props => props.opacity};
+    //position: fixed;
+    //margin: 5vh auto;
     min-height: 30%;
     max-height: 50%;
     z-index: 100;
     //top: 50px;
-    left: 12.5%;
+    //left: 12.5%;
 
-    width: 75%;
+    //width: 85%;
     //min-height: 200px;
     //max-height: 325px;
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);

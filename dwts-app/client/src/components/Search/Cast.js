@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import TeamCard from '../Cards/TeamCard';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
 import { searchTeams } from '../../actions/teams';
 import { Grid, makeStyles, CircularProgress } from '@material-ui/core';
 import TeamAdd from '../Teams/TeamAdd';
@@ -26,19 +27,22 @@ function Cast(props) {
     const [loading, setLoading] = useState(true);
 
     const dispatch = useDispatch();
+    const history = useHistory();
     const input = { search: props.search };
 
     const teams = useSelector(state => state.teams);
 
     useEffect(() => {
         dispatch(searchTeams(input));
-        props.backgroundScroll(show);
+        //props.backgroundScroll(show);
         setLoading(false);
     }, [show]);
 
     const openTeam = (team) => {
-        setCurrentTeam(team);
-        setShow(true);
+        //console.log(team);
+        //history.push(`/cast/teams/${team._id}`);
+        //setCurrentTeam(team);
+        //setShow(true);
     }
 
     return (
@@ -60,7 +64,9 @@ function Cast(props) {
                     {teams.map((team, index) => (
                         <Grid key={index} item>
                         <InnerContainer>
-                            <TeamsPreview team={team} openTeam={() => openTeam(index)}/>
+                            <Link to={{ pathname: `/search/cast/teams/${team._id}` }} >
+                            <TeamsPreview team={team}/>
+                        </Link>
                         </InnerContainer>
                         </Grid>
                     ))}

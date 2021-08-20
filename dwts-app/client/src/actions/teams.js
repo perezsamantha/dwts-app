@@ -31,6 +31,16 @@ export const updatePic = (id, image) => async (dispatch) => {
     }
 }
 
+export const findTeamById = (id) => async (dispatch) => {
+    try {
+        const { data } = await api.findTeamById(id);
+
+        dispatch({ type: actionType.SEARCH, payload: data });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const searchTeams = (input) => async (dispatch) => {
     try {
         const { data } = await api.searchTeams(input);

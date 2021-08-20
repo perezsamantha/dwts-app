@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { addTeam, deleteTeam, fetchAll, searchTeams, updatePic, updateTeam } from '../controllers/team.js';
+import { addTeam, deleteTeam, fetchAll, findTeamById, searchTeams, updatePic, updateTeam } from '../controllers/team.js';
 
 import upload from '../middleware/upload.js';
 
@@ -12,5 +12,6 @@ router.patch('/updatePic/:id', upload, updatePic);
 router.get('/', fetchAll);
 router.post('/search', searchTeams);
 router.delete('/delete/:id', deleteTeam);
+router.get('/:id', findTeamById);
 
 export default router;

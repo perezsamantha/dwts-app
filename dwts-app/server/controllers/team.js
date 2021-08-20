@@ -27,6 +27,18 @@ export const fetchAll = async (req, res) => {
     }
 }
 
+export const findTeamById = async (req, res) => {
+    const { id } = req.params;
+    
+    try {
+        const team = await Team.findById(id);
+
+        res.status(200).json(team);
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}
+
 export const searchTeams = async (req, res) => {
     const { search } = req.body;
 
