@@ -8,6 +8,8 @@ import { useDispatch } from 'react-redux';
 import AvatarEditor from 'react-avatar-editor';
 import Avatar from 'react-avatar-edit';
 import { Slider } from '@material-ui/core';
+import styled from 'styled-components';
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -23,6 +25,10 @@ const useStyles = makeStyles((theme) => ({
     },
     slider: {
         width: "20ch",
+        position: "relative",
+    },
+    editor: {
+        margin: "10px 20px 10px 0px",
     },
 }));
 
@@ -32,6 +38,7 @@ function TeamSettings(props) {
     const [formData, setFormData] = useState(props.team);
     const [fileData, setFileData] = useState(null);
     const [scaleValue, setScaleValue] = useState(10);
+    const [fileName, setFileName] = useState("Select new picture");
     const id = formData._id;
 
     const dispatch = useDispatch();
@@ -46,6 +53,7 @@ function TeamSettings(props) {
 
     const handleFile = (e) => {
         setFileData(e.target.files[0]);
+        setFileName(e.target.files[0].name);
     }
 
     const handleSubmit = (e) => {
@@ -79,6 +87,8 @@ function TeamSettings(props) {
     const handleClose = () => {
         setScaleValue(1);
         setOpen(false);
+        setFileData(null);
+        setFileName("Select new picture");
     };
 
     const handleDelete = () => {
@@ -94,6 +104,8 @@ function TeamSettings(props) {
 
     useEffect(() => {
         setScaleValue(1);
+        setFileData(null);
+        setFileName("Select new picture");
     }, []);
 
     const [editor, setEditor] = useState(null);
@@ -110,28 +122,31 @@ function TeamSettings(props) {
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle>Team Settings</DialogTitle>
                 <DialogContent className={classes.root} >
-                    <input
+                    
+                    <HiddenInput
                         type="file"
                         accept=".jpeg, .jpg, .png"
                         onChange={handleFile}
+                        id="file"
                     />
-                    {fileData != null && <div>
+                    <Label htmlFor="file">
+                        <AddAPhotoIcon />
+                    </Label>
+                    <FileInput>
+                        {fileData != null && <div>
                         <AvatarEditor
                             image={fileData}
-                            width={150}
-                            height={150}
+                            width={200}
+                            height={200}
                             borderRadius={100}
+                            border={0}
                             scale={scaleValue}
                             ref={setEditorRef}
+                            className={classes.editor}
                         />
                         <Slider className={classes.slider} value={scaleValue} onChange={handleScale} min={1} max={5} step={0.01} />
-                        </div>}
-                    {/* <Avatar
-                        width={200}
-                        height={200}
-                        onCrop={setPreview(preview)}
-                        src={fileData}
-                    /> */}
+                    </div>}
+                    </FileInput>
                     <TextField
                         className={classes.names}
                         margin="dense"
@@ -201,15 +216,46 @@ function TeamSettings(props) {
                         Cancel
                     </Button>
                     <Button onClick={handleSubmit} color="primary">
-                        Update Team
+                        Update
                     </Button>
                     <Button onClick={handleDelete} color="secondary">
-                        Delete Team
+                        Delete
                     </Button>
                 </DialogActions>
             </Dialog>
         </div>
     )
 }
+
+const HiddenInput = styled.input`
+    opacity: 0;
+    width: 0.1px;
+    height: 0.1px;
+    position: absolute;
+`;
+
+const Label = styled.label`
+    display: block;
+    position: relative;
+    width: fit-content;
+    border-radius: 25px;
+    background: linear-gradient(99deg, rgba(198,161,67,1) 0%, rgba(232,216,136,1) 55%, rgba(198,161,67,1) 100%);
+    box-shadow: 0 4px 7px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform .2s ease-out;
+    padding: 10px;
+    overflow: hidden;
+    font-size: 1.3vh;
+`;
+
+const FileInput = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
 
 export default TeamSettings;
