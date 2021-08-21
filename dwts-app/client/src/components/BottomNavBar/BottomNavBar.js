@@ -16,6 +16,7 @@ const useStyles = makeStyles({
 background: "linear-gradient(99deg, rgba(198,161,67,1) 0%, rgba(232,216,136,1) 55%, rgba(198,161,67,1) 100%)",
         color: "white",
         //padding: '0 1em'
+        borderRadius: "15px 15px 0 0",
     },
     root : {
         color: "white",

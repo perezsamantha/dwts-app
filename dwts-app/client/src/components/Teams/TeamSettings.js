@@ -5,6 +5,10 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import { updateTeam, deleteTeam, updatePic } from '../../actions/teams';
 import { useDispatch } from 'react-redux';
 
+import AvatarEditor from 'react-avatar-editor';
+import Avatar from 'react-avatar-edit';
+import { Slider } from '@material-ui/core';
+
 const useStyles = makeStyles((theme) => ({
     root: {
         '& > *': {
@@ -16,7 +20,10 @@ const useStyles = makeStyles((theme) => ({
     },
     numbers: {
         width: "10ch"
-    }
+    },
+    slider: {
+        width: "20ch",
+    },
 }));
 
 function TeamSettings(props) {
@@ -24,12 +31,13 @@ function TeamSettings(props) {
     const [open, setOpen] = useState(false);
     const [formData, setFormData] = useState(props.team);
     const [fileData, setFileData] = useState(null);
+    const [scaleValue, setScaleValue] = useState(10);
     const id = formData._id;
 
     const dispatch = useDispatch();
 
     const handleChange = (e) => {
-        setFormData({...formData, [e.target.name]: e.target.value });
+        setFormData({ ...formData, [e.target.name]: e.target.value });
     }
 
     const handleOpen = () => {
@@ -43,25 +51,55 @@ function TeamSettings(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (fileData != null) {
+        if (editor != null) {
             const data = new FormData();
-            data.append("promoPic", fileData);
 
-            dispatch(updatePic(id, data));
+            const canvas = editor.getImageScaledToCanvas();
+
+            canvas.toBlob(function(blob) {
+                data.append("promoPic", blob);
+                dispatch(updatePic(id, data));
+            })
+
+            
         }
+
+        // if (fileData != null) {
+        //     console.log(fileData);
+        //     const data = new FormData();
+        //     data.append("promoPic", fileData);
+
+        //     dispatch(updatePic(id, data));
+        // }
 
         dispatch(updateTeam(id, formData));
         handleClose();
     }
 
     const handleClose = () => {
+        setScaleValue(1);
         setOpen(false);
     };
 
     const handleDelete = () => {
-        
+
         dispatch(deleteTeam(id));
         handleClose();
+    }
+
+    const handleScale = (e, newValue) => {
+        e.preventDefault();
+        setScaleValue(newValue);
+    }
+
+    useEffect(() => {
+        setScaleValue(1);
+    }, []);
+
+    const [editor, setEditor] = useState(null);
+
+    const setEditorRef = (editor) => {
+        setEditor(editor);
     }
 
     return (
@@ -77,6 +115,23 @@ function TeamSettings(props) {
                         accept=".jpeg, .jpg, .png"
                         onChange={handleFile}
                     />
+                    {fileData != null && <div>
+                        <AvatarEditor
+                            image={fileData}
+                            width={150}
+                            height={150}
+                            borderRadius={100}
+                            scale={scaleValue}
+                            ref={setEditorRef}
+                        />
+                        <Slider className={classes.slider} value={scaleValue} onChange={handleScale} min={1} max={5} step={0.01} />
+                        </div>}
+                    {/* <Avatar
+                        width={200}
+                        height={200}
+                        onCrop={setPreview(preview)}
+                        src={fileData}
+                    /> */}
                     <TextField
                         className={classes.names}
                         margin="dense"

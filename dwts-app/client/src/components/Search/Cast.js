@@ -64,7 +64,7 @@ function Cast(props) {
                     {teams.map((team, index) => (
                         <Grid key={index} item>
                         <InnerContainer>
-                            <Link to={{ pathname: `/search/cast/teams/${team._id}` }} >
+                            <Link to={{ pathname: `/search/cast/teams/${team._id}` }} style={{ textDecoration: "none" }} >
                             <TeamsPreview team={team}/>
                         </Link>
                         </InnerContainer>

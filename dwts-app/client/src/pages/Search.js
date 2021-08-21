@@ -144,6 +144,7 @@ background: linear-gradient(99deg, rgba(198,161,67,1) 0%, rgba(232,216,136,1) 55
     position: relative;
     box-shadow: 0px 1px 100px grey;
     align-items: center;
+    border-radius: 0 0 15px 15px;
 `;
 
 const SearchTitle = styled.h2`

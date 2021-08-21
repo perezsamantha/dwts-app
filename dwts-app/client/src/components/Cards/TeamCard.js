@@ -44,12 +44,18 @@ function TeamCard(props) {
 
     const team = useSelector(state => state.teams);
     const { id } = useParams();
-    console.log(id);
+
+    // function actions(id) {
+    //     return dispatch => {
+    //         dispatch(findTeamById(id));
+    //         dispatch(searchDances(id));
+    //         return Promise.resolve();
+    //     }
+    // }
 
     useEffect(() => {
         dispatch(findTeamById(id));
-        console.log("pls");
-        console.log(team);
+        //console.log(team);
     }, [])
 
     return (
@@ -109,12 +115,13 @@ const Container = styled.div`
     flex-direction: column;
     //position: relative;
     align-items: center;
-    background: white;
+    //background: white;
     border: none;
     border-radius: 15px;
     overflow-y: auto;
     overflow-x: hidden;
     text-align: center;
+    padding-bottom: 70px;
 `;
 
 const TeamName = styled.h4`
