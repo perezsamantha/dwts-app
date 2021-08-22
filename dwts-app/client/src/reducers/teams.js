@@ -5,8 +5,9 @@ export default (teams = [], action) => {
         case actionType.ADD:
             return [...teams, action.payload];
         case actionType.UPDATE:
-            return teams.map((team) => (team._id === action.payload._id ? action.payload : team));
-        case actionType.SEARCH:
+            //return teams.map((team) => (team._id === action.payload._id ? action.payload : team));
+            return action.payload;
+            case actionType.SEARCH:
             return action.payload;
         case actionType.DELETE:
             return teams.filter((team) => team._id !== action.payload);

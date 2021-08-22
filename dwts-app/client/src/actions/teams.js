@@ -61,6 +61,16 @@ export const deleteTeam = (id) => async (dispatch) => {
     }
 }
 
+export const addPic = (id, image) => async (dispatch) => {
+    try {
+        const { data } = await api.addPic(id, image);
+
+        dispatch({ type: actionType.UPDATE, payload: data });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 /*
 export const likeTeam = (id) => async (dispatch) => {
     const user = JSON.parse(localStorage.getItem('profile'));

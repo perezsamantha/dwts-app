@@ -21,3 +21,4 @@ export const updatePic = (id, image) => API.patch(`/teams/updatePic/${id}`, imag
 export const findTeamById = (id) => API.get(`/teams/${id}`);
 export const searchTeams = (input) => API.post('/teams/search', input);
 export const deleteTeam = (id) => API.delete(`/teams/delete/${id}`);
+export const addPic = (id, image) => API.patch(`/teams/addPic/${id}`, image)

@@ -9,6 +9,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { findTeamById } from '../../actions/teams';
 import { useHistory, useParams, Link } from 'react-router-dom';
 
+import AvatarEditor from 'react-avatar-editor';
+import { Slider } from '@material-ui/core';
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+import { addPic } from '../../actions/teams';
+
 const useStyles = makeStyles({
     avi: {
         width: "75px",
@@ -28,8 +33,21 @@ const useStyles = makeStyles({
         position: "relative",
         left: "0",
         alignSelf: "left"
-        //top: "20px",
-    }
+    },
+    slider: {
+        width: "20ch",
+        position: "relative",
+    },
+    editor: {
+        width: "100%",
+        margin: "10px auto",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    root: {
+        flexGrow: 1,
+    },
 })
 
 function TeamCard(props) {
@@ -45,28 +63,59 @@ function TeamCard(props) {
     const team = useSelector(state => state.teams);
     const { id } = useParams();
 
-    // function actions(id) {
-    //     return dispatch => {
-    //         dispatch(findTeamById(id));
-    //         dispatch(searchDances(id));
-    //         return Promise.resolve();
-    //     }
-    // }
+    const [picData, setPicData] = useState(null);
+    const [scaleValue, setScaleValue] = useState(10);
+
+    const handleFile = (e) => {
+        setPicData(e.target.files[0]);
+    }
+
+    const handleScale = (e, newValue) => {
+        e.preventDefault();
+        setScaleValue(newValue);
+    }
+
+    const handlePicture = (e) => {
+        e.preventDefault();
+
+        if (editor != null) {
+            const data = new FormData();
+
+            const canvas = editor.getImageScaledToCanvas();
+
+            canvas.toBlob(function(blob) {
+                data.append("pictures", blob, `${Date.now()}-${picData.name}`);
+                dispatch(addPic(id, data));
+                dispatch(findTeamById(id));
+                setPicData(null);
+            })
+        }
+
+        //dispatch(findTeamById(id));
+        //setPicData(null);
+    }
+
+    const [editor, setEditor] = useState(null);
+
+    const setEditorRef = (editor) => {
+        setEditor(editor);
+    }
 
     useEffect(() => {
         dispatch(findTeamById(id));
-        //console.log(team);
+        setScaleValue(1);
+        setPicData(null);
     }, [])
 
     return (
         <Container >
             {(team._id == null) ? <CircularProgress className={classes.progress}/> :
-            <div>
+            <div style={{width: "85%"}}>
             <Link to="/search/cast">
                 <CloseIcon className={classes.back} />
             </Link>
             <Avatar className={classes.avi} alt={team.celeb} src={team.promoPic}/>
-            {user.result.isAdmin && <TeamSettings team={team} />}
+            {user.result.isAdmin && <TeamSettings id={team._id} />}
             <TeamName>{team.celeb} & {team.pro}</TeamName>
             <Season>Season {team.season}</Season>
             {team.placement && <Placement>{team.placement} Place</Placement>}
@@ -90,7 +139,50 @@ function TeamCard(props) {
             <DanceText>CHA CHA - (30) </DanceText>
             <DanceText>SAMBA - (30) </DanceText>
             <DanceText>CHARLESTON - (30) </DanceText>
+            <DanceText>CHARLESTON - (30) </DanceText>
+            <DanceText>CHARLESTON - (30) </DanceText>
+            <DanceText>CHARLESTON - (30) </DanceText>
+            <DanceText>CHARLESTON - (30) </DanceText>
             <BasicText>PICTURES</BasicText>
+            <ContentContainer>
+                <Grid container justify="center" className={classes.root} spacing={2}>
+            
+                {team.pictures.map((picture, index) => (
+                    <Grid key={index} item>
+                        <InnerContainer>
+                            <Picture src={picture} />
+                        </InnerContainer>
+                    </Grid>
+                ))}
+
+            </Grid>
+            </ContentContainer>
+            <FileInput>
+                <HiddenInput
+                        type="file"
+                        accept=".jpeg, .jpg, .png"
+                        onChange={handleFile}
+                        id="pic"
+                    />
+                    <Label htmlFor="pic">
+                        <AddAPhotoIcon />
+                    </Label>
+                    
+                        {picData != null && <div>
+                        <AvatarEditor
+                            image={picData}
+                            width={200}
+                            height={200}
+                            borderRadius={10}
+                            border={0}
+                            scale={scaleValue}
+                            ref={setEditorRef}
+                            className={classes.editor}
+                        />
+                        <Slider className={classes.slider} value={scaleValue} onChange={handleScale} min={1} max={5} step={0.01} />
+                        <AddPic onClick={handlePicture}>Add Picture</AddPic>
+                    </div>}
+                    </FileInput>
             </div> }
         </Container>
     );
@@ -158,6 +250,78 @@ const DanceText = styled.h6`
     font-size: 10px;
     font-weight: 500;
     margin: 5px 0;
+`;
+
+const HiddenInput = styled.input`
+    opacity: 0;
+    width: 0.1px;
+    height: 0.1px;
+    position: absolute;
+`;
+
+const Label = styled.label`
+    display: block;
+    position: relative;
+    width: fit-content;
+    border-radius: 25px;
+    background: linear-gradient(99deg, rgba(198,161,67,1) 0%, rgba(232,216,136,1) 55%, rgba(198,161,67,1) 100%);
+    box-shadow: 0 4px 7px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform .2s ease-out;
+    padding: 10px;
+    overflow: hidden;
+    font-size: 1.3vh;
+    margin: 0 auto;
+`;
+
+const FileInput = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+`;
+
+const AddPic = styled.button`
+    display: block;
+    position: relative;
+    width: fit-content;
+    border-radius: 25px;
+    background: linear-gradient(99deg, rgba(198,161,67,1) 0%, rgba(232,216,136,1) 55%, rgba(198,161,67,1) 100%);
+    box-shadow: 0 4px 7px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform .2s ease-out;
+    padding: 10px;
+    overflow: hidden;
+    font-size: 10px;
+    margin: 0 auto;
+    border: none;
+`;
+
+const ContentContainer = styled.div`
+    width: 100%;
+    margin: 10px auto;
+`;
+
+const InnerContainer = styled.div`
+    width: 100%;
+`;
+
+const Picture = styled.img`
+   width: 100px;
+   height: 100px;
+   display: flex;
+   flex-direction: column;
+   border-radius: 15px;
+   position: relative;
 `;
 
 export default TeamCard;

@@ -137,3 +137,41 @@ export const deleteTeam = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+
+export const addPic = async (req, res) => {
+    const storage = new Storage({
+        projectId: process.env.GCLOUD_PROJECT_ID,
+        keyFilename: process.env.GCLOUD_APPLICATION_CREDENTIALS,
+    });
+    
+    const bucket = storage.bucket(process.env.GCLOUD_STORAGE_BUCKET_URL);
+    
+    try {
+        const blob = bucket.file(req.file.originalname);
+
+        let uuid = UUID();
+
+        const blobWriter = blob.createWriteStream({
+            metadata: {
+                contentType: req.file.mimetype,
+                metadata: {
+                    firebaseStorageDownloadTokens: uuid
+                }
+            }
+        })
+
+        //blobWriter.on('error', (err) => next(err));
+
+        blobWriter.on('finish', async () => {
+            const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURI(blob.name)}?alt=media`;
+            
+            const result = await Team.findByIdAndUpdate(req.params.id, { $push: { "pictures": publicUrl } }, { new: true });
+            console.log(result);
+            res.status(200).json(result);
+        })
+
+        blobWriter.end(req.file.buffer);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}

@@ -3,13 +3,14 @@ import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, T
 import SettingsIcon from '@material-ui/icons/Settings';
 
 import { updateTeam, deleteTeam, updatePic } from '../../actions/teams';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import AvatarEditor from 'react-avatar-editor';
 import Avatar from 'react-avatar-edit';
 import { Slider } from '@material-ui/core';
 import styled from 'styled-components';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+import { findTeamById } from '../../actions/teams';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,7 +36,9 @@ const useStyles = makeStyles((theme) => ({
 function TeamSettings(props) {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
-    const [formData, setFormData] = useState(props.team);
+    //const [formData, setFormData] = useState(props.team);
+    const team = useSelector(state => state.teams);
+    const [formData, setFormData] = useState(team);
     const [fileData, setFileData] = useState(null);
     const [scaleValue, setScaleValue] = useState(10);
     const [fileName, setFileName] = useState("Select new picture");
@@ -48,7 +51,10 @@ function TeamSettings(props) {
     }
 
     const handleOpen = () => {
+        dispatch(findTeamById(props.id));
+        setFormData(team);
         setOpen(true);
+        
     };
 
     const handleFile = (e) => {
