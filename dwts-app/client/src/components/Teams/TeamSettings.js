@@ -47,14 +47,29 @@ function TeamSettings(props) {
     const dispatch = useDispatch();
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        if (e.target.name == "instagram.celeb") {
+            setFormData({ ...formData, socials: { ...formData.socials, instagram: { ...formData.socials.instagram, celeb: e.target.value } } })
+        } else if (e.target.name == "instagram.pro") {
+            setFormData({ ...formData, socials: { ...formData.socials, instagram: { ...formData.socials.instagram, pro: e.target.value } } })
+        } else if (e.target.name == "twitter.celeb") {
+            setFormData({ ...formData, socials: { ...formData.socials, twitter: { ...formData.socials.twitter, celeb: e.target.value } } })
+        } else if (e.target.name == "twitter.pro") {
+            setFormData({ ...formData, socials: { ...formData.socials, twitter: { ...formData.socials.twitter, pro: e.target.value } } })
+        } else if (e.target.name == "facebook.celeb") {
+            setFormData({ ...formData, socials: { ...formData.socials, facebook: { ...formData.socials.facebook, celeb: e.target.value } } })
+        } else if (e.target.name == "facebook.pro") {
+            setFormData({ ...formData, socials: { ...formData.socials, facebook: { ...formData.socials.facebook, pro: e.target.value } } })
+        } else {
+
+            setFormData({ ...formData, [e.target.name]: e.target.value });
+        }
     }
 
     const handleOpen = () => {
         dispatch(findTeamById(props.id));
         setFormData(team);
         setOpen(true);
-        
+
     };
 
     const handleFile = (e) => {
@@ -70,12 +85,12 @@ function TeamSettings(props) {
 
             const canvas = editor.getImageScaledToCanvas();
 
-            canvas.toBlob(function(blob) {
+            canvas.toBlob(function (blob) {
                 data.append("promoPic", blob, `${Date.now()}-${fileData.name}`);
                 dispatch(updatePic(id, data));
             })
 
-            
+
         }
 
         // if (fileData != null) {
@@ -122,13 +137,13 @@ function TeamSettings(props) {
 
     return (
         <div>
-            <Button color="primary" onClick={handleOpen}>
+            <Button onClick={handleOpen}>
                 <SettingsIcon />
             </Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle>Team Settings</DialogTitle>
                 <DialogContent className={classes.root} >
-                    
+
                     <HiddenInput
                         type="file"
                         accept=".jpeg, .jpg, .png"
@@ -140,18 +155,18 @@ function TeamSettings(props) {
                     </Label>
                     <FileInput>
                         {fileData != null && <div>
-                        <AvatarEditor
-                            image={fileData}
-                            width={200}
-                            height={200}
-                            borderRadius={100}
-                            border={0}
-                            scale={scaleValue}
-                            ref={setEditorRef}
-                            className={classes.editor}
-                        />
-                        <Slider className={classes.slider} value={scaleValue} onChange={handleScale} min={1} max={5} step={0.01} />
-                    </div>}
+                            <AvatarEditor
+                                image={fileData}
+                                width={200}
+                                height={200}
+                                borderRadius={100}
+                                border={0}
+                                scale={scaleValue}
+                                ref={setEditorRef}
+                                className={classes.editor}
+                            />
+                            <Slider className={classes.slider} value={scaleValue} onChange={handleScale} min={1} max={5} step={0.01} />
+                        </div>}
                     </FileInput>
                     <TextField
                         className={classes.names}
@@ -169,6 +184,15 @@ function TeamSettings(props) {
                         label="pro"
                         type="text"
                         value={formData.pro}
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        className={classes.names}
+                        margin="dense"
+                        name="teamName"
+                        label="team name"
+                        type="text"
+                        value={formData.teamName}
                         onChange={handleChange}
                     />
                     <TextField
@@ -214,6 +238,60 @@ function TeamSettings(props) {
                         label="# perfects"
                         type="text"
                         value={formData.numPerfects}
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        className={classes.names}
+                        margin="dense"
+                        name="instagram.celeb"
+                        label="instagram - celeb"
+                        type="text"
+                        value={formData.socials.instagram.celeb}
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        className={classes.names}
+                        margin="dense"
+                        name="instagram.pro"
+                        label="instagram - pro"
+                        type="text"
+                        value={formData.socials.instagram.pro}
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        className={classes.names}
+                        margin="dense"
+                        name="twitter.celeb"
+                        label="twitter - celeb"
+                        type="text"
+                        value={formData.socials.twitter.celeb}
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        className={classes.names}
+                        margin="dense"
+                        name="twitter.pro"
+                        label="twitter - pro"
+                        type="text"
+                        value={formData.socials.twitter.pro}
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        className={classes.names}
+                        margin="dense"
+                        name="facebook.celeb"
+                        label="facebook - celeb"
+                        type="text"
+                        value={formData.socials.facebook.celeb}
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        className={classes.names}
+                        margin="dense"
+                        name="facebook.pro"
+                        label="facebook - pro"
+                        type="text"
+                        value={formData.socials.facebook.pro}
                         onChange={handleChange}
                     />
                 </DialogContent>

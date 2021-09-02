@@ -23,7 +23,7 @@ const userSchema = new Schema({
             instagram: String,
         }
     ],
-    isAdmin: { type: Boolean },
+    role: { type: String, default: 'fan', enum: ["fan, pro, admin"] },
 }, {
     timestamps: true,
 });

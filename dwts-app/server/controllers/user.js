@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 import User from '../models/user.model.js';
 
-export const signin = async (req, res) => {
+export const signin = async (req, res, next) => {
     const { username, password } = req.body;
 
     try {
@@ -23,7 +23,7 @@ export const signin = async (req, res) => {
     }
 }
 
-export const signup = async (req, res) => {
+export const signup = async (req, res, next) => {
     const { username, email, password, confirmPassword } = req.body;
 
     try {
@@ -38,7 +38,7 @@ export const signup = async (req, res) => {
 
         const result = await User.create({ username: username, email: email, password: hashedPassword });
 
-        const token = jwt.sign({ username: result.username, email: result.email, id: result._id }, process.env.SECRET_STRING, { expiresIn: "1h" });
+        const token = jwt.sign({ username: result.username, id: result._id }, process.env.SECRET_STRING, { expiresIn: "1h" });
 
         res.status(200).json({ result, token });
     } catch (error) {

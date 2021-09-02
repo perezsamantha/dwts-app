@@ -14,6 +14,13 @@ import { Slider } from '@material-ui/core';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import { addPic } from '../../actions/teams';
 
+import TwitterIcon from '@material-ui/icons/Twitter';
+import InstagramIcon from '@material-ui/icons/Instagram';
+import FacebookIcon from '@material-ui/icons/Facebook';
+
+import { Container, TeamName } from '../shared/shared.js'
+import CheckJWT from '../shared/logout';
+
 const useStyles = makeStyles({
     avi: {
         width: "75px",
@@ -32,7 +39,8 @@ const useStyles = makeStyles({
         margin: "10px 0",
         position: "relative",
         left: "0",
-        alignSelf: "left"
+        alignSelf: "left",
+        color: "black",
     },
     slider: {
         width: "20ch",
@@ -51,11 +59,10 @@ const useStyles = makeStyles({
 })
 
 function TeamCard(props) {
+    CheckJWT();
     const classes = useStyles();
 
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
-    //const [team, setTeam] = useState(props.team);
-    const [opacity, setOpacity] = useState(0);
 
     const dispatch = useDispatch();
     const history = useHistory();
@@ -83,7 +90,7 @@ function TeamCard(props) {
 
             const canvas = editor.getImageScaledToCanvas();
 
-            canvas.toBlob(function(blob) {
+            canvas.toBlob(function (blob) {
                 data.append("pictures", blob, `${Date.now()}-${picData.name}`);
                 dispatch(addPic(id, data));
                 dispatch(findTeamById(id));
@@ -107,121 +114,145 @@ function TeamCard(props) {
         setPicData(null);
     }, [])
 
+    const socials = team.socials;
+
     return (
         <Container >
-            {(team._id == null) ? <CircularProgress className={classes.progress}/> :
-            <div style={{width: "85%"}}>
-            <Link to="/search/cast">
-                <CloseIcon className={classes.back} />
-            </Link>
-            <Avatar className={classes.avi} alt={team.celeb} src={team.promoPic}/>
-            {user.result.isAdmin && <TeamSettings id={team._id} />}
-            <TeamName>{team.celeb} & {team.pro}</TeamName>
-            <Season>Season {team.season}</Season>
-            {team.placement && <Placement>{team.placement} Place</Placement>}
-            
-            <Grid container justify="center" className={classes.statsGrid} spacing={2}>
-                <Grid item>
-                    <BasicText>DANCES</BasicText>
-                    <BasicText>{team.numDances}</BasicText>
-                </Grid>
-                <Grid item>
-                    <BasicText>TENS</BasicText>
-                    <BasicText>{team.numTens}</BasicText>
-                </Grid>
-                <Grid item>
-                    <BasicText>PERFECTS</BasicText>
-                    <BasicText>{team.numPerfects}</BasicText>
-                </Grid>
-            </Grid>
+            {(team._id == null) ? <CircularProgress className={classes.progress} /> :
+                <div style={{ width: "85%" }}>
+                    <Link to="/search/cast">
+                        <CloseIcon className={classes.back} />
+                    </Link>
+                    <Avatar className={classes.avi} alt={team.celeb} src={team.promoPic} />
+                    {user.result.role == "admin" && <TeamSettings id={team._id} />}
+                    <TeamName>{team.celeb} & {team.pro}</TeamName>
+                    {team.teamName && <TeamName>{team.teamName}</TeamName>}
+                    <Season>Season {team.season}</Season>
+                    {team.placement && <Placement>{team.placement} Place</Placement>}
 
-            <BasicText>DANCES (IN ORDER)</BasicText>
-            <DanceText>CHA CHA - (30) </DanceText>
-            <DanceText>SAMBA - (30) </DanceText>
-            <DanceText>CHARLESTON - (30) </DanceText>
-            <DanceText>CHARLESTON - (30) </DanceText>
-            <DanceText>CHARLESTON - (30) </DanceText>
-            <DanceText>CHARLESTON - (30) </DanceText>
-            <DanceText>CHARLESTON - (30) </DanceText>
-            <BasicText>PICTURES</BasicText>
-            <ContentContainer>
-                <Grid container justify="center" className={classes.root} spacing={2}>
-            
-                {team.pictures.map((picture, index) => (
-                    <Grid key={index} item>
-                        <InnerContainer>
-                            <Picture src={picture} />
-                        </InnerContainer>
+                    <Grid container justify="center" className={classes.statsGrid} spacing={2}>
+                        <Grid item>
+                            <BasicText>DANCES</BasicText>
+                            <BasicText>{team.numDances}</BasicText>
+                        </Grid>
+                        <Grid item>
+                            <BasicText>TENS</BasicText>
+                            <BasicText>{team.numTens}</BasicText>
+                        </Grid>
+                        <Grid item>
+                            <BasicText>PERFECTS</BasicText>
+                            <BasicText>{team.numPerfects}</BasicText>
+                        </Grid>
                     </Grid>
-                ))}
 
-            </Grid>
-            </ContentContainer>
-            <FileInput>
-                <HiddenInput
-                        type="file"
-                        accept=".jpeg, .jpg, .png"
-                        onChange={handleFile}
-                        id="pic"
-                    />
-                    <Label htmlFor="pic">
-                        <AddAPhotoIcon />
-                    </Label>
-                    
-                        {picData != null && <div>
-                        <AvatarEditor
-                            image={picData}
-                            width={200}
-                            height={200}
-                            borderRadius={10}
-                            border={0}
-                            scale={scaleValue}
-                            ref={setEditorRef}
-                            className={classes.editor}
+                    <BasicText>DANCES (IN ORDER)</BasicText>
+                    <DanceText>CHA CHA - (30) </DanceText>
+                    <DanceText>SAMBA - (30) </DanceText>
+                    <DanceText>CHARLESTON - (30) </DanceText>
+                    <BasicText>SOCIALS</BasicText>
+                    <Grid container justify="center" className={classes.statsGrid} spacing={2}>
+                        <Grid item>
+                            <InstagramIcon />
+                            <SocialsRow>
+                                {socials.instagram.celeb && <SocialsText href={'https://www.instagram.com/' + socials.instagram.celeb}>@{socials.instagram.celeb}</SocialsText>}
+                                {socials.instagram.pro && <SocialsText href={'https://www.instagram.com/' + socials.instagram.pro}>@{socials.instagram.pro}</SocialsText>}
+                            </SocialsRow>
+                        </Grid>
+                        <Grid item>
+                            <TwitterIcon />
+                            <SocialsRow>
+                                {socials.twitter.celeb && <SocialsText href={'https://www.twitter.com/' + socials.twitter.celeb}>@{socials.twitter.celeb}</SocialsText>}
+                                {socials.twitter.pro && <SocialsText href={'https://www.twitter.com/' + socials.twitter.pro}>@{socials.twitter.pro}</SocialsText>}
+                            </SocialsRow>
+                        </Grid>
+                        <Grid item>
+                            <FacebookIcon />
+                            <SocialsRow>
+                                {socials.facebook.celeb && <SocialsText href={'https://www.facebook.com/' + socials.facebook.celeb}>@{socials.facebook.celeb}</SocialsText>}
+                                {socials.facebook.pro && <SocialsText href={'https://www.facebook.com/' + socials.facebook.pro}>@{socials.facebook.pro}</SocialsText>}
+                            </SocialsRow>
+                        </Grid>
+                    </Grid>
+
+                    <BasicText>PICTURES</BasicText>
+                    <ContentContainer>
+                        <Grid container justify="center" className={classes.root} spacing={2}>
+
+                            {team.pictures.map((picture, index) => (
+                                <Grid key={index} item>
+                                    <InnerContainer>
+                                        <Picture src={picture} />
+                                    </InnerContainer>
+                                </Grid>
+                            ))}
+
+                        </Grid>
+                    </ContentContainer>
+                    <FileInput>
+                        <HiddenInput
+                            type="file"
+                            accept=".jpeg, .jpg, .png"
+                            onChange={handleFile}
+                            id="pic"
                         />
-                        <Slider className={classes.slider} value={scaleValue} onChange={handleScale} min={1} max={5} step={0.01} />
-                        <AddPic onClick={handlePicture}>Add Picture</AddPic>
-                    </div>}
+                        <Label htmlFor="pic">
+                            <AddAPhotoIcon />
+                        </Label>
+
+                        {picData != null && <div>
+                            <AvatarEditor
+                                image={picData}
+                                width={200}
+                                height={200}
+                                borderRadius={10}
+                                border={0}
+                                scale={scaleValue}
+                                ref={setEditorRef}
+                                className={classes.editor}
+                            />
+                            <Slider className={classes.slider} value={scaleValue} onChange={handleScale} min={1} max={5} step={0.01} />
+                            <AddPic onClick={handlePicture}>Add Picture</AddPic>
+                        </div>}
                     </FileInput>
-            </div> }
+                </div>}
         </Container>
     );
 };
 
-const Container = styled.div`
-    //opacity: ${props => props.opacity};
-    //position: fixed;
-    //margin: 5vh auto;
-    min-height: 30%;
-    max-height: 50%;
-    z-index: 100;
-    //top: 50px;
-    //left: 12.5%;
+// const Container = styled.div`
+//     //opacity: ${props => props.opacity};
+//     //position: fixed;
+//     //margin: 5vh auto;
+//     min-height: 30%;
+//     max-height: 50%;
+//     z-index: 100;
+//     //top: 50px;
+//     //left: 12.5%;
 
-    //width: 85%;
-    //min-height: 200px;
-    //max-height: 325px;
-    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
-    //margin: 20px auto;
-    display: flex;
-    flex-direction: column;
-    //position: relative;
-    align-items: center;
-    //background: white;
-    border: none;
-    border-radius: 15px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    text-align: center;
-    padding-bottom: 70px;
-`;
+//     //width: 85%;
+//     //min-height: 200px;
+//     //max-height: 325px;
+//     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
+//     //margin: 20px auto;
+//     display: flex;
+//     flex-direction: column;
+//     //position: relative;
+//     align-items: center;
+//     //background: white;
+//     border: none;
+//     border-radius: 15px;
+//     overflow-y: auto;
+//     overflow-x: hidden;
+//     text-align: center;
+//     padding-bottom: 70px;
+// `;
 
-const TeamName = styled.h4`
-    font-size: 20px;
-    font-weight: 500;
-    margin: 5px auto;
-    color: rgba(0, 0, 0, 0.6);
-`;
+// const TeamName = styled.h4`
+//     font-size: 20px;
+//     font-weight: 500;
+//     margin: 5px auto;
+//     color: rgba(0, 0, 0, 0.6);
+// `;
 
 const Season = styled.h5`
     font-size: 15px;
@@ -250,6 +281,14 @@ const DanceText = styled.h6`
     font-size: 10px;
     font-weight: 500;
     margin: 5px 0;
+`;
+
+const SocialsText = styled.a`
+    font-size: 12px;
+    font-weight: 500;
+    margin: 0 5px;
+    color: black;
+    text-decoration: none;
 `;
 
 const HiddenInput = styled.input`
@@ -322,6 +361,10 @@ const Picture = styled.img`
    flex-direction: column;
    border-radius: 15px;
    position: relative;
+`;
+
+const SocialsRow = styled.div`
+    width: 100%;
 `;
 
 export default TeamCard;

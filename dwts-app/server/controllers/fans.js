@@ -1,5 +1,8 @@
 import User from '../models/user.model.js';
 
+//import { roles } from '../roles.js';
+import ac from '../roles.js';
+
 export const getAll = async (req, res) => { // eventually change to just fans?
     try {
         const users = await User.find();
@@ -7,12 +10,21 @@ export const getAll = async (req, res) => { // eventually change to just fans?
         res.status(200).json(users);
 
     } catch (error) {
-        res.status(500).json({ message: "Something went wrong. :("});
+        res.status(500).json({ message: error });
     }
 }
 
-export const searchFans = async (req, res) => { // eventually change to just fans?
+export const searchFans = async (req, res, next) => { // eventually change to just fans?
+    
+    // const permission = ac.can(req.user.role).readAny('fans');
+    // //console.log(permission)
+
+    // if (!permission) {
+    //     return res.status(401).json({ message: "Invalid permission"});
+    // }
+    
     const { search } = req.body;
+    //console.log(req);
     
     try {
         const users = await User.find({ username: { $regex: search, '$options': 'i' } });
@@ -22,8 +34,40 @@ export const searchFans = async (req, res) => { // eventually change to just fan
         }
         
         res.status(200).json(users);
+        next();
         
     } catch (error) {
-        res.status(500).json({ message: "Something went wrong. :("});
+        res.status(500).json({ message: error });
     }
 }
+
+export const grantAccess = function(action, resource) {
+    return async (req, res, next) => {
+        try {
+            const user = await User.findById(req.userId);
+
+            const permission = ac.can(user.role)[action](resource);
+            
+            if (!permission.granted) {
+                return res.status(401).json({ message: "Invalid permission"});
+            }
+            next();
+        } catch (error) {
+            res.status(500).json({ message: error });
+        }
+    } 
+}
+
+// export const allowIfLoggedIn = async (req, res, next) => {
+//     try {
+//         const user = res.locals.loggedInUser;
+//         if (!user) {
+//             return res.status(401).json({ error: "Must be logged in to access" });
+//         }
+
+//         req.user = user;
+//         next();
+//     } catch (error) {
+//         res.status(500).json({ message: message });
+//     }
+// }
