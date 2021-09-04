@@ -7,10 +7,13 @@ export default (teams = [], action) => {
         case actionType.UPDATE:
             //return teams.map((team) => (team._id === action.payload._id ? action.payload : team));
             return action.payload;
-            case actionType.SEARCH:
+        case actionType.SEARCH:
             return action.payload;
         case actionType.DELETE:
             return teams.filter((team) => team._id !== action.payload);
+        case actionType.LIKE:
+            //return teams.map((team) => (team._id === action.payload._id ? action.payload : team))
+            return action.payload;
         default:
             return teams;
     }

@@ -16,36 +16,22 @@ const teamSchema = new Schema({
         style: { type: String },
         score: { type: Number },
     }],
-    pictures: { type: [String]},
-    //madeFinals: { type: Boolean },
-    // socials: [{
-    //     instagram: [{
-    //         celeb: { type: String },
-    //         pro: { type: String }
-    //     }],
-    //     twitter: [{
-    //         celeb: { type: String },
-    //         pro: { type: String }
-    //     }],
-    //     facebook: [{
-    //         celeb: { type: String },
-    //         pro: { type: String }
-    //     }],
-    // }]
+    pictures: { type: [String] },
     socials: {
-            instagram: {
-                celeb: { type: String, default: "" },
-                pro: { type: String, default: "" }
-            },
-            twitter: {
-                celeb: { type: String, default: "" },
-                pro: { type: String, default: "" }
-            },
-            facebook: {
-                celeb: { type: String, default: "" },
-                pro: { type: String, default: "" }
-            },
-        }
+        instagram: {
+            celeb: { type: String, default: "" },
+            pro: { type: String, default: "" }
+        },
+        twitter: {
+            celeb: { type: String, default: "" },
+            pro: { type: String, default: "" }
+        },
+        facebook: {
+            celeb: { type: String, default: "" },
+            pro: { type: String, default: "" }
+        },
+    },
+    likes: { type: [String], default: [] },
 }, {
     timestamps: true,
 });

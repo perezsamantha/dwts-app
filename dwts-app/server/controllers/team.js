@@ -166,12 +166,37 @@ export const addPic = async (req, res) => {
             const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURI(blob.name)}?alt=media`;
             
             const result = await Team.findByIdAndUpdate(req.params.id, { $push: { "pictures": publicUrl } }, { new: true });
-            console.log(result);
+            //console.log(result);
             res.status(200).json(result);
         })
 
         blobWriter.end(req.file.buffer);
     } catch (error) {
         res.status(500).json({ message: error.message });
+    }
+}
+
+export const likeTeam = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+        // if (!req.userId) {
+        //     return res.status(401).json({ message: "Unauthenticated" });
+        // }
+    
+        const team = await Team.findById(id);
+    
+        const index = team.likes.findIndex((id) => id === String(req.userId));
+    
+        if (index === -1) {
+            team.likes.push(req.userId);
+        } else {
+            team.likes = team.likes.filter((id) => id !== String(req.userId));
+        }
+    
+        const result = await Team.findByIdAndUpdate(id, team, { new: true });
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ message: error });
     }
 }

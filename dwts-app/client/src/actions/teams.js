@@ -71,16 +71,14 @@ export const addPic = (id, image) => async (dispatch) => {
     }
 }
 
-/*
 export const likeTeam = (id) => async (dispatch) => {
     const user = JSON.parse(localStorage.getItem('profile'));
 
     try {
         const { data } = await api.likeTeam(id, user?.token);
-
+        
         dispatch({ type: actionType.LIKE, payload: data });
     } catch (error) {
         console.log(error);
     }
 }
-*/

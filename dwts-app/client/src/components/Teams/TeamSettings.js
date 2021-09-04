@@ -246,7 +246,7 @@ function TeamSettings(props) {
                         name="instagram.celeb"
                         label="instagram - celeb"
                         type="text"
-                        value={formData.socials.instagram.celeb}
+                        value={formData.socials?.instagram.celeb}
                         onChange={handleChange}
                     />
                     <TextField
@@ -255,7 +255,7 @@ function TeamSettings(props) {
                         name="instagram.pro"
                         label="instagram - pro"
                         type="text"
-                        value={formData.socials.instagram.pro}
+                        value={formData.socials?.instagram.pro}
                         onChange={handleChange}
                     />
                     <TextField
@@ -264,7 +264,7 @@ function TeamSettings(props) {
                         name="twitter.celeb"
                         label="twitter - celeb"
                         type="text"
-                        value={formData.socials.twitter.celeb}
+                        value={formData.socials?.twitter.celeb}
                         onChange={handleChange}
                     />
                     <TextField
@@ -273,7 +273,7 @@ function TeamSettings(props) {
                         name="twitter.pro"
                         label="twitter - pro"
                         type="text"
-                        value={formData.socials.twitter.pro}
+                        value={formData.socials?.twitter.pro}
                         onChange={handleChange}
                     />
                     <TextField
@@ -282,7 +282,7 @@ function TeamSettings(props) {
                         name="facebook.celeb"
                         label="facebook - celeb"
                         type="text"
-                        value={formData.socials.facebook.celeb}
+                        value={formData.socials?.facebook.celeb}
                         onChange={handleChange}
                     />
                     <TextField
@@ -291,7 +291,7 @@ function TeamSettings(props) {
                         name="facebook.pro"
                         label="facebook - pro"
                         type="text"
-                        value={formData.socials.facebook.pro}
+                        value={formData.socials?.facebook.pro}
                         onChange={handleChange}
                     />
                 </DialogContent>

@@ -6,5 +6,4 @@ export const SEARCH = 'SEARCH';
 export const ADD = 'ADD';
 export const UPDATE = 'UPDATE';
 export const DELETE = 'DELETE';
-
-//export const LIKE = 'LIKE';
+export const LIKE = 'LIKE';

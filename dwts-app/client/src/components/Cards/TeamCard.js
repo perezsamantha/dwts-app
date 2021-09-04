@@ -12,14 +12,17 @@ import { useHistory, useParams, Link } from 'react-router-dom';
 import AvatarEditor from 'react-avatar-editor';
 import { Slider } from '@material-ui/core';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
-import { addPic } from '../../actions/teams';
+import { addPic, likeTeam } from '../../actions/teams';
 
 import TwitterIcon from '@material-ui/icons/Twitter';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import FacebookIcon from '@material-ui/icons/Facebook';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
 import { Container, TeamName } from '../shared/shared.js'
 import CheckJWT from '../shared/logout';
+import axios from 'axios';
 
 const useStyles = makeStyles({
     avi: {
@@ -63,7 +66,8 @@ function TeamCard(props) {
     const classes = useStyles();
 
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
-
+    //const [team, setTeam] = useState(null);
+    
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -72,6 +76,7 @@ function TeamCard(props) {
 
     const [picData, setPicData] = useState(null);
     const [scaleValue, setScaleValue] = useState(10);
+    const [loading, setLoading] = useState(true);
 
     const handleFile = (e) => {
         setPicData(e.target.files[0]);
@@ -97,9 +102,6 @@ function TeamCard(props) {
                 setPicData(null);
             })
         }
-
-        //dispatch(findTeamById(id));
-        //setPicData(null);
     }
 
     const [editor, setEditor] = useState(null);
@@ -112,19 +114,35 @@ function TeamCard(props) {
         dispatch(findTeamById(id));
         setScaleValue(1);
         setPicData(null);
-    }, [])
+        setLoading(false);
+    }, [id])
 
-    const socials = team.socials;
+    const Likes = () => {
+        if (team.likes?.length > 0) {
+            return team.likes.find((like) => like === user?.result?._id) ? 
+            (
+                <><FavoriteIcon /></>
+            ) : (
+                <><FavoriteBorderIcon /></>
+            )
+        }
+
+        return <><FavoriteBorderIcon /></>;
+    }
 
     return (
         <Container >
-            {(team._id == null) ? <CircularProgress className={classes.progress} /> :
+            {(team._id === null) ? <CircularProgress className={classes.progress} /> :
                 <div style={{ width: "85%" }}>
                     <Link to="/search/cast">
                         <CloseIcon className={classes.back} />
                     </Link>
                     <Avatar className={classes.avi} alt={team.celeb} src={team.promoPic} />
                     {user.result.role == "admin" && <TeamSettings id={team._id} />}
+                    <Button onClick={() => dispatch(likeTeam(id))}>
+                        <Likes />
+                    </Button>
+                    {team.likes?.length > 0 && <BasicText>{team.likes.length}</BasicText>}
                     <TeamName>{team.celeb} & {team.pro}</TeamName>
                     {team.teamName && <TeamName>{team.teamName}</TeamName>}
                     <Season>Season {team.season}</Season>
@@ -154,22 +172,22 @@ function TeamCard(props) {
                         <Grid item>
                             <InstagramIcon />
                             <SocialsRow>
-                                {socials.instagram.celeb && <SocialsText href={'https://www.instagram.com/' + socials.instagram.celeb}>@{socials.instagram.celeb}</SocialsText>}
-                                {socials.instagram.pro && <SocialsText href={'https://www.instagram.com/' + socials.instagram.pro}>@{socials.instagram.pro}</SocialsText>}
+                                {team.socials?.instagram?.celeb && <SocialsText href={'https://www.instagram.com/' + team.socials?.instagram?.celeb}>@{team.socials?.instagram?.celeb}</SocialsText>}
+                                {team.socials?.instagram?.pro && <SocialsText href={'https://www.instagram.com/' + team.socials?.instagram?.pro}>@{team.socials?.instagram?.pro}</SocialsText>}
                             </SocialsRow>
                         </Grid>
                         <Grid item>
                             <TwitterIcon />
                             <SocialsRow>
-                                {socials.twitter.celeb && <SocialsText href={'https://www.twitter.com/' + socials.twitter.celeb}>@{socials.twitter.celeb}</SocialsText>}
-                                {socials.twitter.pro && <SocialsText href={'https://www.twitter.com/' + socials.twitter.pro}>@{socials.twitter.pro}</SocialsText>}
+                                {team.socials?.twitter?.celeb && <SocialsText href={'https://www.twitter.com/' + team.socials.twitter.celeb}>@{team.socials.twitter.celeb}</SocialsText>}
+                                {team.socials?.twitter?.pro && <SocialsText href={'https://www.twitter.com/' + team.socials.twitter.pro}>@{team.socials.twitter.pro}</SocialsText>}
                             </SocialsRow>
                         </Grid>
                         <Grid item>
                             <FacebookIcon />
                             <SocialsRow>
-                                {socials.facebook.celeb && <SocialsText href={'https://www.facebook.com/' + socials.facebook.celeb}>@{socials.facebook.celeb}</SocialsText>}
-                                {socials.facebook.pro && <SocialsText href={'https://www.facebook.com/' + socials.facebook.pro}>@{socials.facebook.pro}</SocialsText>}
+                                {team.socials?.facebook?.celeb && <SocialsText href={'https://www.facebook.com/' + team.socials.facebook.celeb}>@{team.socials.facebook.celeb}</SocialsText>}
+                                {team.socials?.facebook?.pro && <SocialsText href={'https://www.facebook.com/' + team.socials.facebook.pro}>@{team.socials.facebook.pro}</SocialsText>}
                             </SocialsRow>
                         </Grid>
                     </Grid>
@@ -178,7 +196,7 @@ function TeamCard(props) {
                     <ContentContainer>
                         <Grid container justify="center" className={classes.root} spacing={2}>
 
-                            {team.pictures.map((picture, index) => (
+                            {team.pictures?.map((picture, index) => (
                                 <Grid key={index} item>
                                     <InnerContainer>
                                         <Picture src={picture} />
@@ -299,7 +317,7 @@ const HiddenInput = styled.input`
 `;
 
 const Label = styled.label`
-    display: block;
+    /* display: block;
     position: relative;
     width: fit-content;
     border-radius: 25px;
@@ -315,7 +333,7 @@ const Label = styled.label`
     padding: 10px;
     overflow: hidden;
     font-size: 1.3vh;
-    margin: 0 auto;
+    margin: 0 auto; */
 `;
 
 const FileInput = styled.div`
