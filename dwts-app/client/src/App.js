@@ -6,8 +6,9 @@ import Search from './pages/Search';
 import Account from './pages/Account';
 import Landing from './pages/Landing';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import Individuals from './pages/Individuals';
 
-function App() {
+function App(props) {
   //const [token, setToken] = useState();
 
   //if(!token) {
@@ -33,11 +34,17 @@ function App() {
           <Route path="/search/cast">
             <Search  />
           </Route>
+          <Route path="/search/pros">
+            <Search  />
+          </Route>
           <Route path="/search/fans">
             <Search  />
           </Route>
           <Route path="/account">
             <Account />
+          </Route>
+          <Route exact path="/teams/:id">
+            <Individuals />
           </Route>
           <Redirect from="/search" to="/search/dances" />
         </Switch>

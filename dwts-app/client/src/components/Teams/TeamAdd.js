@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
         minWidth: "10px",
         maxHeight: "10px",
         maxWidth: "10px",
+        color: "grey",
     },
     names: {
         width: "20ch"
@@ -64,7 +65,7 @@ function TeamAdd() {
 
     return (
         <div>
-            <Button className={classes.button} disableRipple color="primary" onClick={handleOpen}>
+            <Button className={classes.button} disableRipple onClick={handleOpen}>
                 <AddIcon />
             </Button>
             <Dialog open={open} onClose={handleClose} >

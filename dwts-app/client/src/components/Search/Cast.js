@@ -7,6 +7,7 @@ import { searchTeams } from '../../actions/teams';
 import { Grid, makeStyles, CircularProgress } from '@material-ui/core';
 import TeamAdd from '../Teams/TeamAdd';
 import TeamsPreview from '../Previews/TeamsPreview';
+import NewPreview from '../Previews/NewPreview';
 
 const useStyles = makeStyles({
     root: {
@@ -60,12 +61,13 @@ function Cast(props) {
 
             {(!teams.length || teams[0]?.email != null) ? <CircularProgress className={classes.progress}/> :
             <ContentContainer>
-                <Grid container justify="center" className={classes.root} spacing={2}>
+                <Grid container justify="flex-start" className={classes.root} spacing={2}>
                     {teams.map((team, index) => (
                         <Grid key={index} item>
                         <InnerContainer>
-                            <Link to={{ pathname: `/search/cast/teams/${team._id}` }} style={{ textDecoration: "none" }} >
-                            <TeamsPreview team={team}/>
+                            <Link to={{ pathname: `/teams/${team._id}` }} style={{ textDecoration: "none" }} >
+                            {/* <TeamsPreview team={team}/> */}
+                            <NewPreview team={team} />
                         </Link>
                         </InnerContainer>
                         </Grid>
@@ -73,7 +75,6 @@ function Cast(props) {
                 </Grid>
             </ContentContainer>
             }
-            {show && <TeamCard team={teams[currentTeam]} show={show} closeTeam={() => setShow(false)} />}
             
         </Container>
     )
@@ -103,6 +104,7 @@ const Subtitle = styled.h2`
     float: left;
     color: rgba(0, 0, 0, 0.8);
     margin: 2px;
+    color: white;
 `;
 
 const AdminAdd = styled.h2`
@@ -114,7 +116,7 @@ const Divider = styled.div`
     width: 75%;
     margin: 10px auto;
     height: 2px;
-    background: rgba(0, 0, 0, 0.3);
+    background: white;
 `;
 
 const ContentContainer = styled.div`
@@ -124,6 +126,7 @@ const ContentContainer = styled.div`
 
 const InnerContainer = styled.div`
     width: 100%;
+    float: left;
 `;
 
 export default Cast;

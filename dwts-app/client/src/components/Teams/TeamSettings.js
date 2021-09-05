@@ -31,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
     editor: {
         margin: "10px 20px 10px 0px",
     },
+    icon: {
+        color: "white",
+    },
 }));
 
 function TeamSettings(props) {
@@ -138,7 +141,7 @@ function TeamSettings(props) {
     return (
         <div>
             <Button onClick={handleOpen}>
-                <SettingsIcon />
+                <SettingsIcon className={classes.icon} />
             </Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle>Team Settings</DialogTitle>

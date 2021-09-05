@@ -12,17 +12,19 @@ const useStyles = makeStyles({
         position: 'fixed',
         bottom: 0,
         zIndex: 1000,
-        background: "rgb(198,161,67)",
-background: "linear-gradient(99deg, rgba(198,161,67,1) 0%, rgba(232,216,136,1) 55%, rgba(198,161,67,1) 100%)",
+        background: "rgb(30, 30, 30)",
+        //background: "rgb(198,161,67)",
+        //background: "linear-gradient(99deg, rgba(198,161,67,1) 0%, rgba(232,216,136,1) 55%, rgba(198,161,67,1) 100%)",
         color: "white",
-        //padding: '0 1em'
         borderRadius: "15px 15px 0 0",
     },
     root : {
-        color: "white",
+        color: "grey",
     },
     selected: {
-        color: "white !important",
+        //color: "white !important",
+        color: "rgb(250,240,190) !important",
+        fontFamily: "Urbanist"
     },
 })
 
@@ -36,14 +38,12 @@ function BottomNavBar() {
     }
 
     return (
-        <div>
             <BottomNavigation value={value} onChange={handleChange} className={classes.stickToBottom}>
                 <BottomNavigationAction classes={{ root: classes.root, selected: classes.selected }} disableRipple component={Link} to="/dashboard" label="Home" value="/dashboard" icon={<HomeIcon />} />
                 <BottomNavigationAction classes={{ root: classes.root, selected: classes.selected }} disableRipple component={Link} to="/favorites" label="Favorites" value="/favorites" icon={<FavoriteIcon />} />
                 <BottomNavigationAction classes={{ root: classes.root, selected: classes.selected }} disableRipple component={Link} to="/search/dances" label="Search" value="/search/dances" icon={<SearchIcon />} />
                 <BottomNavigationAction classes={{ root: classes.root, selected: classes.selected }} disableRipple component={Link} to="/account" label="Account" value="/account" icon={<AccountCircleIcon />} />
             </BottomNavigation>
-        </div>
     );
 }
 

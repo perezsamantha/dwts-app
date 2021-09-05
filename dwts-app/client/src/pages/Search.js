@@ -5,11 +5,13 @@ import BottomNavBar from '../components/BottomNavBar/BottomNavBar';
 import Dances from '../components/Search/Dances';
 import Cast from '../components/Search/Cast';
 import Fans from '../components/Search/Fans';
+import Pros from '../components/Search/Pros';
 
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper, Tab, Tabs } from '@material-ui/core';
 import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
 import TeamCard from '../components/Cards/TeamCard';
+import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles({
     root: {
@@ -19,6 +21,9 @@ const useStyles = makeStyles({
         backgroundColor: "transparent",
         width: "100%",
         boxShadow: "none",
+    },
+    search: {
+        backgroundColor: "black",
     },
     tabs: {
         color: "#fff",
@@ -39,6 +44,9 @@ const useStyles = makeStyles({
     indicator: {
         background: "#fff",
         height: 5,
+    },
+    icon: {
+        margin: "8px",
     },
 });
 
@@ -79,7 +87,10 @@ function Search(props) {
         <Page position={position} overflow={overflow}>
             <SearchContainer>
                 <SearchTitle>Search</SearchTitle>
-                <SearchBox type="search" placeholder="Search..." value={searchVal} onChange={searchChange} />
+                <SearchBox >
+                    <SearchIcon className={classes.icon}/>
+                    <SearchInput type="search" placeholder="Celebrity, professional" value={searchVal} onChange={searchChange} />
+                </SearchBox>
                 <Paper className={classes.root}>
                     <Tabs
                         classes={{ indicator: classes.indicator }}
@@ -89,6 +100,7 @@ function Search(props) {
                     >
                         <Tab disableRipple component={Link} to="/search/dances" className={classes.tabs} label="DANCES" value="/search/dances" />
                         <Tab disableRipple component={Link} to="/search/cast" className={classes.tabs} label="CAST" value="/search/cast" />
+                        <Tab disableRipple component={Link} to="/search/pros" className={classes.tabs} label="PROS" value="/search/pros" />
                         <Tab disableRipple component={Link} to="/search/fans" className={classes.tabs} label="FANS" value="/search/fans" />
                     </Tabs>
                 </Paper>
@@ -99,14 +111,14 @@ function Search(props) {
             {value === "/search/fans" && <Fans key={key} search={searchVal} backgroundScroll={scrollHandler}/>}
              */}
             <Switch>
-                <Route exact path="/search/cast/teams/:id">
-                        <TeamCard key={key} />
-                    </Route>
                     <Route path="/search/dances">
                         <Dances key={key} search={searchVal} backgroundScroll={scrollHandler} />
                     </Route>
                     <Route path="/search/cast">
                         <Cast key={key} search={searchVal} backgroundScroll={scrollHandler}/>
+                    </Route>
+                    <Route path="/search/pros">
+                        <Pros key={key} search={searchVal} />
                     </Route>
                     
                     <Route path="/search/fans">
@@ -121,8 +133,13 @@ function Search(props) {
 
 const Page = styled.div`
     width: 100%;
-    position: ${props => props.position};
-    overflow: ${props => props.overflow};
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(18, 18, 18);
+    //background: rgb(73,69,38);
+    //background: linear-gradient(160deg, rgba(73,69,38,1) 0%, rgba(18,18,18,1) 30%, rgba(18,18,18,1) 100%);
 `;
 
 const InnerContainer = styled.div`
@@ -136,7 +153,7 @@ const InnerContainer = styled.div`
 
 
 const SearchContainer = styled.div`
-    width: 100%;
+    /* width: 100%;
     height: 200px;
     background: rgb(198,161,67);
 background: linear-gradient(99deg, rgba(198,161,67,1) 0%, rgba(232,216,136,1) 55%, rgba(198,161,67,1) 100%);
@@ -144,37 +161,67 @@ background: linear-gradient(99deg, rgba(198,161,67,1) 0%, rgba(232,216,136,1) 55
     position: relative;
     box-shadow: 0px 1px 100px grey;
     align-items: center;
-    border-radius: 0 0 15px 15px;
+    border-radius: 0 0 15px 15px; */
+
+    width: 100%;
+    height: 175px;
+    //background: rgb(250,240,190, 0.8);
+    //background: rgba(0, 0, 0, 0.9);
+
+    position: relative;
+    //margin: 15px;
+    //box-shadow: 0px 1px 100px grey;
+    border-radius: 0 0 10px 10px;
 `;
 
 const SearchTitle = styled.h2`
+    width: 75%;
     color: #fff;
-    font-size: 30px;
+    font-size: 25px;
     font-weight: 500;
-    margin-top: 0;
-    padding: 1em 0 0.2em 0;
-    text-align: center;
+    margin: 30px auto 15px auto;
 `;
 
-const SearchBox = styled.input`
-    width: 70%;
-    height: 40px;
-    //border: 2px solid white;
+const SearchBox = styled.div`
+    width: 75%;
+    //height: 40px;
     border: none;
-    border-radius: 20px;
-    padding: 0.5em 0em 0.5em 1.5em;
-    background: rgba(255, 255, 255, 0.4);
-    color: white !important;
+    border-radius: 5px;
+    //padding: 0.5em 0em 0.5em 1.5em;
+    //padding: 0.5em;
+    //background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 1);
+    //color: white !important;
     display: block;
     margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+`;
+
+const SearchInput = styled.input`
+    width: 90%;
+    height: 100%;
+    margin: auto 0;
+    //height: 40px;
+    //border: 2px solid white;
+    border: none;
+    //border-radius: 10px;
+    //padding: 0.5em 0em 0.5em 1.5em;
+    //background: rgba(255, 255, 255, 0.4);
+    //background: rgba(255, 255, 255, .3);
+    //color: white !important;
+    //display: block;
+    //margin: 0 auto;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 18px;
     &:focus {
         outline: none;
     };
-    box-shadow: 0px 1px 150px white;
     ::placeholder {
-        color: white;
+        color: black;
         opacity: 1;
-    };
+        //font-family: 'Urbanist', sans-serif;
+    }
     ::-webkit-search-decoration, ::-webkit-search-cancel-button, ::-webkit-search-results-button, ::-webkit-search-results-decoration {
         display: none;
     };

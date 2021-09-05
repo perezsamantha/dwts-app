@@ -2,6 +2,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+    width: 75%;
     min-height: 30%;
     max-height: 50%;
     z-index: 100;
@@ -14,12 +15,12 @@ export const Container = styled.div`
     overflow-y: auto;
     overflow-x: hidden;
     text-align: center;
-    padding-bottom: 70px;
+    padding: 30px 0 70px 0;
 `;
 
 export const TeamName = styled.h4`
-font-size: 20px;
-font-weight: 500;
-margin: 5px auto;
-color: rgba(0, 0, 0, 0.6);
+    font-size: 25px;
+    font-weight: 500;
+    margin: 10px auto 5px auto;
+    color: white;
 `;
