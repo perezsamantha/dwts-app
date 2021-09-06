@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -25,13 +25,14 @@ function Cast(props) {
     // const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     // const [currentTeam, setCurrentTeam] = useState(null);
     // const [show, setShow] = useState(false);
-    // const [loading, setLoading] = useState(true);
+    //const [loading, setLoading] = useState(true);
 
     const dispatch = useDispatch();
     // const history = useHistory();
     //const input = { search: props.search };
 
     const teams = useSelector(state => state.teams);
+    const arr = []
 
     useEffect(() => {
         const input = { search: props.search };
@@ -40,6 +41,24 @@ function Cast(props) {
         //setLoading(false);
     }, [dispatch, props]);
 
+    // bug: following functions load before teams is correctly updated
+    //      tried combining in useEffect() but no luck :()
+    //      probably need to utilize selectors with loading flags in reducers
+    //      https://medium.com/stashaway-engineering/react-redux-tips-better-way-to-handle-loading-flags-in-your-reducers-afda42a804c6
+
+        const categorizeBySeason = teams.reduce((acc, item) => {
+            if (!acc[item.season]) {
+                acc[item.season] = []
+            }
+
+            acc[item.season].push(item);
+            return acc;
+        }, {})
+
+        for (let [season, team] of Object.entries(categorizeBySeason)) {
+            arr.push(season);
+        }
+    //console.log(categorizeBySeason);
 
     const responsive = {
         desktop: {
@@ -50,27 +69,27 @@ function Cast(props) {
         laptop: {
             breakpoint: { max: 2000, min: 1024 },
             items: 5,
-            partialVisibilityGutter: 0 
+            partialVisibilityGutter: 0
         },
         largeTablet: {
             breakpoint: { max: 1024, min: 870 },
             items: 4,
-            partialVisibilityGutter: 30 
+            partialVisibilityGutter: 30
         },
         anotherTablet: {
             breakpoint: { max: 870, min: 750 },
             items: 4,
-            partialVisibilityGutter: 0 
+            partialVisibilityGutter: 0
         },
         tablet: {
             breakpoint: { max: 750, min: 625 },
             items: 3,
-            partialVisibilityGutter: 20 
+            partialVisibilityGutter: 20
         },
         smallTablet: {
             breakpoint: { max: 625, min: 464 },
             items: 3,
-            partialVisibilityGutter: 0 
+            partialVisibilityGutter: 0
         },
         mobile: {
             breakpoint: { max: 464, min: 410 },
@@ -90,17 +109,16 @@ function Cast(props) {
         tinyMobile: {
             breakpoint: { max: 280, min: 0 },
             items: 1,
-            partialVisibilityGutter: 60 
+            partialVisibilityGutter: 60
         },
     };
 
+
     return (
         <Container>
-            <Spacer />
             <AdminAdd>
                 <TeamAdd />
             </AdminAdd>
-            <Subtitle>Season _</Subtitle>
 
             {(!teams.length || teams[0]?.email != null) ? <CircularProgress className={classes.progress} /> :
                 // <ContentContainer>
@@ -117,20 +135,25 @@ function Cast(props) {
                 //         ))}
                 //     </Grid>
                 // </ContentContainer>
-                <ContentContainer>
-                    <Carousel
-                        responsive={responsive}
-                        partialVisible={true}
-                    >
+                <div>
+                    {arr.map((item) => (
+                        <ContentContainer>
+                            <Subtitle>Season {item}</Subtitle>
+                            <Carousel
+                                responsive={responsive}
+                                partialVisible={true}
+                            >
+                                {teams.filter(team => Number(team.season) === Number(item))
+                                    .map((team) => (
 
-                        {teams.map((team) => (
-                            <Link to={{ pathname: `/teams/${team._id}` }} style={{ textDecoration: "none" }} >
-                                <NewPreview team={team} />
-                            </Link>
-                        ))}
-
-                    </Carousel>
-                </ContentContainer>
+                                        <Link to={{ pathname: `/teams/${team._id}` }} style={{ textDecoration: "none" }} >
+                                            <NewPreview team={team} />
+                                        </Link>
+                                    ))}
+                            </Carousel>
+                        </ContentContainer>
+                    ))}
+                </div>
             }
         </Container>
     )
@@ -142,7 +165,6 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     position: relative;
-    //align-items: center;
     padding-bottom: 70px;
 `;
 
@@ -157,10 +179,9 @@ const Spacer = styled.div`
 // `;
 
 const Subtitle = styled.h2`
-width: 75%;
     //float: left;
     color: rgba(0, 0, 0, 0.8);
-    margin: 10px auto;
+    margin: 0 auto 15px auto;
     color: white;
 `;
 
@@ -180,7 +201,7 @@ const AdminAdd = styled.div`
 
 const ContentContainer = styled.div`
     width: 75%;
-    margin: 10px auto;
+    margin: 15px auto;
 `;
 
 // const InnerContainer = styled.div`
