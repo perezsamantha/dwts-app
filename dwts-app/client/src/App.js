@@ -26,7 +26,7 @@ function App(props) {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/search/dances" element={<Search />} />
-          <Route path="/search/cast" element={<Search />} />
+          <Route path="/search/teams" element={<Search />} />
           <Route path="/search/pros" element={<Search />} />
           <Route path="/search/fans" element={<Search />} />
           <Route path="/account" element={<Account />} />

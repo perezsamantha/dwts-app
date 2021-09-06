@@ -19,7 +19,7 @@ const useStyles = makeStyles({
     }
 })
 
-function Cast(props) {
+function Teams(props) {
     const classes = useStyles();
 
     // const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -211,4 +211,4 @@ const ContentContainer = styled.div`
 //     float: left;
 // `;
 
-export default Cast;
+export default Teams;

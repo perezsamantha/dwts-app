@@ -3,7 +3,7 @@ import styled from 'styled-components';
 //import SearchBar from '../components/Search/SearchBar';
 import BottomNavBar from '../components/BottomNavBar/BottomNavBar';
 import Dances from '../components/Search/Dances';
-import Cast from '../components/Search/Cast';
+import Teams from '../components/Search/Teams';
 import Fans from '../components/Search/Fans';
 import Pros from '../components/Search/Pros';
 
@@ -84,7 +84,7 @@ function Search(props) {
                         centered
                     >
                         <Tab disableRipple component={Link} to="/search/dances" className={classes.tabs} label="DANCES" value="/search/dances" />
-                        <Tab disableRipple component={Link} to="/search/cast" className={classes.tabs} label="CAST" value="/search/cast" />
+                        <Tab disableRipple component={Link} to="/search/teams" className={classes.tabs} label="TEAMS" value="/search/teams" />
                         <Tab disableRipple component={Link} to="/search/pros" className={classes.tabs} label="PROS" value="/search/pros" />
                         <Tab disableRipple component={Link} to="/search/fans" className={classes.tabs} label="FANS" value="/search/fans" />
                     </Tabs>
@@ -92,7 +92,7 @@ function Search(props) {
             </SearchContainer>
             
             {value === "/search/dances" && <Dances key={key} search={searchVal} />}
-            {value === "/search/cast" && <Cast key={key} search={searchVal} />}
+            {value === "/search/teams" && <Teams key={key} search={searchVal} />}
             {value === "/search/pros" && <Pros key={key} search={searchVal} />}
             {value === "/search/fans" && <Fans key={key} search={searchVal} />}
 
