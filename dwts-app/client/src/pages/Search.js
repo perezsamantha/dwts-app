@@ -9,7 +9,7 @@ import Pros from '../components/Search/Pros';
 
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper, Tab, Tabs } from '@material-ui/core';
-import { Link, Route, Switch } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles({
@@ -55,9 +55,6 @@ function Search(props) {
     const [value, setValue] = useState(pathname);
     const [searchVal, setSearchVal] = useState("");
     const [key, setKey] = useState(1);
-    const [open, setOpen] = useState(false);
-    const [position, setPosition] = useState("");
-    const [overflow, setOverflow] = useState("");
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -68,22 +65,11 @@ function Search(props) {
         setKey(key + 1);
     }
 
-    const scrollHandler = (show) => {
-        setOpen(show);
-    }
-
     useEffect(() => {
-        if (open) {
-            setPosition("fixed");
-            setOverflow("hidden");
-        } else {
-            setPosition("");
-            setOverflow("");
-        }
-    }, [open])
+    }, [])
 
     return (
-        <Page position={position} overflow={overflow}>
+        <Page >
             <SearchContainer>
                 <SearchTitle>Search</SearchTitle>
                 <SearchBox >
@@ -105,26 +91,11 @@ function Search(props) {
                 </Paper>
             </SearchContainer>
             
-            {/* {value === "/search/dances" && <Dances key={key} search={searchVal} backgroundScroll={scrollHandler}/>}
-            {value === "/search/cast" && <Cast key={key} search={searchVal} backgroundScroll={scrollHandler}/>}
-            {value === "/search/fans" && <Fans key={key} search={searchVal} backgroundScroll={scrollHandler}/>}
-             */}
-            <Switch>
-                    <Route path="/search/dances">
-                        <Dances key={key} search={searchVal} backgroundScroll={scrollHandler} />
-                    </Route>
-                    <Route path="/search/cast">
-                        <Cast key={key} search={searchVal} backgroundScroll={scrollHandler}/>
-                    </Route>
-                    <Route path="/search/pros">
-                        <Pros key={key} search={searchVal} />
-                    </Route>
-                    
-                    <Route path="/search/fans">
-                        <Fans key={key} search={searchVal} backgroundScroll={scrollHandler} />
-                    </Route>
-                </Switch>
-            
+            {value === "/search/dances" && <Dances key={key} search={searchVal} />}
+            {value === "/search/cast" && <Cast key={key} search={searchVal} />}
+            {value === "/search/pros" && <Pros key={key} search={searchVal} />}
+            {value === "/search/fans" && <Fans key={key} search={searchVal} />}
+
             <BottomNavBar />
         </Page>
     )

@@ -5,7 +5,7 @@ import Favorites from './pages/Favorites';
 import Search from './pages/Search';
 import Account from './pages/Account';
 import Landing from './pages/Landing';
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Individuals from './pages/Individuals';
 //import { AnimatePresence } from 'framer-motion';
 
@@ -13,44 +13,29 @@ function App(props) {
   //const [token, setToken] = useState();
 
   //if(!token) {
-    //return <Login setToken={setToken} />
+  //return <Login setToken={setToken} />
   //}
 
   //const location = useLocation();
 
   return (
-      <BrowserRouter>
-        <Switch >
-          <Route exact path="/">
-            <Landing />
-          </Route>
-          <Route path="/dashboard">
-            <Dashboard />
-          </Route>
-          <Route path="/favorites">
-            <Favorites />
-          </Route>
-          <Route path="/search/dances">
-            <Search  />
-          </Route>
-          <Route path="/search/cast">
-            <Search  />
-          </Route>
-          <Route path="/search/pros">
-            <Search  />
-          </Route>
-          <Route path="/search/fans">
-            <Search  />
-          </Route>
-          <Route path="/account">
-            <Account />
-          </Route>
-          <Route exact path="/teams/:id">
-            <Individuals />
-          </Route>
-          <Redirect from="/search" to="/search/dances" />
-        </Switch>
-      </BrowserRouter>
+    <BrowserRouter>
+      <div>
+        <Routes >
+          <Route exact path="/" element={<Landing />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/search/dances" element={<Search />} />
+          <Route path="/search/cast" element={<Search />} />
+          <Route path="/search/pros" element={<Search />} />
+          <Route path="/search/fans" element={<Search />} />
+          <Route path="/account" element={<Account />} />
+          <Route exact path="/teams/:id/*" element={<Individuals />} />
+          {/* <Redirect from="/search" to="/search/dances" /> */}
+          <Route path="*" element={<div>Not found</div>} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 

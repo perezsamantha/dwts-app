@@ -1,18 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
 import BottomNavBar from '../components/BottomNavBar/BottomNavBar';
-import { Route, Switch } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import TeamCard from '../components/Cards/TeamCard';
 
 function Individuals() {
+    const pathname = window.location.pathname;
+
+    const category = pathname.split("/")[1];
+
     return (
         <Page>
-            <Switch>
-                <Route exact path="/teams/:id">
+            {category === "teams" && <TeamCard />}
+            {/* <Routes>
+                <Route path="/teams/:id">
                     <TeamCard />
                 </Route>
-            </Switch>
+            </Routes> */}
             <BottomNavBar />
+            <Outlet />
         </Page>
     )
 }

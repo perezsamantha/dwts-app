@@ -82,3 +82,13 @@ export const likeTeam = (id) => async (dispatch) => {
         console.log(error);
     }
 }
+
+export const getFavoriteTeams = () => async (dispatch) => {
+    try {
+        const { data } = await api.getFavoriteTeams();
+
+        dispatch({ type: actionType.SEARCH, payload: data });
+    } catch (error) {
+        console.log(error);
+    }
+}

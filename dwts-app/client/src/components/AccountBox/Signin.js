@@ -11,7 +11,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 // import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { signin } from '../../actions/auth';
 
 import { BoxContainer, FormContainer, MutedLink, BoldLink, SubmitButton } from './common';
@@ -27,7 +27,7 @@ function Signin(props) {
     const [formData, setFormData] = useState(initialState);
 
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -36,7 +36,7 @@ function Signin(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        dispatch(signin(formData, history));
+        dispatch(signin(formData, navigate));
     }
 
     const handleShowPass = () => setShowPass((prevShowPass) => !prevShowPass);

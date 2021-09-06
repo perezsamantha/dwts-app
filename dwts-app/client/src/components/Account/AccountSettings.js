@@ -3,8 +3,18 @@ import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, T
 import SettingsIcon from '@material-ui/icons/Settings';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
+    button: {
+        color: "white",
+        margin: "15px auto 5px 5px",
+        float: "right"
+    }
+})
 
 function AccountSettings() {
+    const classes = useStyles();
     const initialState = { username: 'username', name: 'name' };
     const [open, setOpen] = useState(false);
     const [formData, setFormData] = useState(initialState);
@@ -30,7 +40,7 @@ function AccountSettings() {
 
     return (
         <div>
-            <Button color="primary" onClick={handleOpen}>
+            <Button className={classes.button} onClick={handleOpen}>
                 <SettingsIcon />
             </Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">

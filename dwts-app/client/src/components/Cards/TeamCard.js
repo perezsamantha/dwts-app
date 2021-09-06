@@ -7,7 +7,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { CircularProgress } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { findTeamById } from '../../actions/teams';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import AvatarEditor from 'react-avatar-editor';
 import { Slider } from '@material-ui/core';
@@ -67,6 +67,7 @@ const useStyles = makeStyles({
 function TeamCard(props) {
     CheckJWT();
     const classes = useStyles();
+    const navigate = useNavigate();
 
     //const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     //const [team, setTeam] = useState(null);
@@ -137,9 +138,9 @@ function TeamCard(props) {
         (Array.isArray(team)) ? <CircularProgress className={classes.progress} /> :
             <Container>
                 <Header>
-                    <Link className={classes.back} to="/search/cast">
+                    <Button className={classes.back} onClick={() => navigate(-1)}>
                         <ArrowBackIosIcon className={classes.icons} />
-                    </Link>
+                    </Button>
                     <LikesContainer>
                         <Button className={classes.button} disableRipple onClick={() => dispatch(likeTeam(id))}>
                             <Likes />

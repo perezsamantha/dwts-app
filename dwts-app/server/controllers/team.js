@@ -200,3 +200,15 @@ export const likeTeam = async (req, res, next) => {
         res.status(500).json({ message: error });
     }
 }
+
+export const getFavoriteTeams = async (req, res, next) => {
+    const { userId } = req;
+
+    try {
+        const teams = await Team.find({ likes: { $in: userId } });
+
+        res.status(200).json(teams);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}

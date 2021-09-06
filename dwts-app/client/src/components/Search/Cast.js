@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { searchTeams } from '../../actions/teams';
 import { makeStyles, CircularProgress } from '@material-ui/core';
 import TeamAdd from '../Teams/TeamAdd';
@@ -56,7 +56,7 @@ function Cast(props) {
         }, {})
 
 
-        for (let [season, team] of Object.entries(categorizeBySeason)) {
+        for (let [season] of Object.entries(categorizeBySeason)) {
             arr.push(season);
         }
     }
@@ -137,17 +137,17 @@ function Cast(props) {
                 //     </Grid>
                 // </ContentContainer>
                 <div>
-                    {arr.map((item) => (
-                        <ContentContainer>
+                    {arr.map((item, index) => (
+                        <ContentContainer key={index}>
                             <Subtitle>Season {item}</Subtitle>
                             <Carousel
                                 responsive={responsive}
                                 partialVisible={true}
                             >
                                 {teams.filter(team => Number(team.season) === Number(item))
-                                    .map((team) => (
+                                    .map((team, index) => (
 
-                                        <Link to={{ pathname: `/teams/${team._id}` }} style={{ textDecoration: "none" }} >
+                                        <Link key={index} to={{ pathname: `/teams/${team._id}` }} style={{ textDecoration: "none" }} >
                                             <NewPreview team={team} />
                                         </Link>
                                     ))}
@@ -156,6 +156,7 @@ function Cast(props) {
                     ))}
                 </div>
             }
+            <Outlet />
         </Container>
     )
 }
@@ -169,9 +170,9 @@ const Container = styled.div`
     padding-bottom: 70px;
 `;
 
-const Spacer = styled.div`
-    margin: 15px;
-`;
+// const Spacer = styled.div`
+//     margin: 15px;
+// `;
 
 // const SubtitleContainer = styled.div`
 //     clear: both;
