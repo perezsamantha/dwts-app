@@ -80,7 +80,6 @@ function TeamCard(props) {
 
     const [picData, setPicData] = useState(null);
     const [scaleValue, setScaleValue] = useState(10);
-    const [loading, setLoading] = useState(true);
 
     const handleFile = (e) => {
         setPicData(e.target.files[0]);
@@ -118,7 +117,6 @@ function TeamCard(props) {
         dispatch(findTeamById(id));
         setScaleValue(1);
         setPicData(null);
-        setLoading(false);
     }, [dispatch, id])
 
     const Likes = () => {
@@ -136,7 +134,7 @@ function TeamCard(props) {
 
     return (
 
-        (loading) ? <CircularProgress className={classes.progress} /> :
+        (Array.isArray(team)) ? <CircularProgress className={classes.progress} /> :
             <Container>
                 <Header>
                     <Link className={classes.back} to="/search/cast">

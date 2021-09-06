@@ -45,7 +45,7 @@ function Cast(props) {
     //      tried combining in useEffect() but no luck :()
     //      probably need to utilize selectors with loading flags in reducers
     //      https://medium.com/stashaway-engineering/react-redux-tips-better-way-to-handle-loading-flags-in-your-reducers-afda42a804c6
-
+    if (Array.isArray(teams)) {
         const categorizeBySeason = teams.reduce((acc, item) => {
             if (!acc[item.season]) {
                 acc[item.season] = []
@@ -55,10 +55,11 @@ function Cast(props) {
             return acc;
         }, {})
 
+
         for (let [season, team] of Object.entries(categorizeBySeason)) {
             arr.push(season);
         }
-    //console.log(categorizeBySeason);
+    }
 
     const responsive = {
         desktop: {
