@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { Avatar, makeStyles } from '@material-ui/core';
-import TeamCard from '../Cards/TeamCard';
 
 const useStyles = makeStyles({
     avi: {
@@ -14,9 +13,6 @@ const useStyles = makeStyles({
 
 function TeamsPreview(props) {
     const classes = useStyles();
-    // eventually need to bring in src file for avi
-
-    const [show, setShow] = useState(false);
 
     const celebFirst = props.team.celeb.split(" ");
     const proFirst = props.team.pro.split(" ");

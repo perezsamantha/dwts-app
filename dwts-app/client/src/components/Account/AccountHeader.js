@@ -24,6 +24,14 @@ function AccountHeader() {
     const dispatch = useDispatch();
     const history = useHistory();
 
+    const logout = () => {
+            dispatch({ type: actionType.LOGOUT });
+
+            history.push("/");
+
+            setUser(null);
+        }
+
     useEffect(() => {
         const token = user.token;
 
@@ -32,23 +40,18 @@ function AccountHeader() {
 
             // need to test functionality
             if (decodedToken.exp * 1000 < new Date().getTime()) {
-                logout();
+                dispatch({ type: actionType.LOGOUT });
+
+                history.push("/");
+
+                setUser(null);
             }
         }
 
         if(user != null) {
             setIsLoading(false);
         }
-    }, []);
-
-
-    const logout = () => {
-        dispatch({ type: actionType.LOGOUT });
-
-        history.push("/");
-
-        setUser(null);
-    }
+    }, [user, dispatch, history]);
 
     return (
         (!isLoading ? <Container>

@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-import { Avatar, makeStyles } from '@material-ui/core';
+//import { makeStyles } from '@material-ui/core';
 
-const useStyles = makeStyles({
-    avi: {
-        width: "40px",
-        height: "40px",
-        margin: "8px auto",
-    }
-})
+// const useStyles = makeStyles({
+//     avi: {
+//         width: "40px",
+//         height: "40px",
+//         margin: "8px auto",
+//     }
+// })
 
 function NewPreview(props) {
-    const classes = useStyles();
+    //const classes = useStyles();
 
     const celebFirst = props.team.celeb.split(" ");
     const proFirst = props.team.pro.split(" ");

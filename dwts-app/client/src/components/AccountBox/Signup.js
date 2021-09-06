@@ -5,10 +5,10 @@ import TextField from '@material-ui/core/TextField';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
-import GoogleLogin from 'react-google-login';
+// import GoogleLogin from 'react-google-login';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -41,23 +41,23 @@ function Signup() {
 
     const handleShowPass = () => setShowPass((prevShowPass) => !prevShowPass);
 
-    const googleSuccess = async (res) => {
-        const result = res?.profileObj;
-        const token = res?.tokenId;
+    // const googleSuccess = async (res) => {
+    //     const result = res?.profileObj;
+    //     const token = res?.tokenId;
 
-        try {
-            dispatch({ type: 'AUTH', data: { result, token } });
+    //     try {
+    //         dispatch({ type: 'AUTH', data: { result, token } });
 
-            // history.push("/")
-            // around 1:10:00 in vid, has logout right after
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    //         // history.push("/")
+    //         // around 1:10:00 in vid, has logout right after
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
 
-    const googleFailure = () => {
-        console.log('Google Sign In was unsuccessful');
-    }
+    // const googleFailure = () => {
+    //     console.log('Google Sign In was unsuccessful');
+    // }
 
     const { switchToSignin } = useContext(AccountContext);
 

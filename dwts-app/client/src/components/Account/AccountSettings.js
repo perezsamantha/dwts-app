@@ -18,9 +18,9 @@ function AccountSettings() {
         setOpen(true);
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-    }
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    // }
 
     const handleClose = () => {
         setOpen(false);
@@ -63,8 +63,7 @@ function AccountSettings() {
                         margin="dense"
                         id="pass" 
                         name="password" 
-                        label="password" 
-                        type="password"
+                        label="password"
                         type={showPass ? "text" : "password"} 
                         onChange={handleChange} 
                         handleShowPass={handleShowPass}

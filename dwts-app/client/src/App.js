@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
 import Dashboard from './pages/Dashboard';
 import Favorites from './pages/Favorites';
 import Search from './pages/Search';
 import Account from './pages/Account';
 import Landing from './pages/Landing';
-import { BrowserRouter, Redirect, Route, Switch, useLocation } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import Individuals from './pages/Individuals';
-import { AnimatePresence } from 'framer-motion';
+//import { AnimatePresence } from 'framer-motion';
 
 function App(props) {
   //const [token, setToken] = useState();

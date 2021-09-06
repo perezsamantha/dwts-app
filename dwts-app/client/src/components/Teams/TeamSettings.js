@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, Button, InputAdornment, IconButton, makeStyles } from '@material-ui/core';
+import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, makeStyles } from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
 
 import { updateTeam, deleteTeam, updatePic } from '../../actions/teams';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AvatarEditor from 'react-avatar-editor';
-import Avatar from 'react-avatar-edit';
 import { Slider } from '@material-ui/core';
 import styled from 'styled-components';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
@@ -44,23 +43,23 @@ function TeamSettings(props) {
     const [formData, setFormData] = useState(team);
     const [fileData, setFileData] = useState(null);
     const [scaleValue, setScaleValue] = useState(10);
-    const [fileName, setFileName] = useState("Select new picture");
+    //const [fileName, setFileName] = useState("Select new picture");
     const id = formData._id;
 
     const dispatch = useDispatch();
 
     const handleChange = (e) => {
-        if (e.target.name == "instagram.celeb") {
+        if (e.target.name === "instagram.celeb") {
             setFormData({ ...formData, socials: { ...formData.socials, instagram: { ...formData.socials.instagram, celeb: e.target.value } } })
-        } else if (e.target.name == "instagram.pro") {
+        } else if (e.target.name === "instagram.pro") {
             setFormData({ ...formData, socials: { ...formData.socials, instagram: { ...formData.socials.instagram, pro: e.target.value } } })
-        } else if (e.target.name == "twitter.celeb") {
+        } else if (e.target.name === "twitter.celeb") {
             setFormData({ ...formData, socials: { ...formData.socials, twitter: { ...formData.socials.twitter, celeb: e.target.value } } })
-        } else if (e.target.name == "twitter.pro") {
+        } else if (e.target.name === "twitter.pro") {
             setFormData({ ...formData, socials: { ...formData.socials, twitter: { ...formData.socials.twitter, pro: e.target.value } } })
-        } else if (e.target.name == "facebook.celeb") {
+        } else if (e.target.name === "facebook.celeb") {
             setFormData({ ...formData, socials: { ...formData.socials, facebook: { ...formData.socials.facebook, celeb: e.target.value } } })
-        } else if (e.target.name == "facebook.pro") {
+        } else if (e.target.name === "facebook.pro") {
             setFormData({ ...formData, socials: { ...formData.socials, facebook: { ...formData.socials.facebook, pro: e.target.value } } })
         } else {
 
@@ -77,7 +76,7 @@ function TeamSettings(props) {
 
     const handleFile = (e) => {
         setFileData(e.target.files[0]);
-        setFileName(e.target.files[0].name);
+        //setFileName(e.target.files[0].name);
     }
 
     const handleSubmit = (e) => {
@@ -112,7 +111,7 @@ function TeamSettings(props) {
         setScaleValue(1);
         setOpen(false);
         setFileData(null);
-        setFileName("Select new picture");
+        //setFileName("Select new picture");
     };
 
     const handleDelete = () => {
@@ -129,7 +128,7 @@ function TeamSettings(props) {
     useEffect(() => {
         setScaleValue(1);
         setFileData(null);
-        setFileName("Select new picture");
+        //setFileName("Select new picture");
     }, []);
 
     const [editor, setEditor] = useState(null);

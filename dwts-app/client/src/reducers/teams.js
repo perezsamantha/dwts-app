@@ -1,6 +1,6 @@
 import * as actionType from '../constants/actionTypes';
 
-export default (teams = [], action) => {
+const teamsReducer = (teams = [], action) => {
     switch(action.type) {
         case actionType.ADD:
             return [...teams, action.payload];
@@ -17,4 +17,6 @@ export default (teams = [], action) => {
         default:
             return teams;
     }
-}
+};
+
+export default teamsReducer;

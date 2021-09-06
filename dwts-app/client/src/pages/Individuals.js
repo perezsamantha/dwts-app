@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import BottomNavBar from '../components/BottomNavBar/BottomNavBar';
-import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import TeamCard from '../components/Cards/TeamCard';
 
 function Individuals() {

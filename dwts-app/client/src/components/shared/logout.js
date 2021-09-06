@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import * as actionType from '../../constants/actionTypes';
 import decode from 'jwt-decode';

@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Avatar, Button, Grid, makeStyles } from '@material-ui/core';
 import TeamSettings from '../Teams/TeamSettings';
-import CloseIcon from '@material-ui/icons/Close';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
-import { Grow, CircularProgress } from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { findTeamById } from '../../actions/teams';
-import { useHistory, useParams, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 import AvatarEditor from 'react-avatar-editor';
 import { Slider } from '@material-ui/core';
@@ -23,7 +22,6 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 
 import { Container, TeamName } from '../shared/shared.js'
 import CheckJWT from '../shared/logout';
-import axios from 'axios';
 
 const useStyles = makeStyles({
     avi: {
@@ -70,11 +68,12 @@ function TeamCard(props) {
     CheckJWT();
     const classes = useStyles();
 
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+    //const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     //const [team, setTeam] = useState(null);
+    const user = JSON.parse(localStorage.getItem('profile'));
 
     const dispatch = useDispatch();
-    const history = useHistory();
+    //const history = useHistory();
 
     const team = useSelector(state => state.teams);
     const { id } = useParams();
@@ -120,7 +119,7 @@ function TeamCard(props) {
         setScaleValue(1);
         setPicData(null);
         setLoading(false);
-    }, [id])
+    }, [dispatch, id])
 
     const Likes = () => {
         if (team.likes?.length > 0) {
@@ -158,7 +157,7 @@ function TeamCard(props) {
                 {team.teamName && <TeamName>{team.teamName}</TeamName>}
                 <Season>Season {team.season}</Season>
                 {team.placement && <Placement>{team.placement} Place</Placement>}
-                {user.result.role == "admin" && <TeamSettings id={team._id} />}
+                {user.result.role === "admin" && <TeamSettings id={team._id} />}
                 <Grid container justify="center" className={classes.statsGrid} spacing={2}>
                     <Grid item>
                         <BasicText>DANCES</BasicText>

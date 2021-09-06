@@ -9,8 +9,7 @@ import Pros from '../components/Search/Pros';
 
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper, Tab, Tabs } from '@material-ui/core';
-import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
-import TeamCard from '../components/Cards/TeamCard';
+import { Link, Route, Switch } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles({
@@ -142,14 +141,14 @@ const Page = styled.div`
     //background: linear-gradient(160deg, rgba(73,69,38,1) 0%, rgba(18,18,18,1) 30%, rgba(18,18,18,1) 100%);
 `;
 
-const InnerContainer = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    align-items: center;
-    padding-bottom: 70px;
-`;
+// const InnerContainer = styled.div`
+//     width: 100%;
+//     display: flex;
+//     flex-direction: column;
+//     position: relative;
+//     align-items: center;
+//     padding-bottom: 70px;
+// `;
 
 
 const SearchContainer = styled.div`

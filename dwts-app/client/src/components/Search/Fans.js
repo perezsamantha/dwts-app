@@ -21,17 +21,17 @@ const useStyles = makeStyles({
 function Fans(props) {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const input = { search: props.search };
 
-    if (props.search == "" || props.search == null) {
+    if (props.search === "" || props.search == null) {
         // empty search, load all users
     }
 
     const fans = useSelector((state) => state.fans);
 
     useEffect(() => {
+        const input = { search: props.search };
         dispatch(searchfans(input));
-    }, []);
+    }, [dispatch, props]);
 
     const [currentUser, setCurrentUser] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
@@ -48,7 +48,7 @@ function Fans(props) {
             {fans.map((fan) => ( 
                 <InnerContainer>
                     <FansPreview username={fan.username} openProfile={() => openProfile(fan._id)}/>
-                    {isOpen && (fan._id == currentUser) && <ProfileCard username={fan.username}/> }
+                    {isOpen && (fan._id === currentUser) && <ProfileCard username={fan.username}/> }
                 </InnerContainer>
             ))}
         </Container>   

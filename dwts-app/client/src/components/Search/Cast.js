@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import TeamCard from '../Cards/TeamCard';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { searchTeams } from '../../actions/teams';
-import { Grid, makeStyles, CircularProgress } from '@material-ui/core';
+import { makeStyles, CircularProgress } from '@material-ui/core';
 import TeamAdd from '../Teams/TeamAdd';
-import TeamsPreview from '../Previews/TeamsPreview';
 import NewPreview from '../Previews/NewPreview';
 
 import Carousel from 'react-multi-carousel';
@@ -24,22 +22,23 @@ const useStyles = makeStyles({
 function Cast(props) {
     const classes = useStyles();
 
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
-    const [currentTeam, setCurrentTeam] = useState(null);
-    const [show, setShow] = useState(false);
-    const [loading, setLoading] = useState(true);
+    // const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+    // const [currentTeam, setCurrentTeam] = useState(null);
+    // const [show, setShow] = useState(false);
+    // const [loading, setLoading] = useState(true);
 
     const dispatch = useDispatch();
-    const history = useHistory();
-    const input = { search: props.search };
+    // const history = useHistory();
+    //const input = { search: props.search };
 
     const teams = useSelector(state => state.teams);
 
     useEffect(() => {
+        const input = { search: props.search };
         dispatch(searchTeams(input));
         //props.backgroundScroll(show);
-        setLoading(false);
-    }, []);
+        //setLoading(false);
+    }, [dispatch, props]);
 
 
     const responsive = {
@@ -121,7 +120,7 @@ function Cast(props) {
                 <ContentContainer>
                     <Carousel
                         responsive={responsive}
-                        partialVisbile={true}
+                        partialVisible={true}
                     >
 
                         {teams.map((team) => (
@@ -151,11 +150,11 @@ const Spacer = styled.div`
     margin: 15px;
 `;
 
-const SubtitleContainer = styled.div`
-    clear: both;
-    margin: 0 auto;
-    width: 75%;
-`;
+// const SubtitleContainer = styled.div`
+//     clear: both;
+//     margin: 0 auto;
+//     width: 75%;
+// `;
 
 const Subtitle = styled.h2`
 width: 75%;
@@ -172,21 +171,21 @@ const AdminAdd = styled.div`
     margin-left: auto;
 `;
 
-const Divider = styled.div`
-    width: 75%;
-    margin: 10px auto;
-    height: 2px;
-    background: white;
-`;
+// const Divider = styled.div`
+//     width: 75%;
+//     margin: 10px auto;
+//     height: 2px;
+//     background: white;
+// `;
 
 const ContentContainer = styled.div`
     width: 75%;
     margin: 10px auto;
 `;
 
-const InnerContainer = styled.div`
-    width: 100%;
-    float: left;
-`;
+// const InnerContainer = styled.div`
+//     width: 100%;
+//     float: left;
+// `;
 
 export default Cast;
