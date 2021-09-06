@@ -5,8 +5,9 @@ import Favorites from './pages/Favorites';
 import Search from './pages/Search';
 import Account from './pages/Account';
 import Landing from './pages/Landing';
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch, useLocation } from 'react-router-dom';
 import Individuals from './pages/Individuals';
+import { AnimatePresence } from 'framer-motion';
 
 function App(props) {
   //const [token, setToken] = useState();
@@ -15,10 +16,11 @@ function App(props) {
     //return <Login setToken={setToken} />
   //}
 
+  //const location = useLocation();
+
   return (
-    <div >
       <BrowserRouter>
-        <Switch>
+        <Switch >
           <Route exact path="/">
             <Landing />
           </Route>
@@ -49,7 +51,6 @@ function App(props) {
           <Redirect from="/search" to="/search/dances" />
         </Switch>
       </BrowserRouter>
-    </div>
   );
 }
 

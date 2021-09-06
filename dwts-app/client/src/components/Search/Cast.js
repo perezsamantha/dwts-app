@@ -9,6 +9,9 @@ import TeamAdd from '../Teams/TeamAdd';
 import TeamsPreview from '../Previews/TeamsPreview';
 import NewPreview from '../Previews/NewPreview';
 
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
+
 const useStyles = makeStyles({
     root: {
         flexGrow: 1,
@@ -23,7 +26,6 @@ function Cast(props) {
 
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const [currentTeam, setCurrentTeam] = useState(null);
-    //const [isOpen, setIsOpen] = useState(false);
     const [show, setShow] = useState(false);
     const [loading, setLoading] = useState(true);
 
@@ -37,45 +39,100 @@ function Cast(props) {
         dispatch(searchTeams(input));
         //props.backgroundScroll(show);
         setLoading(false);
-    }, [show]);
+    }, []);
 
-    const openTeam = (team) => {
-        //console.log(team);
-        //history.push(`/cast/teams/${team._id}`);
-        //setCurrentTeam(team);
-        //setShow(true);
-    }
+
+    const responsive = {
+        desktop: {
+            breakpoint: { max: 3000, min: 2000 },
+            items: 5,
+            partialVisibilityGutter: 30
+        },
+        laptop: {
+            breakpoint: { max: 2000, min: 1024 },
+            items: 5,
+            partialVisibilityGutter: 0 
+        },
+        largeTablet: {
+            breakpoint: { max: 1024, min: 870 },
+            items: 4,
+            partialVisibilityGutter: 30 
+        },
+        anotherTablet: {
+            breakpoint: { max: 870, min: 750 },
+            items: 4,
+            partialVisibilityGutter: 0 
+        },
+        tablet: {
+            breakpoint: { max: 750, min: 625 },
+            items: 3,
+            partialVisibilityGutter: 20 
+        },
+        smallTablet: {
+            breakpoint: { max: 625, min: 464 },
+            items: 3,
+            partialVisibilityGutter: 0 
+        },
+        mobile: {
+            breakpoint: { max: 464, min: 410 },
+            items: 2,
+            partialVisibilityGutter: 20
+        },
+        smallMobile: {
+            breakpoint: { max: 410, min: 350 },
+            items: 2,
+            partialVisibilityGutter: 0
+        },
+        extraSmallMobile: {
+            breakpoint: { max: 350, min: 300 },
+            items: 1,
+            partialVisibilityGutter: 100
+        },
+        tinyMobile: {
+            breakpoint: { max: 280, min: 0 },
+            items: 1,
+            partialVisibilityGutter: 60 
+        },
+    };
 
     return (
         <Container>
             <Spacer />
-            <SubtitleContainer>
-                <Subtitle>Teams</Subtitle>
-                {user.result.isAdmin && 
-                    <AdminAdd>
-                        <TeamAdd />
-                    </AdminAdd>
-                }
-            </SubtitleContainer>
-            <Divider />
+            <AdminAdd>
+                <TeamAdd />
+            </AdminAdd>
+            <Subtitle>Season _</Subtitle>
 
-            {(!teams.length || teams[0]?.email != null) ? <CircularProgress className={classes.progress}/> :
-            <ContentContainer>
-                <Grid container justify="flex-start" className={classes.root} spacing={2}>
-                    {teams.map((team, index) => (
-                        <Grid key={index} item>
-                        <InnerContainer>
+            {(!teams.length || teams[0]?.email != null) ? <CircularProgress className={classes.progress} /> :
+                // <ContentContainer>
+                //     <Grid container justify="flex-start" className={classes.root} spacing={2}>
+                //         {teams.map((team, index) => (
+                //             <Grid key={index} item>
+                //             <InnerContainer>
+                //                 <Link to={{ pathname: `/teams/${team._id}` }} style={{ textDecoration: "none" }} >
+                //                 {/* <TeamsPreview team={team}/> */}
+                //                 <NewPreview team={team} />
+                //             </Link>
+                //             </InnerContainer>
+                //             </Grid>
+                //         ))}
+                //     </Grid>
+                // </ContentContainer>
+                <ContentContainer>
+                    <Carousel
+                        responsive={responsive}
+                        partialVisbile={true}
+                    >
+
+                        {teams.map((team) => (
                             <Link to={{ pathname: `/teams/${team._id}` }} style={{ textDecoration: "none" }} >
-                            {/* <TeamsPreview team={team}/> */}
-                            <NewPreview team={team} />
-                        </Link>
-                        </InnerContainer>
-                        </Grid>
-                    ))}
-                </Grid>
-            </ContentContainer>
+                                <NewPreview team={team} />
+                            </Link>
+                        ))}
+
+                    </Carousel>
+                </ContentContainer>
             }
-            
         </Container>
     )
 }
@@ -101,15 +158,18 @@ const SubtitleContainer = styled.div`
 `;
 
 const Subtitle = styled.h2`
-    float: left;
+width: 75%;
+    //float: left;
     color: rgba(0, 0, 0, 0.8);
-    margin: 2px;
+    margin: 10px auto;
     color: white;
 `;
 
-const AdminAdd = styled.h2`
-    float: right;
+const AdminAdd = styled.div`
     margin: 2px;
+    width: 20%;
+    margin-right: 0;
+    margin-left: auto;
 `;
 
 const Divider = styled.div`
