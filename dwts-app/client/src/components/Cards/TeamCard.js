@@ -76,7 +76,7 @@ function TeamCard(props) {
     const dispatch = useDispatch();
     //const history = useHistory();
 
-    const team = useSelector(state => state.teams);
+    const team = useSelector(state => state.teams.teams);
     const { id } = useParams();
 
     const [picData, setPicData] = useState(null);

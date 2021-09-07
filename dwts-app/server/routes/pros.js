@@ -1,26 +1,20 @@
-const router = require('express').Router();
-let Pro = require('../models/pro.model');
+import express from 'express';
+import { addPro, fetchAll, findProById, searchPros } from '../controllers/pro.js';
 
-router.route('/').get((req, res) => {
-    Pro.find()
-        .then(pros => res.json(pros))
-        .catch(err => res.status(400).json('Error: ' + err));
-});
+import auth from '../middleware/auth.js';
 
-router.route('/add').post((req, res) => {
-    const name = req.body.name;
-    const seasonsAsPro = Number(req.body.seasonsAsPro);
-    const seasonsOnTroupe = Number(req.body.seasonsOnTroupe);
+const router = express.Router();
 
-    const newPro = new Pro({
-        name,
-        seasonsAsPro,
-        seasonsOnTroupe,
-    });
+router.post('/add', addPro);
+//router.patch('/update/:id', updateTeam);
+//router.patch('/updatePic/:id', upload, updatePic);
+router.get('/', fetchAll);
+//router.get('/favorites', auth, getFavoriteTeams);
+router.post('/search', searchPros);
+//router.delete('/delete/:id', deleteTeam);
+router.get('/:id', findProById);
+//router.patch('/addPic/:id', upload2, addPic);
+//router.patch('/:id/likeTeam', auth, likeTeam);
 
-    newPro.save()
-        .then(() => res.json('Pro added!'))
-        .catch(err => res.status(400).json('Error: ' + err));
-});
 
-module.exports = router;
+export default router;

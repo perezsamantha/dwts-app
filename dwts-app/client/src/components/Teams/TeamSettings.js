@@ -38,12 +38,10 @@ const useStyles = makeStyles((theme) => ({
 function TeamSettings(props) {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
-    //const [formData, setFormData] = useState(props.team);
-    const team = useSelector(state => state.teams);
+    const team = useSelector(state => state.teams.teams);
     const [formData, setFormData] = useState(team);
     const [fileData, setFileData] = useState(null);
     const [scaleValue, setScaleValue] = useState(10);
-    //const [fileName, setFileName] = useState("Select new picture");
     const id = formData._id;
 
     const dispatch = useDispatch();
@@ -76,7 +74,6 @@ function TeamSettings(props) {
 
     const handleFile = (e) => {
         setFileData(e.target.files[0]);
-        //setFileName(e.target.files[0].name);
     }
 
     const handleSubmit = (e) => {
@@ -91,17 +88,7 @@ function TeamSettings(props) {
                 data.append("promoPic", blob, `${Date.now()}-${fileData.name}`);
                 dispatch(updatePic(id, data));
             })
-
-
         }
-
-        // if (fileData != null) {
-        //     console.log(fileData);
-        //     const data = new FormData();
-        //     data.append("promoPic", fileData);
-
-        //     dispatch(updatePic(id, data));
-        // }
 
         dispatch(updateTeam(id, formData));
         handleClose();
@@ -111,7 +98,6 @@ function TeamSettings(props) {
         setScaleValue(1);
         setOpen(false);
         setFileData(null);
-        //setFileName("Select new picture");
     };
 
     const handleDelete = () => {
@@ -128,7 +114,6 @@ function TeamSettings(props) {
     useEffect(() => {
         setScaleValue(1);
         setFileData(null);
-        //setFileName("Select new picture");
     }, []);
 
     const [editor, setEditor] = useState(null);

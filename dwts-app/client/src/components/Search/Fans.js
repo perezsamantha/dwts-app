@@ -26,7 +26,8 @@ function Fans(props) {
         // empty search, load all users
     }
 
-    const fans = useSelector((state) => state.fans);
+    const fans = useSelector(state => state.fans.fans);
+    const loading = useSelector(state => state.fans.loading);
 
     useEffect(() => {
         const input = { search: props.search };
@@ -42,7 +43,7 @@ function Fans(props) {
     }
 
     return (
-        (!fans.length || fans[0]?.celeb != null) ? <CircularProgress className={classes.progress}/> :
+        (loading) ? <CircularProgress className={classes.progress}/> :
         <Container>
             <Spacer />
             {fans.map((fan) => ( 

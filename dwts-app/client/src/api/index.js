@@ -23,4 +23,14 @@ export const searchTeams = (input) => API.post('/teams/search', input);
 export const deleteTeam = (id) => API.delete(`/teams/delete/${id}`);
 export const addPic = (id, image) => API.patch(`/teams/addPic/${id}`, image)
 export const likeTeam = (id) => API.patch(`/teams/${id}/likeTeam`);
-export const getFavoriteTeams = () => API.get('/teams/favorites');
+export const getFavoriteTeams = () => API.get('/teams/favorites'); // eventually make a combined favorites function
+
+export const addPro = (pro) => API.post('/pros/add', pro);
+//export const updateTeam = (id, team) => API.patch(`/teams/update/${id}`, team);
+//export const updatePic = (id, image) => API.patch(`/teams/updatePic/${id}`, image)
+export const findProById = (id) => API.get(`/pros/${id}`);
+export const searchPros = (input) => API.post('/pros/search', input);
+//export const deleteTeam = (id) => API.delete(`/teams/delete/${id}`);
+//export const addPic = (id, image) => API.patch(`/teams/addPic/${id}`, image)
+//export const likeTeam = (id) => API.patch(`/teams/${id}/likeTeam`);
+//export const getFavoriteTeams = () => API.get('/teams/favorites');

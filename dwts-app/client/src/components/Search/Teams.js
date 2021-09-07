@@ -31,7 +31,9 @@ function Teams(props) {
     // const history = useHistory();
     //const input = { search: props.search };
 
-    const teams = useSelector(state => state.teams);
+    const teams = useSelector(state => state.teams.teams);
+    const loading = useSelector(state => state.teams.loading);
+    
     const arr = []
 
     useEffect(() => {
@@ -121,7 +123,7 @@ function Teams(props) {
                 <TeamAdd />
             </AdminAdd>
 
-            {(!teams.length || teams[0]?.email != null) ? <CircularProgress className={classes.progress} /> :
+            {(loading) ? <CircularProgress className={classes.progress} /> :
                 // <ContentContainer>
                 //     <Grid container justify="flex-start" className={classes.root} spacing={2}>
                 //         {teams.map((team, index) => (

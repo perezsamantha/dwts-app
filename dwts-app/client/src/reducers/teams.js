@@ -1,21 +1,21 @@
 import * as actionType from '../constants/actionTypes';
 
-const teamsReducer = (teams = [], action) => {
+const teamsReducer = (state = { teams: null, loading: true }, action) => {
     switch(action.type) {
-        case actionType.ADD:
-            return [...teams, action.payload];
-        case actionType.UPDATE:
+        case actionType.TEAMADD:
+            return [...state, action.payload];
+        case actionType.TEAMUPDATE:
             //return teams.map((team) => (team._id === action.payload._id ? action.payload : team));
-            return action.payload;
-        case actionType.SEARCH:
-            return action.payload;
-        case actionType.DELETE:
-            return teams.filter((team) => team._id !== action.payload);
-        case actionType.LIKE:
+            return {...state, teams: action.payload, loading: false};
+        case actionType.TEAMSEARCH:
+            return {...state, teams: action.payload, loading: false};
+        case actionType.TEAMDELETE:
+            return state.filter((team) => team._id !== action.payload);
+        case actionType.TEAMLIKE:
             //return teams.map((team) => (team._id === action.payload._id ? action.payload : team))
-            return action.payload;
+            return {...state, teams: action.payload, loading: false};
         default:
-            return teams;
+            return state;
     }
 };
 

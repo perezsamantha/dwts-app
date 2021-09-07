@@ -35,7 +35,7 @@ function AccountHeader() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const favorites = useSelector(state => state.teams);
+    const favorites = useSelector(state => state.teams.teams);
 
     const logout = () => {
         dispatch({ type: actionType.LOGOUT });
