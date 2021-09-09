@@ -28,7 +28,7 @@ const useStyles = makeStyles({
         color: "#fff",
         textColor: "#fff",
         '&:hover': {
-            color: "#fff",
+            color: "rgb(255, 255, 255, 0.9)",
         },
         '&:selected': {
             color: "#fff",
@@ -37,12 +37,13 @@ const useStyles = makeStyles({
             color: "#fff",
         },
         '&:active': {
-            color: "#fff",
+            color: "rgb(255, 255, 255, 0.8)",
         },
     },
     indicator: {
-        background: "#fff",
-        height: 5,
+        background: "rgb(243,229,171)",
+        height: 3,
+        borderRadius: "10px"
     },
     icon: {
         margin: "8px",

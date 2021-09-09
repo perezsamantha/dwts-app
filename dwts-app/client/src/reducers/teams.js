@@ -10,7 +10,7 @@ const teamsReducer = (state = { teams: null, loading: true }, action) => {
         case actionType.TEAMSEARCH:
             return {...state, teams: action.payload, loading: false};
         case actionType.TEAMDELETE:
-            return state.filter((team) => team._id !== action.payload);
+            return {...state, teams: state.teams.filter((team) => team._id !== action.payload)};
         case actionType.TEAMLIKE:
             //return teams.map((team) => (team._id === action.payload._id ? action.payload : team))
             return {...state, teams: action.payload, loading: false};

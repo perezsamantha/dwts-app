@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import BottomNavBar from '../components/BottomNavBar/BottomNavBar';
-import { Outlet } from 'react-router-dom';
 import TeamCard from '../components/Cards/TeamCard';
+import ProCard from '../components/Cards/ProCard';
 
 function Individuals() {
     const pathname = window.location.pathname;
@@ -12,13 +12,8 @@ function Individuals() {
     return (
         <Page>
             {category === "teams" && <TeamCard />}
-            {/* <Routes>
-                <Route path="/teams/:id">
-                    <TeamCard />
-                </Route>
-            </Routes> */}
+            {category === "pros" && <ProCard />}
             <BottomNavBar />
-            <Outlet />
         </Page>
     )
 }

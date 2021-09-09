@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { searchPros } from '../../actions/pros';
-import { makeStyles, CircularProgress } from '@material-ui/core';
+import { makeStyles, CircularProgress, Grid } from '@material-ui/core';
 import ProAdd from '../Pros/ProAdd';
 import ProsPreview from '../Previews/ProsPreview';
 
@@ -34,14 +34,21 @@ function Pros(props) {
                 <ProAdd />
             </AdminAdd>
 
-            {loading ? <CircularProgress className={classes.progress} /> :
+            {loading || !Array.isArray(pros) ? <CircularProgress className={classes.progress} /> :
 
-                <div>
-                    {pros && pros.map((pro, index) => (
-
-                        <ProsPreview pro={pro} />
-                    ))}
-                </div>
+                <ContentContainer>
+                    <Grid container justify="flex-start" className={classes.root} spacing={2}>
+                        {pros.map((pro, index) => (
+                            <Grid key={index} item>
+                                <InnerContainer>
+                                    <Link to={{ pathname: `/pros/${pro._id}` }} style={{ textDecoration: "none" }} >
+                                        <ProsPreview pro={pro} />
+                                    </Link>
+                                </InnerContainer>
+                            </Grid>
+                        ))}
+                    </Grid>
+                </ContentContainer>
             }
         </Container>
     )
@@ -90,6 +97,11 @@ const AdminAdd = styled.div`
 const ContentContainer = styled.div`
     width: 75%;
     margin: 15px auto;
+`;
+
+const InnerContainer = styled.div`
+    width: 100%;
+    float: left;
 `;
 
 export default Pros;

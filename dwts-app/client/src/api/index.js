@@ -29,6 +29,7 @@ export const addPro = (pro) => API.post('/pros/add', pro);
 export const updatePro = (id, pro) => API.patch(`/pros/update/${id}`, pro);
 export const updateProPic = (id, image) => API.patch(`/pros/updatePic/${id}`, image)
 export const findProById = (id) => API.get(`/pros/${id}`);
+export const fetchPros = () => API.get('/pros/');
 export const searchPros = (input) => API.post('/pros/search', input);
 //export const deleteTeam = (id) => API.delete(`/teams/delete/${id}`);
 //export const addPic = (id, image) => API.patch(`/teams/addPic/${id}`, image)

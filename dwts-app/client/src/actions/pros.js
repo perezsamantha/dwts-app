@@ -21,6 +21,16 @@ export const findProById = (id) => async (dispatch) => {
     }
 }
 
+export const fetchPros = () => async (dispatch) => {
+    try {
+        const { data } = await api.fetchPros();
+
+        dispatch({ type: actionType.PROSEARCH, payload: data });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const searchPros = (input) => async (dispatch) => {
     try {
         const { data } = await api.searchPros(input);

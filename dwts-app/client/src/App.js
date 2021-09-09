@@ -31,6 +31,7 @@ function App(props) {
           <Route path="/search/fans" element={<Search />} />
           <Route path="/account" element={<Account />} />
           <Route exact path="/teams/:id/*" element={<Individuals />} />
+          <Route exact path="/pros/:id/*" element={<Individuals />} />
           {/* <Redirect from="/search" to="/search/dances" /> */}
           <Route path="*" element={<div>Not found</div>} />
         </Routes>
