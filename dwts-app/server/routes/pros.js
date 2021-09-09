@@ -1,13 +1,13 @@
 import express from 'express';
-import { addPro, fetchAll, findProById, searchPros } from '../controllers/pro.js';
+import { addPro, fetchAll, findProById, searchPros, updatePro, updateProPic } from '../controllers/pro.js';
 
 import auth from '../middleware/auth.js';
 
 const router = express.Router();
 
 router.post('/add', addPro);
-//router.patch('/update/:id', updateTeam);
-//router.patch('/updatePic/:id', upload, updatePic);
+router.patch('/update/:id', updatePro);
+//router.patch('/updatePic/:id', upload, updateProPic);
 router.get('/', fetchAll);
 //router.get('/favorites', auth, getFavoriteTeams);
 router.post('/search', searchPros);

@@ -10,6 +10,7 @@ import { Slider } from '@material-ui/core';
 import styled from 'styled-components';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import { findTeamById } from '../../actions/teams';
+import { useNavigate } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -37,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
 
 function TeamSettings(props) {
     const classes = useStyles();
+    const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const team = useSelector(state => state.teams.teams);
     const [formData, setFormData] = useState(team);
@@ -104,6 +106,7 @@ function TeamSettings(props) {
 
         dispatch(deleteTeam(id));
         handleClose();
+        navigate(-1);
     }
 
     const handleScale = (e, newValue) => {

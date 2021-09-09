@@ -5,7 +5,7 @@ import { Link, Outlet } from 'react-router-dom';
 import { searchTeams } from '../../actions/teams';
 import { makeStyles, CircularProgress } from '@material-ui/core';
 import TeamAdd from '../Teams/TeamAdd';
-import NewPreview from '../Previews/NewPreview';
+import TeamsPreview from '../Previews/TeamsPreview';
 
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
@@ -131,7 +131,7 @@ function Teams(props) {
                 //             <InnerContainer>
                 //                 <Link to={{ pathname: `/teams/${team._id}` }} style={{ textDecoration: "none" }} >
                 //                 {/* <TeamsPreview team={team}/> */}
-                //                 <NewPreview team={team} />
+                //                 <TeamsPreview team={team} />
                 //             </Link>
                 //             </InnerContainer>
                 //             </Grid>
@@ -150,7 +150,7 @@ function Teams(props) {
                                     .map((team, index) => (
 
                                         <Link key={index} to={{ pathname: `/teams/${team._id}` }} style={{ textDecoration: "none" }} >
-                                            <NewPreview team={team} />
+                                            <TeamsPreview team={team} />
                                         </Link>
                                     ))}
                             </Carousel>

@@ -30,3 +30,23 @@ export const searchPros = (input) => async (dispatch) => {
         console.log(error);
     }
 }
+
+export const updatePro = (id, pro) => async (dispatch) => {
+    try {
+        const { data } = await api.updatePro(id, pro);
+
+        dispatch({ type: actionType.PROUPDATE, payload: data });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const updateProPic = (id, image) => async (dispatch) => {
+    try {
+        const { data } = await api.updateProPic(id, image);
+
+        dispatch({ type: actionType.PROUPDATE, payload: data });
+    } catch (error) {
+        console.log(error);
+    }
+}

@@ -3,7 +3,7 @@ import * as actionType from '../constants/actionTypes';
 const teamsReducer = (state = { teams: null, loading: true }, action) => {
     switch(action.type) {
         case actionType.TEAMADD:
-            return [...state, action.payload];
+            return {...state, teams: [...state.teams, action.payload]};
         case actionType.TEAMUPDATE:
             //return teams.map((team) => (team._id === action.payload._id ? action.payload : team));
             return {...state, teams: action.payload, loading: false};

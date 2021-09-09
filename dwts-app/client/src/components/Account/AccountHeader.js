@@ -7,7 +7,7 @@ import AccountSettings from './AccountSettings';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { getFavoriteTeams } from '../../actions/teams';
-import NewPreview from '../Previews/NewPreview';
+import TeamsPreview from '../Previews/TeamsPreview';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import responsive from '../shared/responsive';
@@ -87,7 +87,7 @@ function AccountHeader() {
                         {favorites.map((team, index) => (
 
                                 <Link key={index} to={{ pathname: `/teams/${team._id}` }} style={{ textDecoration: "none" }} >
-                                    <NewPreview team={team} />
+                                    <TeamsPreview team={team} />
                                     
                                 </Link>
                             ))}

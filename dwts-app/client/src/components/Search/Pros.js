@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { searchPros } from '../../actions/pros';
 import { makeStyles, CircularProgress } from '@material-ui/core';
-import TeamAdd from '../Teams/TeamAdd';
+import ProAdd from '../Pros/ProAdd';
+import ProsPreview from '../Previews/ProsPreview';
 
 
 const useStyles = makeStyles({
@@ -30,7 +31,7 @@ function Pros(props) {
     return (
         <Container>
             <AdminAdd>
-                <TeamAdd />
+                <ProAdd />
             </AdminAdd>
 
             {loading ? <CircularProgress className={classes.progress} /> :
@@ -38,7 +39,7 @@ function Pros(props) {
                 <div>
                     {pros && pros.map((pro, index) => (
 
-                        <Subtitle >Testing</Subtitle>
+                        <ProsPreview pro={pro} />
                     ))}
                 </div>
             }
