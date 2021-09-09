@@ -31,12 +31,12 @@ function Fans(props) {
     }, [dispatch, props]);
 
     return (
-        loading || !Array.isArray(fans) ? <CircularProgress className={classes.progress}/> :
+        loading || !Array.isArray(fans ) ? <CircularProgress className={classes.progress}/> :
         <Container>
             <Spacer />
-            {fans.map((fan) => ( 
+            {fans.map((fan, index) => ( 
                 <InnerContainer>
-                    <Link to={{ pathname: `/fans/${fan._id}` }} style={{ textDecoration: "none" }} >
+                    <Link key={index} to={{ pathname: `/fans/${fan._id}` }} style={{ textDecoration: "none" }} >
                         <FansPreview username={fan.username} />
                     </Link>
                 </InnerContainer>

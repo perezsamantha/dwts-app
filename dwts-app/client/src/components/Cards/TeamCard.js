@@ -77,6 +77,7 @@ function TeamCard(props) {
     //const history = useHistory();
 
     const team = useSelector(state => state.teams.teams);
+    const loading = useSelector(state => state.teams.loading);
     const { id } = useParams();
 
     const [picData, setPicData] = useState(null);
@@ -135,7 +136,7 @@ function TeamCard(props) {
 
     return (
 
-        (Array.isArray(team)) ? <CircularProgress className={classes.progress} /> :
+        (loading || Array.isArray(team)) ? <CircularProgress className={classes.progress} /> :
             <Container>
                 <Header>
                     <Button className={classes.back} onClick={() => navigate(-1)}>

@@ -158,7 +158,6 @@ function Teams(props) {
                     ))}
                 </div>
             }
-            <Outlet />
         </Container>
     )
 }

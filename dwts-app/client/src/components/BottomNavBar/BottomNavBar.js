@@ -12,11 +12,8 @@ const useStyles = makeStyles({
         position: 'fixed',
         bottom: 0,
         zIndex: 1000,
-        background: "rgb(30, 30, 30)",
-        //background: "rgb(198,161,67)",
-        //background: "linear-gradient(99deg, rgba(198,161,67,1) 0%, rgba(232,216,136,1) 55%, rgba(198,161,67,1) 100%)",
+        background: "rgb(24, 24, 24)",
         color: "white",
-        borderRadius: "15px 15px 0 0",
     },
     root : {
         color: "grey",
@@ -30,8 +27,14 @@ const useStyles = makeStyles({
 
 function BottomNavBar() {
     const classes = useStyles();
-    const pathname = window.location.pathname;
-    const [value, setValue] = useState(pathname);
+    //const pathname = window.location.pathname;
+    //const [value, setValue] = useState(pathname.split("/")[1]);
+    const pathname = localStorage.getItem('parentPath');
+    const [value, setValue] = useState(pathname.split("/")[1]);
+
+    if (value != "dashboard" && value != "favorites" && value != "search" && value != "account") {
+        setValue("home");
+    }
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -39,10 +42,10 @@ function BottomNavBar() {
 
     return (
             <BottomNavigation value={value} onChange={handleChange} className={classes.stickToBottom}>
-                <BottomNavigationAction classes={{ root: classes.root, selected: classes.selected }} disableRipple component={Link} to="/dashboard" label="Home" value="/dashboard" icon={<HomeIcon />} />
-                <BottomNavigationAction classes={{ root: classes.root, selected: classes.selected }} disableRipple component={Link} to="/favorites" label="Favorites" value="/favorites" icon={<FavoriteIcon />} />
-                <BottomNavigationAction classes={{ root: classes.root, selected: classes.selected }} disableRipple component={Link} to="/search/dances" label="Search" value="/search/dances" icon={<SearchIcon />} />
-                <BottomNavigationAction classes={{ root: classes.root, selected: classes.selected }} disableRipple component={Link} to="/account" label="Account" value="/account" icon={<AccountCircleIcon />} />
+                <BottomNavigationAction classes={{ root: classes.root, selected: classes.selected }} disableRipple component={Link} to="/dashboard" label="Home" value="dashboard" icon={<HomeIcon />} />
+                <BottomNavigationAction classes={{ root: classes.root, selected: classes.selected }} disableRipple component={Link} to="/favorites" label="Favorites" value="favorites" icon={<FavoriteIcon />} />
+                <BottomNavigationAction classes={{ root: classes.root, selected: classes.selected }} disableRipple component={Link} to="/search/dances" label="Search" value="search" icon={<SearchIcon />} />
+                <BottomNavigationAction classes={{ root: classes.root, selected: classes.selected }} disableRipple component={Link} to="/account" label="Account" value="account" icon={<AccountCircleIcon />} />
             </BottomNavigation>
     );
 }

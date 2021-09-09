@@ -56,9 +56,24 @@ function Search(props) {
     const [value, setValue] = useState(pathname);
     const [searchVal, setSearchVal] = useState("");
     const [key, setKey] = useState(1);
+    const [placeholder, setPlaceholder] = useState("");
+    localStorage.setItem('parentPath', window.location.pathname);
 
-    const handleChange = (event, newValue) => {
+    const placeholderText = (value) => {
+        if (value === "/search/dances") {
+            setPlaceholder("Style, song, team");
+        } else if (value === "/search/teams") {
+            setPlaceholder("Celebrity, professional");
+        } else if (value === "/search/pros") {
+            setPlaceholder("Name, ");
+        } else if (value === "/search/fans") {
+            setPlaceholder("Username, nickname");
+        }
+    }
+
+    const handleChange = (e, newValue) => {
         setValue(newValue);
+        placeholderText(newValue);
     }
 
     const searchChange = (e) => {
@@ -67,6 +82,7 @@ function Search(props) {
     }
 
     useEffect(() => {
+        placeholderText(pathname);
     }, [])
 
     return (
@@ -75,7 +91,7 @@ function Search(props) {
                 <SearchTitle>Search</SearchTitle>
                 <SearchBox >
                     <SearchIcon className={classes.icon}/>
-                    <SearchInput type="search" placeholder="Celebrity, professional" value={searchVal} onChange={searchChange} />
+                    <SearchInput type="search" placeholder={placeholder} value={searchVal} onChange={searchChange} />
                 </SearchBox>
                 <Paper className={classes.root}>
                     <Tabs
