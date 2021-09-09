@@ -10,3 +10,13 @@ export const searchfans = (input) => async (dispatch) => {
         console.log(error);
     }
 }
+
+export const findFanById = (id) => async (dispatch) => {
+    try {
+        const { data } = await api.findFanById(id);
+
+        dispatch({ type: actionType.FANSEARCH, payload: data });
+    } catch (error) {
+        console.log(error);
+    }
+}

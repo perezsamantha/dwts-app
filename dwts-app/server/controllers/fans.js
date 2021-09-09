@@ -41,6 +41,19 @@ export const searchFans = async (req, res, next) => { // eventually change to ju
     }
 }
 
+export const findFanById = async (req, res, next) => { 
+    
+    const { id } = req.params;
+    
+    try {
+        const fan = await User.findById(id);
+
+        res.status(200).json(fan);
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}
+
 export const grantAccess = function(action, resource) {
     return async (req, res, next) => {
         try {
@@ -57,17 +70,3 @@ export const grantAccess = function(action, resource) {
         }
     } 
 }
-
-// export const allowIfLoggedIn = async (req, res, next) => {
-//     try {
-//         const user = res.locals.loggedInUser;
-//         if (!user) {
-//             return res.status(401).json({ error: "Must be logged in to access" });
-//         }
-
-//         req.user = user;
-//         next();
-//     } catch (error) {
-//         res.status(500).json({ message: message });
-//     }
-// }

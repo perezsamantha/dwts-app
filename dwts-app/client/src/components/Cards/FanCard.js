@@ -4,41 +4,17 @@ import { Avatar, Button, makeStyles } from "@material-ui/core";
 import CheckJWT from "../shared/logout";
 import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { findProById } from "../../actions/pros";
+import { findFanById } from "../../actions/fans";
 
 import { Container, TeamName } from '../shared/shared.js'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 const useStyles = makeStyles({
     avi: {
-        width: "100px",
-        height: "100px",
-        margin: "auto",
-    },
-    statsGrid: {
-        flexGrow: 1,
-    },
-    progress: {
-        margin: "auto",
-    },
-    back: {
-        float: "left",
-        margin: "0",
+        width: "75px",
+        height: "75px",
+        marginTop: "15px",
         position: "relative",
-    },
-    slider: {
-        width: "20ch",
-        position: "relative",
-    },
-    editor: {
-        width: "100%",
-        margin: "10px auto",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    root: {
-        flexGrow: 1,
     },
     icons: {
         color: "lightgrey",
@@ -50,28 +26,36 @@ const useStyles = makeStyles({
     },
 })
 
-function ProCard() {
+function FanCard() {
     CheckJWT();
     const classes = useStyles();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem('profile'));
-    const pro = useSelector(state => state.pros.pros);
+    const fan = useSelector(state => state.fans.fans);
     const { id } = useParams();
 
     useEffect(() => {
-        dispatch(findProById(id));
+        dispatch(findFanById(id));
     }, [dispatch, id])
 
     return (
-        (Array.isArray(pro)) ? <div>insert loading bar</div> :
+        (Array.isArray(fan)) ? <div>insert loading bar</div> :
             <Container>
                 <Button className={classes.back} onClick={() => navigate(-1)}>
                     <ArrowBackIosIcon className={classes.icons} />
                 </Button>
-                <Avatar className={classes.avi} alt={pro.name} src={pro.promoPic} />
+                <Avatar className={classes.avi} alt="default" />
+                <Username>@{fan.username}</Username>
             </Container>
-    )
+    );
 }
 
-export default ProCard;
+const Username = styled.h4`
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0.5em auto;
+    color: white;
+`;
+
+export default FanCard;

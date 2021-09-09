@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import BottomNavBar from '../components/BottomNavBar/BottomNavBar';
 import TeamCard from '../components/Cards/TeamCard';
 import ProCard from '../components/Cards/ProCard';
+import FanCard from '../components/Cards/FanCard';
 
 function Individuals() {
     const pathname = window.location.pathname;
@@ -13,6 +14,7 @@ function Individuals() {
         <Page>
             {category === "teams" && <TeamCard />}
             {category === "pros" && <ProCard />}
+            {category === "fans" && <FanCard /> }
             <BottomNavBar />
         </Page>
     )

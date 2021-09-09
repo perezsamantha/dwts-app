@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import ProfileCard from '../Cards/ProfileCard';
 import FansPreview from '../Previews/FansPreview';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { searchfans } from '../../actions/fans';
 import { CircularProgress, makeStyles } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
     root: {
@@ -22,10 +22,6 @@ function Fans(props) {
     const classes = useStyles();
     const dispatch = useDispatch();
 
-    if (props.search === "" || props.search == null) {
-        // empty search, load all users
-    }
-
     const fans = useSelector(state => state.fans.fans);
     const loading = useSelector(state => state.fans.loading);
 
@@ -34,25 +30,18 @@ function Fans(props) {
         dispatch(searchfans(input));
     }, [dispatch, props]);
 
-    const [currentUser, setCurrentUser] = useState(null);
-    const [isOpen, setIsOpen] = useState(false);
-
-    const openProfile = (id) => {
-        setCurrentUser(id);
-        setIsOpen(wasOpen => !wasOpen);
-    }
-
     return (
-        (loading) ? <CircularProgress className={classes.progress}/> :
+        loading || !Array.isArray(fans) ? <CircularProgress className={classes.progress}/> :
         <Container>
             <Spacer />
             {fans.map((fan) => ( 
                 <InnerContainer>
-                    <FansPreview username={fan.username} openProfile={() => openProfile(fan._id)}/>
-                    {isOpen && (fan._id === currentUser) && <ProfileCard username={fan.username}/> }
+                    <Link to={{ pathname: `/fans/${fan._id}` }} style={{ textDecoration: "none" }} >
+                        <FansPreview username={fan.username} />
+                    </Link>
                 </InnerContainer>
             ))}
-        </Container>   
+        </Container>  
     )
 }
 

@@ -14,6 +14,7 @@ export const signIn = (formData) => API.post('/users/signin', formData);
 export const signUp = (formData) => API.post('/users/signup', formData);
 
 export const searchFans = (input) => API.post('/fans/search', input);
+export const findFanById = (id) => API.get(`/fans/${id}`);
 
 export const addTeam = (team) => API.post('/teams/add', team);
 export const updateTeam = (id, team) => API.patch(`/teams/update/${id}`, team);

@@ -18,34 +18,43 @@ function FansPreview(props) {
     // eventually need to bring in src file for avi
 
     return (
-        <Container onClick={props.openProfile}>
+        <Container >
             <Avatar className={classes.avi} alt="default" />
-            <Text>@{props.username}</Text>
+            <InnerContainer>
+                <Nickname>Nickname</Nickname>
+                <Username>@{props.username}</Username>
+            </InnerContainer>
         </Container>
     );
 }
 
 const Container = styled.div`
-    width: 70%;
-    height: 50px;
-    //border: 2px solid black;
-    border-radius: 25px;
-    margin: 10px auto;
-    box-shadow: 0px 1px 10px lightgrey;
-    background: rgba(255, 255, 255, 0.1);
+    width: 75%;
+    height: 75px;
+    margin: 5px auto;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    border-bottom: 1px solid white;
 `;
 
-const Text = styled.h3`
+const InnerContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin: auto 10px;
+`;
+
+const Nickname = styled.h3`
     font-size: 20px;
     font-weight: 500;
-    color: rgba(0, 0, 0, 0.7);
-    // italicize ?
-    position: absolute;
-    margin: 1px;
-    padding: 12px 0 12px 55px;
-    letter-spacing: 0.05em;
+    color: #fff;
+    margin: 0;
+`;
+
+const Username = styled.h4`
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
 `;
 
 
