@@ -16,6 +16,16 @@ export const signUp = (formData) => API.post('/users/signup', formData);
 export const searchFans = (input) => API.post('/fans/search', input);
 export const findFanById = (id) => API.get(`/fans/${id}`);
 
+export const addDance = (dance) => API.post('/dances/add', dance);
+export const updateDance = (id, dance) => API.patch(`/dances/update/${id}`, dance);
+export const setDancePic = (id, image) => API.patch(`/dances/setPic/${id}`, image)
+export const findDanceById = (id) => API.get(`/dances/${id}`);
+export const searchDances = (input) => API.post('/dances/search', input);
+export const deleteDance = (id) => API.delete(`/dances/delete/${id}`);
+export const addDancePic = (id, image) => API.patch(`/dances/addPic/${id}`, image)
+export const likeDance = (id) => API.patch(`/dances/${id}/likeDance`);
+export const getFavoriteDances = () => API.get('/dances/favorites');
+
 export const addTeam = (team) => API.post('/teams/add', team);
 export const updateTeam = (id, team) => API.patch(`/teams/update/${id}`, team);
 export const updatePic = (id, image) => API.patch(`/teams/updatePic/${id}`, image)

@@ -10,6 +10,12 @@ export const LIKE = 'LIKE';
 
 export const FANSEARCH = 'FANSEARCH';
 
+export const DANCESEARCH = 'DANCESEARCH';
+export const DANCEADD = 'DANCEADD';
+export const DANCEUPDATE = 'DANCEUPDATE';
+export const DANCEDELETE = 'DANCEDELETE';
+export const DANCELIKE = 'DANCELIKE';
+
 export const TEAMSEARCH = 'TEAMSEARCH';
 export const TEAMADD = 'TEAMADD';
 export const TEAMUPDATE = 'TEAMUPDATE';

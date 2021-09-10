@@ -3,28 +3,28 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 var danceSchema = new Schema({
-    pic: { type: String, required: true },
-    date: { type: String, required: true },
-    dancers: { type: [String], required: true },
-    season: { type: Number, required: true },
-    week: { type: Number, required: true },
+    pic: { type: String },
+    date: { type: String },
+    dancers: { type: [String] },
+    season: { type: Number },
+    week: { type: Number },
     night: { type: Number },
     theme: { type: String },
-    style: { type: String, required: true },
+    style: { type: String },
     runningOrder: String,
     scores: [
-        { 
-            judges: { type: [String], required: true },
-            values: { type: [Number], required: true },
+        {
+            judges: { type: String },
+            values: { type: Number },
             extra: { type: String },
         }
     ],
-    song: [
-        { 
-            track: { type: String, required: true },
-            artist: { type: String, required: true },
-        }
-    ],
+    isPerfect: { type: Boolean },
+    song: {
+        track: { type: String },
+        artist: { type: String },
+    },
+    pictures: { type: [String] },
     link: String,
     extra: String,
     //
