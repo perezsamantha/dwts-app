@@ -37,7 +37,7 @@ function Dances(props) {
             </AdminAdd>
 
 
-            {loading ? <CircularProgress className={classes.progress} /> :
+            {loading || !Array.isArray(dances) ? <CircularProgress className={classes.progress} /> :
                 <ContentContainer>
                     {dances.map((dance, index) => (
                         <Link key={index} to={{ pathname: `/dances/${dance._id}` }} style={{ textDecoration: "none" }} >

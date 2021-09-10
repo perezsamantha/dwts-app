@@ -4,6 +4,7 @@ import BottomNavBar from '../components/BottomNavBar/BottomNavBar';
 import TeamCard from '../components/Cards/TeamCard';
 import ProCard from '../components/Cards/ProCard';
 import FanCard from '../components/Cards/FanCard';
+import DanceCard from '../components/Cards/DanceCard';
 
 function Individuals() {
     const pathname = window.location.pathname;
@@ -15,6 +16,7 @@ function Individuals() {
             {category === "teams" && <TeamCard />}
             {category === "pros" && <ProCard />}
             {category === "fans" && <FanCard /> }
+            {category === "dances" && <DanceCard /> }
             <BottomNavBar />
         </Page>
     )

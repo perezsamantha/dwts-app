@@ -5,6 +5,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { addDance } from '../../actions/dances';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPros } from '../../actions/pros';
+import styles from '../../constants/danceStyles';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -73,9 +74,9 @@ function DanceAdd() {
                 <AddIcon />
             </Button>
             <Dialog open={open} onClose={handleClose} >
-                <DialogTitle>Add Team</DialogTitle>
+                <DialogTitle>Add Dance</DialogTitle>
                 <DialogContent className={classes.root} spacing={5}>
-                    <TextField
+                    {/* <TextField
                         className={classes.names}
                         margin="dense"
                         name="style"
@@ -83,7 +84,7 @@ function DanceAdd() {
                         type="text"
                         value={formData.style}
                         onChange={handleChange}
-                    />
+                    /> */}
                     {/* <FormControl className={classes.names}>
                         <InputLabel id="pro">Pro</InputLabel>
                         <Select
@@ -97,13 +98,26 @@ function DanceAdd() {
                         ))}
                         </Select>
                     </FormControl> */}
+                    <FormControl className={classes.names}>
+                        <InputLabel id="pro">Style</InputLabel>
+                        <Select
+                            labelId="style"
+                            name="style"
+                            value={formData.style}
+                            onChange={handleChange}
+                        >   
+                        {styles.map((style, index) => (
+                            <MenuItem key={index} value={style}>{style}</MenuItem>
+                        ))}
+                        </Select>
+                    </FormControl>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
                     <Button onClick={handleSubmit} color="primary">
-                        Add Pro
+                        Add Dance
                     </Button>
                 </DialogActions>
             </Dialog>

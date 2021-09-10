@@ -33,6 +33,7 @@ function App(props) {
           <Route exact path="/teams/:id/*" element={<Individuals />} />
           <Route exact path="/pros/:id/*" element={<Individuals />} />
           <Route exact path="fans/:id/*" element={<Individuals />} />
+          <Route exact path="/dances/:id/*" element={<Individuals />} />
           {/* <Redirect from="/search" to="/search/dances" /> */}
           <Route path="*" element={<div>Not found</div>} />
         </Routes>
