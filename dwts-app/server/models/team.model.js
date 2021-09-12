@@ -7,7 +7,7 @@ const teamSchema = new Schema({
     pro: { type: String, required: true },
     season: { type: Number, required: true },
     placement: { type: String }, // because -st, -nd, -rd... would be difficult
-    promoPic: { type: String },
+    coverPic: { type: String },
     teamName: { type: String },
     numDances: { type: Number, default: 0 },
     numTens: { type: Number, default: 0 },

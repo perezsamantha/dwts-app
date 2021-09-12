@@ -17,7 +17,7 @@ function DancesPreview(props) {
 
     return (
         <Preview>
-            <PreviewPhoto src={props.dance.promoPic} />
+            <PreviewPhoto src={props.dance.coverPic} />
             <Names>{props.dance.teams.map((id, index) => (
                 
                 `${index !== 0 ? ', ' : ''}${teams.find((team) => team._id === id).celeb.split(" ")[0]} & ${teams.find((team) => team._id === id).pro.split(" ")[0]}` 

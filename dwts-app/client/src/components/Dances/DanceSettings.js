@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, makeStyles, FormControl, InputLabel, Select, MenuItem, CircularProgress, FormControlLabel, Checkbox, ListItemText, Input, Chip, ListSubheader } from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
 
-import { deleteDance, findDanceById, updateDance } from '../../actions/dances';
+import { deleteDance, findDanceById, updateDance, setDancePic } from '../../actions/dances';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPros } from '../../actions/pros';
 import { styles, seasons, weeks, themes, placements, judges, guestJudges, scores } from '../../constants/dropdowns';
@@ -11,6 +11,9 @@ import { fetchTeams } from '../../actions/teams';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import { useNavigate } from 'react-router';
 import CloseIcon from '@material-ui/icons/Close';
+import { HiddenInput, Label, FileInput } from '../shared/shared';
+import AvatarEditor from 'react-avatar-editor';
+import { Slider } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -59,23 +62,18 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function DanceAdd(props) {
+function DanceSettings(props) {
     const classes = useStyles();
-
-    const [open, setOpen] = useState(false);
-
-
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const dance = useSelector(state => state.dances.dances);
     const pros = useSelector(state => state.pros.pros);
     const teams = useSelector(state => state.teams.teams);
+    const [open, setOpen] = useState(false);
     const [formData, setFormData] = useState(dance);
+    const [fileData, setFileData] = useState(null);
+    const [scaleValue, setScaleValue] = useState(10);
     const id = formData._id;
-
-    useEffect(() => {
-
-    }, [])
 
     const addScore = (e) => {
         setFormData({ ...formData, scores: [...formData.scores, { judge: '', score: '' }] });
@@ -99,36 +97,59 @@ function DanceAdd(props) {
 
     const handleOpen = () => {
         dispatch(findDanceById(props.id));
+        dispatch(fetchTeams());
         setFormData(dance);
         setOpen(true);
     };
 
+    const handleFile = (e) => {
+        setFileData(e.target.files[0]);
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // if (editor != null) {
-        //     const data = new FormData();
+        if (editor != null) {
+            const data = new FormData();
 
-        //     const canvas = editor.getImageScaledToCanvas();
+            const canvas = editor.getImageScaledToCanvas();
 
-        //     canvas.toBlob(function (blob) {
-        //         data.append("promoPic", blob, `${Date.now()}-${fileData.name}`);
-        //         dispatch(updateDancePic(id, data));
-        //     })
-        // }
+            canvas.toBlob(function (blob) {
+                data.append("coverPic", blob, `${Date.now()}-${fileData.name}`);
+                dispatch(setDancePic(id, data));
+            })
+        }
 
         dispatch(updateDance(id, formData));
         handleClose();
     };
 
     const handleClose = () => {
+        setScaleValue(1);
         setOpen(false);
+        setFileData(null);
     };
 
     const handleDelete = () => {
         dispatch(deleteDance(id));
         handleClose();
         navigate(-1);
+    }
+
+    const handleScale = (e, newValue) => {
+        e.preventDefault();
+        setScaleValue(newValue);
+    }
+
+    useEffect(() => {
+        setScaleValue(1);
+        setFileData(null);
+    }, []);
+
+    const [editor, setEditor] = useState(null);
+
+    const setEditorRef = (editor) => {
+        setEditor(editor);
     }
 
     return (
@@ -139,6 +160,31 @@ function DanceAdd(props) {
             <Dialog open={open} onClose={handleClose} >
                 <DialogTitle>Edit Dance</DialogTitle>
                 <DialogContent className={classes.root} spacing={5}>
+
+                <HiddenInput
+                        type="file"
+                        accept=".jpeg, .jpg, .png"
+                        onChange={handleFile}
+                        id="file"
+                    />
+                    <Label htmlFor="file">
+                        <AddAPhotoIcon />
+                    </Label>
+                    <FileInput>
+                        {fileData != null && <div>
+                            <AvatarEditor
+                                image={fileData}
+                                width={200}
+                                height={200}
+                                borderRadius={100}
+                                border={0}
+                                scale={scaleValue}
+                                ref={setEditorRef}
+                                className={classes.editor}
+                            />
+                            <Slider className={classes.slider} value={scaleValue} onChange={handleScale} min={1} max={5} step={0.01} />
+                        </div>}
+                    </FileInput>
 
                     <FormControl required margin="dense" className={classes.one}>
                         <InputLabel id="teams">Team(s)</InputLabel>
@@ -380,4 +426,4 @@ const Wrapper = styled.div`
     width: 100%;
 `;
 
-export default DanceAdd;
+export default DanceSettings;

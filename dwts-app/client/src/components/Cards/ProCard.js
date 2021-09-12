@@ -69,7 +69,7 @@ function ProCard() {
                 <Button className={classes.back} onClick={() => navigate(-1)}>
                     <ArrowBackIosIcon className={classes.icons} />
                 </Button>
-                <Avatar className={classes.avi} alt={pro.name} src={pro.promoPic} />
+                <Avatar className={classes.avi} alt={pro.name} src={pro.coverPic} />
             </Container>
     )
 }

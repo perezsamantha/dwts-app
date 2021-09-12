@@ -107,7 +107,7 @@ export const updatePic = async (req, res) => {
         blobWriter.on('finish', async () => {
             const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURI(blob.name)}?alt=media`;
             
-            const result = await Team.findByIdAndUpdate(req.params.id, req.body = { promoPic: publicUrl }, { new: true });
+            const result = await Team.findByIdAndUpdate(req.params.id, req.body = { coverPic: publicUrl }, { new: true });
 
             res.status(200).json(result);
         })
@@ -120,7 +120,7 @@ export const updatePic = async (req, res) => {
 
         // const path = req.file.path.replace(/\\/g, "/");
         
-        // const result = await Team.findByIdAndUpdate(req.params.id, req.body = { promoPic: "http://localhost:5000/" + path }, { new: true });
+        // const result = await Team.findByIdAndUpdate(req.params.id, req.body = { coverPic: "http://localhost:5000/" + path }, { new: true });
 
         // res.status(200).json(result);
     } catch (error) {

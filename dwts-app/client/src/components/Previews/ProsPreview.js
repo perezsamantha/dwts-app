@@ -5,7 +5,7 @@ function ProsPreview(props) {
 
     return (
         <Preview>
-            <CoverPhoto src={props.pro.promoPic} />
+            <CoverPhoto src={props.pro.coverPic} />
             <Text>{props.pro.name}</Text>
         </Preview>
     )

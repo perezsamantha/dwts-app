@@ -21,11 +21,11 @@ function TeamsPreview(props) {
     return (
         props.preview === "dance" ?
             <Preview>
-                <SmallPhoto src={props.team.promoPic} />
+                <SmallPhoto src={props.team.coverPic} />
                 <SmallText>{celebFirst[0]} & {proFirst[0]}</SmallText>
             </Preview> : 
             <Preview>
-                <PreviewPhoto src={props.team.promoPic} />
+                <PreviewPhoto src={props.team.coverPic} />
                 <Names>{celebFirst[0]} & {proFirst[0]}</Names>
                 <Details>Season {props.team.season} &#8226; 1st Place</Details>
             </Preview>

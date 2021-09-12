@@ -7,7 +7,8 @@ var proSchema = new Schema({
     seasonsPro: { type: Number },
     seasonsTroupe: { type: Number },
     firstSeason: { type: Number },
-    promoPic: { type: String },
+    coverPic: { type: String },
+    birthday: { type: Date },
     //numPerfects: { type: Number, required: false },
     socials: {
         twitter: String,

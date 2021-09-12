@@ -17,11 +17,12 @@ import { addDancePic, likeDance } from '../../actions/dances';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
-import { Container, TeamName } from '../shared/shared.js'
+import { Container, TeamName, HiddenInput, Label, FileInput } from '../shared/shared.js'
 import CheckJWT from '../shared/logout';
 
 import TeamsPreview from '../Previews/TeamsPreview';
 import DanceSettings from '../Dances/DanceSettings';
+
 
 const useStyles = makeStyles({
     avi: {
@@ -145,7 +146,7 @@ function DanceCard() {
                         {dance.likes?.length > 0 && <LikeText>{dance.likes.length}</LikeText>}
                     </LikesContainer>
                 </Header>
-                <Avatar className={classes.avi} alt={dance.style} src={dance.pic} />
+                <Avatar className={classes.avi} alt={dance.style} src={dance.coverPic} />
 
                 <ContentContainer>
                     <Grid container justify="center" className={classes.root} spacing={2}>
@@ -287,38 +288,7 @@ const BasicText = styled.h6`
     color: white;
 `;
 
-const HiddenInput = styled.input`
-    opacity: 0;
-    width: 0.1px;
-    height: 0.1px;
-    position: absolute;
-`;
 
-const Label = styled.label`
-    /* display: block;
-    position: relative;
-    width: fit-content;
-    border-radius: 25px;
-    background: linear-gradient(99deg, rgba(198,161,67,1) 0%, rgba(232,216,136,1) 55%, rgba(198,161,67,1) 100%);
-    box-shadow: 0 4px 7px rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform .2s ease-out;
-    padding: 10px;
-    overflow: hidden;
-    font-size: 1.3vh;
-    margin: 0 auto; */
-`;
-
-const FileInput = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-`;
 
 const AddPic = styled.button`
     display: block;

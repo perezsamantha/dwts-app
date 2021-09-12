@@ -87,7 +87,7 @@ function TeamSettings(props) {
             const canvas = editor.getImageScaledToCanvas();
 
             canvas.toBlob(function (blob) {
-                data.append("promoPic", blob, `${Date.now()}-${fileData.name}`);
+                data.append("coverPic", blob, `${Date.now()}-${fileData.name}`);
                 dispatch(updatePic(id, data));
             })
         }

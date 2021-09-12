@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 var danceSchema = new Schema({
-    pic: { type: String },
+    coverPic: { type: String },
     date: { type: String },
     teams: { type: [String], required: true },
     season: { type: Number, required: true },

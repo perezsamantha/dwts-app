@@ -8,10 +8,10 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
-let upload2 = multer({
+let uploadCoverPicture = multer({
     storage: multer.memoryStorage(),
     fileFilter: fileFilter,
     limits: 5 * 1024 * 1024,
 });
 
-export default upload2.single("pictures");
+export default uploadCoverPicture.single("coverPic");

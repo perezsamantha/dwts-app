@@ -149,7 +149,7 @@ function TeamCard(props) {
                         {team.likes?.length > 0 && <LikeText>{team.likes.length}</LikeText>}
                     </LikesContainer>
                 </Header>
-                <Avatar className={classes.avi} alt={team.celeb} src={team.promoPic} />
+                <Avatar className={classes.avi} alt={team.celeb} src={team.coverPic} />
 
                     
                     
