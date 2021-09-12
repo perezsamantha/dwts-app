@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, makeStyles, FormControl, InputLabel, Select, MenuItem, CircularProgress, FormControlLabel, Checkbox, ListItemText, Input, Chip, ListSubheader } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+import SettingsIcon from '@material-ui/icons/Settings';
 
-import { addDance } from '../../actions/dances';
+import { deleteDance, findDanceById, updateDance } from '../../actions/dances';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPros } from '../../actions/pros';
 import { styles, seasons, weeks, themes, placements, judges, guestJudges, scores } from '../../constants/dropdowns';
 import { fetchTeams } from '../../actions/teams';
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+import { useNavigate } from 'react-router';
 import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles((theme) => ({
@@ -16,12 +18,8 @@ const useStyles = makeStyles((theme) => ({
             marginRight: theme.spacing(1.5),
         }
     },
-    button: {
-        minHeight: "10px",
-        minWidth: "10px",
-        maxHeight: "10px",
-        maxWidth: "10px",
-        color: "grey",
+    icon: {
+        color: "lightgrey",
     },
     judgeButton: {
         margin: "20px auto 0 auto",
@@ -61,35 +59,23 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function DanceAdd() {
+function DanceAdd(props) {
     const classes = useStyles();
 
-    const initialState = {
-        teams: [],
-        style: '',
-        season: '',
-        week: '',
-        night: '',
-        theme: '',
-        songTitle: '',
-        songArtist: '',
-        isPerfect: false,
-        runningOrder: '',
-        extra: '',
-        scores: []
-    };
-
     const [open, setOpen] = useState(false);
-    const [formData, setFormData] = useState(initialState);
+
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const dance = useSelector(state => state.dances.dances);
     const pros = useSelector(state => state.pros.pros);
     const teams = useSelector(state => state.teams.teams);
+    const [formData, setFormData] = useState(dance);
+    const id = formData._id;
 
     useEffect(() => {
-        dispatch(fetchTeams());
-        dispatch(fetchPros());
-    }, [dispatch])
+
+    }, [])
 
     const addScore = (e) => {
         setFormData({ ...formData, scores: [...formData.scores, { judge: '', score: '' }] });
@@ -112,15 +98,26 @@ function DanceAdd() {
     };
 
     const handleOpen = () => {
+        dispatch(findDanceById(props.id));
+        setFormData(dance);
         setOpen(true);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(formData);
 
-        dispatch(addDance(formData));
-        setFormData(initialState);
+        // if (editor != null) {
+        //     const data = new FormData();
+
+        //     const canvas = editor.getImageScaledToCanvas();
+
+        //     canvas.toBlob(function (blob) {
+        //         data.append("promoPic", blob, `${Date.now()}-${fileData.name}`);
+        //         dispatch(updateDancePic(id, data));
+        //     })
+        // }
+
+        dispatch(updateDance(id, formData));
         handleClose();
     };
 
@@ -128,13 +125,19 @@ function DanceAdd() {
         setOpen(false);
     };
 
+    const handleDelete = () => {
+        dispatch(deleteDance(id));
+        handleClose();
+        navigate(-1);
+    }
+
     return (
-        !Array.isArray(pros) || !Array.isArray(teams) ? <div>loading bar</div> : <div style={{ height: "15px" }}>
-            <Button className={classes.button} disableRipple onClick={handleOpen}>
-                <AddIcon />
+        !Array.isArray(pros) ? <div>loading bar</div> : <div style={{ height: "15px" }}>
+            <Button onClick={handleOpen}>
+                <SettingsIcon className={classes.icon} />
             </Button>
             <Dialog open={open} onClose={handleClose} >
-                <DialogTitle>Add Dance</DialogTitle>
+                <DialogTitle>Edit Dance</DialogTitle>
                 <DialogContent className={classes.root} spacing={5}>
 
                     <FormControl required margin="dense" className={classes.one}>
@@ -362,7 +365,10 @@ function DanceAdd() {
                         Cancel
                     </Button>
                     <Button onClick={handleSubmit} color="primary">
-                        Add Dance
+                        Update
+                    </Button>
+                    <Button onClick={handleDelete} color="secondary">
+                        Delete
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -375,4 +381,3 @@ const Wrapper = styled.div`
 `;
 
 export default DanceAdd;
-

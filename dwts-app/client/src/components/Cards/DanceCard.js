@@ -21,6 +21,7 @@ import { Container, TeamName } from '../shared/shared.js'
 import CheckJWT from '../shared/logout';
 
 import TeamsPreview from '../Previews/TeamsPreview';
+import DanceSettings from '../Dances/DanceSettings';
 
 const useStyles = makeStyles({
     avi: {
@@ -146,25 +147,27 @@ function DanceCard() {
                 </Header>
                 <Avatar className={classes.avi} alt={dance.style} src={dance.pic} />
 
-                <Grid container justify="center" className={classes.root} spacing={2}>
-                    {dance.teams.map((id, index) => (
-                        <>
-                            {Array.isArray(teams) && teams.filter(team => team._id === id)
-                                .map((team, index) => (
-                                    <Grid key={index} item>
-                                        <Link key={index} to={{ pathname: `/teams/${team._id}` }} style={{ textDecoration: "none" }} >
-                                            <TeamsPreview team={team} preview="dance" />
-                                        </Link>
-                                    </Grid>
-                                ))}
-                        </>
-                    ))}
-                </Grid>
+                <ContentContainer>
+                    <Grid container justify="center" className={classes.root} spacing={2}>
+                        {dance.teams.map((id, index) => (
+                            <div key={index} style={{ margin: "5px" }}>
+                                {Array.isArray(teams) && teams.filter(team => team._id === id)
+                                    .map((team, index) => (
+                                        <Grid key={index} item>
+                                            <Link key={index} to={{ pathname: `/teams/${team._id}` }} style={{ textDecoration: "none" }} >
+                                                <TeamsPreview team={team} preview="dance" />
+                                            </Link>
+                                        </Grid>
+                                    ))}
+                            </div>
+                        ))}
+                    </Grid>
+                </ContentContainer>
 
                 {/* <TeamName>Dancer Names</TeamName> */}
                 <Season>Season {dance.season} &bull; Week {dance.week} {dance.night && `&bull; Night ${dance.night}`}</Season>
                 <Season>{dance.style}</Season>
-                <Season>{dance.songTitle} - {dance.songArtist}</Season>
+                {dance?.songTitle && dance?.songArtist &&<Season>{dance.songTitle} - {dance.songArtist}</Season>}
                 {dance.runningOrder && <Placement>Running Order - {dance.runningOrder}</Placement>}
 
                 <BasicText>Judges Scores</BasicText>
@@ -221,6 +224,8 @@ function DanceCard() {
                         <AddPic onClick={handlePicture}>Add Picture</AddPic>
                     </div>}
                 </FileInput>
+
+                {user.result.role === "admin" && <DanceSettings id={dance._id} />}
 
                 {/*
                 
@@ -280,22 +285,6 @@ const BasicText = styled.h6`
     text-align: center;
     padding: 5px 1px;
     color: white;
-`;
-
-const DanceText = styled.h6`
-    font-size: 10px;
-    font-weight: 500;
-    margin: 5px 0;
-    color: lightgrey;
-`;
-
-const SocialsText = styled.a`
-    font-size: 12px;
-    font-weight: 500;
-    margin: 0 5px;
-    //color: black;
-    text-decoration: none;
-    color: white
 `;
 
 const HiddenInput = styled.input`

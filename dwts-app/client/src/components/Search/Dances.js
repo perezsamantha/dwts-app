@@ -5,10 +5,13 @@ import { Link } from 'react-router-dom';
 import { searchDances } from '../../actions/dances';
 import { makeStyles, CircularProgress } from '@material-ui/core';
 
-//import Carousel from 'react-multi-carousel';
-//import 'react-multi-carousel/lib/styles.css';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 import DancesPreview from '../Previews/DancesPreview';
 import DanceAdd from '../Dances/DanceAdd';
+import responsive from '../shared/responsive';
+import { ResultsContainer } from '../shared/shared.js';
+
 
 const useStyles = makeStyles({
     root: {
@@ -31,33 +34,52 @@ function Dances(props) {
     }, [dispatch, props]);
 
     return (
-        <Container>
+        <ResultsContainer>
             <AdminAdd>
                 <DanceAdd />
             </AdminAdd>
 
 
             {loading || !Array.isArray(dances) ? <CircularProgress className={classes.progress} /> :
-                <ContentContainer>
-                    {dances.map((dance, index) => (
-                        <Link key={index} to={{ pathname: `/dances/${dance._id}` }} style={{ textDecoration: "none" }} >
-                            <DancesPreview dance={dance} />
-                        </Link>
-                    ))}
-                </ContentContainer>
+                <div>
+                {/* {arr.map((item, index) => ( */}
+                    <ContentContainer >
+                        <Subtitle>Season 30</Subtitle>
+                        <Carousel
+                            responsive={responsive}
+                            partialVisible={true}
+                        >
+                            {dances.map((dance, index) => (
+
+                                    <Link key={index} to={{ pathname: `/dances/${dance._id}` }} style={{ textDecoration: "none" }} >
+                                        <DancesPreview dance={dance} />
+                                    </Link>
+                                ))}
+                        </Carousel>
+                    </ContentContainer>
+                ))
+            </div>
+                
+                // <ContentContainer>
+                //     {dances.map((dance, index) => (
+                //         <Link key={index} to={{ pathname: `/dances/${dance._id}` }} style={{ textDecoration: "none" }} >
+                //             <DancesPreview dance={dance} />
+                //         </Link>
+                //     ))}
+                // </ContentContainer>
             }
-        </Container>
+        </ResultsContainer>
     )
 };
 
-const Container = styled.div`
-    width: 100%;
-    min-height: 300px;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    padding-bottom: 70px;
-`;
+// const Container = styled.div`
+//     width: 100%;
+//     min-height: 300px;
+//     display: flex;
+//     flex-direction: column;
+//     position: relative;
+//     padding-bottom: 70px;
+// `;
 
 const Subtitle = styled.h2`
     //float: left;

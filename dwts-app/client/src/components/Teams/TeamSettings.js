@@ -131,7 +131,7 @@ function TeamSettings(props) {
                 <SettingsIcon className={classes.icon} />
             </Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle>Team Settings</DialogTitle>
+                <DialogTitle>Edit Team</DialogTitle>
                 <DialogContent className={classes.root} >
 
                     <HiddenInput
