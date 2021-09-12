@@ -16,7 +16,7 @@ import { addDancePic, likeDance } from '../../actions/dances';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
-import { Container, danceName } from '../shared/shared.js'
+import { Container, TeamName } from '../shared/shared.js'
 import CheckJWT from '../shared/logout';
 
 const useStyles = makeStyles({
@@ -139,58 +139,82 @@ function DanceCard() {
                         {dance.likes?.length > 0 && <LikeText>{dance.likes.length}</LikeText>}
                     </LikesContainer>
                 </Header>
-                {/* <Avatar className={classes.avi} alt={dance.style} src={dance.pic} />
+                <Avatar className={classes.avi} alt={dance.style} src={dance.pic} />
+                <TeamName>Dancer Names</TeamName>
+                <Season>Season 1 &bull; Week 1 &bull; Night 1 (if applicable)</Season>
+                <Season>Style</Season>
+                <Season>Song & artist</Season>
+                <Placement>Running order</Placement>
 
+                <BasicText>Judges Scores</BasicText>
+                <Grid container justify="center" className={classes.statsGrid} spacing={2}>
+                    <Grid item>
+                        <BasicText>Carrie Ann</BasicText>
+                        <GridText>10</GridText>
+                    </Grid>
+                    <Grid item>
+                        <BasicText>Len</BasicText>
+                        <GridText>10</GridText>
+                    </Grid>
+                    <Grid item>
+                        <BasicText>Derek</BasicText>
+                        <GridText>10</GridText>
+                    </Grid>
+                    <Grid item>
+                        <BasicText>Bruno</BasicText>
+                        <GridText>10</GridText>
+                    </Grid>
+                </Grid>
+
+                <BasicText>Link to dance (if applicable)</BasicText>
+                <Placement>Date?</Placement>
+
+                <Placement>Notes?</Placement>
+
+                <ContentContainer>
+                    <Grid container justify="center" className={classes.root} spacing={2}>
+
+                        {dance.pictures?.map((picture, index) => (
+                            <Grid key={index} item>
+                                <InnerContainer>
+                                    <Picture src={picture} />
+                                </InnerContainer>
+                            </Grid>
+                        ))}
+
+                    </Grid>
+                </ContentContainer>
+                <FileInput>
+                    <HiddenInput
+                        type="file"
+                        accept=".jpeg, .jpg, .png"
+                        onChange={handleFile}
+                        id="pic"
+                    />
+                    <Label htmlFor="pic">
+                        <AddAPhotoIcon className={classes.icons} />
+                    </Label>
+
+                    {picData != null && <div>
+                        <AvatarEditor
+                            image={picData}
+                            width={200}
+                            height={200}
+                            borderRadius={10}
+                            border={0}
+                            scale={scaleValue}
+                            ref={setEditorRef}
+                            className={classes.editor}
+                        />
+                        <Slider className={classes.slider} value={scaleValue} onChange={handleScale} min={1} max={5} step={0.01} />
+                        <AddPic onClick={handlePicture}>Add Picture</AddPic>
+                    </div>}
+                </FileInput>
                     
-                    
-                <danceName>{dance.celeb} & {dance.pro}</danceName>
-                {dance.danceName && <danceName>{dance.danceName}</danceName>}
-                <Season>Season {dance.season}</Season>
-                {dance.placement && <Placement>{dance.placement} Place</Placement>}
+                    {/*
+                
                 {user.result.role === "admin" && <danceSettings id={dance._id} />}
-                <Grid container justify="center" className={classes.statsGrid} spacing={2}>
-                    <Grid item>
-                        <BasicText>DANCES</BasicText>
-                        <GridText>{dance.numDances}</GridText>
-                    </Grid>
-                    <Grid item>
-                        <BasicText>TENS</BasicText>
-                        <GridText>{dance.numTens}</GridText>
-                    </Grid>
-                    <Grid item>
-                        <BasicText>PERFECTS</BasicText>
-                        <GridText>{dance.numPerfects}</GridText>
-                    </Grid>
-                </Grid>
 
-                <BasicText>DANCES (IN ORDER)</BasicText>
-                <DanceText>CHA CHA - (30) </DanceText>
-                <DanceText>SAMBA - (30) </DanceText>
-                <DanceText>CHARLESTON - (30) </DanceText>
-                <BasicText>SOCIALS</BasicText>
-                <Grid container justify="center" className={classes.statsGrid} spacing={2}>
-                    <Grid item>
-                        <InstagramIcon className={classes.icons} />
-                        <SocialsRow>
-                            {dance.socials?.instagram?.celeb && <SocialsText href={'https://www.instagram.com/' + dance.socials?.instagram?.celeb}>@{dance.socials?.instagram?.celeb}</SocialsText>}
-                            {dance.socials?.instagram?.pro && <SocialsText href={'https://www.instagram.com/' + dance.socials?.instagram?.pro}>@{dance.socials?.instagram?.pro}</SocialsText>}
-                        </SocialsRow>
-                    </Grid>
-                    <Grid item>
-                        <TwitterIcon className={classes.icons} />
-                        <SocialsRow>
-                            {dance.socials?.twitter?.celeb && <SocialsText href={'https://www.twitter.com/' + dance.socials.twitter.celeb}>@{dance.socials.twitter.celeb}</SocialsText>}
-                            {dance.socials?.twitter?.pro && <SocialsText href={'https://www.twitter.com/' + dance.socials.twitter.pro}>@{dance.socials.twitter.pro}</SocialsText>}
-                        </SocialsRow>
-                    </Grid>
-                    <Grid item>
-                        <FacebookIcon className={classes.icons} />
-                        <SocialsRow>
-                            {dance.socials?.facebook?.celeb && <SocialsText href={'https://www.facebook.com/' + dance.socials.facebook.celeb}>@{dance.socials.facebook.celeb}</SocialsText>}
-                            {dance.socials?.facebook?.pro && <SocialsText href={'https://www.facebook.com/' + dance.socials.facebook.pro}>@{dance.socials.facebook.pro}</SocialsText>}
-                        </SocialsRow>
-                    </Grid>
-                </Grid>
 
                 <BasicText>PICTURES</BasicText>
                 <ContentContainer>
@@ -249,41 +273,6 @@ const Header = styled.div`
     clear: both;
     position: absolute;
 `;
-
-// const Container = styled.div`
-//     //opacity: ${props => props.opacity};
-//     //position: fixed;
-//     //margin: 5vh auto;
-//     min-height: 30%;
-//     max-height: 50%;
-//     z-index: 100;
-//     //top: 50px;
-//     //left: 12.5%;
-
-//     //width: 85%;
-//     //min-height: 200px;
-//     //max-height: 325px;
-//     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
-//     //margin: 20px auto;
-//     display: flex;
-//     flex-direction: column;
-//     //position: relative;
-//     align-items: center;
-//     //background: white;
-//     border: none;
-//     border-radius: 15px;
-//     overflow-y: auto;
-//     overflow-x: hidden;
-//     text-align: center;
-//     padding-bottom: 70px;
-// `;
-
-// const TeamName = styled.h4`
-//     font-size: 20px;
-//     font-weight: 500;
-//     margin: 5px auto;
-//     color: rgba(0, 0, 0, 0.6);
-// `;
 
 const GridText = styled.h6`
     font-size: 15px;

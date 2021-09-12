@@ -48,7 +48,7 @@ export const searchDances = async (req, res) => {
     try {
         // search by style, song, team, uhm
         // for now, just searching by style
-        var dances = await Dance.find({ extra: { $regex: search, '$options': 'i' } });
+        var dances = await Dance.find({ style: { $regex: search, '$options': 'i' } });
 
         res.status(200).json(dances);
     } catch (error) {

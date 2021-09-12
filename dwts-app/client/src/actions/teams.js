@@ -41,6 +41,16 @@ export const findTeamById = (id) => async (dispatch) => {
     }
 }
 
+export const fetchTeams = () => async (dispatch) => {
+    try {
+        const { data } = await api.fetchTeams();
+
+        dispatch({ type: actionType.TEAMSEARCH, payload: data });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const searchTeams = (input) => async (dispatch) => {
     try {
         const { data } = await api.searchTeams(input);
