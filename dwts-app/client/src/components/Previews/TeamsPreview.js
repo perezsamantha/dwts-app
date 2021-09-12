@@ -18,16 +18,37 @@ function TeamsPreview(props) {
     const proFirst = props.team.pro.split(" ");
 
     return (
-        <Preview>
-            <CoverPhoto src={props.team.promoPic} />
-            <Text>{celebFirst[0]} & {proFirst[0]}</Text>
-            <Season>Season {props.team.season} &#8226; 1st Place</Season>
-        </Preview>
+        props.preview === "dance" ?
+            <Preview>
+                <SmallPhoto src={props.team.promoPic} />
+                <SmallText>{celebFirst[0]} & {proFirst[0]}</SmallText>
+            </Preview> : 
+            <Preview>
+                <CoverPhoto src={props.team.promoPic} />
+                <Text>{celebFirst[0]} & {proFirst[0]}</Text>
+                <Season>Season {props.team.season} &#8226; 1st Place</Season>
+            </Preview>
     )
 }
 
 const Preview = styled.div`
     width: 100%;
+`;
+
+const SmallPhoto = styled.img`
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+`;
+
+const SmallText = styled.h3`
+    font-size: 10px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.7);
+    margin: 1px;
+    padding: 0 5px;
+    letter-spacing: 0.05em;
+    color: white;
 `;
 
 const CoverPhoto = styled.img`

@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
         marginRight: "2%"
     },
     three: {
-        width: "31%",
+        width: "31.3%",
         marginRight: "2%"
     },
     judge: {

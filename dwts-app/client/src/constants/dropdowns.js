@@ -64,7 +64,7 @@ export const themes = [
 export const judges = [
     "Carrie Ann Inaba",
     "Len Goodman",
-    "Bruno Toniolo",
+    "Bruno Tonioli",
     "Derek Hough",
     "Julianne Hough"
 ]

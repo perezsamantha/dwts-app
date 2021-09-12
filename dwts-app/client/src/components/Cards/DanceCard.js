@@ -6,7 +6,8 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { CircularProgress } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { findDanceById } from '../../actions/dances';
-import { useParams, useNavigate } from 'react-router-dom';
+import { fetchTeams } from '../../actions/teams';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 
 import AvatarEditor from 'react-avatar-editor';
 import { Slider } from '@material-ui/core';
@@ -18,6 +19,8 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 
 import { Container, TeamName } from '../shared/shared.js'
 import CheckJWT from '../shared/logout';
+
+import TeamsPreview from '../Previews/TeamsPreview';
 
 const useStyles = makeStyles({
     avi: {
@@ -68,6 +71,7 @@ function DanceCard() {
     const dispatch = useDispatch();
     const dance = useSelector(state => state.dances.dances);
     const loading = useSelector(state => state.dances.loading);
+    const teams = useSelector(state => state.teams.teams);
     const { id } = useParams();
 
     const [picData, setPicData] = useState(null);
@@ -107,6 +111,7 @@ function DanceCard() {
 
     useEffect(() => {
         dispatch(findDanceById(id));
+        dispatch(fetchTeams())
         setScaleValue(1);
         setPicData(null);
     }, [dispatch, id])
@@ -140,36 +145,42 @@ function DanceCard() {
                     </LikesContainer>
                 </Header>
                 <Avatar className={classes.avi} alt={dance.style} src={dance.pic} />
-                <TeamName>Dancer Names</TeamName>
-                <Season>Season 1 &bull; Week 1 &bull; Night 1 (if applicable)</Season>
-                <Season>Style</Season>
-                <Season>Song & artist</Season>
-                <Placement>Running order</Placement>
+
+                <Grid container justify="center" className={classes.root} spacing={2}>
+                    {dance.teams.map((id, index) => (
+                        <>
+                            {Array.isArray(teams) && teams.filter(team => team._id === id)
+                                .map((team, index) => (
+                                    <Grid key={index} item>
+                                        <Link key={index} to={{ pathname: `/teams/${team._id}` }} style={{ textDecoration: "none" }} >
+                                            <TeamsPreview team={team} preview="dance" />
+                                        </Link>
+                                    </Grid>
+                                ))}
+                        </>
+                    ))}
+                </Grid>
+
+                {/* <TeamName>Dancer Names</TeamName> */}
+                <Season>Season {dance.season} &bull; Week {dance.week} {dance.night && `&bull; Night ${dance.night}`}</Season>
+                <Season>{dance.style}</Season>
+                <Season>{dance.songTitle} - {dance.songArtist}</Season>
+                {dance.runningOrder && <Placement>Running Order - {dance.runningOrder}</Placement>}
 
                 <BasicText>Judges Scores</BasicText>
                 <Grid container justify="center" className={classes.statsGrid} spacing={2}>
-                    <Grid item>
-                        <BasicText>Carrie Ann</BasicText>
-                        <GridText>10</GridText>
-                    </Grid>
-                    <Grid item>
-                        <BasicText>Len</BasicText>
-                        <GridText>10</GridText>
-                    </Grid>
-                    <Grid item>
-                        <BasicText>Derek</BasicText>
-                        <GridText>10</GridText>
-                    </Grid>
-                    <Grid item>
-                        <BasicText>Bruno</BasicText>
-                        <GridText>10</GridText>
-                    </Grid>
+                    {dance?.scores.map((score, index) => (
+                        <Grid key={index} item>
+                            <BasicText>{score.judge.substring(0, score.judge.lastIndexOf(" "))}</BasicText>
+                            <GridText>{score.score}</GridText>
+                        </Grid>
+                    ))}
                 </Grid>
 
-                <BasicText>Link to dance (if applicable)</BasicText>
-                <Placement>Date?</Placement>
+                {dance?.link && <DanceLink>{dance?.link}</DanceLink>}
+                {dance?.theme && <Placement>{dance.theme} Week</Placement>}
 
-                <Placement>Notes?</Placement>
+                {dance?.extra && <Placement>Notes - {dance.extra}</Placement>}
 
                 <ContentContainer>
                     <Grid container justify="center" className={classes.root} spacing={2}>
@@ -210,57 +221,15 @@ function DanceCard() {
                         <AddPic onClick={handlePicture}>Add Picture</AddPic>
                     </div>}
                 </FileInput>
-                    
-                    {/*
+
+                {/*
                 
                 {user.result.role === "admin" && <danceSettings id={dance._id} />}
-
-
-                <BasicText>PICTURES</BasicText>
-                <ContentContainer>
-                    <Grid container justify="center" className={classes.root} spacing={2}>
-
-                        {dance.pictures?.map((picture, index) => (
-                            <Grid key={index} item>
-                                <InnerContainer>
-                                    <Picture src={picture} />
-                                </InnerContainer>
-                            </Grid>
-                        ))}
-
-                    </Grid>
-                </ContentContainer>
-                <FileInput>
-                    <HiddenInput
-                        type="file"
-                        accept=".jpeg, .jpg, .png"
-                        onChange={handleFile}
-                        id="pic"
-                    />
-                    <Label htmlFor="pic">
-                        <AddAPhotoIcon className={classes.icons} />
-                    </Label>
-
-                    {picData != null && <div>
-                        <AvatarEditor
-                            image={picData}
-                            width={200}
-                            height={200}
-                            borderRadius={10}
-                            border={0}
-                            scale={scaleValue}
-                            ref={setEditorRef}
-                            className={classes.editor}
-                        />
-                        <Slider className={classes.slider} value={scaleValue} onChange={handleScale} min={1} max={5} step={0.01} />
-                        <AddPic onClick={handlePicture}>Add Picture</AddPic>
-                    </div>}
-                </FileInput> */}
+ */}
             </Container>
 
     );
 };
-
 
 const LikesContainer = styled.div`
     float: right;
@@ -401,8 +370,8 @@ const Picture = styled.img`
    position: relative;
 `;
 
-const SocialsRow = styled.div`
-    width: 100%;
+const DanceLink = styled.a`
+    color: white;
 `;
 
 export default DanceCard;
