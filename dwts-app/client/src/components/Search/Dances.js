@@ -11,6 +11,7 @@ import DancesPreview from '../Previews/DancesPreview';
 import DanceAdd from '../Dances/DanceAdd';
 import responsive from '../shared/responsive';
 import { ResultsContainer } from '../shared/shared.js';
+import CheckJWT from '../shared/logout';
 
 
 const useStyles = makeStyles({
@@ -23,15 +24,34 @@ const useStyles = makeStyles({
 })
 
 function Dances(props) {
+    CheckJWT();
     const classes = useStyles();
     const dispatch = useDispatch();
     const dances = useSelector(state => state.dances.dances);
     const loading = useSelector(state => state.dances.loading);
 
+    const arr = []
+
     useEffect(() => {
         const input = { search: props.search };
         dispatch(searchDances(input));
     }, [dispatch, props]);
+
+    if (Array.isArray(dances)) {
+        const categorizeBySeason = dances.reduce((acc, item) => {
+            if (!acc[item.season]) {
+                acc[item.season] = [];
+            }
+
+            acc[item.season].push(item);
+            return acc;
+        }, {})
+
+
+        for (let [season] of Object.entries(categorizeBySeason)) {
+            arr.push(season);
+        }
+    }
 
     return (
         <ResultsContainer>
@@ -42,14 +62,15 @@ function Dances(props) {
 
             {loading || !Array.isArray(dances) ? <CircularProgress className={classes.progress} /> :
                 <div>
-                {/* {arr.map((item, index) => ( */}
+                {arr.map((item, index) => ( 
                     <ContentContainer >
-                        <Subtitle>Season 30</Subtitle>
+                        <Subtitle>Season {item}</Subtitle>
                         <Carousel
                             responsive={responsive}
                             partialVisible={true}
                         >
-                            {dances.map((dance, index) => (
+                            {dances.filter(dance => Number(dance.season) === Number(item))
+                                .map((dance, index) => (
 
                                     <Link key={index} to={{ pathname: `/dances/${dance._id}` }} style={{ textDecoration: "none" }} >
                                         <DancesPreview dance={dance} />
@@ -57,7 +78,7 @@ function Dances(props) {
                                 ))}
                         </Carousel>
                     </ContentContainer>
-                ))
+                ))}
             </div>
                 
                 // <ContentContainer>

@@ -280,7 +280,7 @@ function DanceSettings(props) {
 
                     {formData.scores.map((score, parentIndex) => {
                         return (
-                            <Wrapper >
+                            <Wrapper key={parentIndex}>
                                 <FormControl required margin="dense" className={classes.judge}>
                                     <InputLabel id="judge">Judge</InputLabel>
                                     <Select

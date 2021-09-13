@@ -36,7 +36,7 @@ function Teams(props) {
     const teams = useSelector(state => state.teams.teams);
     const loading = useSelector(state => state.teams.loading);
     
-    const arr = []
+    const arr = [];
 
     useEffect(() => {
         const input = { search: props.search };
@@ -52,7 +52,7 @@ function Teams(props) {
     if (Array.isArray(teams)) {
         const categorizeBySeason = teams.reduce((acc, item) => {
             if (!acc[item.season]) {
-                acc[item.season] = []
+                acc[item.season] = [];
             }
 
             acc[item.season].push(item);

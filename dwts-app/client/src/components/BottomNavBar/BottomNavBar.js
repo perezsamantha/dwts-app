@@ -5,6 +5,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Link } from 'react-router-dom';
+import CheckJWT from '../shared/logout';
 
 const useStyles = makeStyles({
     stickToBottom: {
@@ -26,11 +27,12 @@ const useStyles = makeStyles({
 })
 
 function BottomNavBar() {
+    CheckJWT();
     const classes = useStyles();
     //const pathname = window.location.pathname;
     //const [value, setValue] = useState(pathname.split("/")[1]);
     const pathname = localStorage.getItem('parentPath');
-    const [value, setValue] = useState(pathname.split("/")[1]);
+    const [value, setValue] = useState(pathname?.split("/")[1]);
 
     if (value != "dashboard" && value != "favorites" && value != "search" && value != "account") {
         setValue("home");

@@ -227,11 +227,7 @@ function DanceCard() {
                 </FileInput>
 
                 {user.result.role === "admin" && <DanceSettings id={dance._id} />}
-
-                {/*
                 
-                {user.result.role === "admin" && <danceSettings id={dance._id} />}
- */}
             </Container>
 
     );
