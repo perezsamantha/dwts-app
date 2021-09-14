@@ -22,6 +22,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 
 import { Container, TeamName } from '../shared/shared.js'
 import CheckJWT from '../shared/logout';
+import { searchDances } from '../../actions/dances';
 
 const useStyles = makeStyles({
     avi: {
@@ -78,6 +79,7 @@ function TeamCard(props) {
 
     const team = useSelector(state => state.teams.teams);
     const loading = useSelector(state => state.teams.loading);
+    const dances = useSelector(state => state.dances.dances);
     const { id } = useParams();
 
     const [picData, setPicData] = useState(null);
@@ -117,6 +119,8 @@ function TeamCard(props) {
 
     useEffect(() => {
         dispatch(findTeamById(id));
+        const input = { search: id };
+        dispatch(searchDances(input));
         setScaleValue(1);
         setPicData(null);
     }, [dispatch, id])
@@ -136,7 +140,7 @@ function TeamCard(props) {
 
     return (
 
-        (loading || Array.isArray(team)) ? <CircularProgress className={classes.progress} /> :
+        (loading || Array.isArray(team) || !Array.isArray(dances)) ? <CircularProgress className={classes.progress} /> :
             <Container>
                 <Header>
                     <Button className={classes.back} onClick={() => navigate(-1)}>
@@ -161,43 +165,40 @@ function TeamCard(props) {
                 <Grid container justify="center" className={classes.statsGrid} spacing={2}>
                     <Grid item>
                         <BasicText>DANCES</BasicText>
-                        <GridText>{team.numDances}</GridText>
+                        <GridText>{dances?.length}</GridText>
                     </Grid>
                     <Grid item>
                         <BasicText>TENS</BasicText>
-                        <GridText>{team.numTens}</GridText>
+                        <GridText>{dances?.filter(dance => dance.scores.some(score => score.score === 10)).length}</GridText>
                     </Grid>
                     <Grid item>
                         <BasicText>PERFECTS</BasicText>
-                        <GridText>{team.numPerfects}</GridText>
+                        <GridText>{dances?.filter(dance => dance.isPerfect === true).length}</GridText>
                     </Grid>
                 </Grid>
 
-                <BasicText>DANCES (IN ORDER)</BasicText>
-                <DanceText>CHA CHA - (30) </DanceText>
-                <DanceText>SAMBA - (30) </DanceText>
-                <DanceText>CHARLESTON - (30) </DanceText>
+                {dances && <BasicText>DANCES (IN ORDER)</BasicText>}
+                {dances?.map(dance => 
+                    <DanceText>{dance.style} - {dance?.scores.reduce(((a, b) => a + b["score"]), 0)}</DanceText>)
+                }
                 <BasicText>SOCIALS</BasicText>
                 <Grid container justify="center" className={classes.statsGrid} spacing={2}>
                     <Grid item>
                         <InstagramIcon className={classes.icons} />
                         <SocialsRow>
-                            {team.socials?.instagram?.celeb && <SocialsText href={'https://www.instagram.com/' + team.socials?.instagram?.celeb}>@{team.socials?.instagram?.celeb}</SocialsText>}
-                            {team.socials?.instagram?.pro && <SocialsText href={'https://www.instagram.com/' + team.socials?.instagram?.pro}>@{team.socials?.instagram?.pro}</SocialsText>}
+                            {team.celebSocials?.instagram && <SocialsText href={'https://www.instagram.com/' + team.celebSocials.instagram}>@{team.celebSocials.instagram}</SocialsText>}
                         </SocialsRow>
                     </Grid>
                     <Grid item>
                         <TwitterIcon className={classes.icons} />
                         <SocialsRow>
-                            {team.socials?.twitter?.celeb && <SocialsText href={'https://www.twitter.com/' + team.socials.twitter.celeb}>@{team.socials.twitter.celeb}</SocialsText>}
-                            {team.socials?.twitter?.pro && <SocialsText href={'https://www.twitter.com/' + team.socials.twitter.pro}>@{team.socials.twitter.pro}</SocialsText>}
+                            {team.celebSocials?.twitter && <SocialsText href={'https://www.twitter.com/' + team.celebSocials.twitter}>@{team.celebSocials.twitter}</SocialsText>}
                         </SocialsRow>
                     </Grid>
                     <Grid item>
                         <FacebookIcon className={classes.icons} />
                         <SocialsRow>
-                            {team.socials?.facebook?.celeb && <SocialsText href={'https://www.facebook.com/' + team.socials.facebook.celeb}>@{team.socials.facebook.celeb}</SocialsText>}
-                            {team.socials?.facebook?.pro && <SocialsText href={'https://www.facebook.com/' + team.socials.facebook.pro}>@{team.socials.facebook.pro}</SocialsText>}
+                            {team.celebSocials?.facebook && <SocialsText href={'https://www.facebook.com/' + team.celebSocials.facebook}>@{team.celebSocials.facebook}</SocialsText>}
                         </SocialsRow>
                     </Grid>
                 </Grid>
@@ -334,7 +335,7 @@ const BasicText = styled.h6`
 `;
 
 const DanceText = styled.h6`
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 500;
     margin: 5px 0;
     color: lightgrey;

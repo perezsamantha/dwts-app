@@ -46,9 +46,14 @@ export const searchDances = async (req, res) => {
     const { search } = req.body;
 
     try {
+
+        if (mongoose.Types.ObjectId.isValid(search)) {
+            var dances = await Dance.find({ teams: { $in: search } });
+        } else {
         // search by style, song, team, uhm
         // for now, just searching by style
         var dances = await Dance.find({ style: { $regex: search, '$options': 'i' } });
+        }
 
         res.status(200).json(dances);
     } catch (error) {

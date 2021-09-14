@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, makeStyles } from '@material-ui/core';
-import SettingsIcon from '@material-ui/icons/Settings';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, makeStyles, MenuItem, InputLabel, Select } from '@material-ui/core';
 
 import { updateTeam, deleteTeam, updatePic } from '../../actions/teams';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,18 +10,15 @@ import styled from 'styled-components';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import { findTeamById } from '../../actions/teams';
 import { useNavigate } from 'react-router';
+import { FormControl2, TextField1, TextField2, OpenSettings } from '../shared/muiStyles';
+import { seasons, placements } from '../../constants/dropdowns';
+import { fetchPros } from '../../actions/pros';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         '& > *': {
             marginRight: theme.spacing(1.5),
         }
-    },
-    names: {
-        width: "20ch"
-    },
-    numbers: {
-        width: "10ch"
     },
     slider: {
         width: "20ch",
@@ -41,6 +37,7 @@ function TeamSettings(props) {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const team = useSelector(state => state.teams.teams);
+    const pros = useSelector(state => state.pros.pros);
     const [formData, setFormData] = useState(team);
     const [fileData, setFileData] = useState(null);
     const [scaleValue, setScaleValue] = useState(10);
@@ -49,20 +46,9 @@ function TeamSettings(props) {
     const dispatch = useDispatch();
 
     const handleChange = (e) => {
-        if (e.target.name === "instagram.celeb") {
-            setFormData({ ...formData, socials: { ...formData.socials, instagram: { ...formData.socials.instagram, celeb: e.target.value } } })
-        } else if (e.target.name === "instagram.pro") {
-            setFormData({ ...formData, socials: { ...formData.socials, instagram: { ...formData.socials.instagram, pro: e.target.value } } })
-        } else if (e.target.name === "twitter.celeb") {
-            setFormData({ ...formData, socials: { ...formData.socials, twitter: { ...formData.socials.twitter, celeb: e.target.value } } })
-        } else if (e.target.name === "twitter.pro") {
-            setFormData({ ...formData, socials: { ...formData.socials, twitter: { ...formData.socials.twitter, pro: e.target.value } } })
-        } else if (e.target.name === "facebook.celeb") {
-            setFormData({ ...formData, socials: { ...formData.socials, facebook: { ...formData.socials.facebook, celeb: e.target.value } } })
-        } else if (e.target.name === "facebook.pro") {
-            setFormData({ ...formData, socials: { ...formData.socials, facebook: { ...formData.socials.facebook, pro: e.target.value } } })
+        if (["instagram", "twitter", "facebook"].includes(e.target.name)) {
+            setFormData({ ...formData, celebSocials: { ...formData.celebSocials, [e.target.name]: e.target.value  } })
         } else {
-
             setFormData({ ...formData, [e.target.name]: e.target.value });
         }
     }
@@ -115,6 +101,7 @@ function TeamSettings(props) {
     }
 
     useEffect(() => {
+        dispatch(fetchPros());
         setScaleValue(1);
         setFileData(null);
     }, []);
@@ -126,9 +113,9 @@ function TeamSettings(props) {
     }
 
     return (
-        <div>
+        !Array.isArray(pros) ? <div>loading bar</div> : <div>
             <Button onClick={handleOpen}>
-                <SettingsIcon className={classes.icon} />
+                <OpenSettings />
             </Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle>Edit Team</DialogTitle>
@@ -158,130 +145,92 @@ function TeamSettings(props) {
                             <Slider className={classes.slider} value={scaleValue} onChange={handleScale} min={1} max={5} step={0.01} />
                         </div>}
                     </FileInput>
-                    <TextField
-                        className={classes.names}
+
+                    <TextField2
                         margin="dense"
                         name="celeb"
-                        label="celeb"
+                        label="Celebrity"
                         type="text"
                         value={formData.celeb}
                         onChange={handleChange}
+                        required
                     />
-                    <TextField
-                        className={classes.names}
-                        margin="dense"
-                        name="pro"
-                        label="pro"
-                        type="text"
-                        value={formData.pro}
-                        onChange={handleChange}
-                    />
-                    <TextField
-                        className={classes.names}
+
+                    <FormControl2 margin="dense" required>
+                        <InputLabel id="pro">Professional</InputLabel>
+                        <Select
+                            labelId="pro"
+                            name="pro"
+                            value={formData.pro}
+                            onChange={handleChange}
+                        >
+                            {pros.map((pro, index) => (
+                                <MenuItem key={index} value={pro.name}>{pro.name}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl2>
+
+                    <FormControl2 margin="dense" required >
+                        <InputLabel id="season">Season</InputLabel>
+                        <Select
+                            labelId="season"
+                            name="season"
+                            value={formData.season}
+                            onChange={handleChange}
+                        >
+                            {seasons.map((season, index) => (
+                                <MenuItem key={index} value={season}>{season}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl2>
+
+                    <FormControl2 margin="dense" >
+                        <InputLabel id="placement">Placement</InputLabel>
+                        <Select
+                            labelId="placement"
+                            name="placement"
+                            value={formData.placement}
+                            onChange={handleChange}
+                        >
+                            {placements.map((placement, index) => (
+                                <MenuItem key={index} value={placement}>{placement}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl2>
+
+                    <TextField1
                         margin="dense"
                         name="teamName"
-                        label="team name"
+                        label="Team Name"
                         type="text"
                         value={formData.teamName}
                         onChange={handleChange}
                     />
-                    <TextField
-                        className={classes.numbers}
+
+                    <TextField1
                         margin="dense"
-                        name="season"
-                        label="season"
+                        name="instagram"
+                        label="Celeb Instagram (Username)"
                         type="text"
-                        value={formData.season}
+                        value={formData.celebSocials?.instagram}
                         onChange={handleChange}
                     />
-                    <TextField
-                        className={classes.numbers}
+                    
+                    <TextField1
                         margin="dense"
-                        name="placement"
-                        label="placement"
+                        name="twitter"
+                        label="Celeb Twitter (Username)"
                         type="text"
-                        value={formData.placement}
+                        value={formData.celebSocials?.twitter}
                         onChange={handleChange}
                     />
-                    <TextField
-                        className={classes.numbers}
+
+                    <TextField1
                         margin="dense"
-                        name="numDances"
-                        label="# dances"
+                        name="facebook"
+                        label="Celeb Facebook (Username)"
                         type="text"
-                        value={formData.numDances}
-                        onChange={handleChange}
-                    />
-                    <TextField
-                        className={classes.numbers}
-                        margin="dense"
-                        name="numTens"
-                        label="# tens"
-                        type="text"
-                        value={formData.numTens}
-                        onChange={handleChange}
-                    />
-                    <TextField
-                        className={classes.numbers}
-                        margin="dense"
-                        name="numPerfects"
-                        label="# perfects"
-                        type="text"
-                        value={formData.numPerfects}
-                        onChange={handleChange}
-                    />
-                    <TextField
-                        className={classes.names}
-                        margin="dense"
-                        name="instagram.celeb"
-                        label="instagram - celeb"
-                        type="text"
-                        value={formData.socials?.instagram.celeb}
-                        onChange={handleChange}
-                    />
-                    <TextField
-                        className={classes.names}
-                        margin="dense"
-                        name="instagram.pro"
-                        label="instagram - pro"
-                        type="text"
-                        value={formData.socials?.instagram.pro}
-                        onChange={handleChange}
-                    />
-                    <TextField
-                        className={classes.names}
-                        margin="dense"
-                        name="twitter.celeb"
-                        label="twitter - celeb"
-                        type="text"
-                        value={formData.socials?.twitter.celeb}
-                        onChange={handleChange}
-                    />
-                    <TextField
-                        className={classes.names}
-                        margin="dense"
-                        name="twitter.pro"
-                        label="twitter - pro"
-                        type="text"
-                        value={formData.socials?.twitter.pro}
-                        onChange={handleChange}
-                    />
-                    <TextField
-                        className={classes.names}
-                        margin="dense"
-                        name="facebook.celeb"
-                        label="facebook - celeb"
-                        type="text"
-                        value={formData.socials?.facebook.celeb}
-                        onChange={handleChange}
-                    />
-                    <TextField
-                        className={classes.names}
-                        margin="dense"
-                        name="facebook.pro"
-                        label="facebook - pro"
-                        type="text"
-                        value={formData.socials?.facebook.pro}
+                        value={formData.celebSocials?.facebook}
                         onChange={handleChange}
                     />
                 </DialogContent>

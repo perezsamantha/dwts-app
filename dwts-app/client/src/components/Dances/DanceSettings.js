@@ -117,268 +117,268 @@ function DanceSettings(props) {
     }
 
     return (
-        
-            !Array.isArray(pros) ? <div>loading bar</div> : <StylesProvider injectFirst ><div style={{ height: "15px" }}>
-                <Button onClick={handleOpen}>
-                    <OpenSettings />
-                </Button>
-                <Dialog open={open} onClose={handleClose} >
-                    <DialogTitle>Edit Dance</DialogTitle>
-                    <DialogContent >
 
-                        <HiddenInput
-                            type="file"
-                            accept=".jpeg, .jpg, .png"
-                            onChange={handleFile}
-                            id="file"
-                        />
-                        <Label htmlFor="file">
-                            <AddAPhotoIcon />
-                        </Label>
-                        <FileInput>
-                            {fileData != null && <div>
-                                <AvatarEditor
-                                    image={fileData}
-                                    width={200}
-                                    height={200}
-                                    borderRadius={100}
-                                    border={0}
-                                    scale={scaleValue}
-                                    ref={setEditorRef}
-                                    className={classes.editor}
-                                />
-                                <Slider className={classes.slider} value={scaleValue} onChange={handleScale} min={1} max={5} step={0.01} />
-                            </div>}
-                        </FileInput>
+        !Array.isArray(pros) ? <div>loading bar</div> : <div style={{ height: "15px" }}>
+            <Button onClick={handleOpen}>
+                <OpenSettings />
+            </Button>
+            <Dialog open={open} onClose={handleClose} >
+                <DialogTitle>Edit Dance</DialogTitle>
+                <DialogContent >
 
-                        <FormControl1 required margin="dense">
-                            <InputLabel id="teams">Team(s)</InputLabel>
-                            <Select
-                                labelId="teams"
-                                id="teams"
-                                name="teams"
-                                multiple
-                                value={formData.teams}
-                                onChange={handleChange}
-                                input={<Input id="select-multiple-chip" />}
-                                // renderValue={(selected) => selected.join(', ')}
-                                renderValue={(selected) => (
-                                    <ChipsWrapper >
-                                        {selected.map((value) => (
-                                            <IndividualChip
-                                                key={value}
-                                                label={`${teams.find((team) => team._id === value).celeb.split(" ")[0]} & ${teams.find((team) => team._id === value).pro.split(" ")[0]}`}
-
-                                            />
-                                        ))}
-                                    </ChipsWrapper>
-                                )}
-                            >
-                                {teams.map((team, index) => (
-                                    <MenuItem key={index} value={team._id}>
-                                        <Checkbox checked={formData.teams.indexOf(team._id) > -1} />
-                                        <ListItemText primary={`${team.celeb.split(" ")[0]} & ${team.pro.split(" ")[0]}`} />
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl1>
-
-                        <FormControl1 required margin="dense">
-                            <InputLabel id="style">Style</InputLabel>
-                            <Select
-                                labelId="style"
-                                name="style"
-                                value={formData.style}
-                                onChange={handleChange}
-                            >
-                                {styles.map((style, index) => (
-                                    <MenuItem key={index} value={style}>{style}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl1>
-
-                        <Wrapper>
-                            <FormControl3 margin="dense" required >
-                                <InputLabel id="season">Season</InputLabel>
-                                <Select
-                                    labelId="season"
-                                    name="season"
-                                    value={formData.season}
-                                    onChange={handleChange}
-                                >
-                                    {seasons.map((season, index) => (
-                                        <MenuItem key={index} value={season}>{season}</MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl3>
-
-                            <FormControl3 margin="dense" required >
-                                <InputLabel id="week">Week</InputLabel>
-                                <Select
-                                    labelId="week"
-                                    name="week"
-                                    value={formData.week}
-                                    onChange={handleChange}
-                                >
-                                    {weeks.map((week, index) => (
-                                        <MenuItem key={index} value={week}>{week}</MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl3>
-
-                            <FormControl3 margin="dense" >
-                                <InputLabel id="night">Night</InputLabel>
-                                <Select
-                                    labelId="night"
-                                    name="night"
-                                    value={formData.night}
-                                    onChange={handleChange}
-                                >
-                                    <MenuItem key={0} value=''>Not applicable</MenuItem>
-                                    <MenuItem key={1} value={1}>1</MenuItem>
-                                    <MenuItem key={2} value={2}>2</MenuItem>
-                                </Select>
-                            </FormControl3>
-                        </Wrapper>
-
-                        <AddJudge variant="outlined" onClick={addScore}>Add Judge & Score</AddJudge>
-
-                        {formData.scores.map((score, parentIndex) => {
-                            return (
-                                <Wrapper key={parentIndex}>
-                                    <FormControlJudge required margin="dense" >
-                                        <InputLabel id="judge">Judge</InputLabel>
-                                        <Select
-                                            labelId="judge"
-                                            name="judge"
-                                            value={score.judge}
-                                            onChange={handleChange}
-                                        >
-                                            <ListSubheader>Main Judges</ListSubheader>
-                                            {judges.map((judge, index) => (
-                                                <MenuItem id={parentIndex} key={index} value={judge}>{judge}</MenuItem>
-                                            ))}
-                                            <ListSubheader>Guest Judges</ListSubheader>
-                                            {guestJudges.map((judge, index) => (
-                                                <MenuItem id={parentIndex} key={index} value={judge}>{judge}</MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControlJudge>
-
-                                    <FormControlScore required margin="dense" >
-                                        <InputLabel id="score">Score</InputLabel>
-                                        <Select
-                                            labelId="score"
-                                            name="score"
-                                            value={score.score}
-                                            onChange={handleChange}
-                                        >
-                                            {scores.map((score, index) => (
-                                                <MenuItem id={parentIndex} key={index} value={score}>{score}</MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControlScore>
-
-                                    <RemoveJudge id={parentIndex} onClick={removeScore} />
-                                </Wrapper>
-                            )
-                        })}
-
-                        <TextField1
-                            margin="dense"
-                            name="songTitle"
-                            label="Song Title"
-                            type="text"
-                            value={formData.songTitle}
-                            onChange={handleChange}
-                        />
-                        <TextField1
-                            margin="dense"
-                            name="songArtist"
-                            label="Song Artist"
-                            type="text"
-                            value={formData.songArtist}
-                            onChange={handleChange}
-                        />
-
-                        <Wrapper>
-                            <FormControl2 margin="dense" >
-                                <InputLabel id="theme">Theme</InputLabel>
-                                <Select
-                                    labelId="theme"
-                                    name="theme"
-                                    value={formData.theme}
-                                    onChange={handleChange}
-                                >
-                                    {themes.map((theme, index) => (
-                                        <MenuItem key={index} value={theme}>{theme}</MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl2>
-
-                            <FormControl2 margin="dense" >
-                                <InputLabel id="isPerfect">Perfect Score?</InputLabel>
-                                <Select
-                                    labelId="isPerfect"
-                                    name="isPerfect"
-                                    value={formData.isPerfect}
-                                    onChange={handleChange}
-                                >
-                                    <MenuItem key={1} value={true}>Yes</MenuItem>
-                                    <MenuItem key={2} value={false}>No</MenuItem>
-                                </Select>
-                            </FormControl2>
-                        </Wrapper>
-
-                        <Wrapper>
-                            <FormControl2 >
-                                <InputLabel id="ro">Running Order</InputLabel>
-                                <Select
-                                    labelId="ro"
-                                    name="runningOrder"
-                                    value={formData.runningOrder}
-                                    onChange={handleChange}
-                                >
-                                    {placements.map((placement, index) => (
-                                        <MenuItem key={index} value={placement}>{placement}</MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl2>
-
-                            <TextField2
-                                name="link"
-                                label="Link"
-                                type="text"
-                                value={formData.link}
-                                onChange={handleChange}
+                    <HiddenInput
+                        type="file"
+                        accept=".jpeg, .jpg, .png"
+                        onChange={handleFile}
+                        id="file"
+                    />
+                    <Label htmlFor="file">
+                        <AddAPhotoIcon />
+                    </Label>
+                    <FileInput>
+                        {fileData != null && <div>
+                            <AvatarEditor
+                                image={fileData}
+                                width={200}
+                                height={200}
+                                borderRadius={100}
+                                border={0}
+                                scale={scaleValue}
+                                ref={setEditorRef}
+                                className={classes.editor}
                             />
-                        </Wrapper>
+                            <Slider className={classes.slider} value={scaleValue} onChange={handleScale} min={1} max={5} step={0.01} />
+                        </div>}
+                    </FileInput>
 
-                        <TextField1
-                            margin="dense"
-                            name="extra"
-                            label="Extra Notes"
-                            type="text"
-                            value={formData.extra}
+                    <FormControl1 required margin="dense">
+                        <InputLabel id="teams">Team(s)</InputLabel>
+                        <Select
+                            labelId="teams"
+                            id="teams"
+                            name="teams"
+                            multiple
+                            value={formData.teams}
                             onChange={handleChange}
-                            multiline
-                        />
+                            input={<Input id="select-multiple-chip" />}
+                            // renderValue={(selected) => selected.join(', ')}
+                            renderValue={(selected) => (
+                                <ChipsWrapper >
+                                    {selected.map((value) => (
+                                        <IndividualChip
+                                            key={value}
+                                            label={`${teams.find((team) => team._id === value).celeb.split(" ")[0]} & ${teams.find((team) => team._id === value).pro.split(" ")[0]}`}
 
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose} color="primary">
-                            Cancel
-                        </Button>
-                        <Button onClick={handleSubmit} color="primary">
-                            Update
-                        </Button>
-                        <Button onClick={handleDelete} color="secondary">
-                            Delete
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-            </div>
-        </StylesProvider>
+                                        />
+                                    ))}
+                                </ChipsWrapper>
+                            )}
+                        >
+                            {teams.map((team, index) => (
+                                <MenuItem key={index} value={team._id}>
+                                    <Checkbox checked={formData.teams.indexOf(team._id) > -1} />
+                                    <ListItemText primary={`${team.celeb.split(" ")[0]} & ${team.pro.split(" ")[0]}`} />
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl1>
+
+                    <FormControl1 required margin="dense">
+                        <InputLabel id="style">Style</InputLabel>
+                        <Select
+                            labelId="style"
+                            name="style"
+                            value={formData.style}
+                            onChange={handleChange}
+                        >
+                            {styles.map((style, index) => (
+                                <MenuItem key={index} value={style}>{style}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl1>
+
+                    <Wrapper>
+                        <FormControl3 margin="dense" required >
+                            <InputLabel id="season">Season</InputLabel>
+                            <Select
+                                labelId="season"
+                                name="season"
+                                value={formData.season}
+                                onChange={handleChange}
+                            >
+                                {seasons.map((season, index) => (
+                                    <MenuItem key={index} value={season}>{season}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl3>
+
+                        <FormControl3 margin="dense" required >
+                            <InputLabel id="week">Week</InputLabel>
+                            <Select
+                                labelId="week"
+                                name="week"
+                                value={formData.week}
+                                onChange={handleChange}
+                            >
+                                {weeks.map((week, index) => (
+                                    <MenuItem key={index} value={week}>{week}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl3>
+
+                        <FormControl3 margin="dense" >
+                            <InputLabel id="night">Night</InputLabel>
+                            <Select
+                                labelId="night"
+                                name="night"
+                                value={formData.night}
+                                onChange={handleChange}
+                            >
+                                <MenuItem key={0} value=''>Not applicable</MenuItem>
+                                <MenuItem key={1} value={1}>1</MenuItem>
+                                <MenuItem key={2} value={2}>2</MenuItem>
+                            </Select>
+                        </FormControl3>
+                    </Wrapper>
+
+                    <AddJudge variant="outlined" onClick={addScore}>Add Judge & Score</AddJudge>
+
+                    {formData.scores.map((score, parentIndex) => {
+                        return (
+                            <Wrapper key={parentIndex}>
+                                <FormControlJudge required margin="dense" >
+                                    <InputLabel id="judge">Judge</InputLabel>
+                                    <Select
+                                        labelId="judge"
+                                        name="judge"
+                                        value={score.judge}
+                                        onChange={handleChange}
+                                    >
+                                        <ListSubheader>Main Judges</ListSubheader>
+                                        {judges.map((judge, index) => (
+                                            <MenuItem id={parentIndex} key={index} value={judge}>{judge}</MenuItem>
+                                        ))}
+                                        <ListSubheader>Guest Judges</ListSubheader>
+                                        {guestJudges.map((judge, index) => (
+                                            <MenuItem id={parentIndex} key={index} value={judge}>{judge}</MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControlJudge>
+
+                                <FormControlScore required margin="dense" >
+                                    <InputLabel id="score">Score</InputLabel>
+                                    <Select
+                                        labelId="score"
+                                        name="score"
+                                        value={score.score}
+                                        onChange={handleChange}
+                                    >
+                                        {scores.map((score, index) => (
+                                            <MenuItem id={parentIndex} key={index} value={score}>{score}</MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControlScore>
+
+                                <RemoveJudge id={parentIndex} onClick={removeScore} />
+                            </Wrapper>
+                        )
+                    })}
+
+                    <TextField1
+                        margin="dense"
+                        name="songTitle"
+                        label="Song Title"
+                        type="text"
+                        value={formData.songTitle}
+                        onChange={handleChange}
+                    />
+                    <TextField1
+                        margin="dense"
+                        name="songArtist"
+                        label="Song Artist"
+                        type="text"
+                        value={formData.songArtist}
+                        onChange={handleChange}
+                    />
+
+                    <Wrapper>
+                        <FormControl2 margin="dense" >
+                            <InputLabel id="theme">Theme</InputLabel>
+                            <Select
+                                labelId="theme"
+                                name="theme"
+                                value={formData.theme}
+                                onChange={handleChange}
+                            >
+                                {themes.map((theme, index) => (
+                                    <MenuItem key={index} value={theme}>{theme}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl2>
+
+                        <FormControl2 margin="dense" >
+                            <InputLabel id="isPerfect">Perfect Score?</InputLabel>
+                            <Select
+                                labelId="isPerfect"
+                                name="isPerfect"
+                                value={formData.isPerfect}
+                                onChange={handleChange}
+                            >
+                                <MenuItem key={1} value={true}>Yes</MenuItem>
+                                <MenuItem key={2} value={false}>No</MenuItem>
+                            </Select>
+                        </FormControl2>
+                    </Wrapper>
+
+                    <Wrapper>
+                        <FormControl2 margin="dense">
+                            <InputLabel id="ro">Running Order</InputLabel>
+                            <Select
+                                labelId="ro"
+                                name="runningOrder"
+                                value={formData.runningOrder}
+                                onChange={handleChange}
+                            >
+                                {placements.map((placement, index) => (
+                                    <MenuItem key={index} value={placement}>{placement}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl2>
+
+                        <TextField2
+                            margin="dense"
+                            name="link"
+                            label="Link"
+                            type="text"
+                            value={formData.link}
+                            onChange={handleChange}
+                        />
+                    </Wrapper>
+
+                    <TextField1
+                        margin="dense"
+                        name="extra"
+                        label="Extra Notes"
+                        type="text"
+                        value={formData.extra}
+                        onChange={handleChange}
+                        multiline
+                    />
+
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={handleSubmit} color="primary">
+                        Update
+                    </Button>
+                    <Button onClick={handleDelete} color="secondary">
+                        Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </div>
     )
 }
 

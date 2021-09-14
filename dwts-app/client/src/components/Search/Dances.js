@@ -12,6 +12,7 @@ import DanceAdd from '../Dances/DanceAdd';
 import responsive from '../shared/responsive';
 import { ResultsContainer } from '../shared/shared.js';
 import CheckJWT from '../shared/logout';
+import { fetchTeams } from '../../actions/teams';
 
 
 const useStyles = makeStyles({
@@ -29,12 +30,14 @@ function Dances(props) {
     const dispatch = useDispatch();
     const dances = useSelector(state => state.dances.dances);
     const loading = useSelector(state => state.dances.loading);
+    const teams = useSelector(state => state.teams.teams);
 
     const arr = []
 
     useEffect(() => {
         const input = { search: props.search };
         dispatch(searchDances(input));
+        dispatch(fetchTeams());
     }, [dispatch, props]);
 
     if (Array.isArray(dances)) {
@@ -60,7 +63,7 @@ function Dances(props) {
             </AdminAdd>
 
 
-            {loading || !Array.isArray(dances) ? <CircularProgress className={classes.progress} /> :
+            {loading || !Array.isArray(dances) || !Array.isArray(teams) ? <CircularProgress className={classes.progress} /> :
                 <div>
                 {arr.map((item, index) => ( 
                     <ContentContainer >
@@ -73,7 +76,10 @@ function Dances(props) {
                                 .map((dance, index) => (
 
                                     <Link key={index} to={{ pathname: `/dances/${dance._id}` }} style={{ textDecoration: "none" }} >
-                                        <DancesPreview dance={dance} />
+                                        <DancesPreview 
+                                            dance={dance}
+                                            teams={teams}
+                                             />
                                     </Link>
                                 ))}
                         </Carousel>

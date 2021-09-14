@@ -2,7 +2,16 @@
 import styled from "styled-components";
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, makeStyles, FormControl, InputLabel, Select, MenuItem, CircularProgress, FormControlLabel, Checkbox, ListItemText, Input, Chip, ListSubheader } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
+import AddIcon from '@material-ui/icons/Add';
 import SettingsIcon from '@material-ui/icons/Settings';
+
+export const AddButton = styled(Button)`
+    min-height: 10px;
+    min-width: 10px;
+    max-height: 10px;
+    max-width: 10px;
+    color: grey;
+`;
 
 export const OpenSettings = styled(SettingsIcon)`
     color: lightgrey;
