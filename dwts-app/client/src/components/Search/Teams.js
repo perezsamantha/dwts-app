@@ -11,6 +11,7 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
 import responsive from '../shared/responsive';
+import { fetchPros } from '../../actions/pros';
 
 const useStyles = makeStyles({
     root: {
@@ -35,14 +36,14 @@ function Teams(props) {
 
     const teams = useSelector(state => state.teams.teams);
     const loading = useSelector(state => state.teams.loading);
+    const pros = useSelector(state => state.pros.pros)
     
     const arr = [];
 
     useEffect(() => {
         const input = { search: props.search };
         dispatch(searchTeams(input));
-        //props.backgroundScroll(show);
-        //setLoading(false);
+        dispatch(fetchPros());
     }, [dispatch, props]);
 
     // bug: following functions load before teams is correctly updated
@@ -72,7 +73,7 @@ function Teams(props) {
                 <TeamAdd />
             </AdminAdd>
 
-            {(loading) ? <CircularProgress className={classes.progress} /> :
+            {(loading || !Array.isArray(pros)) ? <CircularProgress className={classes.progress} /> :
                 // <ContentContainer>
                 //     <Grid container justify="flex-start" className={classes.root} spacing={2}>
                 //         {teams.map((team, index) => (
@@ -99,7 +100,7 @@ function Teams(props) {
                                     .map((team, index) => (
 
                                         <Link key={index} to={{ pathname: `/teams/${team._id}` }} style={{ textDecoration: "none" }} >
-                                            <TeamsPreview team={team} />
+                                            <TeamsPreview team={team} pro={pros.find(pro => pro._id === team.pro)} />
                                         </Link>
                                     ))}
                             </Carousel>

@@ -9,13 +9,12 @@ var proSchema = new Schema({
     firstSeason: { type: Number },
     coverPic: { type: String },
     birthday: { type: Date },
-    //numPerfects: { type: Number, required: false },
-    socials: {
+    proSocials: {
         twitter: String,
         instagram: String,
         facebook: String
     },
-    //
+    pictures: { type: [String] },
     likes: { type: [String], default: [] },
 }, {
     timestamps: true,

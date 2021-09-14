@@ -51,11 +51,53 @@ export const updatePro = (id, pro) => async (dispatch) => {
     }
 }
 
-export const updateProPic = (id, image) => async (dispatch) => {
+export const setProPic = (id, image) => async (dispatch) => {
     try {
-        const { data } = await api.updateProPic(id, image);
+        const { data } = await api.setProPic(id, image);
 
         dispatch({ type: actionType.PROUPDATE, payload: data });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const deletePro = (id) => async (dispatch) => {
+    try {
+        await await api.deletePro(id);
+
+        dispatch({ type: actionType.PRODELETE, payload: id });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const addProPic = (id, image) => async (dispatch) => {
+    try {
+        const { data } = await api.addProPic(id, image);
+
+        dispatch({ type: actionType.DANCEUPDATE, payload: data });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const likePro = (id) => async (dispatch) => {
+    const user = JSON.parse(localStorage.getItem('profile'));
+
+    try {
+        const { data } = await api.likePro(id, user?.token);
+        
+        dispatch({ type: actionType.PROLIKE, payload: data });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getFavoritePros = () => async (dispatch) => {
+    try {
+        const { data } = await api.getFavoritePros();
+
+        dispatch({ type: actionType.PROSEARCH, payload: data });
     } catch (error) {
         console.log(error);
     }

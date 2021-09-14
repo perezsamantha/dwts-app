@@ -167,7 +167,7 @@ function DanceSettings(props) {
                                     {selected.map((value) => (
                                         <IndividualChip
                                             key={value}
-                                            label={`${teams.find((team) => team._id === value).celeb.split(" ")[0]} & ${teams.find((team) => team._id === value).pro.split(" ")[0]}`}
+                                            label={`${teams.find((team) => team._id === value).celeb.split(" ")[0]} & ${pros.find(pro => pro._id === teams.find((team) => team._id === value).pro).name.split(" ")[0]}`}
 
                                         />
                                     ))}
@@ -177,7 +177,7 @@ function DanceSettings(props) {
                             {teams.map((team, index) => (
                                 <MenuItem key={index} value={team._id}>
                                     <Checkbox checked={formData.teams.indexOf(team._id) > -1} />
-                                    <ListItemText primary={`${team.celeb.split(" ")[0]} & ${team.pro.split(" ")[0]}`} />
+                                    <ListItemText primary={`${team.celeb.split(" ")[0]} & ${pros.find(pro => pro._id === team.pro).name.split(" ")[0]}`} />
                                 </MenuItem>
                             ))}
                         </Select>

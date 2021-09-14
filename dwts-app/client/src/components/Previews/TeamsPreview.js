@@ -16,17 +16,16 @@ function TeamsPreview(props) {
     //const classes = useStyles();
 
     const celebFirst = props.team.celeb.split(" ");
-    const proFirst = props.team.pro.split(" ");
 
     return (
         props.preview === "dance" ?
             <Preview>
-                <SmallPhoto src={props.team.coverPic} />
-                <SmallText>{celebFirst[0]} & {proFirst[0]}</SmallText>
+                <SmallPhoto src={props.team.coverPic ? props.team.coverPic : "/defaultPic.jpeg"} />
+                <SmallText>{celebFirst[0]} & {props.pro.name.split(" ")[0]}</SmallText>
             </Preview> : 
             <Preview>
-                <PreviewPhoto src={props.team.coverPic} />
-                <Names>{celebFirst[0]} & {proFirst[0]}</Names>
+                <PreviewPhoto src={props.team.coverPic ? props.team.coverPic : "/defaultPic.jpeg"} />
+                <Names>{celebFirst[0]} & {props.pro.name.split(" ")[0]}</Names>
                 <Details>Season {props.team.season} &#8226; 1st Place</Details>
             </Preview>
     )

@@ -22,6 +22,7 @@ import CheckJWT from '../shared/logout';
 
 import TeamsPreview from '../Previews/TeamsPreview';
 import DanceSettings from '../Dances/DanceSettings';
+import { fetchPros } from '../../actions/pros';
 
 
 const useStyles = makeStyles({
@@ -74,6 +75,7 @@ function DanceCard() {
     const dance = useSelector(state => state.dances.dances);
     const loading = useSelector(state => state.dances.loading);
     const teams = useSelector(state => state.teams.teams);
+    const pros = useSelector(state => state.pros.pros);
     const { id } = useParams();
 
     const [picData, setPicData] = useState(null);
@@ -113,7 +115,8 @@ function DanceCard() {
 
     useEffect(() => {
         dispatch(findDanceById(id));
-        dispatch(fetchTeams())
+        dispatch(fetchTeams());
+        dispatch(fetchPros());
         setScaleValue(1);
         setPicData(null);
     }, [dispatch, id])
@@ -133,7 +136,7 @@ function DanceCard() {
 
     return (
 
-        (loading || Array.isArray(dance)) ? <CircularProgress className={classes.progress} /> :
+        (loading || Array.isArray(dance)) || !Array.isArray(pros) ? <CircularProgress className={classes.progress} /> :
             <Container>
                 <Header>
                     <Button className={classes.back} onClick={() => navigate(-1)}>
@@ -156,7 +159,7 @@ function DanceCard() {
                                     .map((team, index) => (
                                         <Grid key={index} item>
                                             <Link key={index} to={{ pathname: `/teams/${team._id}` }} style={{ textDecoration: "none" }} >
-                                                <TeamsPreview team={team} preview="dance" />
+                                                <TeamsPreview team={team} preview="dance" pro={pros.find(pro => pro._id === team.pro)} />
                                             </Link>
                                         </Grid>
                                     ))}

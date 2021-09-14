@@ -23,6 +23,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import { Container, TeamName } from '../shared/shared.js'
 import CheckJWT from '../shared/logout';
 import { searchDances } from '../../actions/dances';
+import { fetchPros, findProById } from '../../actions/pros';
 
 const useStyles = makeStyles({
     avi: {
@@ -80,6 +81,7 @@ function TeamCard(props) {
     const team = useSelector(state => state.teams.teams);
     const loading = useSelector(state => state.teams.loading);
     const dances = useSelector(state => state.dances.dances);
+    const pros = useSelector(state => state.pros.pros)
     const { id } = useParams();
 
     const [picData, setPicData] = useState(null);
@@ -121,9 +123,16 @@ function TeamCard(props) {
         dispatch(findTeamById(id));
         const input = { search: id };
         dispatch(searchDances(input));
+        dispatch(fetchPros());
         setScaleValue(1);
         setPicData(null);
     }, [dispatch, id])
+
+    let pro = null;
+
+    if (Array.isArray(pros) && team !== null && !Array.isArray(team)) {
+        pro = pros.find(pro => pro._id === team.pro);
+    }
 
     const Likes = () => {
         if (team.likes?.length > 0) {
@@ -140,7 +149,7 @@ function TeamCard(props) {
 
     return (
 
-        (loading || Array.isArray(team) || !Array.isArray(dances)) ? <CircularProgress className={classes.progress} /> :
+        (loading || Array.isArray(team) || !Array.isArray(dances)) || !Array.isArray(pros) ? <CircularProgress className={classes.progress} /> :
             <Container>
                 <Header>
                     <Button className={classes.back} onClick={() => navigate(-1)}>
@@ -157,7 +166,7 @@ function TeamCard(props) {
 
                     
                     
-                <TeamName>{team.celeb} & {team.pro}</TeamName>
+                <TeamName>{team.celeb} & {pro.name}</TeamName>
                 {team.teamName && <TeamName>{team.teamName}</TeamName>}
                 <Season>Season {team.season}</Season>
                 {team.placement && <Placement>{team.placement} Place</Placement>}
@@ -187,18 +196,21 @@ function TeamCard(props) {
                         <InstagramIcon className={classes.icons} />
                         <SocialsRow>
                             {team.celebSocials?.instagram && <SocialsText href={'https://www.instagram.com/' + team.celebSocials.instagram}>@{team.celebSocials.instagram}</SocialsText>}
+                            {pro.proSocials?.instagram && <SocialsText href={'https://www.instagram.com/' + pro.proSocials.instagram}>@{pro.proSocials.instagram}</SocialsText>}
                         </SocialsRow>
                     </Grid>
                     <Grid item>
                         <TwitterIcon className={classes.icons} />
                         <SocialsRow>
                             {team.celebSocials?.twitter && <SocialsText href={'https://www.twitter.com/' + team.celebSocials.twitter}>@{team.celebSocials.twitter}</SocialsText>}
+                            {pro.proSocials?.twitter && <SocialsText href={'https://www.twitter.com/' + pro.proSocials.twitter}>@{pro.proSocials.twitter}</SocialsText>}
                         </SocialsRow>
                     </Grid>
                     <Grid item>
                         <FacebookIcon className={classes.icons} />
                         <SocialsRow>
                             {team.celebSocials?.facebook && <SocialsText href={'https://www.facebook.com/' + team.celebSocials.facebook}>@{team.celebSocials.facebook}</SocialsText>}
+                            {pro.proSocials?.facebook && <SocialsText href={'https://www.facebook.com/' + pro.proSocials.facebook}>@{pro.proSocials.facebook}</SocialsText>}
                         </SocialsRow>
                     </Grid>
                 </Grid>

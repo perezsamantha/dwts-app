@@ -4,6 +4,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, m
 import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
 import SettingsIcon from '@material-ui/icons/Settings';
+import { KeyboardDatePicker } from "@material-ui/pickers";
 
 export const AddButton = styled(Button)`
     min-height: 10px;
@@ -72,4 +73,9 @@ export const ChipsWrapper = styled.div`
 
 export const IndividualChip = styled(Chip)`
     margin-right: 2px;
+`;
+
+export const KeyboardDatePicker2 = styled(KeyboardDatePicker)`
+    width: 47%;
+    margin-right: 2%;
 `;

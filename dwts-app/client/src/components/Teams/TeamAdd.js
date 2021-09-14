@@ -47,7 +47,6 @@ function TeamAdd() {
         } else {
             setFormData({ ...formData, [e.target.name]: e.target.value });
         }
-        //setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const handleOpen = () => {
@@ -93,7 +92,7 @@ function TeamAdd() {
                             onChange={handleChange}
                         >
                             {pros.map((pro, index) => (
-                                <MenuItem key={index} value={pro.name}>{pro.name}</MenuItem>
+                                <MenuItem key={index} value={pro._id}>{pro.name}</MenuItem>
                             ))}
                         </Select>
                     </FormControl2>

@@ -8,6 +8,7 @@ import { findProById } from "../../actions/pros";
 
 import { Container, TeamName } from '../shared/shared.js'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ProSettings from "../Pros/ProSettings";
 
 const useStyles = makeStyles({
     avi: {
@@ -57,6 +58,7 @@ function ProCard() {
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem('profile'));
     const pro = useSelector(state => state.pros.pros);
+    const loading = useSelector(state => state.pros.loading);
     const { id } = useParams();
 
     useEffect(() => {
@@ -64,12 +66,13 @@ function ProCard() {
     }, [dispatch, id])
 
     return (
-        (Array.isArray(pro)) ? <div>insert loading bar</div> :
+        (loading || Array.isArray(pro) || pro === null) ? <div>insert loading bar</div> :
             <Container>
                 <Button className={classes.back} onClick={() => navigate(-1)}>
                     <ArrowBackIosIcon className={classes.icons} />
                 </Button>
                 <Avatar className={classes.avi} alt={pro.name} src={pro.coverPic} />
+                {user.result.role === "admin" && <ProSettings id={pro._id} />}
             </Container>
     )
 }

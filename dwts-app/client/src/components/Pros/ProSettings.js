@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, makeStyles, MenuItem, InputLabel, Select } from '@material-ui/core';
 
-import { updateTeam, deleteTeam, updatePic } from '../../actions/teams';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AvatarEditor from 'react-avatar-editor';
 import { Slider } from '@material-ui/core';
 import styled from 'styled-components';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
-import { findTeamById } from '../../actions/teams';
 import { useNavigate } from 'react-router';
-import { FormControl2, TextField1, TextField2, OpenSettings } from '../shared/muiStyles';
-import { seasons, placements } from '../../constants/dropdowns';
-import { fetchPros } from '../../actions/pros';
+import { KeyboardDatePicker2, TextField1, TextField2, OpenSettings } from '../shared/muiStyles';
+import { deletePro, fetchPros, findProById, setProPic, updatePro } from '../../actions/pros';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import { HiddenInput, Label, FileInput } from '../shared/shared';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -32,13 +32,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function TeamSettings(props) {
+function ProSettings(props) {
     const classes = useStyles();
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
-    const team = useSelector(state => state.teams.teams);
-    const pros = useSelector(state => state.pros.pros);
-    const [formData, setFormData] = useState(team);
+    const pro = useSelector(state => state.pros.pros);
+    const [formData, setFormData] = useState(pro);
     const [fileData, setFileData] = useState(null);
     const [scaleValue, setScaleValue] = useState(10);
     const id = formData._id;
@@ -47,15 +46,19 @@ function TeamSettings(props) {
 
     const handleChange = (e) => {
         if (["instagram", "twitter", "facebook"].includes(e.target.name)) {
-            setFormData({ ...formData, celebSocials: { ...formData.celebSocials, [e.target.name]: e.target.value  } })
+            setFormData({ ...formData, proSocials: { ...formData.proSocials, [e.target.name]: e.target.value  } })
         } else {
             setFormData({ ...formData, [e.target.name]: e.target.value });
         }
     }
 
+    const handleBirthday = (date) => {
+        setFormData({ ...formData, birthday: date })
+    }
+
     const handleOpen = () => {
-        dispatch(findTeamById(props.id));
-        setFormData(team);
+        dispatch(findProById(props.id));
+        setFormData(pro);
         setOpen(true);
 
     };
@@ -74,11 +77,11 @@ function TeamSettings(props) {
 
             canvas.toBlob(function (blob) {
                 data.append("coverPic", blob, `${Date.now()}-${fileData.name}`);
-                dispatch(updatePic(id, data));
+                dispatch(setProPic(id, data));
             })
         }
 
-        dispatch(updateTeam(id, formData));
+        dispatch(updatePro(id, formData));
         handleClose();
     }
 
@@ -90,7 +93,7 @@ function TeamSettings(props) {
 
     const handleDelete = () => {
 
-        dispatch(deleteTeam(id));
+        dispatch(deletePro(id));
         handleClose();
         navigate(-1);
     }
@@ -101,7 +104,6 @@ function TeamSettings(props) {
     }
 
     useEffect(() => {
-        dispatch(fetchPros());
         setScaleValue(1);
         setFileData(null);
     }, []);
@@ -113,12 +115,12 @@ function TeamSettings(props) {
     }
 
     return (
-        !Array.isArray(pros) ? <div>loading bar</div> : <div>
+         <div><MuiPickersUtilsProvider utils={DateFnsUtils}>
             <Button onClick={handleOpen}>
                 <OpenSettings />
             </Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle>Edit Team</DialogTitle>
+                <DialogTitle>Edit Pro</DialogTitle>
                 <DialogContent className={classes.root} >
 
                     <HiddenInput
@@ -148,89 +150,49 @@ function TeamSettings(props) {
 
                     <TextField2
                         margin="dense"
-                        name="celeb"
-                        label="Celebrity"
+                        name="name"
+                        label="Name"
                         type="text"
-                        value={formData.celeb}
+                        value={formData.name}
                         onChange={handleChange}
-                        required
                     />
 
-                    <FormControl2 margin="dense" required>
-                        <InputLabel id="pro">Professional</InputLabel>
-                        <Select
-                            labelId="pro"
-                            name="pro"
-                            value={formData.pro}
-                            onChange={handleChange}
-                        >
-                            {pros.map((pro, index) => (
-                                <MenuItem key={index} value={pro._id}>{pro.name}</MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl2>
-
-                    <FormControl2 margin="dense" required >
-                        <InputLabel id="season">Season</InputLabel>
-                        <Select
-                            labelId="season"
-                            name="season"
-                            value={formData.season}
-                            onChange={handleChange}
-                        >
-                            {seasons.map((season, index) => (
-                                <MenuItem key={index} value={season}>{season}</MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl2>
-
-                    <FormControl2 margin="dense" >
-                        <InputLabel id="placement">Placement</InputLabel>
-                        <Select
-                            labelId="placement"
-                            name="placement"
-                            value={formData.placement}
-                            onChange={handleChange}
-                        >
-                            {placements.map((placement, index) => (
-                                <MenuItem key={index} value={placement}>{placement}</MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl2>
-
-                    <TextField1
+                    <KeyboardDatePicker2
                         margin="dense"
-                        name="teamName"
-                        label="Team Name"
-                        type="text"
-                        value={formData.teamName}
-                        onChange={handleChange}
+                        label="birthday"
+                        name="Birthday"
+                        format="MM/dd/yyyy"
+                        value={formData.birthday}
+                        onChange={handleBirthday}
+                        KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                        }}
                     />
 
                     <TextField1
                         margin="dense"
                         name="instagram"
-                        label="Celeb Instagram (Username)"
+                        label="Pro Instagram (Username)"
                         type="text"
-                        value={formData.celebSocials?.instagram}
+                        value={formData.proSocials?.instagram}
                         onChange={handleChange}
                     />
                     
                     <TextField1
                         margin="dense"
                         name="twitter"
-                        label="Celeb Twitter (Username)"
+                        label="Pro Twitter (Username)"
                         type="text"
-                        value={formData.celebSocials?.twitter}
+                        value={formData.proSocials?.twitter}
                         onChange={handleChange}
                     />
 
                     <TextField1
                         margin="dense"
                         name="facebook"
-                        label="Celeb Facebook (Username)"
+                        label="Pro Facebook (Username)"
                         type="text"
-                        value={formData.celebSocials?.facebook}
+                        value={formData.proSocials?.facebook}
                         onChange={handleChange}
                     />
                 </DialogContent>
@@ -246,39 +208,9 @@ function TeamSettings(props) {
                     </Button>
                 </DialogActions>
             </Dialog>
+            </MuiPickersUtilsProvider>
         </div>
     )
 }
 
-const HiddenInput = styled.input`
-    opacity: 0;
-    width: 0.1px;
-    height: 0.1px;
-    position: absolute;
-`;
-
-const Label = styled.label`
-    display: block;
-    position: relative;
-    width: fit-content;
-    border-radius: 25px;
-    background: linear-gradient(99deg, rgba(198,161,67,1) 0%, rgba(232,216,136,1) 55%, rgba(198,161,67,1) 100%);
-    box-shadow: 0 4px 7px rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform .2s ease-out;
-    padding: 10px;
-    overflow: hidden;
-    font-size: 1.3vh;
-`;
-
-const FileInput = styled.div`
-    display: flex;
-    flex-direction: column;
-`;
-
-export default TeamSettings;
+export default ProSettings;

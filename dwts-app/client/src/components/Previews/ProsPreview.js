@@ -1,34 +1,14 @@
 import React from "react";
-import styled from "styled-components";
+import { Names, Preview, PreviewPhoto } from "../shared/shared";
 
 function ProsPreview(props) {
 
     return (
         <Preview>
-            <CoverPhoto src={props.pro.coverPic} />
-            <Text>{props.pro.name}</Text>
+            <PreviewPhoto src={props.pro.coverPic ? props.pro.coverPic : "/defaultPic.jpeg"} />
+            <Names>{props.pro.name}</Names>
         </Preview>
     )
 }
-
-const Preview = styled.div`
-    width: 100%;
-`;
-
-const CoverPhoto = styled.img`
-    width: 125px;
-    height: 125px;
-    border-radius: 10px;
-`;
-
-const Text = styled.h3`
-    font-size: 12px;
-    font-weight: 500;
-    color: rgba(0, 0, 0, 0.7);
-    margin: 1px;
-    padding: 0 5px;
-    letter-spacing: 0.05em;
-    color: white;
-`;
 
 export default ProsPreview;
