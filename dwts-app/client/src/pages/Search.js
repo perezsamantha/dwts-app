@@ -8,18 +8,23 @@ import Fans from '../components/Search/Fans';
 import Pros from '../components/Search/Pros';
 
 import { makeStyles } from '@material-ui/core/styles'
-import { Paper, Tab, Tabs } from '@material-ui/core';
+import { Chip, Paper, Tab, Tabs } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
+import FilterListIcon from '@material-ui/icons/FilterList';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
+import CheckIcon from '@material-ui/icons/Check';
+
+import { styles } from '../constants/dropdowns';
 
 const useStyles = makeStyles({
     root: {
-        flexGrow: 1,
-        position: "absolute",
-        bottom: 0,
+        //flexGrow: 1,
         backgroundColor: "transparent",
         width: "100%",
         boxShadow: "none",
+        position: "relative"
     },
     search: {
         backgroundColor: "black",
@@ -46,7 +51,34 @@ const useStyles = makeStyles({
         borderRadius: "10px"
     },
     icon: {
-        margin: "8px",
+        width: "10%",
+        margin: "auto"
+    },
+    filterIcon: {
+        color: "white",
+        width: "10%",
+        margin: "auto",
+        cursor: "pointer"
+    },
+    chip: {
+        backgroundColor: "white",
+        margin: "2px",
+        '&:active, &:hover': {
+            backgroundColor: "rgb(243,229,171)"
+        },
+        '&:focus': {
+            backgroundColor: "white"
+        }
+    },   
+    selectedChip: {
+        backgroundColor: "rgb(243,229,171)",
+        '&:focus, &:hover': {
+            backgroundColor: "rgb(243,229,171)"
+        }
+    },
+    keyboardIcon: {
+        margin: "auto 0",
+        color: "lightgrey"
     },
 });
 
@@ -57,6 +89,10 @@ function Search(props) {
     const [searchVal, setSearchVal] = useState("");
     const [key, setKey] = useState(1);
     const [placeholder, setPlaceholder] = useState("");
+    const [showFilters, setShowFilters] = useState(false);
+    const [showStyleFilters, setShowStyleFilters] = useState(false);
+    const [styleFilters, setStyleFilters] = useState([]);
+    //let styleFilters = [];
     localStorage.setItem('parentPath', window.location.pathname);
 
     const placeholderText = (value) => {
@@ -81,6 +117,18 @@ function Search(props) {
         setKey(key + 1);
     }
 
+    const handleStyleFilters = (e) => {
+        const style = e.target.innerHTML;
+        const index = styleFilters.indexOf(style);
+
+        if (index > -1) {
+            setStyleFilters(styleFilters.filter((style, i) => i !== index));
+        } else {
+            setStyleFilters(styleFilters => [...styleFilters, style]);
+        }
+
+    }
+
     useEffect(() => {
         placeholderText(pathname);
     }, [])
@@ -89,10 +137,28 @@ function Search(props) {
         <Page >
             <SearchContainer>
                 <SearchTitle>Search</SearchTitle>
-                <SearchBox >
-                    <SearchIcon className={classes.icon}/>
-                    <SearchInput type="search" placeholder={placeholder} value={searchVal} onChange={searchChange} />
-                </SearchBox>
+                <SearchBoxContainer>
+                    <SearchBox >
+                        <SearchIcon className={classes.icon} />
+                        <SearchInput type="search" placeholder={placeholder} value={searchVal} onChange={searchChange} />
+                    </SearchBox>
+                    <FilterListIcon className={classes.filterIcon} onClick={() => setShowFilters(prev => !prev)} />
+                </SearchBoxContainer>
+
+                {showFilters && <FilterContainer>
+                    <FilterTitleContainer onClick={() => setShowStyleFilters(prev => !prev)} >
+                        {showStyleFilters ? <KeyboardArrowDownIcon className={classes.keyboardIcon} /> : <KeyboardArrowRightIcon className={classes.keyboardIcon} />}
+                        <FilterTitle>
+                            Filter by style
+                        </FilterTitle>
+                    </FilterTitleContainer>
+                    <ChipContainer>
+                        {showStyleFilters && styles.map((style, index) => (
+                            <Chip key={index} size="small" className={styleFilters.includes(style) ? classes.selectedChip : classes.chip} icon={styleFilters.includes(style) && <CheckIcon />} label={style} onClick={handleStyleFilters} />
+                        ))}
+                    </ChipContainer>
+                </FilterContainer>}
+
                 <Paper className={classes.root}>
                     <Tabs
                         classes={{ indicator: classes.indicator }}
@@ -107,8 +173,8 @@ function Search(props) {
                     </Tabs>
                 </Paper>
             </SearchContainer>
-            
-            {value === "/search/dances" && <Dances key={key} search={searchVal} />}
+
+            {value === "/search/dances" && <Dances key={key} search={searchVal} filters={styleFilters} />}
             {value === "/search/teams" && <Teams key={key} search={searchVal} />}
             {value === "/search/pros" && <Pros key={key} search={searchVal} />}
             {value === "/search/fans" && <Fans key={key} search={searchVal} />}
@@ -151,7 +217,7 @@ background: linear-gradient(99deg, rgba(198,161,67,1) 0%, rgba(232,216,136,1) 55
     border-radius: 0 0 15px 15px; */
 
     width: 100%;
-    height: 175px;
+    min-height: 175px;
     //background: rgb(250,240,190, 0.8);
     //background: rgba(0, 0, 0, 0.9);
 
@@ -169,8 +235,15 @@ const SearchTitle = styled.h2`
     margin: 30px auto 15px auto;
 `;
 
-const SearchBox = styled.div`
+const SearchBoxContainer = styled.div`
     width: 75%;
+    margin: 15px auto;
+    display: flex;
+    flex-direction: row;
+`;
+
+const SearchBox = styled.div`
+    width: 80%;
     //height: 40px;
     border: none;
     border-radius: 5px;
@@ -179,10 +252,12 @@ const SearchBox = styled.div`
     //background: rgba(255, 255, 255, 0.4);
     background: rgba(255, 255, 255, 1);
     //color: white !important;
-    display: block;
-    margin: 0 auto;
+    //display: block;
+    //margin: 0 auto;
     display: flex;
     flex-direction: row;
+    margin-right: auto;
+    padding: 8px;
 `;
 
 const SearchInput = styled.input`
@@ -212,6 +287,29 @@ const SearchInput = styled.input`
     ::-webkit-search-decoration, ::-webkit-search-cancel-button, ::-webkit-search-results-button, ::-webkit-search-results-decoration {
         display: none;
     };
+`;
+
+const FilterContainer = styled.div`
+    width: 75%;
+    margin: auto;
+`;
+
+const FilterTitleContainer = styled.div`
+    width: 75%;
+    display: flex;
+    flex-direction: row;
+    margin: 1px 0;
+`;
+
+const FilterTitle = styled.h3`
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 5px 0;
+`;
+
+const ChipContainer = styled.div`
+    
 `;
 
 export default Search;

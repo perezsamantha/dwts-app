@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -21,7 +21,7 @@ const useStyles = makeStyles({
     },
     progress: {
         margin: "auto",
-    }
+    },
 })
 
 function Dances(props) {
@@ -32,6 +32,10 @@ function Dances(props) {
     const loading = useSelector(state => state.dances.loading);
     const teams = useSelector(state => state.teams.teams);
 
+    const filters = {
+        style: props.filters.length !== 0 ? style => props.filters.includes(style) : [],
+    };
+
     const arr = []
 
     useEffect(() => {
@@ -40,8 +44,25 @@ function Dances(props) {
         dispatch(fetchTeams());
     }, [dispatch, props]);
 
+    const multiFilter = (array, filters) => {
+        const filterKeys = Object.keys(filters);
+        return array.filter(item => {
+            return filterKeys.every(key => {
+                if (!filters[key].length) {
+                    return true;
+                }
+                return filters[key](item[key]);
+            })
+        })
+    }
+
+    let filteredDances = [];
+
     if (Array.isArray(dances)) {
-        const categorizeBySeason = dances.reduce((acc, item) => {
+        filteredDances = multiFilter(dances, filters);
+        //console.log(filteredDances);
+
+        const categorizeBySeason = filteredDances.reduce((acc, item) => {
             if (!acc[item.season]) {
                 acc[item.season] = [];
             }
@@ -66,13 +87,13 @@ function Dances(props) {
             {loading || !Array.isArray(dances) || !Array.isArray(teams) ? <CircularProgress className={classes.progress} /> :
                 <div>
                 {arr.map((item, index) => ( 
-                    <ContentContainer >
+                    <ContentContainer key={index} >
                         <Subtitle>Season {item}</Subtitle>
                         <Carousel
                             responsive={responsive}
                             partialVisible={true}
                         >
-                            {dances.filter(dance => Number(dance.season) === Number(item))
+                            {filteredDances.filter(dance => Number(dance.season) === Number(item))
                                 .map((dance, index) => (
 
                                     <Link key={index} to={{ pathname: `/dances/${dance._id}` }} style={{ textDecoration: "none" }} >
