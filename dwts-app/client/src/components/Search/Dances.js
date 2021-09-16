@@ -33,7 +33,8 @@ function Dances(props) {
     const teams = useSelector(state => state.teams.teams);
 
     const filters = {
-        style: props.filters.length !== 0 ? style => props.filters.includes(style) : [],
+        style: props.filters.styles.length !== 0 ? style => props.filters.styles.includes(style) : [],
+        season: season => season >= props.filters.seasons[0] && season <= props.filters.seasons[1],
     };
 
     const arr = []

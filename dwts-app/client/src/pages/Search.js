@@ -8,7 +8,7 @@ import Fans from '../components/Search/Fans';
 import Pros from '../components/Search/Pros';
 
 import { makeStyles } from '@material-ui/core/styles'
-import { Chip, Paper, Tab, Tabs } from '@material-ui/core';
+import { Chip, Paper, Slider, Tab, Tabs } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
 import FilterListIcon from '@material-ui/icons/FilterList';
@@ -16,7 +16,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import CheckIcon from '@material-ui/icons/Check';
 
-import { styles } from '../constants/dropdowns';
+import { seasons, styles } from '../constants/dropdowns';
 
 const useStyles = makeStyles({
     root: {
@@ -69,14 +69,14 @@ const useStyles = makeStyles({
         '&:focus': {
             backgroundColor: "white"
         }
-    },   
+    },
     selectedChip: {
         backgroundColor: "rgb(243,229,171)",
         '&:focus, &:hover': {
             backgroundColor: "rgb(243,229,171)"
         }
     },
-    keyboardIcon: {
+    arrowIcon: {
         margin: "auto 0",
         color: "lightgrey"
     },
@@ -91,8 +91,16 @@ function Search(props) {
     const [placeholder, setPlaceholder] = useState("");
     const [showFilters, setShowFilters] = useState(false);
     const [showStyleFilters, setShowStyleFilters] = useState(false);
+    const [showSeasonFilters, setShowSeasonFilters] = useState(false);
+
     const [styleFilters, setStyleFilters] = useState([]);
-    //let styleFilters = [];
+    //const [lastSeason] = useState(seasons.pop());
+    const lastSeason = 30;
+    //console.log(lastSeason)
+    const [seasonFilters, setSeasonFilters] = useState([1, lastSeason]);
+
+    const [filters, setFilters] = useState({ styles: [], seasons: [1, lastSeason] });
+
     localStorage.setItem('parentPath', window.location.pathname);
 
     const placeholderText = (value) => {
@@ -123,10 +131,18 @@ function Search(props) {
 
         if (index > -1) {
             setStyleFilters(styleFilters.filter((style, i) => i !== index));
+            setFilters({...filters, styles: filters.styles.filter((style, i) => i !== index) })
         } else {
             setStyleFilters(styleFilters => [...styleFilters, style]);
+            setFilters({...filters, styles: [...filters.styles, style]});
         }
 
+        //console.log(filters);
+    }
+
+    const handleSeasonFilters = (e, newValue) => {
+        setSeasonFilters(newValue);
+        setFilters({...filters, seasons: newValue});
     }
 
     useEffect(() => {
@@ -147,16 +163,35 @@ function Search(props) {
 
                 {showFilters && <FilterContainer>
                     <FilterTitleContainer onClick={() => setShowStyleFilters(prev => !prev)} >
-                        {showStyleFilters ? <KeyboardArrowDownIcon className={classes.keyboardIcon} /> : <KeyboardArrowRightIcon className={classes.keyboardIcon} />}
+                        {showStyleFilters ? <KeyboardArrowDownIcon className={classes.arrowIcon} /> : <KeyboardArrowRightIcon className={classes.arrowIcon} />}
                         <FilterTitle>
                             Filter by style
                         </FilterTitle>
                     </FilterTitleContainer>
+
                     <ChipContainer>
                         {showStyleFilters && styles.map((style, index) => (
                             <Chip key={index} size="small" className={styleFilters.includes(style) ? classes.selectedChip : classes.chip} icon={styleFilters.includes(style) && <CheckIcon />} label={style} onClick={handleStyleFilters} />
                         ))}
                     </ChipContainer>
+
+                    <FilterTitleContainer onClick={() => setShowSeasonFilters(prev => !prev)} >
+                        {showSeasonFilters ? <KeyboardArrowDownIcon className={classes.arrowIcon} /> : <KeyboardArrowRightIcon className={classes.arrowIcon} />}
+                        <FilterTitle>
+                            Filter by season
+                        </FilterTitle>
+                    </FilterTitleContainer>
+
+                    {showSeasonFilters && <SliderContainer>
+                        <Slider
+                            value={seasonFilters}
+                            valueLabelDisplay="auto"
+                            onChange={handleSeasonFilters}
+                            min={1}
+                            max={lastSeason}
+                            //className={classes.slider}
+                        />
+                    </SliderContainer>}
                 </FilterContainer>}
 
                 <Paper className={classes.root}>
@@ -174,7 +209,7 @@ function Search(props) {
                 </Paper>
             </SearchContainer>
 
-            {value === "/search/dances" && <Dances key={key} search={searchVal} filters={styleFilters} />}
+            {value === "/search/dances" && <Dances key={key} search={searchVal} filters={filters} />}
             {value === "/search/teams" && <Teams key={key} search={searchVal} />}
             {value === "/search/pros" && <Pros key={key} search={searchVal} />}
             {value === "/search/fans" && <Fans key={key} search={searchVal} />}
@@ -309,7 +344,12 @@ const FilterTitle = styled.h3`
 `;
 
 const ChipContainer = styled.div`
-    
+    margin: 5px 0;
+`;
+
+const SliderContainer = styled.div`
+    width: 95%;
+    margin: 5px auto;
 `;
 
 export default Search;
