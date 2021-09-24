@@ -2,18 +2,22 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPros } from '../../actions/pros.js';
 import { Preview, PreviewPhoto, Names, Details } from '../shared/shared.js';
+import { createLoadingSelector } from '../../api/selectors';
+
+import * as actionType from '../../constants/actionTypes';
 
 function DancesPreview(props) {
-
     const dispatch = useDispatch();
     const pros = useSelector(state => state.pros.pros);
+    const loadingSelector = createLoadingSelector([actionType.PROSEARCH]);
+    const isFetching = useSelector((state) => loadingSelector(state));
 
     useEffect(() => {
         dispatch(fetchPros());
     }, [dispatch])
 
     return (
-        !Array.isArray(pros) ? <div>loading bar</div> : <Preview>
+        isFetching ? <div>loading bar</div> : <Preview>
             <PreviewPhoto src={props.dance.coverPic ? props.dance.coverPic : "/defaultPic.jpeg"} />
             <Names>{props.dance.teams.map((id, index) => (
                 

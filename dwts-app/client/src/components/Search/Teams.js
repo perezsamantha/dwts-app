@@ -13,6 +13,10 @@ import 'react-multi-carousel/lib/styles.css';
 import responsive from '../shared/responsive';
 import { fetchPros } from '../../actions/pros';
 
+import { createLoadingSelector } from '../../api/selectors';
+
+import * as actionType from '../../constants/actionTypes';
+
 const useStyles = makeStyles({
     root: {
         flexGrow: 1,
@@ -35,8 +39,16 @@ function Teams(props) {
     //const input = { search: props.search };
 
     const teams = useSelector(state => state.teams.teams);
-    const loading = useSelector(state => state.teams.loading);
-    const pros = useSelector(state => state.pros.pros)
+    //const loading = useSelector(state => state.teams.loading);
+    const pros = useSelector(state => state.pros.pros);
+
+    //console.log(useSelector(state => state.loading))
+
+    const loadingSelector = createLoadingSelector([actionType.PROSEARCH, actionType.TEAMSEARCH]);
+    
+    //console.log(loadingSelector)
+    const isFetching = useSelector((state) => loadingSelector(state));
+    //console.log(testing);
     
     const arr = [];
 
@@ -73,7 +85,7 @@ function Teams(props) {
                 <TeamAdd />
             </AdminAdd>
 
-            {(loading || !Array.isArray(pros)) ? <CircularProgress className={classes.progress} /> :
+            {isFetching ? <CircularProgress className={classes.progress} /> :
                 // <ContentContainer>
                 //     <Grid container justify="flex-start" className={classes.root} spacing={2}>
                 //         {teams.map((team, index) => (

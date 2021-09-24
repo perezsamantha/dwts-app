@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { searchPros } from '../../actions/pros';
 import { makeStyles, CircularProgress, Grid } from '@material-ui/core';
 import ProAdd from '../Pros/ProAdd';
 import ProsPreview from '../Previews/ProsPreview';
+import { createLoadingSelector } from '../../api/selectors';
+
+import * as actionType from '../../constants/actionTypes';
 
 
 const useStyles = makeStyles({
@@ -21,7 +24,13 @@ function Pros(props) {
     const classes = useStyles();
     const dispatch = useDispatch();
     const pros = useSelector(state => state.pros.pros);
-    const loading = useSelector(state => state.pros.loading);
+    //const loading = useSelector(state => state.pros.loading);
+
+    
+
+    const loadingSelector = createLoadingSelector([actionType.PROSEARCH]);
+    const isFetching = useSelector((state) => loadingSelector(state));
+
 
     useEffect(() => {
         const input = { search: props.search };
@@ -34,7 +43,7 @@ function Pros(props) {
                 <ProAdd />
             </AdminAdd>
 
-            {loading || !Array.isArray(pros) ? <CircularProgress className={classes.progress} /> :
+            { isFetching ? <CircularProgress className={classes.progress} /> :
 
                 <ContentContainer>
                     <Grid container justify="flex-start" className={classes.root} spacing={2}>
@@ -103,5 +112,10 @@ const InnerContainer = styled.div`
     width: 100%;
     float: left;
 `;
+
+// const loadingSelector = createLoadingSelector(['PROSEARCH']);
+// const mapStateToProps = (state) => ({ isFetching: loadingSelector(state) })
+
+// export default connect(mapStateToProps(Pros));
 
 export default Pros;

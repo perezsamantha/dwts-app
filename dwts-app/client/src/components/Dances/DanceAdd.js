@@ -9,6 +9,9 @@ import { fetchPros } from '../../actions/pros';
 import { styles, seasons, weeks, themes, placements, judges, guestJudges, scores } from '../../constants/dropdowns';
 import { fetchTeams } from '../../actions/teams';
 import CloseIcon from '@material-ui/icons/Close';
+import { createLoadingSelector } from '../../api/selectors';
+
+import * as actionType from '../../constants/actionTypes';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -85,6 +88,8 @@ function DanceAdd() {
     const dispatch = useDispatch();
     const pros = useSelector(state => state.pros.pros);
     const teams = useSelector(state => state.teams.teams);
+    const loadingSelector = createLoadingSelector([actionType.TEAMSEARCH, actionType.PROSEARCH]);
+    const isFetching = useSelector((state) => loadingSelector(state));
 
     useEffect(() => {
         dispatch(fetchTeams());
@@ -129,7 +134,7 @@ function DanceAdd() {
     };
 
     return (
-        !Array.isArray(pros) || !Array.isArray(teams) ? <div>loading bar</div> : <div style={{ height: "15px" }}>
+        isFetching ? <div>loading bar</div> : <div style={{ height: "15px" }}>
             <Button className={classes.button} disableRipple onClick={handleOpen}>
                 <AddIcon />
             </Button>

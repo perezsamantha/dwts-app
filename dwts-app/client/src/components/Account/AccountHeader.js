@@ -11,6 +11,7 @@ import TeamsPreview from '../Previews/TeamsPreview';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import responsive from '../shared/responsive';
+import { createLoadingSelector } from '../../api/selectors';
 
 
 const useStyles = makeStyles({
@@ -36,6 +37,9 @@ function AccountHeader() {
     const navigate = useNavigate();
 
     const favorites = useSelector(state => state.teams.teams);
+
+    const loadingSelector = createLoadingSelector([actionType.TEAMSEARCH]);
+    const isFetching = useSelector((state) => loadingSelector(state));
 
     const logout = () => {
         dispatch({ type: actionType.LOGOUT });
@@ -71,14 +75,14 @@ function AccountHeader() {
     }, [user, dispatch, navigate]);
 
     return (
-        (!isLoading ? <Container>
+        (isFetching ? <div>todo: change to loading bar</div> : <Container>
             <AccountContainer>
                 <AccountSettings />
                 <Avatar className={classes.avi} alt="default" src={user.result.profilePic}>{user.result.username.charAt(0)}</Avatar>
                 <Username>{user.result.username}</Username>
                 {user.result.watchingSince > 0 && <StatsText>Watching since season {user.result.watchingSince}</StatsText>}
 
-                {Array.isArray(favorites) && <ContentContainer>
+                {/* {Array.isArray(favorites) && <ContentContainer>
                     <Subtitle>Favorite Teams</Subtitle>
                     <Carousel
                         responsive={responsive}
@@ -92,13 +96,13 @@ function AccountHeader() {
                                 </Link>
                             ))}
                     </Carousel>
-                </ContentContainer>}
+                </ContentContainer>} */}
 
                 <Button className={classes.button} variant="outlined" onClick={logout}>
                     Logout
                 </Button>
             </AccountContainer>
-        </Container> : <div>todo: change to loading bar</div>)
+        </Container> )
     );
 }
 

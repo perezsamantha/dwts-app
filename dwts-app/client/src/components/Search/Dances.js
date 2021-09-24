@@ -13,6 +13,9 @@ import responsive from '../shared/responsive';
 import { ResultsContainer } from '../shared/shared.js';
 import CheckJWT from '../shared/logout';
 import { fetchTeams } from '../../actions/teams';
+import { createLoadingSelector } from '../../api/selectors';
+
+import * as actionType from '../../constants/actionTypes';
 
 
 const useStyles = makeStyles({
@@ -24,13 +27,24 @@ const useStyles = makeStyles({
     },
 })
 
+function actionCreator(input) {
+    return dispatch => {
+        dispatch(searchDances(input));
+        dispatch(fetchTeams());
+        return Promise.resolve();
+    }
+}
+
 function Dances(props) {
     CheckJWT();
     const classes = useStyles();
     const dispatch = useDispatch();
     const dances = useSelector(state => state.dances.dances);
-    const loading = useSelector(state => state.dances.loading);
+    //const loading = useSelector(state => state.dances.loading);
     const teams = useSelector(state => state.teams.teams);
+
+    const loadingSelector = createLoadingSelector([actionType.DANCESEARCH, actionType.TEAMSEARCH]);
+    const isFetching = useSelector((state) => loadingSelector(state));
 
     const filters = {
         style: props.filters.styles.length !== 0 ? style => props.filters.styles.includes(style) : [],
@@ -79,13 +93,13 @@ function Dances(props) {
     }
 
     return (
-        <ResultsContainer>
+         <ResultsContainer>
             <AdminAdd>
                 <DanceAdd />
             </AdminAdd>
 
 
-            {loading || !Array.isArray(dances) || !Array.isArray(teams) ? <CircularProgress className={classes.progress} /> :
+            {isFetching  ? <CircularProgress className={classes.progress} /> :
                 <div>
                 {arr.map((item, index) => ( 
                     <ContentContainer key={index} >
@@ -107,16 +121,8 @@ function Dances(props) {
                         </Carousel>
                     </ContentContainer>
                 ))}
-            </div>
-                
-                // <ContentContainer>
-                //     {dances.map((dance, index) => (
-                //         <Link key={index} to={{ pathname: `/dances/${dance._id}` }} style={{ textDecoration: "none" }} >
-                //             <DancesPreview dance={dance} />
-                //         </Link>
-                //     ))}
-                // </ContentContainer>
-            }
+            </div>}
+            
         </ResultsContainer>
     )
 };

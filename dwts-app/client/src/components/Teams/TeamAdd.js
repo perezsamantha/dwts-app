@@ -7,6 +7,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchPros } from '../../actions/pros';
 import { AddButton, FormControl1, FormControl2, FormControl3, TextField1, TextField2 } from '../shared/muiStyles';
 import { seasons, placements } from '../../constants/dropdowns';
+import { createLoadingSelector } from '../../api/selectors';
+
+import * as actionType from '../../constants/actionTypes';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -36,6 +39,8 @@ function TeamAdd() {
 
     const dispatch = useDispatch();
     const pros = useSelector(state => state.pros.pros);
+    const loadingSelector = createLoadingSelector([actionType.PROSEARCH]);
+    const isFetching = useSelector((state) => loadingSelector(state));
 
     useEffect(() => {
         dispatch(fetchPros());
@@ -66,7 +71,7 @@ function TeamAdd() {
     };
 
     return (
-        !Array.isArray(pros) ? <div>loading bar</div> : <div style={{ height: "15px" }}>
+        isFetching ? <div>loading bar</div> : <div style={{ height: "15px" }}>
             <AddButton disableRipple onClick={handleOpen}>
                 <AddIcon />
             </AddButton>
