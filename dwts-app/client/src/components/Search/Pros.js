@@ -24,12 +24,12 @@ function Pros(props) {
     const classes = useStyles();
     const dispatch = useDispatch();
     const pros = useSelector(state => state.pros.pros);
-    //const loading = useSelector(state => state.pros.loading);
 
-    
+    console.log(useSelector(state => state.loading))
 
     const loadingSelector = createLoadingSelector([actionType.PROSEARCH]);
     const isFetching = useSelector((state) => loadingSelector(state));
+    console.log(isFetching)
 
 
     useEffect(() => {
@@ -43,7 +43,7 @@ function Pros(props) {
                 <ProAdd />
             </AdminAdd>
 
-            { isFetching ? <CircularProgress className={classes.progress} /> :
+            { isFetching || !Array.isArray(pros) ? <CircularProgress className={classes.progress} /> :
 
                 <ContentContainer>
                     <Grid container justify="flex-start" className={classes.root} spacing={2}>

@@ -10,6 +10,10 @@ import { Container, TeamName } from '../shared/shared.js'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ProSettings from "../Pros/ProSettings";
 
+import { createLoadingSelector } from '../../api/selectors';
+
+import * as actionType from '../../constants/actionTypes';
+
 const useStyles = makeStyles({
     avi: {
         width: "100px",
@@ -58,15 +62,16 @@ function ProCard() {
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem('profile'));
     const pro = useSelector(state => state.pros.pros);
-    const loading = useSelector(state => state.pros.loading);
     const { id } = useParams();
+    const loadingSelector = createLoadingSelector([actionType.PROSEARCH]);
+    const isFetching = useSelector((state) => loadingSelector(state));
 
     useEffect(() => {
         dispatch(findProById(id));
     }, [dispatch, id])
 
     return (
-        (loading || Array.isArray(pro) || pro === null) ? <div>insert loading bar</div> :
+        isFetching ? <div>insert loading bar</div> :
             <Container>
                 <Button className={classes.back} onClick={() => navigate(-1)}>
                     <ArrowBackIosIcon className={classes.icons} />

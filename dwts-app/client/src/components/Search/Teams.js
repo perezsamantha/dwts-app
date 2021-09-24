@@ -42,13 +42,13 @@ function Teams(props) {
     //const loading = useSelector(state => state.teams.loading);
     const pros = useSelector(state => state.pros.pros);
 
-    //console.log(useSelector(state => state.loading))
+    console.log(useSelector(state => state.loading))
 
     const loadingSelector = createLoadingSelector([actionType.PROSEARCH, actionType.TEAMSEARCH]);
     
     //console.log(loadingSelector)
     const isFetching = useSelector((state) => loadingSelector(state));
-    //console.log(testing);
+    console.log(isFetching);
     
     const arr = [];
 
