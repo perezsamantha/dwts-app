@@ -26,3 +26,4 @@ yarn-error.log*
 .env
 /server/.env
 /server/api/services/*.json
+/server/api/pool.js
