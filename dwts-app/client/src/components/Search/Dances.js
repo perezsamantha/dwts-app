@@ -111,7 +111,7 @@ function Dances(props) {
                             {filteredDances.filter(dance => Number(dance.season) === Number(item))
                                 .map((dance, index) => (
 
-                                    <Link key={index} to={{ pathname: `/dances/${dance._id}` }} style={{ textDecoration: "none" }} >
+                                    <Link key={index} to={{ pathname: `/dances/${dance.id}` }} style={{ textDecoration: "none" }} >
                                         <DancesPreview 
                                             dance={dance}
                                             teams={teams}

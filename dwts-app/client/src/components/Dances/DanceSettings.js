@@ -37,7 +37,7 @@ function DanceSettings(props) {
     const [formData, setFormData] = useState(dance);
     const [fileData, setFileData] = useState(null);
     const [scaleValue, setScaleValue] = useState(10);
-    const id = formData._id;
+    const id = formData.id;
 
     const addScore = (e) => {
         setFormData({ ...formData, scores: [...formData.scores, { judge: '', score: '' }] });
@@ -174,12 +174,12 @@ function DanceSettings(props) {
                                 </ChipsWrapper>
                             )}
                         >
-                            {teams.map((team, index) => (
+                            {/* {teams.map((team, index) => (
                                 <MenuItem key={index} value={team._id}>
                                     <Checkbox checked={formData.teams.indexOf(team._id) > -1} />
                                     <ListItemText primary={`${team.celeb.split(" ")[0]} & ${pros.find(pro => pro._id === team.pro).name.split(" ")[0]}`} />
                                 </MenuItem>
-                            ))}
+                            ))} */}
                         </Select>
                     </FormControl1>
 
@@ -289,7 +289,7 @@ function DanceSettings(props) {
                         name="songTitle"
                         label="Song Title"
                         type="text"
-                        value={formData.songTitle}
+                        value={formData.song_title}
                         onChange={handleChange}
                     />
                     <TextField1
@@ -297,7 +297,7 @@ function DanceSettings(props) {
                         name="songArtist"
                         label="Song Artist"
                         type="text"
-                        value={formData.songArtist}
+                        value={formData.song_artist}
                         onChange={handleChange}
                     />
 
@@ -316,7 +316,7 @@ function DanceSettings(props) {
                             </Select>
                         </FormControl2>
 
-                        <FormControl2 margin="dense" >
+                        {/* <FormControl2 margin="dense" >
                             <InputLabel id="isPerfect">Perfect Score?</InputLabel>
                             <Select
                                 labelId="isPerfect"
@@ -327,7 +327,7 @@ function DanceSettings(props) {
                                 <MenuItem key={1} value={true}>Yes</MenuItem>
                                 <MenuItem key={2} value={false}>No</MenuItem>
                             </Select>
-                        </FormControl2>
+                        </FormControl2> */}
                     </Wrapper>
 
                     <Wrapper>
@@ -336,7 +336,7 @@ function DanceSettings(props) {
                             <Select
                                 labelId="ro"
                                 name="runningOrder"
-                                value={formData.runningOrder}
+                                value={formData.running_order}
                                 onChange={handleChange}
                             >
                                 {placements.map((placement, index) => (

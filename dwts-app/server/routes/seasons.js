@@ -1,10 +1,10 @@
 import express from 'express';
-import { addSeason, deleteSeason, fetchSeasons, findSeasonById, updateSeason } from '../controllers/season.js';
+import { addSeason, deleteSeason, fetchAllSeasons, findSeasonById, updateSeason } from '../controllers/season.js';
 
 const router = express.Router();
 
 router.post('/add', addSeason);
-router.get('/', fetchSeasons);
+router.get('/', fetchAllSeasons);
 router.get('/:id', findSeasonById);
 router.patch('/update/:id', updateSeason);
 router.delete('/delete/:id', deleteSeason);

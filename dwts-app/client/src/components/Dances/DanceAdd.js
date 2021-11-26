@@ -68,17 +68,19 @@ function DanceAdd() {
     const classes = useStyles();
 
     const initialState = {
-        teams: [],
-        style: '',
-        season: '',
-        week: '',
-        night: '',
-        theme: '',
-        songTitle: '',
-        songArtist: '',
-        isPerfect: false,
-        runningOrder: '',
-        extra: '',
+        //teams: [],
+        style: null,
+        season: null,
+        week: null,
+        night: null,
+        theme: null,
+        song_title: null,
+        song_artist: null,
+        scores_judges: null,
+        scores_values: null,
+        running_order: null,
+        link: null,
+        extra: null,
         scores: []
     };
 
@@ -142,7 +144,7 @@ function DanceAdd() {
                 <DialogTitle>Add Dance</DialogTitle>
                 <DialogContent className={classes.root} spacing={5}>
 
-                    <FormControl required margin="dense" className={classes.one}>
+                    {/* <FormControl required margin="dense" className={classes.one}>
                         <InputLabel id="teams">Team(s)</InputLabel>
                         <Select
                             labelId="teams"
@@ -170,9 +172,9 @@ function DanceAdd() {
                                     <Checkbox checked={formData.teams.indexOf(team._id) > -1} />
                                     <ListItemText primary={`${team.celeb.split(" ")[0]} & ${pros.find(pro => pro._id === team.pro).name.split(" ")[0]}`} />
                                 </MenuItem>
-                            ))}
+                            ))} 
                         </Select>
-                    </FormControl>
+                    </FormControl> */}
 
                     <FormControl required margin="dense" className={classes.one}>
                         <InputLabel id="style">Style</InputLabel>
@@ -278,19 +280,19 @@ function DanceAdd() {
                     <TextField
                         className={classes.one}
                         margin="dense"
-                        name="songTitle"
+                        name="song_title"
                         label="Song Title"
                         type="text"
-                        value={formData.songTitle}
+                        value={formData.song_title}
                         onChange={handleChange}
                     />
                     <TextField
                         className={classes.one}
                         margin="dense"
-                        name="songArtist"
+                        name="song_artist"
                         label="Song Artist"
                         type="text"
-                        value={formData.songArtist}
+                        value={formData.song_artist}
                         onChange={handleChange}
                     />
 
@@ -309,7 +311,7 @@ function DanceAdd() {
                             </Select>
                         </FormControl>
 
-                        <FormControl margin="dense" className={classes.two}>
+                        {/* <FormControl margin="dense" className={classes.two}>
                             <InputLabel id="isPerfect">Perfect Score?</InputLabel>
                             <Select
                                 labelId="isPerfect"
@@ -320,7 +322,7 @@ function DanceAdd() {
                                 <MenuItem key={1} value={true}>Yes</MenuItem>
                                 <MenuItem key={2} value={false}>No</MenuItem>
                             </Select>
-                        </FormControl>
+                        </FormControl> */}
                     </Wrapper>
 
                     <Wrapper>
@@ -328,8 +330,8 @@ function DanceAdd() {
                             <InputLabel id="ro">Running Order</InputLabel>
                             <Select
                                 labelId="ro"
-                                name="runningOrder"
-                                value={formData.runningOrder}
+                                name="running_order"
+                                value={formData.running_order}
                                 onChange={handleChange}
                             >
                                 {placements.map((placement, index) => (

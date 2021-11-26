@@ -18,24 +18,31 @@ connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
 });
 
-app.use('/uploads', express.static('uploads'));
+//app.use('/uploads', express.static('uploads'));
 
-//const prosRouter = require('./routes/pros');
-//const usersRouter = require('./routes/users');
 import usersRouter from './routes/users.js';
-import fansRouter from './routes/fans.js';
+//import fansRouter from './routes/fans.js';
 import teamsRouter from './routes/teams.js';
 import prosRouter from './routes/pros.js';
 import dancesRouter from './routes/dances.js';
 import seasonsRouter from './routes/seasons.js';
+import celebsRouter from './routes/celebs.js';
+import judgesRouter from './routes/judges.js';
+import episodesRouter from './routes/episodes.js';
+import scoresRouter from './routes/scores.js';
+import dancersRouter from './routes/dancers.js';
 
-//app.use('/pros', prosRouter);
 app.use('/users', usersRouter);
-app.use('/fans', fansRouter);
+//app.use('/fans', fansRouter);
 app.use('/teams', teamsRouter);
 app.use('/pros', prosRouter);
 app.use('/dances', dancesRouter);
 app.use('/seasons', seasonsRouter);
+app.use('/celebs', celebsRouter);
+app.use('/judges', judgesRouter);
+app.use('/episodes', episodesRouter);
+app.use('/scores', scoresRouter);
+app.use('/dancers', dancersRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);

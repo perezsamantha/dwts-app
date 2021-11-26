@@ -1,29 +1,34 @@
-import mongoose from 'mongoose';
-import Team from '../models/team.model.js';
+
 import { Storage } from '@google-cloud/storage';
-import UUID from 'uuid-v4'
+import UUID from 'uuid-v4';
+import pool from "../api/pool.js";
 
 export const addTeam = async (req, res) => {
-    const { celeb, pro, season } = req.body;
-
     try {
-        const existingTeam = await Team.findOne({ celeb, pro, season });
+        const {
+            cover_pic,
+            celeb_id,
+            pro_id,
+            mentor_id,
+            season_id,
+            placement,
+            team_name,
+            extra
+        } = req.body;
 
-        if (existingTeam) return res.status(400).json({ message: "Team already exists" });
+        const result = await pool.query(`INSERT INTO teams (celeb_id, pro_id, mentor_id, season_id, placement, team_name, extra) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *`, [celeb_id, pro_id, mentor_id, season_id, placement, team_name, extra]);
 
-        const result = await Team.create(req.body);
-
-        res.status(200).json(result);
+        res.status(200).json(result.rows[0]);
     } catch (error) {
         res.status(500).json({ message: error });
     }
 }
 
-export const fetchAll = async (req, res) => {
+export const fetchAllTeams = async (req, res) => {
     try {
-        const teams = await Team.find();
+        const teams = await pool.query('SELECT * FROM teams');
 
-        res.status(200).json(teams);
+        res.status(200).json(teams.rows);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -31,11 +36,11 @@ export const fetchAll = async (req, res) => {
 
 export const findTeamById = async (req, res) => {
     const { id } = req.params;
-    
-    try {
-        const team = await Team.findById(id);
 
-        res.status(200).json(team);
+    try {
+        const team = await pool.query('SELECT * FROM teams WHERE team_id = $1', [id]);
+
+        res.status(200).json(team.rows[0]);
     } catch (error) {
         res.status(500).json({ message: error.message })
     }
@@ -43,51 +48,48 @@ export const findTeamById = async (req, res) => {
 
 export const searchTeams = async (req, res) => {
     const { search } = req.body;
+    //const nameQuery = ("SELECT celeb_id FROM celebs WHERE first_name || ' ' || last_name ILIKE $1", [`%${search}%`]);
 
     try {
-        // only works for full match
-        //const teams = await Team.find({ $text: { $search: search }})
-        // or operator doesn't seem to be working :(
-        //const teams = await Team.find({$or: [ { celeb: { $regex: search, '$options': 'i' }, pro: { $regex: search, '$options': 'i' } } ] });
-        
-        // doing manually for now, first search by celeb
-        var teams = await Team.find({ celeb: { $regex: search, '$options': 'i' } });
+        const teams = await pool.query('SELECT * FROM teams WHERE celeb_id IN (' + `SELECT celeb_id FROM celebs WHERE first_name || ' ' || last_name ILIKE '%${search}%'` + ')');
 
-        if (!teams || teams == "") {
-            // no celebs, now search by pro
-            teams = await Team.find({ pro: { $regex: search, '$options': 'i' } });
-        }
-
-        res.status(200).json(teams);
+        res.status(200).json(teams.rows);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 }
 
 export const updateTeam = async (req, res) => {
+    const { id } = req.params;
+
     try {
-        const id = req.params.id;
+        const {
+            cover_pic,
+            celeb_id,
+            pro_id,
+            mentor_id,
+            season_id,
+            placement,
+            team_name,
+            extra
+        } = req.body;
 
-        if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No team with id: ${id}`);
+        const result = await pool.query(`UPDATE teams SET celeb_id = $1, pro_id = $2, mentor_id = $3, season_id = $4, placement = $5, team_name = $6, extra = $7 WHERE team_id = $8 RETURNING *`, [celeb_id, pro_id, mentor_id, season_id, placement, team_name, extra, id]);
 
-        const result = await Team.findByIdAndUpdate(req.params.id, {
-            $set: req.body
-        }, { new: true });
-
-        res.status(200).json(result);
+        res.status(200).json(result.rows[0]);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ message: error });
     }
 }
 
-export const updatePic = async (req, res) => {
+export const setTeamPic = async (req, res) => {
     const storage = new Storage({
         projectId: process.env.GCLOUD_PROJECT_ID,
         keyFilename: process.env.GCLOUD_APPLICATION_CREDENTIALS,
     });
-    
+
     const bucket = storage.bucket(process.env.GCLOUD_STORAGE_BUCKET_URL);
-    
+
     try {
         const blob = bucket.file(req.file.originalname);
 
@@ -102,37 +104,27 @@ export const updatePic = async (req, res) => {
             }
         })
 
-        //blobWriter.on('error', (err) => next(err));
-
         blobWriter.on('finish', async () => {
             const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURI(blob.name)}?alt=media`;
-            
-            const result = await Team.findByIdAndUpdate(req.params.id, req.body = { coverPic: publicUrl }, { new: true });
 
-            res.status(200).json(result);
+            const result = await pool.query('UPDATE teams SET cover_pic = $1 WHERE team_id = $2 RETURNING *', [publicUrl, req.params.id]);
+
+            res.status(200).json(result.rows[0]);
         })
 
         blobWriter.end(req.file.buffer);
-
-        // const id = req.params.id;
-
-        // if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No team with id: ${id}`);
-
-        // const path = req.file.path.replace(/\\/g, "/");
-        
-        // const result = await Team.findByIdAndUpdate(req.params.id, req.body = { coverPic: "http://localhost:5000/" + path }, { new: true });
-
-        // res.status(200).json(result);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 }
 
 export const deleteTeam = async (req, res) => {
-    try {
-        await Team.findByIdAndRemove(req.params.id);
+    const { id } = req.params;
 
-        res.status(200).json({ message: "Team successfully deleted."});
+    try {
+        await pool.query('DELETE FROM teams WHERE team_id = $1', [id]);
+
+        res.status(200).json({ message: "Team successfully deleted." });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -143,9 +135,9 @@ export const addPic = async (req, res) => {
         projectId: process.env.GCLOUD_PROJECT_ID,
         keyFilename: process.env.GCLOUD_APPLICATION_CREDENTIALS,
     });
-    
+
     const bucket = storage.bucket(process.env.GCLOUD_STORAGE_BUCKET_URL);
-    
+
     try {
         const blob = bucket.file(req.file.originalname);
 
@@ -160,14 +152,12 @@ export const addPic = async (req, res) => {
             }
         })
 
-        //blobWriter.on('error', (err) => next(err));
-
         blobWriter.on('finish', async () => {
             const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURI(blob.name)}?alt=media`;
-            
-            const result = await Team.findByIdAndUpdate(req.params.id, { $push: { "pictures": publicUrl } }, { new: true });
-            //console.log(result);
-            res.status(200).json(result);
+
+            const result = await pool.query('UPDATE teams SET pictures = array_append(pictures, $1) WHERE team_id = $2 RETURNING *', [publicUrl, req.params.id]);
+
+            res.status(200).json(result.rows[0]);
         })
 
         blobWriter.end(req.file.buffer);
@@ -176,39 +166,12 @@ export const addPic = async (req, res) => {
     }
 }
 
+// TODO
 export const likeTeam = async (req, res, next) => {
-    try {
-        const { id } = req.params;
-
-        // if (!req.userId) {
-        //     return res.status(401).json({ message: "Unauthenticated" });
-        // }
     
-        const team = await Team.findById(id);
-    
-        const index = team.likes.findIndex((id) => id === String(req.userId));
-    
-        if (index === -1) {
-            team.likes.push(req.userId);
-        } else {
-            team.likes = team.likes.filter((id) => id !== String(req.userId));
-        }
-    
-        const result = await Team.findByIdAndUpdate(id, team, { new: true });
-        res.status(200).json(result);
-    } catch (error) {
-        res.status(500).json({ message: error });
-    }
 }
 
+// TODO
 export const getFavoriteTeams = async (req, res, next) => {
-    const { userId } = req;
-
-    try {
-        const teams = await Team.find({ likes: { $in: userId } });
-
-        res.status(200).json(teams);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+    
 }

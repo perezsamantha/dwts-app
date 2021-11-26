@@ -19,11 +19,11 @@ function DancesPreview(props) {
     return (
         isFetching ? <div>loading bar</div> : <Preview>
             <PreviewPhoto src={props.dance.coverPic ? props.dance.coverPic : "/defaultPic.jpeg"} />
-            <Names>{props.dance.teams.map((id, index) => (
+            {/* <Names>{props.dance.teams.map((id, index) => (
                 
                 `${index !== 0 ? ', ' : ''}${props.teams.find((team) => team._id === id).celeb.split(" ")[0]} & ${pros.find(pro => pro._id === props.teams.find((team) => team._id === id).pro).name.split(" ")[0]}` 
-            ))}</Names>
-            <Details>{props.dance.style} &bull; 29/30</Details>
+            ))}</Names> */}
+            <Details>{props.dance.style} &bull; Week {props.dance.week} &bull; 29/30</Details>
         </Preview>
     )
 }

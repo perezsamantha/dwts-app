@@ -152,7 +152,7 @@ function DanceCard() {
                 <Avatar className={classes.avi} alt={dance.style} src={dance.coverPic} />
 
                 <ContentContainer>
-                    <Grid container justify="center" className={classes.root} spacing={2}>
+                    {/* <Grid container justify="center" className={classes.root} spacing={2}>
                         {dance.teams.map((id, index) => (
                             <div key={index} style={{ margin: "5px" }}>
                                 {Array.isArray(teams) && teams.filter(team => team._id === id)
@@ -165,21 +165,21 @@ function DanceCard() {
                                     ))}
                             </div>
                         ))}
-                    </Grid>
+                    </Grid> */}
                 </ContentContainer>
 
                 {/* <TeamName>Dancer Names</TeamName> */}
-                <Season>Season {dance.season} &bull; Week {dance.week} {dance.night && `&bull; Night ${dance.night}`}</Season>
+                <Season>Season {dance.season} &bull; Week {dance.week} {dance.night && `\u2022 Night ${dance.night}`}</Season>
                 <Season>{dance.style}</Season>
-                {dance?.songTitle && dance?.songArtist &&<Season>{dance.songTitle} - {dance.songArtist}</Season>}
-                {dance.runningOrder && <Placement>Running Order - {dance.runningOrder}</Placement>}
+                {dance?.song_title && dance?.song_artist &&<Season>{dance.song_title} - {dance.song_artist}</Season>}
+                {dance.running_order && <Placement>Running Order - {dance.running_order}</Placement>}
 
                 <BasicText>Judges Scores</BasicText>
                 <Grid container justify="center" className={classes.statsGrid} spacing={2}>
-                    {dance?.scores.map((score, index) => (
+                    {dance?.scores_judges.map((judge, index) => (
                         <Grid key={index} item>
-                            <BasicText>{score.judge.substring(0, score.judge.lastIndexOf(" "))}</BasicText>
-                            <GridText>{score.score}</GridText>
+                            <BasicText>{judge.substring(0, judge.lastIndexOf(" "))}</BasicText>
+                            <GridText>{dance.scores_values[index]}</GridText>
                         </Grid>
                     ))}
                 </Grid>
@@ -229,7 +229,7 @@ function DanceCard() {
                     </div>}
                 </FileInput>
 
-                {user.result.role === "admin" && <DanceSettings id={dance._id} />}
+                {user.result.role === "admin" && <DanceSettings id={dance.id} />}
                 
             </Container>
 

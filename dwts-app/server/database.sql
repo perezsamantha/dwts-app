@@ -1,4 +1,0 @@
-CREATE TABLE seasons(
-    id SERIAL PRIMARY KEY NOT NULL,
-    number VARCHAR(30)
-);
