@@ -18,3 +18,4 @@ CREATE TABLE IF NOT EXISTS users(
 
 -- change watching since to FK season_id ??
 -- have not testing default of false
+-- timestamps?

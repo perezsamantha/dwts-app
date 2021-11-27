@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { Storage } from '@google-cloud/storage';
 import UUID from 'uuid-v4';
 import pool from "../api/pool.js";
+import ac from '../roles.js';
 
 export const signUp = async (req, res) => {
     try {
