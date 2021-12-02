@@ -6,5 +6,6 @@ import teams from './teams';
 import pros from './pros';
 import dances from './dances';
 import loading from './loading';
+import celebs from './celebs';
 
-export const reducers = combineReducers({ auth, fans, teams, pros, dances, loading });
+export const reducers = combineReducers({ auth, fans, teams, pros, dances, loading, celebs });

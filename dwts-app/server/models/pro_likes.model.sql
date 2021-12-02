@@ -1,15 +1,15 @@
 
 CREATE TABLE IF NOT EXISTS pro_likes(
-    pro_like_id SERIAL NOT NULL,
+    id SERIAL NOT NULL,
     pro_id INT,
     user_id INT,
-    PRIMARY KEY(pro_like_id),
+    PRIMARY KEY(id),
     CONSTRAINT fk_pro
         FOREIGN KEY(pro_id)
-            REFERENCES pros(pro_id)
+            REFERENCES pros(id)
             ON DELETE CASCADE,
     CONSTRAINT fk_user
         FOREIGN KEY(user_id)
-            REFERENCES users(user_id)
+            REFERENCES users(id)
             ON DELETE CASCADE
 )

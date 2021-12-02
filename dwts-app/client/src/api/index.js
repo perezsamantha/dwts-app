@@ -47,3 +47,10 @@ export const deletePro = (id) => API.delete(`/pros/delete/${id}`);
 export const addProPic = (id, image) => API.patch(`/pros/addPic/${id}`, image)
 export const likePro = (id) => API.patch(`/pros/${id}/likePro`);
 export const getFavoritePros = () => API.get('/pros/favorites');
+
+export const addCeleb = (celeb) => API.post('/celebs/add', celeb);
+export const updateCeleb = (id, celeb) => API.patch(`/celebs/update/${id}`, celeb);
+export const setCelebPic = (id, image) => API.patch(`/celebs/setPic/${id}`, image)
+export const findCelebById = (id) => API.get(`/celebs/${id}`);
+export const fetchCelebs = () => API.get('/celebs/');
+export const deleteCeleb = (id) => API.delete(`/celebs/delete/${id}`);

@@ -1,6 +1,6 @@
 
 CREATE TABLE IF NOT EXISTS pros(
-    pro_id SERIAL NOT NULL,
+    id SERIAL NOT NULL,
     cover_pic TEXT,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30),
@@ -12,6 +12,6 @@ CREATE TABLE IF NOT EXISTS pros(
     tiktok VARCHAR(30),
     is_junior BOOLEAN,
     pictures TEXT[],
-    PRIMARY KEY(pro_id),
+    PRIMARY KEY(id),
     UNIQUE (first_name, last_name)
 );

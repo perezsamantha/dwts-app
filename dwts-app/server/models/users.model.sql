@@ -2,7 +2,7 @@
 CREATE TYPE role AS ENUM ('fan', 'pro', 'admin');
 
 CREATE TABLE IF NOT EXISTS users(
-    user_id SERIAL NOT NULL,
+    id SERIAL NOT NULL,
     profile_pic TEXT,
     username VARCHAR(30) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS users(
     twitter VARCHAR(30),
     instagram VARCHAR(30),
     user_role ROLE DEFAULT 'fan',
-    PRIMARY KEY(user_id)
+    PRIMARY KEY(id)
 );
 
 -- change watching since to FK season_id ??

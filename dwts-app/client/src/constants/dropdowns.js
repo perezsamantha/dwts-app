@@ -109,3 +109,10 @@ export const scores = [
 export const hosts = [
 
 ]
+
+export const genders = [
+    "Male",
+    "Female",
+    "Other",
+    // eventually be more inclusive
+]

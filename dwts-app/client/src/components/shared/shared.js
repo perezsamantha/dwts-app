@@ -85,3 +85,14 @@ export const FileInput = styled.div`
     display: flex;
     flex-direction: column;
 `;
+
+export const TableContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+export const DataGridContainer = styled.div`
+    height: 500px;
+    width: 95%;
+    margin: auto;
+`;

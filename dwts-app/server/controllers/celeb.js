@@ -36,7 +36,7 @@ export const findCelebById = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const celeb = await pool.query('SELECT * FROM celebs WHERE celeb_id = $1', [id]);
+        const celeb = await pool.query('SELECT * FROM celebs WHERE id = $1', [id]);
 
         res.status(200).json(celeb.rows[0]);
     } catch (error) {
@@ -72,7 +72,7 @@ export const updateCeleb = async (req, res) => {
             is_junior
         } = req.body;
 
-        const result = await pool.query('UPDATE celebs SET first_name = $1, last_name = $2, birthday = $3, height = $4, gender = $5, twitter = $6, instagram = $7, tiktok = $8, is_junior = $9 WHERE celeb_id = $10 RETURNING *', [first_name, last_name, birthday, height, gender, twitter, instagram, tiktok, is_junior, id]);
+        const result = await pool.query('UPDATE celebs SET first_name = $1, last_name = $2, birthday = $3, height = $4, gender = $5, twitter = $6, instagram = $7, tiktok = $8, is_junior = $9 WHERE id = $10 RETURNING *', [first_name, last_name, birthday, height, gender, twitter, instagram, tiktok, is_junior, id]);
 
         res.status(200).json(result.rows[0]);
     } catch (error) {
@@ -105,7 +105,7 @@ export const setCelebPic = async (req, res) => {
         blobWriter.on('finish', async () => {
             const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURI(blob.name)}?alt=media`;
 
-            const result = await pool.query('UPDATE celebs SET cover_pic = $1 WHERE celeb_id = $2 RETURNING *', [publicUrl, req.params.id]);
+            const result = await pool.query('UPDATE celebs SET cover_pic = $1 WHERE id = $2 RETURNING *', [publicUrl, req.params.id]);
 
             res.status(200).json(result.rows[0]);
         })
@@ -120,7 +120,7 @@ export const deleteCeleb = async (req, res) => {
     const { id } = req.params;
 
     try {
-        await pool.query('DELETE FROM celebs WHERE celeb_id = $1', [id]);
+        await pool.query('DELETE FROM celebs WHERE id = $1', [id]);
 
         res.status(200).json({ message: "Celeb successfully deleted." });
     } catch (error) {

@@ -1,14 +1,14 @@
 
 CREATE TABLE IF NOT EXISTS episodes(
-    episode_id SERIAL NOT NULL,
+    id SERIAL NOT NULL,
     season_id INT,
     week SMALLINT,
     night SMALLINT,
     date DATE,
-    PRIMARY KEY(episode_id),
+    PRIMARY KEY(id),
     UNIQUE (season_id, week, night),
     CONSTRAINT fk_season
         FOREIGN KEY(season_id)
-            REFERENCES seasons(season_id)
+            REFERENCES seasons(id)
             ON DELETE CASCADE
 );

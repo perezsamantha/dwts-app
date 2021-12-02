@@ -1,6 +1,6 @@
 
 CREATE TABLE IF NOT EXISTS dances(
-    dance_id SERIAL NOT NULL,
+    id SERIAL NOT NULL,
     cover_pic TEXT,
     style VARCHAR(30) NOT NULL,
     episode_id INT,
@@ -11,11 +11,11 @@ CREATE TABLE IF NOT EXISTS dances(
     link VARCHAR(255),
     extra VARCHAR(255),
     pictures TEXT[],
-    PRIMARY KEY(dance_id),
+    PRIMARY KEY(id),
     UNIQUE (episode_id, running_order),
     CONSTRAINT fk_episode
         FOREIGN KEY(episode_id)
-            REFERENCES episodes(episode_id)
+            REFERENCES episodes(id)
             ON DELETE CASCADE
 );
 

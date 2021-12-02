@@ -1,6 +1,6 @@
 
 CREATE TABLE IF NOT EXISTS celebs(
-    celeb_id SERIAL NOT NULL,
+    id SERIAL NOT NULL,
     cover_pic TEXT,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30),
@@ -11,6 +11,6 @@ CREATE TABLE IF NOT EXISTS celebs(
     instagram VARCHAR(30),
     tiktok VARCHAR(30),
     is_junior BOOLEAN,
-    PRIMARY KEY(celeb_id),
+    PRIMARY KEY(id),
     UNIQUE (first_name, last_name)
 );
