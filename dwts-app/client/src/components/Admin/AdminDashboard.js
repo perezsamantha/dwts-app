@@ -26,6 +26,7 @@ import { ListItemButton, Switch } from '@mui/material';
 import TeamsTable from './TeamsTable';
 import { Link } from 'react-router-dom';
 import CelebsTable from './CelebsTable';
+import ProsTable from './ProsTable';
 
 const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
@@ -102,7 +103,7 @@ function AdminDashboard(props) {
                         Celebs
                     </ListItemText>
                 </ListItemButton>
-                <ListItemButton onClick={() => handleComponent()}>
+                <ListItemButton onClick={() => handleComponent(<ProsTable />)}>
                     <ListItemText>
                         Pros
                     </ListItemText>
@@ -237,7 +238,7 @@ const Container = styled.div`
 `;
 
 const DrawerContainer = styled.div`
-    //background-color: black;
+    //background-color: lightgrey;
     height: 100vh;
 `;
 

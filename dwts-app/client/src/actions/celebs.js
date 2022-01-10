@@ -38,14 +38,14 @@ export const setCelebPic = (id, image) => async (dispatch) => {
 }
 
 export const findCelebById = (id) => async (dispatch) => {
-    dispatch({ type: actionType.CELEBSEARCH_REQUEST });
+    dispatch({ type: actionType.CELEBFIND_REQUEST });
 
     try {
         const { data } = await api.findCelebById(id);
 
-        dispatch({ type: actionType.CELEBSEARCH_SUCCESS, payload: data });
+        dispatch({ type: actionType.CELEBFIND_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: actionType.CELEBSEARCH_FAILURE, payload: error, error: true });
+        dispatch({ type: actionType.CELEBFIND_FAILURE, payload: error, error: true });
     }
 }
 

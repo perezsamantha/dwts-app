@@ -1,36 +1,27 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, MenuItem, TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
-import { addPro } from '../../actions/pros';
-import { useDispatch } from 'react-redux';
+import { findCelebById, updateCeleb } from '../../actions/celebs';
+import { useDispatch, useSelector } from 'react-redux';
 import { LocalizationProvider, MobileDatePicker } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDateFns';
 import { genders } from '../../constants/dropdowns';
+import EditIcon from '@mui/icons-material/Edit';
 
 const useStyles = makeStyles((theme) => ({
     
 }));
 
-function ProAdd() {
+function CelebEdit(props) {
     const classes = useStyles();
 
-    const initialState = {
-        cover_pic: null,
-        first_name: null,
-        last_name: null,
-        //birthday: new Date().toISOString(),
-        birthday: null,
-        height: null,
-        gender: null,
-        twitter: null,
-        instagram: null,
-        tiktok: null,
-        is_junior: false
-    };
-    const [open, setOpen] = useState(false);
-    const [formData, setFormData] = useState(initialState);
-
+    const [open, setOpen] = useState(props.open);
+    //const celeb = useSelector(state => state.celebs.celeb);
+    //const loading = useSelector(state => state.loading.CELEBFIND);
+    const [formData, setFormData] = useState(props.celeb);
+    //const [formData, setFormData] = useState(null);
+    const id = props.celeb?.id;
     const dispatch = useDispatch();
 
     const handleChange = (e) => {
@@ -41,38 +32,45 @@ function ProAdd() {
         setFormData({ ...formData, birthday: date })
     }
 
-    const handleOpen = () => {
-        setOpen(true);
-    };
+    // const HandleOpen = () => {
+    //     dispatch(findCelebById(id));
+    //     //const celeb = useSelector(state => state.celebs.celeb);
+    //     setFormData((prevCeleb) => { return celeb })
+    //     setOpen(true);
+    // };
+
+    useEffect(() => {
+        setFormData(props.celeb);
+        setOpen(props.open);
+
+    }, [props]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        dispatch(addPro(formData));
-        setFormData(initialState);
-        handleClose();
+        dispatch(updateCeleb(id, formData));
+        props.handleClose();
     };
 
-    const handleClose = () => {
-        setOpen(false);
-    };
+    // const handleClose = () => {
+    //     setOpen(false);
+    // };
 
     return (
         <div>
             <LocalizationProvider dateAdapter={DateAdapter}>
-                <Button variant="contained" disableRipple onClick={handleOpen}>
-                    ADD PRO
-                    {/* <AddIcon /> */}
-                </Button>
-                <Dialog fullWidth maxWidth={'lg'} open={open} onClose={handleClose} >
-                    <DialogTitle>Add Pro</DialogTitle>
+                {/* <Button variant="contained" disableRipple onClick={handleOpen}> */}
+                    {/* <EditIcon onClick={HandleOpen}/> */}
+                {/* </Button> */}
+            { <Dialog fullWidth maxWidth={'lg'} open={open} onClose={props.handleClose} >
+                    <DialogTitle>Update Celeb</DialogTitle>
                     <DialogContent >
                         <TextField
                             margin="dense"
                             name="first_name"
                             label="First Name"
                             type="text"
-                            value={formData.first_name}
+                            value={formData?.first_name}
                             onChange={handleChange}
                         />
 
@@ -81,7 +79,7 @@ function ProAdd() {
                             name="last_name"
                             label="Last Name"
                             type="text"
-                            value={formData.last_name}
+                            value={formData?.last_name}
                             onChange={handleChange}
                         />
 
@@ -89,7 +87,7 @@ function ProAdd() {
                             margin="dense"
                             label="Birthday"
                             inputFormat="MM/dd/yyyy"
-                            value={formData.birthday}
+                            value={formData?.birthday}
                             onChange={handleBirthday}
                             renderInput={(params) => <TextField {...params} />}
                         />
@@ -99,7 +97,7 @@ function ProAdd() {
                             name="height"
                             label="Height (_'__)"
                             type="text"
-                            value={formData.height}
+                            value={formData?.height}
                             onChange={handleChange}
                         />
 
@@ -109,7 +107,7 @@ function ProAdd() {
                             label="Gender"
                             type="text"
                             select
-                            value={formData.gender}
+                            value={formData?.gender}
                             onChange={handleChange}
                         >
                             {genders.map((gender, index) => (
@@ -122,7 +120,7 @@ function ProAdd() {
                             name="instagram"
                             label="Instagram Username"
                             type="text"
-                            value={formData.instagram}
+                            value={formData?.instagram}
                             onChange={handleChange}
                         />
 
@@ -131,7 +129,7 @@ function ProAdd() {
                             name="twitter"
                             label="Twitter Username"
                             type="text"
-                            value={formData.twitter}
+                            value={formData?.twitter}
                             onChange={handleChange}
                         />
 
@@ -140,7 +138,7 @@ function ProAdd() {
                             name="tiktok"
                             label="TikTok Username"
                             type="text"
-                            value={formData.tiktok}
+                            value={formData?.tiktok}
                             onChange={handleChange}
                         />
 
@@ -149,7 +147,7 @@ function ProAdd() {
                             name="is_junior"
                             select
                             label="Junior?"
-                            value={formData.is_junior}
+                            value={formData?.is_junior}
                             onChange={handleChange}
                         >
                             <MenuItem key={1} value={true}>Yes</MenuItem>
@@ -158,17 +156,17 @@ function ProAdd() {
 
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleClose} variant="contained" color="error">
+                        <Button onClick={props.handleClose} variant="contained" color="error">
                             Cancel
                         </Button>
                         <Button onClick={handleSubmit} variant="contained" color="primary">
-                            Add Pro
+                            Update Celeb
                         </Button>
                     </DialogActions>
-                </Dialog>
+                </Dialog>}
             </LocalizationProvider>
         </div>
     )
 }
 
-export default ProAdd;
+export default CelebEdit;

@@ -96,3 +96,11 @@ export const DataGridContainer = styled.div`
     width: 95%;
     margin: auto;
 `;
+
+export const HeaderContainer = styled.div`
+    width: 95%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+`;

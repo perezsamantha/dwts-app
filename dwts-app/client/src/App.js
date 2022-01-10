@@ -50,6 +50,14 @@ function App(props) {
           },
         }
       },
+      MuiDrawer: {
+        styleOverrides: {
+          paper: {
+            boxShadow: toggleDark ? '1px 1px 1px dimgrey' : "1px 65px 5px gainsboro",
+            //backgroundColor: toggleDark ? 'rgb(39, 39, 39)' : 'rgba(241, 220, 125, 0.2)',
+          }
+        }
+      }
     }
   })
   //const [token, setToken] = useState();

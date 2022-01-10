@@ -1,15 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import styled from 'styled-components';
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCelebs, deleteCeleb } from '../../actions/celebs';
+import { fetchCelebs, deleteCeleb, findCelebById } from '../../actions/celebs';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import CelebAdd from '../Celebs/CelebAdd';
-import { TableContainer, DataGridContainer } from '../shared/shared';
+import { TableContainer, DataGridContainer, HeaderContainer } from '../shared/shared';
+import { Typography } from '@mui/material';
+import CelebEdit from '../Celebs/CelebEdit';
 
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, MenuItem, TextField } from '@mui/material';
+
+import { updateCeleb } from '../../actions/celebs';
+import { LocalizationProvider, MobileDatePicker } from '@mui/lab';
+import DateAdapter from '@mui/lab/AdapterDateFns';
+import { genders } from '../../constants/dropdowns';
 
 function CelebsTable(props) {
     const dispatch = useDispatch();
@@ -19,12 +27,22 @@ function CelebsTable(props) {
         dispatch(fetchCelebs());
     }, [dispatch]);
 
-    const handleEdit = (id) => {
-        
+    const [open, setOpen] = useState(false);
+    const celeb = useSelector(state => state.celebs.celeb);
+    const [formData, setFormData] = useState(null);
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleEdit = async (id) => {
+        dispatch(findCelebById(id));
+        setOpen(true);
     }
 
     const handleDelete = (id) => {
         dispatch(deleteCeleb(id));
+        // confirm deletion modal
     }
 
     const convertBirthday = (params) => {
@@ -49,7 +67,7 @@ function CelebsTable(props) {
         {
             field: 'actions',
             type: 'actions',
-            width: 30,
+            width: 90,
             getActions: (params) => [
                 <GridActionsCellItem
                     icon={<EditIcon />}
@@ -65,21 +83,45 @@ function CelebsTable(props) {
                 />,
             ],
         },
+        // {
+        //     field: 'actions2',
+        //     type: 'actions',
+        //     width: 30,
+        //     headerName: 'Delete',
+        //     getActions: (params) => [
+        //         <GridActionsCellItem
+        //             icon={<DeleteIcon />}
+        //             label="Delete"
+        //             onClick={() => handleDelete(params.id)}
+        //         />,
+        //     ],
+        // },
     ];
 
     return (
-        <TableContainer>
-            <h3>Celebs Table</h3>
-            {<CelebAdd />}
-            {/* weird issue with spacing once component is brought in??? */}
-            <DataGridContainer>
-                <DataGrid
-                    rows={celebs}
-                    columns={columns}
-                //checkboxSelection
-                />
-            </DataGridContainer>
-        </TableContainer>
+        <LocalizationProvider dateAdapter={DateAdapter}>
+            <TableContainer>
+                <HeaderContainer>
+                    <Typography variant="h4">Celebs Table</Typography>
+                    {/* <h3>Celebs Table</h3> */}
+                    {<CelebAdd />}
+                </HeaderContainer>
+                {/* <h3>Celebs Table</h3>
+            {<CelebAdd />} */}
+                {/* weird issue with spacing once component is brought in??? */}
+                <DataGridContainer>
+                    <DataGrid
+                        rows={celebs}
+                        columns={columns}
+                    //checkboxSelection
+                    />
+                </DataGridContainer>
+                
+                {<CelebEdit celeb={celeb} open={open} handleClose={handleClose} />}
+
+                
+            </TableContainer>
+        </LocalizationProvider>
     )
 }
 
