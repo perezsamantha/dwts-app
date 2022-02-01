@@ -1,4 +1,6 @@
 import pool from "../api/pool.js";
+import { Storage } from '@google-cloud/storage';
+import UUID from 'uuid-v4'
 
 export const addCeleb = async (req, res) => {
     try {

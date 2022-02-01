@@ -13,7 +13,7 @@ export const Container = styled.div`
     border: none;
     border-radius: 15px;
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: auto;
     text-align: center;
     padding: 30px 0 70px 0;
 `;
@@ -84,23 +84,38 @@ export const Label = styled.label`
 export const FileInput = styled.div`
     display: flex;
     flex-direction: column;
+    margin: 0 auto;
+    align-items: center;
 `;
 
 export const TableContainer = styled.div`
     display: flex;
     flex-direction: column;
+    width: 95%;
+    margin: auto;
 `;
 
 export const DataGridContainer = styled.div`
     height: 500px;
-    width: 95%;
-    margin: auto;
 `;
 
 export const HeaderContainer = styled.div`
-    width: 95%;
-    margin: auto;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    margin-bottom: 20px;
+`;
+
+export const PhotoContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    align-items: center;
+`;
+
+export const UploadContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    align-items: center;
 `;

@@ -14,4 +14,4 @@ let uploadCoverPicture = multer({
     limits: 5 * 1024 * 1024,
 });
 
-export default uploadCoverPicture.single("coverPic");
+export default uploadCoverPicture.single("cover_pic");

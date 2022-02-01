@@ -1,26 +1,19 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, MenuItem, TextField } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import React, { useEffect, useState } from 'react';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, MenuItem, TextField, Slider, Avatar } from '@mui/material';
 
-import { findCelebById, updateCeleb } from '../../actions/celebs';
+import { findCelebById, setCelebPic, updateCeleb } from '../../actions/celebs';
 import { useDispatch, useSelector } from 'react-redux';
 import { LocalizationProvider, MobileDatePicker } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDateFns';
 import { genders } from '../../constants/dropdowns';
-import EditIcon from '@mui/icons-material/Edit';
-
-const useStyles = makeStyles((theme) => ({
-    
-}));
+import CoverPicUpload from '../shared/CoverPicUpload';
+import { PhotoContainer } from '../shared/shared';
 
 function CelebEdit(props) {
-    const classes = useStyles();
 
     const [open, setOpen] = useState(props.open);
-    //const celeb = useSelector(state => state.celebs.celeb);
-    //const loading = useSelector(state => state.loading.CELEBFIND);
+    const loading = useSelector(state => state.loading.CELEBFIND);
     const [formData, setFormData] = useState(props.celeb);
-    //const [formData, setFormData] = useState(null);
     const id = props.celeb?.id;
     const dispatch = useDispatch();
 
@@ -32,12 +25,7 @@ function CelebEdit(props) {
         setFormData({ ...formData, birthday: date })
     }
 
-    // const HandleOpen = () => {
-    //     dispatch(findCelebById(id));
-    //     //const celeb = useSelector(state => state.celebs.celeb);
-    //     setFormData((prevCeleb) => { return celeb })
-    //     setOpen(true);
-    // };
+    const [fileData, setFileData] = useState(null);
 
     useEffect(() => {
         setFormData(props.celeb);
@@ -45,26 +33,44 @@ function CelebEdit(props) {
 
     }, [props]);
 
+    const [editor, setEditor] = useState(null);
+
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        if (editor != null) {
+            const data = new FormData();
+
+            const canvas = editor.getImageScaledToCanvas();
+
+            canvas.toBlob(function (blob) {
+                data.append("cover_pic", blob, `${Date.now()}-${fileData.name}`);
+                dispatch(setCelebPic(id, data));
+            })
+        }
 
         dispatch(updateCeleb(id, formData));
         props.handleClose();
     };
 
-    // const handleClose = () => {
-    //     setOpen(false);
-    // };
-
     return (
-        <div>
+        loading ? <div>loading bar</div> : <div>
             <LocalizationProvider dateAdapter={DateAdapter}>
-                {/* <Button variant="contained" disableRipple onClick={handleOpen}> */}
-                    {/* <EditIcon onClick={HandleOpen}/> */}
-                {/* </Button> */}
-            { <Dialog fullWidth maxWidth={'lg'} open={open} onClose={props.handleClose} >
+                {<Dialog fullWidth maxWidth={'lg'} open={open} onClose={props.handleClose} >
                     <DialogTitle>Update Celeb</DialogTitle>
                     <DialogContent >
+
+                        <PhotoContainer>
+                        <Avatar sx={{ width: 150, height: 150 }} src={formData?.cover_pic} />
+
+                        <CoverPicUpload
+                            editor={editor}
+                            setEditor={setEditor}
+                            fileData={fileData}
+                            setFileData={setFileData}
+                        />
+                        </PhotoContainer>
+
                         <TextField
                             margin="dense"
                             name="first_name"
@@ -113,7 +119,7 @@ function CelebEdit(props) {
                             {genders.map((gender, index) => (
                                 <MenuItem key={index} value={gender}>{gender}</MenuItem>
                             ))}
-                            </TextField>
+                        </TextField>
 
                         <TextField
                             margin="dense"

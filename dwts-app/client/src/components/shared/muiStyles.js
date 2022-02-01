@@ -1,6 +1,6 @@
 
 import styled from "styled-components";
-import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, FormControl, InputLabel, Select, MenuItem, CircularProgress, FormControlLabel, Checkbox, ListItemText, Input, Chip, ListSubheader } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, FormControl, InputLabel, Select, MenuItem, CircularProgress, FormControlLabel, Checkbox, ListItemText, Input, Chip, ListSubheader, Slider, Avatar } from '@mui/material';
 import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add';
 import SettingsIcon from '@material-ui/icons/Settings';

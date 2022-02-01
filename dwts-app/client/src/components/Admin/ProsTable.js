@@ -9,7 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import ProAdd from '../Pros/ProAdd';
 import { TableContainer, DataGridContainer, HeaderContainer } from '../shared/shared';
-import { Typography } from '@mui/material';
+import { Avatar, Typography } from '@mui/material';
 
 
 function ProsTable(props) {
@@ -35,6 +35,11 @@ function ProsTable(props) {
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 40 },
+        { 
+            field: 'cover_pic', headerName: 'Pic', width: '60',
+            //renderCell: (params) => <img src={params.value} />
+            renderCell: (params) => <Avatar src={params.value} />
+        },
         { field: 'first_name', headerName: 'First Name', width: 100 },
         { field: 'last_name', headerName: 'Last Name', width: 100 },
         {
@@ -46,7 +51,7 @@ function ProsTable(props) {
         { field: 'twitter', headerName: 'Twitter', width: 100 },
         { field: 'instagram', headerName: 'Instagram', width: 100 },
         { field: 'tiktok', headerName: 'TikTok', width: 100 },
-        { field: 'is_junior', headerName: 'Junior?', width: 100 },
+        { field: 'is_junior', headerName: 'Junior?', width: 75 },
         {
             field: 'actions',
             type: 'actions',

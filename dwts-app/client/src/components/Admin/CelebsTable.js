@@ -1,57 +1,63 @@
-import React, { useEffect, useReducer, useState } from 'react';
-import styled from 'styled-components';
-import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
-
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCelebs, deleteCeleb, findCelebById } from '../../actions/celebs';
 
+import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import CelebAdd from '../Celebs/CelebAdd';
-import { TableContainer, DataGridContainer, HeaderContainer } from '../shared/shared';
-import { Typography } from '@mui/material';
-import CelebEdit from '../Celebs/CelebEdit';
 
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, MenuItem, TextField } from '@mui/material';
-
-import { updateCeleb } from '../../actions/celebs';
-import { LocalizationProvider, MobileDatePicker } from '@mui/lab';
+import { Avatar, Typography } from '@mui/material';
+import { LocalizationProvider } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDateFns';
-import { genders } from '../../constants/dropdowns';
 
-function CelebsTable(props) {
+import { TableContainer, DataGridContainer, HeaderContainer } from '../shared/shared';
+import { fetchCelebs, deleteCeleb, findCelebById } from '../../actions/celebs';
+import CelebAdd from '../Celebs/CelebAdd';
+import CelebEdit from '../Celebs/CelebEdit';
+import DeleteDialog from '../shared/DeleteDialog';
+import { convertBirthday } from '../shared/functions';
+import EditDialog from '../shared/EditDialog';
+
+function CelebsTable() {
     const dispatch = useDispatch();
     const celebs = useSelector(state => state.celebs.celebs);
+    const celeb = useSelector(state => state.celebs.celeb);
+    const loading = useSelector(state => state.loading.CELEBSEARCH);
 
     useEffect(() => {
         dispatch(fetchCelebs());
     }, [dispatch]);
 
-    const [open, setOpen] = useState(false);
-    const celeb = useSelector(state => state.celebs.celeb);
-    const [formData, setFormData] = useState(null);
+    const [open, setOpen] = useState({
+        edit: false,
+        delete: false,
+        id: null
+    });
 
     const handleClose = () => {
-        setOpen(false);
+        setOpen({ edit: false, delete: false, id: null })
     };
 
     const handleEdit = async (id) => {
         dispatch(findCelebById(id));
-        setOpen(true);
+        setOpen({ edit: true })
     }
 
     const handleDelete = (id) => {
-        dispatch(deleteCeleb(id));
-        // confirm deletion modal
+        dispatch(findCelebById(id));
+        setOpen({ delete: true, id: id })
     }
 
-    const convertBirthday = (params) => {
-        const date = new Date(params.getValue(params.id, 'birthday'));
-        return ((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '/' + ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())) + '/' + date.getFullYear();
+    const confirmDelete = () => {
+        dispatch(deleteCeleb(open.id));
+        setOpen({ edit: false, delete: false, id: null })
     }
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 40 },
+        {
+            field: 'cover_pic', headerName: 'Pic', width: '60',
+            renderCell: (params) => <Avatar src={params.value} />
+        },
         { field: 'first_name', headerName: 'First Name', width: 100 },
         { field: 'last_name', headerName: 'Last Name', width: 100 },
         {
@@ -63,11 +69,15 @@ function CelebsTable(props) {
         { field: 'twitter', headerName: 'Twitter', width: 100 },
         { field: 'instagram', headerName: 'Instagram', width: 100 },
         { field: 'tiktok', headerName: 'TikTok', width: 100 },
-        { field: 'is_junior', headerName: 'Junior?', width: 100 },
+        {
+            field: 'is_junior', headerName: 'Junior?', width: 75,
+            renderCell: (params) => params.value ? 'Yes' : 'No'
+        },
         {
             field: 'actions',
+            //headerName: 'Actions',
             type: 'actions',
-            width: 90,
+            width: 50,
             getActions: (params) => [
                 <GridActionsCellItem
                     icon={<EditIcon />}
@@ -83,19 +93,6 @@ function CelebsTable(props) {
                 />,
             ],
         },
-        // {
-        //     field: 'actions2',
-        //     type: 'actions',
-        //     width: 30,
-        //     headerName: 'Delete',
-        //     getActions: (params) => [
-        //         <GridActionsCellItem
-        //             icon={<DeleteIcon />}
-        //             label="Delete"
-        //             onClick={() => handleDelete(params.id)}
-        //         />,
-        //     ],
-        // },
     ];
 
     return (
@@ -103,23 +100,37 @@ function CelebsTable(props) {
             <TableContainer>
                 <HeaderContainer>
                     <Typography variant="h4">Celebs Table</Typography>
-                    {/* <h3>Celebs Table</h3> */}
-                    {<CelebAdd />}
+                    <CelebAdd />
                 </HeaderContainer>
-                {/* <h3>Celebs Table</h3>
-            {<CelebAdd />} */}
-                {/* weird issue with spacing once component is brought in??? */}
-                <DataGridContainer>
-                    <DataGrid
-                        rows={celebs}
-                        columns={columns}
-                    //checkboxSelection
-                    />
-                </DataGridContainer>
-                
-                {<CelebEdit celeb={celeb} open={open} handleClose={handleClose} />}
 
-                
+                {loading ? <div>loading bar</div> : <div>
+                    <DataGridContainer>
+                        <DataGrid
+                            rows={celebs}
+                            columns={columns}
+                        //checkboxSelection
+                        />
+                    </DataGridContainer>
+
+                    {/* <CelebEdit celeb={celeb} open={open.edit} handleClose={handleClose} /> */}
+
+                    {open.edit && <EditDialog
+                        item={celeb}
+                        open={open.edit}
+                        handleClose={handleClose}
+                        table={'Celeb'}
+                    />}
+
+                    {open.delete && <DeleteDialog
+                        item={`${celeb?.first_name} ${celeb?.last_name}`}
+                        table={'celebs'}
+                        open={open.delete}
+                        handleClose={handleClose}
+                        confirmDelete={confirmDelete}
+                    />}
+
+                </div>}
+
             </TableContainer>
         </LocalizationProvider>
     )

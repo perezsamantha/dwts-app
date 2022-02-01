@@ -29,7 +29,7 @@ export const setCelebPic = (id, image) => async (dispatch) => {
     dispatch({ type: actionType.CELEBUPDATE_REQUEST });
 
     try {
-        const { data } = await api.updatePic(id, image);
+        const { data } = await api.setCelebPic(id, image);
 
         dispatch({ type: actionType.CELEBUPDATE_SUCCESS, payload: data });
     } catch (error) {
