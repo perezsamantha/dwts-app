@@ -25,11 +25,11 @@ export const updateTeam = (id, team) => async (dispatch) => {
     }
 }
 
-export const updatePic = (id, image) => async (dispatch) => {
+export const setTeamPic = (id, image) => async (dispatch) => {
     dispatch({ type: actionType.TEAMUPDATE_REQUEST });
 
     try {
-        const { data } = await api.updatePic(id, image);
+        const { data } = await api.setTeamPic(id, image);
 
         dispatch({ type: actionType.TEAMUPDATE_SUCCESS, payload: data });
     } catch (error) {
@@ -38,14 +38,14 @@ export const updatePic = (id, image) => async (dispatch) => {
 }
 
 export const findTeamById = (id) => async (dispatch) => {
-    dispatch({ type: actionType.TEAMSEARCH_REQUEST });
+    dispatch({ type: actionType.TEAMFIND_REQUEST });
 
     try {
         const { data } = await api.findTeamById(id);
 
-        dispatch({ type: actionType.TEAMSEARCH_SUCCESS, payload: data });
+        dispatch({ type: actionType.TEAMFIND_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: actionType.TEAMSEARCH_FAILURE, payload: error, error: true });
+        dispatch({ type: actionType.TEAMFIND_FAILURE, payload: error, error: true });
     }
 }
 
@@ -85,6 +85,7 @@ export const deleteTeam = (id) => async (dispatch) => {
     }
 }
 
+//todo
 export const addPic = (id, image) => async (dispatch) => {
     dispatch({ type: actionType.TEAMUPDATE_REQUEST });
 

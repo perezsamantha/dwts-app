@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, makeStyles, MenuItem, InputLabel, Select } from '@material-ui/core';
 
-import { updateTeam, deleteTeam, updatePic } from '../../actions/teams';
+import { updateTeam, deleteTeam, setTeamPic } from '../../actions/teams';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AvatarEditor from 'react-avatar-editor';
@@ -74,7 +74,7 @@ function TeamSettings(props) {
 
             canvas.toBlob(function (blob) {
                 data.append("coverPic", blob, `${Date.now()}-${fileData.name}`);
-                dispatch(updatePic(id, data));
+                dispatch(setTeamPic(id, data));
             })
         }
 

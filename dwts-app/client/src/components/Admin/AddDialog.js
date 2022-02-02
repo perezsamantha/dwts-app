@@ -1,33 +1,67 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, MenuItem, TextField } from '@mui/material';
 
-import { addCeleb } from '../../actions/celebs';
-import { useDispatch } from 'react-redux';
 import { LocalizationProvider, MobileDatePicker } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDateFns';
-import { genders } from '../../constants/dropdowns';
+import { genders, placements } from '../../constants/dropdowns';
+import * as tableType from '../../constants/tableTypes';
+
+import { addCeleb } from '../../actions/celebs';
 import { addPro } from '../../actions/pros';
+import { addTeam } from '../../actions/teams';
 
 function AddDialog(props) {
     const table = props.table
-
-    const initialState = {
-        cover_pic: null,
-        first_name: null,
-        last_name: null,
-        birthday: new Date().toISOString(),
-        //birthday: null,
-        height: null,
-        gender: null,
-        twitter: null,
-        instagram: null,
-        tiktok: null,
-        is_junior: false
-    };
     const [open, setOpen] = useState(false);
-    const [formData, setFormData] = useState(initialState);
 
     const dispatch = useDispatch();
+
+    const initialState = () => {
+        switch (table) {
+            case 'Celeb':
+                return {
+                    cover_pic: null,
+                    first_name: null,
+                    last_name: null,
+                    birthday: new Date().toISOString(),
+                    //birthday: null,
+                    height: null,
+                    gender: null,
+                    twitter: null,
+                    instagram: null,
+                    tiktok: null,
+                    is_junior: false
+                }
+            case 'Pro':
+                return {
+                    cover_pic: null,
+                    first_name: null,
+                    last_name: null,
+                    birthday: new Date().toISOString(),
+                    //birthday: null,
+                    height: null,
+                    gender: null,
+                    twitter: null,
+                    instagram: null,
+                    tiktok: null,
+                    is_junior: false
+                }
+            case tableType.TEAM:
+                return {
+                    cover_pic: null,
+                    celeb_id: null,
+                    pro_id: null,
+                    mentor_id: null,
+                    season_id: null,
+                    placement: null,
+                    team_name: null,
+                    extra: null
+                }
+        }
+    };
+
+    const [formData, setFormData] = useState(initialState);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -50,6 +84,10 @@ function AddDialog(props) {
                 break
             case 'Pro':
                 dispatch(addPro(formData));
+                break
+            case tableType.TEAM:
+                console.log(formData)
+                dispatch(addTeam(formData));
                 break
             default:
             //console.log('Invald table type');
@@ -90,6 +128,104 @@ function AddDialog(props) {
                                 label="Last Name"
                                 type="text"
                                 value={formData.last_name}
+                                onChange={handleChange}
+                            />
+                        }
+
+                        {Array.of(tableType.TEAM).includes(table) &&
+                            <TextField
+                                margin="dense"
+                                name="celeb_id"
+                                label="Celeb"
+                                type="text"
+                                value={formData.celeb_id}
+                                onChange={handleChange}
+                            />
+                        }
+
+                        {/* {Array.of(tableType.TEAM).includes(table) &&
+                            <TextField
+                                margin="dense"
+                                name="celeb_id"
+                                label="Celeb"
+                                type="text"
+                                select
+                                value={formData.celeb_id}
+                                onChange={handleChange}
+                            >
+                                {celebs.map((celeb, index) => (
+                                    <MenuItem key={index} value={celeb.id}>{celeb.first_name}</MenuItem>
+                                ))}
+                            </TextField>
+                        } */}
+
+                        {Array.of(tableType.TEAM).includes(table) &&
+                            <TextField
+                                margin="dense"
+                                name="pro_id"
+                                label="Pro"
+                                type="text"
+                                value={formData.pro_id}
+                                onChange={handleChange}
+                            />
+                        }
+
+                        {Array.of(tableType.TEAM).includes(table) &&
+                            <TextField
+                                margin="dense"
+                                name="mentor_id"
+                                label="Mentor"
+                                type="text"
+                                value={formData.mentor_id}
+                                onChange={handleChange}
+                            />
+                        }
+
+                        {Array.of(tableType.TEAM).includes(table) &&
+                            <TextField
+                                margin="dense"
+                                name="season_id"
+                                label="Season"
+                                type="text"
+                                value={formData.season_id}
+                                onChange={handleChange}
+                            />
+                        }
+
+                        {Array.of(tableType.TEAM).includes(table) &&
+                            <TextField
+                                margin="dense"
+                                name="placement"
+                                label="Placement"
+                                type="text"
+                                select
+                                value={formData.placement}
+                                onChange={handleChange}
+                            >
+                                {placements.map((placement, index) => (
+                                    <MenuItem key={index} value={placement}>{placement}</MenuItem>
+                                ))}
+                            </TextField>
+                        }
+
+                        {Array.of(tableType.TEAM).includes(table) &&
+                            <TextField
+                                margin="dense"
+                                name="team_name"
+                                label="Team Name"
+                                type="text"
+                                value={formData.team_name}
+                                onChange={handleChange}
+                            />
+                        }
+
+                        {Array.of(tableType.TEAM).includes(table) &&
+                            <TextField
+                                margin="dense"
+                                name="extra"
+                                label="Extra"
+                                type="text"
+                                value={formData.extra}
                                 onChange={handleChange}
                             />
                         }

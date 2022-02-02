@@ -4,6 +4,7 @@ import UUID from 'uuid-v4';
 import pool from "../api/pool.js";
 
 export const addTeam = async (req, res) => {
+    //console.log(req);
     try {
         const {
             cover_pic,
@@ -38,7 +39,7 @@ export const findTeamById = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const team = await pool.query('SELECT * FROM teams WHERE team_id = $1', [id]);
+        const team = await pool.query('SELECT * FROM teams WHERE id = $1', [id]);
 
         res.status(200).json(team.rows[0]);
     } catch (error) {
@@ -74,7 +75,7 @@ export const updateTeam = async (req, res) => {
             extra
         } = req.body;
 
-        const result = await pool.query(`UPDATE teams SET celeb_id = $1, pro_id = $2, mentor_id = $3, season_id = $4, placement = $5, team_name = $6, extra = $7 WHERE team_id = $8 RETURNING *`, [celeb_id, pro_id, mentor_id, season_id, placement, team_name, extra, id]);
+        const result = await pool.query(`UPDATE teams SET celeb_id = $1, pro_id = $2, mentor_id = $3, season_id = $4, placement = $5, team_name = $6, extra = $7 WHERE id = $8 RETURNING *`, [celeb_id, pro_id, mentor_id, season_id, placement, team_name, extra, id]);
 
         res.status(200).json(result.rows[0]);
     } catch (error) {
@@ -107,7 +108,7 @@ export const setTeamPic = async (req, res) => {
         blobWriter.on('finish', async () => {
             const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURI(blob.name)}?alt=media`;
 
-            const result = await pool.query('UPDATE teams SET cover_pic = $1 WHERE team_id = $2 RETURNING *', [publicUrl, req.params.id]);
+            const result = await pool.query('UPDATE teams SET cover_pic = $1 WHERE id = $2 RETURNING *', [publicUrl, req.params.id]);
 
             res.status(200).json(result.rows[0]);
         })
@@ -122,7 +123,7 @@ export const deleteTeam = async (req, res) => {
     const { id } = req.params;
 
     try {
-        await pool.query('DELETE FROM teams WHERE team_id = $1', [id]);
+        await pool.query('DELETE FROM teams WHERE id = $1', [id]);
 
         res.status(200).json({ message: "Team successfully deleted." });
     } catch (error) {
@@ -155,7 +156,7 @@ export const addPic = async (req, res) => {
         blobWriter.on('finish', async () => {
             const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURI(blob.name)}?alt=media`;
 
-            const result = await pool.query('UPDATE teams SET pictures = array_append(pictures, $1) WHERE team_id = $2 RETURNING *', [publicUrl, req.params.id]);
+            const result = await pool.query('UPDATE teams SET pictures = array_append(pictures, $1) WHERE id = $2 RETURNING *', [publicUrl, req.params.id]);
 
             res.status(200).json(result.rows[0]);
         })

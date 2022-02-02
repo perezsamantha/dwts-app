@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, MenuItem, TextField, Slider, Avatar } from '@mui/material';
-
-import { setCelebPic, updateCeleb } from '../../actions/celebs';
 import { useDispatch, useSelector } from 'react-redux';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, MenuItem, TextField, Avatar } from '@mui/material';
 import { LocalizationProvider, MobileDatePicker } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDateFns';
-import { genders } from '../../constants/dropdowns';
+
+import * as tableType from '../../constants/tableTypes';
+import { genders, placements } from '../../constants/dropdowns';
 import CoverPicUpload from '../shared/CoverPicUpload';
 import { PhotoContainer } from '../shared/shared';
+import { setCelebPic, updateCeleb } from '../../actions/celebs';
 import { setProPic, updatePro } from '../../actions/pros';
+import { setTeamPic, updateTeam } from '../../actions/teams';
 
 function EditDialog(props) {
 
@@ -26,6 +28,8 @@ function EditDialog(props) {
                 return state.loading.CELEBFIND;
             case 'Pro':
                 return state.loading.PROFIND;
+            case tableType.TEAM:
+                return state.loading.TEAMFIND;
         }
     })
 
@@ -57,24 +61,32 @@ function EditDialog(props) {
                 switch (table) {
                     case 'Celeb':
                         dispatch(setCelebPic(id, data));
+                        break
                     case 'Pro':
                         dispatch(setProPic(id, data));
+                        break
+                    case tableType.TEAM:
+                        dispatch(setTeamPic(id, data));
+                        break
                     default:
                     //console.log('Invald table type');
                 }
-                //dispatch(setCelebPic(id, data));
             })
         }
 
         switch (table) {
             case 'Celeb':
                 dispatch(updateCeleb(id, formData));
+                break
             case 'Pro':
                 dispatch(updatePro(id, formData));
+                break
+            case tableType.TEAM:
+                dispatch(updateTeam(id, formData));
+                break
             default:
             //console.log('Invald table type');
         }
-        //dispatch(updateCeleb(id, formData));
         props.handleClose();
     };
 
@@ -85,7 +97,7 @@ function EditDialog(props) {
                     <DialogTitle>Update {table}</DialogTitle>
                     <DialogContent >
 
-                        {Array.of('Celeb', 'Pro').includes(table) &&
+                        {Array.of('Celeb', 'Pro', tableType.TEAM).includes(table) &&
                             <PhotoContainer>
                                 <Avatar sx={{ width: 150, height: 150 }} src={formData?.cover_pic} />
 
@@ -116,6 +128,105 @@ function EditDialog(props) {
                                 label="Last Name"
                                 type="text"
                                 value={formData?.last_name}
+                                onChange={handleChange}
+                            />
+                        }
+
+
+                        {Array.of(tableType.TEAM).includes(table) &&
+                            <TextField
+                                margin="dense"
+                                name="celeb_id"
+                                label="Celeb"
+                                type="text"
+                                value={formData.celeb_id}
+                                onChange={handleChange}
+                            />
+                        }
+
+                        {/* {Array.of(tableType.TEAM).includes(table) &&
+                            <TextField
+                                margin="dense"
+                                name="celeb_id"
+                                label="Celeb"
+                                type="text"
+                                select
+                                value={formData.celeb_id}
+                                onChange={handleChange}
+                            >
+                                {celebs.map((celeb, index) => (
+                                    <MenuItem key={index} value={celeb.id}>{celeb.first_name}</MenuItem>
+                                ))}
+                            </TextField>
+                        } */}
+
+                        {Array.of(tableType.TEAM).includes(table) &&
+                            <TextField
+                                margin="dense"
+                                name="pro_id"
+                                label="Pro"
+                                type="text"
+                                value={formData.pro_id}
+                                onChange={handleChange}
+                            />
+                        }
+
+                        {Array.of(tableType.TEAM).includes(table) &&
+                            <TextField
+                                margin="dense"
+                                name="mentor_id"
+                                label="Mentor"
+                                type="text"
+                                value={formData.mentor_id}
+                                onChange={handleChange}
+                            />
+                        }
+
+                        {Array.of(tableType.TEAM).includes(table) &&
+                            <TextField
+                                margin="dense"
+                                name="season_id"
+                                label="Season"
+                                type="text"
+                                value={formData.season_id}
+                                onChange={handleChange}
+                            />
+                        }
+
+                        {Array.of(tableType.TEAM).includes(table) &&
+                            <TextField
+                                margin="dense"
+                                name="placement"
+                                label="Placement"
+                                type="text"
+                                select
+                                value={formData.placement}
+                                onChange={handleChange}
+                            >
+                                {placements.map((placement, index) => (
+                                    <MenuItem key={index} value={placement}>{placement}</MenuItem>
+                                ))}
+                            </TextField>
+                        }
+
+                        {Array.of(tableType.TEAM).includes(table) &&
+                            <TextField
+                                margin="dense"
+                                name="team_name"
+                                label="Team Name"
+                                type="text"
+                                value={formData.team_name}
+                                onChange={handleChange}
+                            />
+                        }
+
+                        {Array.of(tableType.TEAM).includes(table) &&
+                            <TextField
+                                margin="dense"
+                                name="extra"
+                                label="Extra"
+                                type="text"
+                                value={formData.extra}
                                 onChange={handleChange}
                             />
                         }

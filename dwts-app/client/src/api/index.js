@@ -28,7 +28,7 @@ export const getFavoriteDances = () => API.get('/dances/favorites');
 
 export const addTeam = (team) => API.post('/teams/add', team);
 export const updateTeam = (id, team) => API.patch(`/teams/update/${id}`, team);
-export const updatePic = (id, image) => API.patch(`/teams/updatePic/${id}`, image)
+export const setTeamPic = (id, image) => API.patch(`/teams/setPic/${id}`, image)
 export const findTeamById = (id) => API.get(`/teams/${id}`);
 export const fetchTeams = () => API.get('/teams/');
 export const searchTeams = (input) => API.post('/teams/search', input);

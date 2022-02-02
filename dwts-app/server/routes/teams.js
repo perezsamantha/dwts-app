@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.post('/add', addTeam);
 router.patch('/update/:id', updateTeam);
-router.patch('/updatePic/:id', uploadCoverPicture, setTeamPic);
+router.patch('/setPic/:id', uploadCoverPicture, setTeamPic);
 router.get('/', fetchAllTeams);
 router.get('/favorites', auth, getFavoriteTeams);
 router.post('/search', searchTeams);

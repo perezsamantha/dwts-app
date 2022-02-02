@@ -19,6 +19,9 @@ import { deletePro, fetchPros, findProById } from '../../actions/pros';
 import ProAdd from '../Pros/ProAdd';
 import AddDialog from './AddDialog';
 
+import * as tableType from '../../constants/tableTypes';
+import { deleteTeam, fetchTeams, findTeamById } from '../../actions/teams';
+
 function Table(props) {
     const table = props.type;
     const dispatch = useDispatch();
@@ -29,6 +32,8 @@ function Table(props) {
                 return state.celebs.celebs;
             case 'Pro':
                 return state.pros.pros;
+            case tableType.TEAM:
+                return state.teams.teams;
         }
     })
 
@@ -38,6 +43,8 @@ function Table(props) {
                 return state.celebs.celeb;
             case 'Pro':
                 return state.pros.pro;
+            case tableType.TEAM:
+                return state.teams.team;
         }
     })
 
@@ -47,6 +54,8 @@ function Table(props) {
                 return state.loading.CELEBSEARCH;
             case 'Pro':
                 return state.loading.PROSEARCH;
+            case tableType.TEAM:
+                return state.loading.TEAMSEARCH;
         }
     })
 
@@ -56,13 +65,15 @@ function Table(props) {
                 return dispatch(fetchCelebs());
             case 'Pro':
                 return dispatch(fetchPros());
+            case tableType.TEAM:
+                return dispatch(fetchTeams());
         }
     }, [dispatch]);
 
     const [open, setOpen] = useState({
         edit: false,
         delete: false,
-        id: null
+        id: null,
     });
 
     const handleClose = () => {
@@ -77,6 +88,9 @@ function Table(props) {
             case 'Pro':
                 dispatch(findProById(id));
                 break
+            case tableType.TEAM:
+                dispatch(findTeamById(id));
+                break
         }
         setOpen({ edit: true })
     }
@@ -89,8 +103,11 @@ function Table(props) {
             case 'Pro':
                 dispatch(findProById(id));
                 break
+            case tableType.TEAM:
+                dispatch(findTeamById(id));
+                break
         }
-        setOpen({ delete: true, id: id })
+        setOpen({ delete: true, id: id });
     }
 
     const confirmDelete = () => {
@@ -101,52 +118,101 @@ function Table(props) {
             case 'Pro':
                 dispatch(deletePro(open.id));
                 break
+            case tableType.TEAM:
+                dispatch(deleteTeam(open.id));
+                break
         }
         setOpen({ edit: false, delete: false, id: null })
     }
 
-    const columns = [
-        { field: 'id', headerName: 'ID', width: 40 },
-        {
-            field: 'cover_pic', headerName: 'Pic', width: '60',
-            renderCell: (params) => <Avatar src={params.value} />
-        },
-        { field: 'first_name', headerName: 'First Name', width: 100 },
-        { field: 'last_name', headerName: 'Last Name', width: 100 },
-        {
-            field: 'birthdayGetter', headerName: 'Birthday', width: 100,
-            valueGetter: convertBirthday,
-        },
-        { field: 'height', headerName: 'Height', width: 80 },
-        { field: 'gender', headerName: 'Gender', width: 80 },
-        { field: 'twitter', headerName: 'Twitter', width: 100 },
-        { field: 'instagram', headerName: 'Instagram', width: 100 },
-        { field: 'tiktok', headerName: 'TikTok', width: 100 },
-        {
-            field: 'is_junior', headerName: 'Junior?', width: 75,
-            renderCell: (params) => params.value ? 'Yes' : 'No'
-        },
-        {
-            field: 'actions',
-            //headerName: 'Actions',
-            type: 'actions',
-            width: 50,
-            getActions: (params) => [
-                <GridActionsCellItem
-                    icon={<EditIcon />}
-                    label="Edit"
-                    onClick={() => handleEdit(params.id)}
-                    showInMenu
-                />,
-                <GridActionsCellItem
-                    icon={<DeleteIcon />}
-                    label="Delete"
-                    onClick={() => handleDelete(params.id)}
-                    showInMenu
-                />,
-            ],
-        },
-    ];
+    let columns;
+    //const columns = () => {
+    switch (table) {
+        case 'Celeb':
+        case 'Pro':
+            columns = [
+                { field: 'id', headerName: 'ID', width: 40 },
+                {
+                    field: 'cover_pic', headerName: 'Pic', width: '60',
+                    renderCell: (params) => <Avatar src={params.value} />
+                },
+                { field: 'first_name', headerName: 'First Name', width: 100 },
+                { field: 'last_name', headerName: 'Last Name', width: 100 },
+                {
+                    field: 'birthdayGetter', headerName: 'Birthday', width: 100,
+                    valueGetter: convertBirthday,
+                },
+                { field: 'height', headerName: 'Height', width: 80 },
+                { field: 'gender', headerName: 'Gender', width: 80 },
+                { field: 'twitter', headerName: 'Twitter', width: 100 },
+                { field: 'instagram', headerName: 'Instagram', width: 100 },
+                { field: 'tiktok', headerName: 'TikTok', width: 100 },
+                {
+                    field: 'is_junior', headerName: 'Junior?', width: 75,
+                    renderCell: (params) => params.value ? 'Yes' : 'No'
+                },
+                {
+                    field: 'actions',
+                    //headerName: 'Actions',
+                    type: 'actions',
+                    width: 50,
+                    getActions: (params) => [
+                        <GridActionsCellItem
+                            icon={<EditIcon />}
+                            label="Edit"
+                            onClick={() => handleEdit(params.id)}
+                            showInMenu
+                        />,
+                        <GridActionsCellItem
+                            icon={<DeleteIcon />}
+                            label="Delete"
+                            onClick={() => handleDelete(params.id)}
+                            showInMenu
+                        />,
+                    ],
+                },
+            ]
+            break
+        case 'TEAM':
+            columns = [
+                { field: 'id', headerName: 'ID', width: 40 },
+                {
+                    field: 'cover_pic', headerName: 'Pic', width: '60',
+                    renderCell: (params) => <Avatar src={params.value} />
+                },
+                { field: 'celeb_id', headerName: 'Celeb', width: 100 },
+                { field: 'pro_id', headerName: 'Pro', width: 100 },
+                { field: 'mentor_id', headerName: 'Mentor', width: 100 },
+                { field: 'season_id', headerName: 'Season', width: 75 },
+                { field: 'placement', headerName: 'Place', width: 100 },
+                { field: 'team_name', headerName: 'Team Name', width: 150 },
+                { field: 'extra', headerName: 'Extra', width: 250 },
+                {
+                    field: 'actions',
+                    //headerName: 'Actions',
+                    type: 'actions',
+                    width: 50,
+                    getActions: (params) => [
+                        <GridActionsCellItem
+                            icon={<EditIcon />}
+                            label="Edit"
+                            onClick={() => handleEdit(params.id)}
+                            showInMenu
+                        />,
+                        <GridActionsCellItem
+                            icon={<DeleteIcon />}
+                            label="Delete"
+                            onClick={() => handleDelete(params.id)}
+                            showInMenu
+                        />,
+                    ],
+                },
+            ]
+            break
+        default:
+            columns = [];
+    }
+    ;
 
     return (
         <LocalizationProvider dateAdapter={DateAdapter}>
@@ -167,8 +233,6 @@ function Table(props) {
                         />
                     </DataGridContainer>
 
-                    {/* <CelebEdit celeb={celeb} open={open.edit} handleClose={handleClose} /> */}
-
                     {open.edit && <EditDialog
                         item={item}
                         open={open.edit}
@@ -177,7 +241,7 @@ function Table(props) {
                     />}
 
                     {open.delete && <DeleteDialog
-                        item={`${item?.first_name} ${item?.last_name}`}
+                        item={item}
                         table={table}
                         open={open.delete}
                         handleClose={handleClose}
