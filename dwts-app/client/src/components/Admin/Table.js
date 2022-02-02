@@ -12,19 +12,51 @@ import DateAdapter from '@mui/lab/AdapterDateFns';
 import { TableContainer, DataGridContainer, HeaderContainer } from '../shared/shared';
 import { fetchCelebs, deleteCeleb, findCelebById } from '../../actions/celebs';
 import CelebAdd from '../Celebs/CelebAdd';
-import CelebEdit from '../Celebs/CelebEdit';
 import DeleteDialog from './DeleteDialog';
 import { convertBirthday } from '../shared/functions';
 import EditDialog from './EditDialog';
+import { deletePro, fetchPros, findProById } from '../../actions/pros';
+import ProAdd from '../Pros/ProAdd';
+import AddDialog from './AddDialog';
 
-function CelebsTable() {
+function Table(props) {
+    const table = props.type;
     const dispatch = useDispatch();
-    const celebs = useSelector(state => state.celebs.celebs);
-    const celeb = useSelector(state => state.celebs.celeb);
-    const loading = useSelector(state => state.loading.CELEBSEARCH);
+
+    const items = useSelector(state => {
+        switch (table) {
+            case 'Celeb':
+                return state.celebs.celebs;
+            case 'Pro':
+                return state.pros.pros;
+        }
+    })
+
+    const item = useSelector(state => {
+        switch (table) {
+            case 'Celeb':
+                return state.celebs.celeb;
+            case 'Pro':
+                return state.pros.pro;
+        }
+    })
+
+    const loading = useSelector(state => {
+        switch (table) {
+            case 'Celeb':
+                return state.loading.CELEBSEARCH;
+            case 'Pro':
+                return state.loading.PROSEARCH;
+        }
+    })
 
     useEffect(() => {
-        dispatch(fetchCelebs());
+        switch (table) {
+            case 'Celeb':
+                return dispatch(fetchCelebs());
+            case 'Pro':
+                return dispatch(fetchPros());
+        }
     }, [dispatch]);
 
     const [open, setOpen] = useState({
@@ -38,17 +70,38 @@ function CelebsTable() {
     };
 
     const handleEdit = async (id) => {
-        dispatch(findCelebById(id));
+        switch (table) {
+            case 'Celeb':
+                dispatch(findCelebById(id));
+                break
+            case 'Pro':
+                dispatch(findProById(id));
+                break
+        }
         setOpen({ edit: true })
     }
 
     const handleDelete = (id) => {
-        dispatch(findCelebById(id));
+        switch (table) {
+            case 'Celeb':
+                dispatch(findCelebById(id));
+                break
+            case 'Pro':
+                dispatch(findProById(id));
+                break
+        }
         setOpen({ delete: true, id: id })
     }
 
     const confirmDelete = () => {
-        dispatch(deleteCeleb(open.id));
+        switch (table) {
+            case 'Celeb':
+                dispatch(deleteCeleb(open.id));
+                break
+            case 'Pro':
+                dispatch(deletePro(open.id));
+                break
+        }
         setOpen({ edit: false, delete: false, id: null })
     }
 
@@ -99,14 +152,16 @@ function CelebsTable() {
         <LocalizationProvider dateAdapter={DateAdapter}>
             <TableContainer>
                 <HeaderContainer>
-                    <Typography variant="h4">Celebs Table</Typography>
-                    <CelebAdd />
+                    <Typography variant="h4">{table}s Table</Typography>
+                    <AddDialog
+                        table={table}
+                    />
                 </HeaderContainer>
 
                 {loading ? <div>loading bar</div> : <div>
                     <DataGridContainer>
                         <DataGrid
-                            rows={celebs}
+                            rows={items}
                             columns={columns}
                         //checkboxSelection
                         />
@@ -115,15 +170,15 @@ function CelebsTable() {
                     {/* <CelebEdit celeb={celeb} open={open.edit} handleClose={handleClose} /> */}
 
                     {open.edit && <EditDialog
-                        item={celeb}
+                        item={item}
                         open={open.edit}
                         handleClose={handleClose}
-                        table={'Celeb'}
+                        table={table}
                     />}
 
                     {open.delete && <DeleteDialog
-                        item={`${celeb?.first_name} ${celeb?.last_name}`}
-                        table={'celebs'}
+                        item={`${item?.first_name} ${item?.last_name}`}
+                        table={table}
                         open={open.delete}
                         handleClose={handleClose}
                         confirmDelete={confirmDelete}
@@ -136,4 +191,4 @@ function CelebsTable() {
     )
 }
 
-export default CelebsTable;
+export default Table;

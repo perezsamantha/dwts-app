@@ -109,13 +109,13 @@ export const HeaderContainer = styled.div`
 export const PhotoContainer = styled.div`
     display: flex;
     flex-direction: column;
-    margin: 10px;
+    //margin-bottom: 15px;
     align-items: center;
 `;
 
 export const UploadContainer = styled.div`
     display: flex;
     flex-direction: column;
-    margin: 0 auto;
+    margin: 10px auto;
     align-items: center;
 `;

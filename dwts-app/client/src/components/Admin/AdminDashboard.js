@@ -27,43 +27,18 @@ import TeamsTable from './TeamsTable';
 import { Link } from 'react-router-dom';
 import CelebsTable from './CelebsTable';
 import ProsTable from './ProsTable';
+import Table from './Table';
 
-const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'celeb_id', headerName: 'Celeb', width: 70 },
-    { field: 'pro_id', headerName: 'Pro', width: 70 },
-    { field: 'mentor_id', headerName: 'Mentor', width: 70 },
-    { field: 'season_id', headerName: 'Season', width: 70 },
-    { field: 'placement', headerName: 'Placement', width: 80 },
-    { field: 'team_name', headerName: 'Team Name', width: 130 },
-    { field: 'extra', headerName: 'Extra', width: 130 },
-    // {
-    //     field: 'age',
-    //     headerName: 'Age',
-    //     type: 'number',
-    //     width: 90,
-    // },
-    // {
-    //     field: 'fullName',
-    //     headerName: 'Full name',
-    //     description: 'This column has a value getter and is not sortable.',
-    //     sortable: false,
-    //     width: 160,
-    //     valueGetter: (params) =>
-    //         `${params.getValue(params.id, 'firstName') || ''} ${params.getValue(params.id, 'lastName') || ''
-    //         }`,
-    // },
-];
 
 const drawerWidth = 180;
 
 function AdminDashboard(props) {
     
     const dispatch = useDispatch();
-    const teams = useSelector(state => state.teams.teams);
+    //const teams = useSelector(state => state.teams.teams);
 
     useEffect(() => {
-        dispatch(fetchTeams());
+        //dispatch(fetchTeams());
     }, [dispatch]);
 
     const { window } = props;
@@ -98,17 +73,17 @@ function AdminDashboard(props) {
                         Dashboard
                     </ListItemText>
                 </ListItemButton>
-                <ListItemButton onClick={() => handleComponent(<CelebsTable />)}>
+                <ListItemButton onClick={() => handleComponent(<Table key={1} type='Celeb' />)}>
                     <ListItemText>
                         Celebs
                     </ListItemText>
                 </ListItemButton>
-                <ListItemButton onClick={() => handleComponent(<ProsTable />)}>
+                <ListItemButton onClick={() => handleComponent(<Table key={2} type='Pro' />)}>
                     <ListItemText>
                         Pros
                     </ListItemText>
                 </ListItemButton>
-                <ListItemButton onClick={() => handleComponent(<TeamsTable />)}>
+                <ListItemButton onClick={() => handleComponent()}>
                     <ListItemText>
                         Teams
                     </ListItemText>

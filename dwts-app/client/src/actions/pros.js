@@ -14,14 +14,14 @@ export const addPro = (pro) => async (dispatch) => {
 }
 
 export const findProById = (id) => async (dispatch) => {
-    dispatch({ type: actionType.PROSEARCH_REQUEST });
+    dispatch({ type: actionType.PROFIND_REQUEST });
     
     try {
         const { data } = await api.findProById(id);
 
-        dispatch({ type: actionType.PROSEARCH_SUCCESS, payload: data });
+        dispatch({ type: actionType.PROFIND_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: actionType.PROSEARCH_FAILURE, payload: error, error: true });
+        dispatch({ type: actionType.PROFIND_FAILURE, payload: error, error: true });
     }
 }
 

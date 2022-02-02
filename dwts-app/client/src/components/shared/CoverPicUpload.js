@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { CoverPicSlider, FileInput, HiddenInput, Label, UploadContainer } from '../shared/shared';
 import AvatarEditor from 'react-avatar-editor';
-import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import { Slider } from "@mui/material";
 
 function CoverPicUpload(props) {
@@ -51,7 +51,7 @@ function CoverPicUpload(props) {
                         scale={scaleValue}
                         ref={setEditorRef}
                     />
-                    <Slider sx={{ width: 200 }} value={scaleValue} onChange={handleScale} min={1} max={5} step={0.01} />
+                    <Slider sx={{ width: 200, marginTop: 1 }} value={scaleValue} onChange={handleScale} min={1} max={5} step={0.01} />
                 </UploadContainer>}
             </FileInput>
         </UploadContainer>

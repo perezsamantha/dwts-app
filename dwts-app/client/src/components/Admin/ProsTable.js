@@ -1,43 +1,61 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
-
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPros, deletePro } from '../../actions/pros';
 
+import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import ProAdd from '../Pros/ProAdd';
-import { TableContainer, DataGridContainer, HeaderContainer } from '../shared/shared';
+
 import { Avatar, Typography } from '@mui/material';
+import { LocalizationProvider } from '@mui/lab';
+import DateAdapter from '@mui/lab/AdapterDateFns';
+
+import { TableContainer, DataGridContainer, HeaderContainer } from '../shared/shared';
+import { fetchPros, deletePro, findProById } from '../../actions/pros';
+import ProAdd from '../Pros/ProAdd';
+import DeleteDialog from './DeleteDialog';
+import { convertBirthday } from '../shared/functions';
+import EditDialog from './EditDialog';
 
 
-function ProsTable(props) {
+function ProsTable() {
     const dispatch = useDispatch();
     const pros = useSelector(state => state.pros.pros);
+    const pro = useSelector(state => state.pros.pro);
+    const loading = useSelector(state => state.loading.PROSEARCH);
 
     useEffect(() => {
         dispatch(fetchPros());
     }, [dispatch]);
 
-    const handleEdit = (id) => {
-        
+    const [open, setOpen] = useState({
+        edit: false,
+        delete: false,
+        id: null
+    });
+
+    const handleClose = () => {
+        setOpen({ edit: false, delete: false, id: null })
+    };
+
+    const handleEdit = async (id) => {
+        dispatch(findProById(id));
+        setOpen({ edit: true })
     }
 
     const handleDelete = (id) => {
-        dispatch(deletePro(id));
+        dispatch(findProById(id));
+        setOpen({ delete: true, id: id })
     }
 
-    const convertBirthday = (params) => {
-        const date = new Date(params.getValue(params.id, 'birthday'));
-        return ((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '/' + ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())) + '/' + date.getFullYear();
+    const confirmDelete = () => {
+        dispatch(deletePro(open.id));
+        setOpen({ edit: false, delete: false, id: null })
     }
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 40 },
-        { 
+        {
             field: 'cover_pic', headerName: 'Pic', width: '60',
-            //renderCell: (params) => <img src={params.value} />
             renderCell: (params) => <Avatar src={params.value} />
         },
         { field: 'first_name', headerName: 'First Name', width: 100 },
@@ -51,11 +69,15 @@ function ProsTable(props) {
         { field: 'twitter', headerName: 'Twitter', width: 100 },
         { field: 'instagram', headerName: 'Instagram', width: 100 },
         { field: 'tiktok', headerName: 'TikTok', width: 100 },
-        { field: 'is_junior', headerName: 'Junior?', width: 75 },
+        {
+            field: 'is_junior', headerName: 'Junior?', width: 75,
+            renderCell: (params) => params.value ? 'Yes' : 'No'
+        },
         {
             field: 'actions',
+            //headerName: 'Actions',
             type: 'actions',
-            width: 30,
+            width: 50,
             getActions: (params) => [
                 <GridActionsCellItem
                     icon={<EditIcon />}
@@ -74,23 +96,42 @@ function ProsTable(props) {
     ];
 
     return (
-        <TableContainer>
-            <HeaderContainer>
-                <Typography variant="h4">Pros Table</Typography>
-                {/* <h3>Pros Table</h3> */}
-                {<ProAdd />}
-            </HeaderContainer>
-            {/* <h3>Pros Table</h3>
-            {<ProAdd />} */}
-            {/* weird issue with spacing once component is brought in??? */}
-            <DataGridContainer>
-                <DataGrid
-                    rows={pros}
-                    columns={columns}
-                //checkboxSelection
-                />
-            </DataGridContainer>
-        </TableContainer>
+        <LocalizationProvider dateAdapter={DateAdapter}>
+            <TableContainer>
+                <HeaderContainer>
+                    <Typography variant="h4">Pros Table</Typography>
+                    <ProAdd />
+                </HeaderContainer>
+
+                {loading ? <div>loading bar</div> : <div>
+                    <DataGridContainer>
+                        <DataGrid
+                            rows={pros}
+                            columns={columns}
+                        //checkboxSelection
+                        />
+                    </DataGridContainer>
+
+
+                    {open.edit && <EditDialog
+                        item={pro}
+                        open={open.edit}
+                        handleClose={handleClose}
+                        table={'Pro'}
+                    />}
+
+                    {open.delete && <DeleteDialog
+                        item={`${pro?.first_name} ${pro?.last_name}`}
+                        table={'Pros'}
+                        open={open.delete}
+                        handleClose={handleClose}
+                        confirmDelete={confirmDelete}
+                    />}
+
+                </div>}
+
+            </TableContainer>
+        </LocalizationProvider>
     )
 }
 

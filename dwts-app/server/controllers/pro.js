@@ -40,7 +40,7 @@ export const findProById = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const pro = await pool.query('SELECT * FROM pros WHERE pro_id = $1', [id]);
+        const pro = await pool.query('SELECT * FROM pros WHERE id = $1', [id]);
 
         res.status(200).json(pro.rows[0]);
     } catch (error) {
@@ -76,7 +76,7 @@ export const updatePro = async (req, res) => {
             is_junior
         } = req.body;
 
-        const result = await pool.query('UPDATE pros SET first_name = $1, last_name = $2, birthday = $3, height = $4, gender = $5, twitter = $6, instagram = $7, tiktok = $8, is_junior = $9 WHERE pro_id = $10 RETURNING *', [first_name, last_name, birthday, height, gender, twitter, instagram, tiktok, is_junior, id]);
+        const result = await pool.query('UPDATE pros SET first_name = $1, last_name = $2, birthday = $3, height = $4, gender = $5, twitter = $6, instagram = $7, tiktok = $8, is_junior = $9 WHERE id = $10 RETURNING *', [first_name, last_name, birthday, height, gender, twitter, instagram, tiktok, is_junior, id]);
 
         res.status(200).json(result.rows[0]);
     } catch (error) {
@@ -109,7 +109,7 @@ export const setProPic = async (req, res) => {
         blobWriter.on('finish', async () => {
             const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURI(blob.name)}?alt=media`;
 
-            const result = await pool.query('UPDATE pros SET cover_pic = $1 WHERE pro_id = $2 RETURNING *', [publicUrl, req.params.id]);
+            const result = await pool.query('UPDATE pros SET cover_pic = $1 WHERE id = $2 RETURNING *', [publicUrl, req.params.id]);
 
             res.status(200).json(result.rows[0]);
         })
@@ -124,7 +124,7 @@ export const deletePro = async (req, res) => {
     const { id } = req.params;
 
     try {
-        await pool.query('DELETE FROM pros WHERE pro_id = $1', [id]);
+        await pool.query('DELETE FROM pros WHERE id = $1', [id]);
 
         res.status(200).json({ message: "Pro successfully deleted." });
     } catch (error) {
@@ -157,7 +157,7 @@ export const addPic = async (req, res) => {
         blobWriter.on('finish', async () => {
             const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURI(blob.name)}?alt=media`;
 
-            const result = await pool.query('UPDATE pros SET pictures = array_append(pictures, $1) WHERE pro_id = $2 RETURNING *', [publicUrl, req.params.id]);
+            const result = await pool.query('UPDATE pros SET pictures = array_append(pictures, $1) WHERE id = $2 RETURNING *', [publicUrl, req.params.id]);
 
             res.status(200).json(result.rows[0]);
         })
@@ -178,11 +178,11 @@ export const likePro = async (req, res, next) => {
         }
 
         // check if like is in table
-        if (pool.query(`exists(SELECT 1 FROM pro_likes WHERE pro_id = ${id}, user_id = ${userId}`)) {
-            await pool.query(`DELETE FROM pro_likes WHERE pro_id = ${id}, user_id = ${userId}`);
+        if (pool.query(`exists(SELECT 1 FROM pro_likes WHERE id = ${id}, user_id = ${userId}`)) {
+            await pool.query(`DELETE FROM pro_likes WHERE id = ${id}, user_id = ${userId}`);
             // json message
         } else {
-            const result = await pool.query(`INSERT INTO pros (pro_id, user_id) VALUES($1, $2)`, [id, userId]);
+            const result = await pool.query(`INSERT INTO pros (id, user_id) VALUES($1, $2)`, [id, userId]);
             // json message with resulting row ?? row[0]
         }
 

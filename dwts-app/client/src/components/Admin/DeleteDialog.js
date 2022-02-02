@@ -16,7 +16,7 @@ function DeleteDialog(props) {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    Are you sure you want to delete {item} from the {table} table?
+                    Are you sure you want to delete {item} from the {table}s table?
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
