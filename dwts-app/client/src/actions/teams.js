@@ -123,3 +123,19 @@ export const getFavoriteTeams = () => async (dispatch) => {
         dispatch({ type: actionType.TEAMSEARCH_FAILURE, payload: error, error: true });
     }
 }
+
+
+//
+export const getTeamsItems = () => async (dispatch) => {
+    dispatch({ type: actionType.TEAMITEMS_REQUEST });
+
+    try {
+        const teams = await api.fetchTeams();
+        const celebs = await api.fetchCelebs();
+        const pros = await api.fetchPros();
+
+        dispatch({ type: actionType.TEAMITEMS_SUCCESS, payload: { teams: teams.data, celebs: celebs.data, pros: pros.data} });
+    } catch (error) {
+        dispatch({ type: actionType.TEAMITEMS_FAILURE, payload: error, error: true });
+    }
+}

@@ -28,7 +28,7 @@ import { Link } from 'react-router-dom';
 import CelebsTable from './CelebsTable';
 import ProsTable from './ProsTable';
 import Table from './Table';
-
+import * as tableType from '../../constants/tableTypes'; 
 
 const drawerWidth = 180;
 
@@ -83,7 +83,7 @@ function AdminDashboard(props) {
                         Pros
                     </ListItemText>
                 </ListItemButton>
-                <ListItemButton onClick={() => handleComponent(<Table key={3} type='TEAM' />)}>
+                <ListItemButton onClick={() => handleComponent(<Table type={tableType.TEAM} />)}>
                     <ListItemText>
                         Teams
                     </ListItemText>

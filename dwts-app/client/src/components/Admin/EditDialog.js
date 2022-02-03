@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { batch, useDispatch, useSelector } from 'react-redux';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, MenuItem, TextField, Avatar } from '@mui/material';
 import { LocalizationProvider, MobileDatePicker } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDateFns';
@@ -8,8 +8,8 @@ import * as tableType from '../../constants/tableTypes';
 import { genders, placements } from '../../constants/dropdowns';
 import CoverPicUpload from '../shared/CoverPicUpload';
 import { PhotoContainer } from '../shared/shared';
-import { setCelebPic, updateCeleb } from '../../actions/celebs';
-import { setProPic, updatePro } from '../../actions/pros';
+import { fetchCelebs, setCelebPic, updateCeleb } from '../../actions/celebs';
+import { fetchPros, setProPic, updatePro } from '../../actions/pros';
 import { setTeamPic, updateTeam } from '../../actions/teams';
 
 function EditDialog(props) {
@@ -21,6 +21,8 @@ function EditDialog(props) {
     const dispatch = useDispatch();
     const id = props.item?.id;
     const table = props.table;
+    const celebs = props.celebs;
+    const pros = props.pros;
 
     const loading = useSelector(state => {
         switch (table) {
@@ -36,7 +38,6 @@ function EditDialog(props) {
     useEffect(() => {
         setFormData(props.item);
         setOpen(props.open);
-
     }, [props]);
 
     const handleChange = (e) => {
@@ -132,33 +133,21 @@ function EditDialog(props) {
                             />
                         }
 
-
                         {Array.of(tableType.TEAM).includes(table) &&
                             <TextField
                                 margin="dense"
                                 name="celeb_id"
                                 label="Celeb"
                                 type="text"
-                                value={formData.celeb_id}
-                                onChange={handleChange}
-                            />
-                        }
-
-                        {/* {Array.of(tableType.TEAM).includes(table) &&
-                            <TextField
-                                margin="dense"
-                                name="celeb_id"
-                                label="Celeb"
-                                type="text"
                                 select
-                                value={formData.celeb_id}
+                                value={formData?.celeb_id}
                                 onChange={handleChange}
                             >
                                 {celebs.map((celeb, index) => (
-                                    <MenuItem key={index} value={celeb.id}>{celeb.first_name}</MenuItem>
+                                    <MenuItem key={index} value={celeb.id}>{celeb.first_name} {celeb?.last_name}</MenuItem>
                                 ))}
                             </TextField>
-                        } */}
+                        }
 
                         {Array.of(tableType.TEAM).includes(table) &&
                             <TextField
@@ -166,9 +155,14 @@ function EditDialog(props) {
                                 name="pro_id"
                                 label="Pro"
                                 type="text"
-                                value={formData.pro_id}
+                                select
+                                value={formData?.pro_id}
                                 onChange={handleChange}
-                            />
+                            >
+                                {pros.map((pro, index) => (
+                                    <MenuItem key={index} value={pro.id}>{pro.first_name} {pro?.last_name}</MenuItem>
+                                ))}
+                            </TextField>
                         }
 
                         {Array.of(tableType.TEAM).includes(table) &&
@@ -177,9 +171,14 @@ function EditDialog(props) {
                                 name="mentor_id"
                                 label="Mentor"
                                 type="text"
-                                value={formData.mentor_id}
+                                select
+                                value={formData?.mentor_id}
                                 onChange={handleChange}
-                            />
+                            >
+                                {pros.map((pro, index) => (
+                                    <MenuItem key={index} value={pro.id}>{pro.first_name} {pro?.last_name}</MenuItem>
+                                ))}
+                            </TextField>
                         }
 
                         {Array.of(tableType.TEAM).includes(table) &&
@@ -188,7 +187,7 @@ function EditDialog(props) {
                                 name="season_id"
                                 label="Season"
                                 type="text"
-                                value={formData.season_id}
+                                value={formData?.season_id}
                                 onChange={handleChange}
                             />
                         }
@@ -200,7 +199,7 @@ function EditDialog(props) {
                                 label="Placement"
                                 type="text"
                                 select
-                                value={formData.placement}
+                                value={formData?.placement}
                                 onChange={handleChange}
                             >
                                 {placements.map((placement, index) => (
@@ -215,7 +214,7 @@ function EditDialog(props) {
                                 name="team_name"
                                 label="Team Name"
                                 type="text"
-                                value={formData.team_name}
+                                value={formData?.team_name}
                                 onChange={handleChange}
                             />
                         }
@@ -226,7 +225,7 @@ function EditDialog(props) {
                                 name="extra"
                                 label="Extra"
                                 type="text"
-                                value={formData.extra}
+                                value={formData?.extra}
                                 onChange={handleChange}
                             />
                         }

@@ -16,15 +16,22 @@ import DeleteDialog from './DeleteDialog';
 import { convertBirthday } from '../shared/functions';
 import EditDialog from './EditDialog';
 import { deletePro, fetchPros, findProById } from '../../actions/pros';
-import ProAdd from '../Pros/ProAdd';
 import AddDialog from './AddDialog';
 
 import * as tableType from '../../constants/tableTypes';
-import { deleteTeam, fetchTeams, findTeamById } from '../../actions/teams';
+import { deleteTeam, fetchTeams, findTeamById, getTeamsItems } from '../../actions/teams';
 
 function Table(props) {
     const table = props.type;
     const dispatch = useDispatch();
+
+    // for FK dropdowns
+    const celebs = useSelector(state => state.teams.celebs);
+    // const [dropdownItems, setDropdownItems] = useState({
+    //     celebs: [],
+    //     pros: []
+    // })
+    const pros = useSelector(state => state.teams.pros);
 
     const items = useSelector(state => {
         switch (table) {
@@ -55,18 +62,21 @@ function Table(props) {
             case 'Pro':
                 return state.loading.PROSEARCH;
             case tableType.TEAM:
-                return state.loading.TEAMSEARCH;
+                return state.loading.TEAMITEMS;
         }
     })
 
     useEffect(() => {
         switch (table) {
             case 'Celeb':
-                return dispatch(fetchCelebs());
+                dispatch(fetchCelebs());
+                break
             case 'Pro':
-                return dispatch(fetchPros());
+                dispatch(fetchPros());
+                break
             case tableType.TEAM:
-                return dispatch(fetchTeams());
+                dispatch(getTeamsItems());
+                break
         }
     }, [dispatch]);
 
@@ -128,12 +138,13 @@ function Table(props) {
     let columns;
     //const columns = () => {
     switch (table) {
+
         case 'Celeb':
         case 'Pro':
             columns = [
                 { field: 'id', headerName: 'ID', width: 40 },
                 {
-                    field: 'cover_pic', headerName: 'Pic', width: '60',
+                    field: 'cover_pic', headerName: 'Pic', width: 60,
                     renderCell: (params) => <Avatar src={params.value} />
                 },
                 { field: 'first_name', headerName: 'First Name', width: 100 },
@@ -173,16 +184,26 @@ function Table(props) {
                 },
             ]
             break
-        case 'TEAM':
+
+        case tableType.TEAM:
             columns = [
                 { field: 'id', headerName: 'ID', width: 40 },
                 {
-                    field: 'cover_pic', headerName: 'Pic', width: '60',
+                    field: 'cover_pic', headerName: 'Pic', width: 60,
                     renderCell: (params) => <Avatar src={params.value} />
                 },
-                { field: 'celeb_id', headerName: 'Celeb', width: 100 },
-                { field: 'pro_id', headerName: 'Pro', width: 100 },
-                { field: 'mentor_id', headerName: 'Mentor', width: 100 },
+                {
+                    field: 'celeb_id', headerName: 'Celeb', width: 100,
+                    valueGetter: getCelebName
+                },
+                {
+                    field: 'pro_id', headerName: 'Pro', width: 100,
+                    valueGetter: getProName
+                },
+                {
+                    field: 'mentor_id', headerName: 'Mentor', width: 100,
+                    valueGetter: getProName
+                },
                 { field: 'season_id', headerName: 'Season', width: 75 },
                 { field: 'placement', headerName: 'Place', width: 100 },
                 { field: 'team_name', headerName: 'Team Name', width: 150 },
@@ -209,10 +230,22 @@ function Table(props) {
                 },
             ]
             break
+
         default:
             columns = [];
+    };
+
+    function getCelebName(params) {
+        let celebName;
+        celebs.map(celeb => celeb.id === params.value ? celebName = `${celeb.first_name} ${celeb?.last_name}` : '');
+        return celebName;
     }
-    ;
+
+    function getProName(params) {
+        let proName;
+        pros.map(pro => pro.id === params.value ? proName = `${pro.first_name} ${pro?.last_name}` : '');
+        return proName;
+    }
 
     return (
         <LocalizationProvider dateAdapter={DateAdapter}>
@@ -235,6 +268,8 @@ function Table(props) {
 
                     {open.edit && <EditDialog
                         item={item}
+                        celebs={celebs}
+                        pros={pros}
                         open={open.edit}
                         handleClose={handleClose}
                         table={table}
