@@ -11,7 +11,6 @@ import DateAdapter from '@mui/lab/AdapterDateFns';
 
 import { TableContainer, DataGridContainer, HeaderContainer } from '../shared/shared';
 import { fetchCelebs, deleteCeleb, findCelebById } from '../../actions/celebs';
-import CelebAdd from '../Celebs/CelebAdd';
 import DeleteDialog from './DeleteDialog';
 import { convertBirthday } from '../shared/functions';
 import EditDialog from './EditDialog';
@@ -254,6 +253,8 @@ function Table(props) {
                     <Typography variant="h4">{table}s Table</Typography>
                     <AddDialog
                         table={table}
+                        celebs={celebs}
+                        pros={pros}
                     />
                 </HeaderContainer>
 
@@ -268,11 +269,11 @@ function Table(props) {
 
                     {open.edit && <EditDialog
                         item={item}
+                        table={table}
                         celebs={celebs}
                         pros={pros}
                         open={open.edit}
                         handleClose={handleClose}
-                        table={table}
                     />}
 
                     {open.delete && <DeleteDialog

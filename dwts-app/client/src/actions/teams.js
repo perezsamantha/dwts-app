@@ -133,6 +133,7 @@ export const getTeamsItems = () => async (dispatch) => {
         const teams = await api.fetchTeams();
         const celebs = await api.fetchCelebs();
         const pros = await api.fetchPros();
+        //const seasons = await api.fetchSeasons();
 
         dispatch({ type: actionType.TEAMITEMS_SUCCESS, payload: { teams: teams.data, celebs: celebs.data, pros: pros.data} });
     } catch (error) {

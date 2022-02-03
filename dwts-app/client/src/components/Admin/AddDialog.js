@@ -10,12 +10,14 @@ import * as tableType from '../../constants/tableTypes';
 import { addCeleb } from '../../actions/celebs';
 import { addPro } from '../../actions/pros';
 import { addTeam } from '../../actions/teams';
+import DialogFields from './DialogFields';
 
 function AddDialog(props) {
-    const table = props.table
     const [open, setOpen] = useState(false);
-
     const dispatch = useDispatch();
+    const table = props.table;
+    const celebs = props.celebs;
+    const pros = props.pros;
 
     const initialState = () => {
         switch (table) {
@@ -86,7 +88,6 @@ function AddDialog(props) {
                 dispatch(addPro(formData));
                 break
             case tableType.TEAM:
-                console.log(formData)
                 dispatch(addTeam(formData));
                 break
             default:
@@ -110,7 +111,20 @@ function AddDialog(props) {
                     <DialogTitle>Add {table}</DialogTitle>
                     <DialogContent >
 
-                        {Array.of('Celeb', 'Pro').includes(table) &&
+                    <DialogFields 
+                            formData={formData}
+                            table={table}
+                            handleChange={handleChange}
+                            handleBirthday={handleBirthday}
+                            celebs={celebs}
+                            pros={pros}
+                            // editor={editor}
+                            // setEditor={setEditor}
+                            // fileData={fileData}
+                            // setFileData={setFileData}
+                        />
+
+                        {/* {Array.of('Celeb', 'Pro').includes(table) &&
                             <TextField
                                 margin="dense"
                                 name="first_name"
@@ -142,22 +156,6 @@ function AddDialog(props) {
                                 onChange={handleChange}
                             />
                         }
-
-                        {/* {Array.of(tableType.TEAM).includes(table) &&
-                            <TextField
-                                margin="dense"
-                                name="celeb_id"
-                                label="Celeb"
-                                type="text"
-                                select
-                                value={formData.celeb_id}
-                                onChange={handleChange}
-                            >
-                                {celebs.map((celeb, index) => (
-                                    <MenuItem key={index} value={celeb.id}>{celeb.first_name}</MenuItem>
-                                ))}
-                            </TextField>
-                        } */}
 
                         {Array.of(tableType.TEAM).includes(table) &&
                             <TextField
@@ -313,7 +311,7 @@ function AddDialog(props) {
                                 <MenuItem key={1} value={true}>Yes</MenuItem>
                                 <MenuItem key={2} value={false}>No</MenuItem>
                             </TextField>
-                        }
+                        } */}
 
                     </DialogContent>
                     <DialogActions>

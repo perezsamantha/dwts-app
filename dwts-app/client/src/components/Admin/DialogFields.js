@@ -1,127 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { batch, useDispatch, useSelector } from 'react-redux';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, MenuItem, TextField, Avatar } from '@mui/material';
-import { LocalizationProvider, MobileDatePicker } from '@mui/lab';
+import { MenuItem, TextField, Avatar } from '@mui/material';
+import { MobileDatePicker } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDateFns';
 
 import * as tableType from '../../constants/tableTypes';
 import { genders, placements } from '../../constants/dropdowns';
 import CoverPicUpload from '../shared/CoverPicUpload';
 import { PhotoContainer } from '../shared/shared';
-import { fetchCelebs, setCelebPic, updateCeleb } from '../../actions/celebs';
-import { fetchPros, setProPic, updatePro } from '../../actions/pros';
-import { setTeamPic, updateTeam } from '../../actions/teams';
-import DialogFields from './DialogFields';
 
-function EditDialog(props) {
+function DialogFields(props) {
 
-    const [open, setOpen] = useState(props.open);
-    const [formData, setFormData] = useState(props.item);
-    const [fileData, setFileData] = useState(null);
-    const [editor, setEditor] = useState(null);
-    const dispatch = useDispatch();
-    const id = props.item?.id;
+    const formData = props.formData;
     const table = props.table;
+    const handleChange = props.handleChange;
+    const handleBirthday = props.handleBirthday;
     const celebs = props.celebs;
     const pros = props.pros;
 
-    const loading = useSelector(state => {
-        switch (table) {
-            case 'Celeb':
-                return state.loading.CELEBFIND;
-            case 'Pro':
-                return state.loading.PROFIND;
-            case tableType.TEAM:
-                return state.loading.TEAMFIND;
-        }
-    })
-
     useEffect(() => {
-        setFormData(props.item);
-        setOpen(props.open);
-    }, [props]);
-
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const handleBirthday = (date) => {
-        setFormData({ ...formData, birthday: date })
-    }
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        if (editor != null) {
-            const data = new FormData();
-
-            const canvas = editor.getImageScaledToCanvas();
-
-            canvas.toBlob(function (blob) {
-                data.append("cover_pic", blob, `${Date.now()}-${fileData.name}`);
-
-                switch (table) {
-                    case 'Celeb':
-                        dispatch(setCelebPic(id, data));
-                        break
-                    case 'Pro':
-                        dispatch(setProPic(id, data));
-                        break
-                    case tableType.TEAM:
-                        dispatch(setTeamPic(id, data));
-                        break
-                    default:
-                    //console.log('Invald table type');
-                }
-            })
-        }
-
-        switch (table) {
-            case 'Celeb':
-                dispatch(updateCeleb(id, formData));
-                break
-            case 'Pro':
-                dispatch(updatePro(id, formData));
-                break
-            case tableType.TEAM:
-                dispatch(updateTeam(id, formData));
-                break
-            default:
-            //console.log('Invald table type');
-        }
-        props.handleClose();
-    };
+        
+    }, []);
 
     return (
-        loading ? <div>loading bar (move)</div> : <div>
-            <LocalizationProvider dateAdapter={DateAdapter}>
-                {<Dialog fullWidth maxWidth={'lg'} open={open} onClose={props.handleClose} >
-                    <DialogTitle>Update {table}</DialogTitle>
-                    <DialogContent >
-
-                        <DialogFields 
-                            formData={formData}
-                            table={table}
-                            handleChange={handleChange}
-                            handleBirthday={handleBirthday}
-                            celebs={celebs}
-                            pros={pros}
-                            editor={editor}
-                            setEditor={setEditor}
-                            fileData={fileData}
-                            setFileData={setFileData}
-                            dialog={'Edit'}
-                        />
-
-                        {/* {Array.of('Celeb', 'Pro', tableType.TEAM).includes(table) &&
+        <div>
+            {Array.of('Celeb', 'Pro', tableType.TEAM).includes(table) && props.dialog === 'Edit' &&
                             <PhotoContainer>
                                 <Avatar sx={{ width: 150, height: 150 }} src={formData?.cover_pic} />
 
                                 <CoverPicUpload
-                                    editor={editor}
-                                    setEditor={setEditor}
-                                    fileData={fileData}
-                                    setFileData={setFileData}
+                                    editor={props.editor}
+                                    setEditor={props.setEditor}
+                                    fileData={props.fileData}
+                                    setFileData={props.setFileData}
                                 />
                             </PhotoContainer>
                         }
@@ -327,21 +237,12 @@ function EditDialog(props) {
                                 <MenuItem key={1} value={true}>Yes</MenuItem>
                                 <MenuItem key={2} value={false}>No</MenuItem>
                             </TextField>
-                        } */}
+                        }
 
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={props.handleClose} variant="contained" color="error">
-                            Cancel
-                        </Button>
-                        <Button onClick={handleSubmit} variant="contained" color="primary">
-                            Update {table}
-                        </Button>
-                    </DialogActions>
-                </Dialog>}
-            </LocalizationProvider>
+                   
+                    
         </div>
     )
 }
 
-export default EditDialog;
+export default DialogFields;
