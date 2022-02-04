@@ -54,3 +54,10 @@ export const setCelebPic = (id, image) => API.patch(`/celebs/setPic/${id}`, imag
 export const findCelebById = (id) => API.get(`/celebs/${id}`);
 export const fetchCelebs = () => API.get('/celebs/');
 export const deleteCeleb = (id) => API.delete(`/celebs/delete/${id}`);
+
+export const addSeason = (season) => API.post('/seasons/add', season);
+export const updateSeason = (id, season) => API.patch(`/seasons/update/${id}`, season);
+export const setSeasonPic = (id, image) => API.patch(`/seasons/setPic/${id}`, image)
+export const findSeasonById = (id) => API.get(`/seasons/${id}`);
+export const fetchSeasons = () => API.get('/seasons/');
+export const deleteSeason = (id) => API.delete(`/seasons/delete/${id}`);

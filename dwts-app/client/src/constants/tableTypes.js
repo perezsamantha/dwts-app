@@ -5,5 +5,5 @@ export const TEAM = 'Team';
 export const DANCE = 'DANCE';
 export const JUDGE = 'JUDGE';
 export const SCORE = 'SCORE';
-export const SEASON = 'SEASON';
+export const SEASON = 'Season';
 export const USER = 'USER';

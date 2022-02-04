@@ -1,5 +1,8 @@
 import express from 'express';
-import { addSeason, deleteSeason, fetchAllSeasons, findSeasonById, updateSeason } from '../controllers/season.js';
+import { addSeason, deleteSeason, fetchAllSeasons, findSeasonById, setSeasonPic, updateSeason } from '../controllers/season.js';
+
+import uploadCoverPicture from '../middleware/uploadCoverPicture.js';
+import auth from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -8,7 +11,7 @@ router.get('/', fetchAllSeasons);
 router.get('/:id', findSeasonById);
 router.patch('/update/:id', updateSeason);
 router.delete('/delete/:id', deleteSeason);
-//setSeasonPic
+router.patch('/setPic/:id', uploadCoverPicture, setSeasonPic);
 //getFavoriteSeasons
 //addPic
 //likeSeason

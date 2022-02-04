@@ -16,7 +16,7 @@ const teamsReducer = (state = { teams: [], team: {}, celebs: [], pros: [], seaso
         case actionType.TEAMDELETE_SUCCESS:
             return { ...state, teams: state.teams.filter((team) => team.id !== action.payload) };
         case actionType.TEAMITEMS_SUCCESS:
-            return { ...state, teams: action.payload.teams, celebs: action.payload.celebs, pros: action.payload.pros };
+            return { ...state, teams: action.payload.teams, celebs: action.payload.celebs, pros: action.payload.pros, seasons: action.payload.seasons };
         default:
             return state;
     }

@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, MenuItem, TextField } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 
-import { LocalizationProvider, MobileDatePicker } from '@mui/lab';
+import { LocalizationProvider } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDateFns';
-import { genders, placements } from '../../constants/dropdowns';
 import * as tableType from '../../constants/tableTypes';
 
 import { addCeleb } from '../../actions/celebs';
 import { addPro } from '../../actions/pros';
 import { addTeam } from '../../actions/teams';
 import DialogFields from './DialogFields';
+import { addSeason } from '../../actions/seasons';
 
 function AddDialog(props) {
     const [open, setOpen] = useState(false);
@@ -18,6 +18,7 @@ function AddDialog(props) {
     const table = props.table;
     const celebs = props.celebs;
     const pros = props.pros;
+    const seasons = props.seasons;
 
     const initialState = () => {
         switch (table) {
@@ -48,6 +49,12 @@ function AddDialog(props) {
                     instagram: null,
                     tiktok: null,
                     is_junior: false
+                }
+            case tableType.SEASON:
+                return {
+                    cover_pic: null,
+                    number: null,
+                    extra: null
                 }
             case tableType.TEAM:
                 return {
@@ -87,6 +94,9 @@ function AddDialog(props) {
             case 'Pro':
                 dispatch(addPro(formData));
                 break
+            case tableType.SEASON:
+                dispatch(addSeason(formData));
+                break
             case tableType.TEAM:
                 dispatch(addTeam(formData));
                 break
@@ -111,207 +121,19 @@ function AddDialog(props) {
                     <DialogTitle>Add {table}</DialogTitle>
                     <DialogContent >
 
-                    <DialogFields 
+                        <DialogFields
                             formData={formData}
                             table={table}
                             handleChange={handleChange}
                             handleBirthday={handleBirthday}
                             celebs={celebs}
                             pros={pros}
-                            // editor={editor}
-                            // setEditor={setEditor}
-                            // fileData={fileData}
-                            // setFileData={setFileData}
+                            seasons={seasons}
+                        // editor={editor}
+                        // setEditor={setEditor}
+                        // fileData={fileData}
+                        // setFileData={setFileData}
                         />
-
-                        {/* {Array.of('Celeb', 'Pro').includes(table) &&
-                            <TextField
-                                margin="dense"
-                                name="first_name"
-                                label="First Name"
-                                type="text"
-                                value={formData.first_name}
-                                onChange={handleChange}
-                            />
-                        }
-
-                        {Array.of('Celeb', 'Pro').includes(table) &&
-                            <TextField
-                                margin="dense"
-                                name="last_name"
-                                label="Last Name"
-                                type="text"
-                                value={formData.last_name}
-                                onChange={handleChange}
-                            />
-                        }
-
-                        {Array.of(tableType.TEAM).includes(table) &&
-                            <TextField
-                                margin="dense"
-                                name="celeb_id"
-                                label="Celeb"
-                                type="text"
-                                value={formData.celeb_id}
-                                onChange={handleChange}
-                            />
-                        }
-
-                        {Array.of(tableType.TEAM).includes(table) &&
-                            <TextField
-                                margin="dense"
-                                name="pro_id"
-                                label="Pro"
-                                type="text"
-                                value={formData.pro_id}
-                                onChange={handleChange}
-                            />
-                        }
-
-                        {Array.of(tableType.TEAM).includes(table) &&
-                            <TextField
-                                margin="dense"
-                                name="mentor_id"
-                                label="Mentor"
-                                type="text"
-                                value={formData.mentor_id}
-                                onChange={handleChange}
-                            />
-                        }
-
-                        {Array.of(tableType.TEAM).includes(table) &&
-                            <TextField
-                                margin="dense"
-                                name="season_id"
-                                label="Season"
-                                type="text"
-                                value={formData.season_id}
-                                onChange={handleChange}
-                            />
-                        }
-
-                        {Array.of(tableType.TEAM).includes(table) &&
-                            <TextField
-                                margin="dense"
-                                name="placement"
-                                label="Placement"
-                                type="text"
-                                select
-                                value={formData.placement}
-                                onChange={handleChange}
-                            >
-                                {placements.map((placement, index) => (
-                                    <MenuItem key={index} value={placement}>{placement}</MenuItem>
-                                ))}
-                            </TextField>
-                        }
-
-                        {Array.of(tableType.TEAM).includes(table) &&
-                            <TextField
-                                margin="dense"
-                                name="team_name"
-                                label="Team Name"
-                                type="text"
-                                value={formData.team_name}
-                                onChange={handleChange}
-                            />
-                        }
-
-                        {Array.of(tableType.TEAM).includes(table) &&
-                            <TextField
-                                margin="dense"
-                                name="extra"
-                                label="Extra"
-                                type="text"
-                                value={formData.extra}
-                                onChange={handleChange}
-                            />
-                        }
-
-                        {Array.of('Celeb', 'Pro').includes(table) &&
-                            <MobileDatePicker
-                                margin="dense"
-                                label="Birthday"
-                                inputFormat="MM/dd/yyyy"
-                                value={formData.birthday}
-                                onChange={handleBirthday}
-                                renderInput={(params) => <TextField {...params} />}
-                            />
-                        }
-
-                        {Array.of('Celeb', 'Pro').includes(table) &&
-                            <TextField
-                                margin="dense"
-                                name="height"
-                                label="Height (_'__)"
-                                type="text"
-                                value={formData.height}
-                                onChange={handleChange}
-                            />
-                        }
-
-                        {Array.of('Celeb', 'Pro').includes(table) &&
-                            <TextField
-                                margin="dense"
-                                name="gender"
-                                label="Gender"
-                                type="text"
-                                select
-                                value={formData.gender}
-                                onChange={handleChange}
-                            >
-                                {genders.map((gender, index) => (
-                                    <MenuItem key={index} value={gender}>{gender}</MenuItem>
-                                ))}
-                            </TextField>
-                        }
-
-                        {Array.of('Celeb', 'Pro').includes(table) &&
-                            <TextField
-                                margin="dense"
-                                name="instagram"
-                                label="Instagram Username"
-                                type="text"
-                                value={formData.instagram}
-                                onChange={handleChange}
-                            />
-                        }
-
-                        {Array.of('Celeb', 'Pro').includes(table) &&
-                            <TextField
-                                margin="dense"
-                                name="twitter"
-                                label="Twitter Username"
-                                type="text"
-                                value={formData.twitter}
-                                onChange={handleChange}
-                            />
-                        }
-
-                        {Array.of('Celeb', 'Pro').includes(table) &&
-                            <TextField
-                                margin="dense"
-                                name="tiktok"
-                                label="TikTok Username"
-                                type="text"
-                                value={formData.tiktok}
-                                onChange={handleChange}
-                            />
-                        }
-
-                        {Array.of('Celeb', 'Pro').includes(table) &&
-                            <TextField
-                                margin="dense"
-                                name="is_junior"
-                                select
-                                label="Junior?"
-                                value={formData.is_junior}
-                                onChange={handleChange}
-                            >
-                                <MenuItem key={1} value={true}>Yes</MenuItem>
-                                <MenuItem key={2} value={false}>No</MenuItem>
-                            </TextField>
-                        } */}
 
                     </DialogContent>
                     <DialogActions>
