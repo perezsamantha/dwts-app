@@ -10,6 +10,7 @@ import { setProPic, updatePro } from '../../actions/pros';
 import { setTeamPic, updateTeam } from '../../actions/teams';
 import DialogFields from './DialogFields';
 import { setSeasonPic, updateSeason } from '../../actions/seasons';
+import { updateJudge } from '../../actions/judges';
 
 function EditDialog(props) {
 
@@ -34,6 +35,14 @@ function EditDialog(props) {
                 return state.loading.SEASONFIND;
             case tableType.TEAM:
                 return state.loading.TEAMFIND;
+            // case tableType.DANCE:
+            //     return state.loading.DANCEFIND;
+            case tableType.JUDGE:
+                return state.loading.JUDGEFIND;
+            // case tableType.SCORE:
+            //     return state.loading.SCOREFIND;
+            // case tableType.USER:
+            //     return state.loading.USERFIND;
         }
     })
 
@@ -74,6 +83,13 @@ function EditDialog(props) {
                     case tableType.TEAM:
                         dispatch(setTeamPic(id, data));
                         break
+                    // case tableType.DANCE:
+                    //     dispatch();
+                    //     break
+                    // case tableType.USER:
+                    //     dispatch();
+                    //     break
+                    // not judge, score ?
                     default:
                     //console.log('Invald table type');
                 }
@@ -93,6 +109,18 @@ function EditDialog(props) {
             case tableType.TEAM:
                 dispatch(updateTeam(id, formData));
                 break
+            // case tableType.DANCE:
+            //     dispatch();
+            //     break
+            case tableType.JUDGE:
+                dispatch(updateJudge(id, formData));
+                break
+            // case tableType.SCORE:
+            //     dispatch();
+            //     break
+            // case tableType.USER:
+            //     dispatch();
+            //     break
             default:
             //console.log('Invald table type');
         }

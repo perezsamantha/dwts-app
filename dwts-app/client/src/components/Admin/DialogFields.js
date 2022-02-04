@@ -37,7 +37,7 @@ function DialogFields(props) {
                 </PhotoContainer>
             }
 
-            {Array.of('Celeb', 'Pro').includes(table) &&
+            {Array.of('Celeb', 'Pro', tableType.JUDGE).includes(table) &&
                 <TextField
                     margin="dense"
                     name="first_name"
@@ -48,7 +48,7 @@ function DialogFields(props) {
                 />
             }
 
-            {Array.of('Celeb', 'Pro').includes(table) &&
+            {Array.of('Celeb', 'Pro', tableType.JUDGE).includes(table) &&
                 <TextField
                     margin="dense"
                     name="last_name"
@@ -173,7 +173,7 @@ function DialogFields(props) {
                 />
             }
 
-            {Array.of('Celeb', 'Pro').includes(table) &&
+            {Array.of('Celeb', 'Pro', tableType.JUDGE).includes(table) &&
                 <MobileDatePicker
                     margin="dense"
                     label="Birthday"

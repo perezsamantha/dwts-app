@@ -61,3 +61,10 @@ export const setSeasonPic = (id, image) => API.patch(`/seasons/setPic/${id}`, im
 export const findSeasonById = (id) => API.get(`/seasons/${id}`);
 export const fetchSeasons = () => API.get('/seasons/');
 export const deleteSeason = (id) => API.delete(`/seasons/delete/${id}`);
+
+export const addJudge = (judge) => API.post('/judges/add', judge);
+export const updateJudge = (id, judge) => API.patch(`/judges/update/${id}`, judge);
+export const setJudgePic = (id, image) => API.patch(`/judges/setPic/${id}`, image)
+export const findJudgeById = (id) => API.get(`/judges/${id}`);
+export const fetchJudges = () => API.get('/judges/');
+export const deleteJudge = (id) => API.delete(`/judges/delete/${id}`);

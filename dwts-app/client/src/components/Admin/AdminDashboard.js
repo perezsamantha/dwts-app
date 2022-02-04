@@ -100,7 +100,7 @@ function AdminDashboard(props) {
                     </ListItemText>
                 </ListItemButton>
                 {/* Dancers nested list? */}
-                <ListItemButton onClick={() => handleComponent()}>
+                <ListItemButton onClick={() => handleComponent(<Table key={6} type={tableType.JUDGE} />)}>
                     <ListItemText>
                         Judges
                     </ListItemText>

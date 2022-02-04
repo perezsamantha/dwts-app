@@ -4,13 +4,14 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/
 
 import { LocalizationProvider } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDateFns';
-import * as tableType from '../../constants/tableTypes';
 
+import * as tableType from '../../constants/tableTypes';
+import DialogFields from './DialogFields';
 import { addCeleb } from '../../actions/celebs';
 import { addPro } from '../../actions/pros';
 import { addTeam } from '../../actions/teams';
-import DialogFields from './DialogFields';
 import { addSeason } from '../../actions/seasons';
+import { addJudge } from '../../actions/judges';
 
 function AddDialog(props) {
     const [open, setOpen] = useState(false);
@@ -23,19 +24,6 @@ function AddDialog(props) {
     const initialState = () => {
         switch (table) {
             case 'Celeb':
-                return {
-                    cover_pic: null,
-                    first_name: null,
-                    last_name: null,
-                    birthday: new Date().toISOString(),
-                    //birthday: null,
-                    height: null,
-                    gender: null,
-                    twitter: null,
-                    instagram: null,
-                    tiktok: null,
-                    is_junior: false
-                }
             case 'Pro':
                 return {
                     cover_pic: null,
@@ -66,6 +54,12 @@ function AddDialog(props) {
                     placement: null,
                     team_name: null,
                     extra: null
+                }
+            case tableType.JUDGE:
+                return {
+                    first_name: null,
+                    last_name: null,
+                    birthday: new Date().toISOString(),
                 }
         }
     };
@@ -100,6 +94,18 @@ function AddDialog(props) {
             case tableType.TEAM:
                 dispatch(addTeam(formData));
                 break
+            // case tableType.DANCE:
+            //     dispatch();
+            //     break
+            case tableType.JUDGE:
+                dispatch(addJudge(formData));
+                break
+            // case tableType.SCORE:
+            //     dispatch();
+            //     break
+            // case tableType.USER:
+            //     dispatch();
+            //     break
             default:
             //console.log('Invald table type');
         }

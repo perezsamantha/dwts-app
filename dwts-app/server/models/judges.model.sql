@@ -7,3 +7,7 @@ CREATE TABLE IF NOT EXISTS judges(
     PRIMARY KEY(id),
     UNIQUE (first_name, last_name)
 );
+
+-- is junior?
+-- gender?
+-- instagram?

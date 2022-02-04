@@ -19,7 +19,8 @@ import AddDialog from './AddDialog';
 
 import * as tableType from '../../constants/tableTypes';
 import { deleteTeam, fetchTeams, findTeamById, getTeamsItems } from '../../actions/teams';
-import { fetchSeasons, findSeasonById } from '../../actions/seasons';
+import { deleteSeason, fetchSeasons, findSeasonById } from '../../actions/seasons';
+import { deleteJudge, fetchJudges, findJudgeById } from '../../actions/judges';
 
 function Table(props) {
     const table = props.type;
@@ -44,6 +45,14 @@ function Table(props) {
                 return state.seasons.seasons;
             case tableType.TEAM:
                 return state.teams.teams;
+            //case tableType.DANCE:
+            //return state.dances.dances;
+            case tableType.JUDGE:
+                return state.judges.judges;
+            // case tableType.SCORE:
+            //     return state.scores.scores;
+            // case tableType.USER:
+            //     return state.users.users;
         }
     })
 
@@ -57,6 +66,14 @@ function Table(props) {
                 return state.seasons.season;
             case tableType.TEAM:
                 return state.teams.team;
+            //case tableType.DANCE:
+            //return state.dances.dance;
+            case tableType.JUDGE:
+                return state.judges.judge;
+            // case tableType.SCORE:
+            //     return state.scores.score;
+            // case tableType.USER:
+            //     return state.users.user;
         }
     })
 
@@ -70,6 +87,14 @@ function Table(props) {
                 return state.loading.SEASONSEARCH;
             case tableType.TEAM:
                 return state.loading.TEAMITEMS;
+            //case tableType.DANCE:
+            //return state.loading.DANCEITEMS; ??
+            case tableType.JUDGE:
+                return state.loading.JUDGESEARCH;
+            // case tableType.SCORE:
+            //     return state.loading.SCOREITEMS; ??
+            // case tableType.USER:
+            //     return state.loading.USERSEARCH;
         }
     })
 
@@ -87,6 +112,18 @@ function Table(props) {
             case tableType.TEAM:
                 dispatch(getTeamsItems());
                 break
+            // case tableType.DANCE:
+
+            //     break
+            case tableType.JUDGE:
+                dispatch(fetchJudges());
+                break
+            // case tableType.SCORE:
+
+            //     break
+            // case tableType.USER:
+
+            //     break
         }
     }, [dispatch]);
 
@@ -114,6 +151,18 @@ function Table(props) {
             case tableType.TEAM:
                 dispatch(findTeamById(id));
                 break
+            // case tableType.DANCE:
+
+            //     break
+            case tableType.JUDGE:
+                dispatch(findJudgeById(id));
+                break
+            // case tableType.SCORE:
+
+            //     break
+            // case tableType.USER:
+
+            //     break
         }
         setOpen({ edit: true })
     }
@@ -132,6 +181,18 @@ function Table(props) {
             case tableType.TEAM:
                 dispatch(findTeamById(id));
                 break
+            // case tableType.DANCE:
+
+            //     break
+            case tableType.JUDGE:
+                dispatch(findJudgeById(id));
+                break
+            // case tableType.SCORE:
+
+            //     break
+            // case tableType.USER:
+
+            //     break
         }
         setOpen({ delete: true, id: id });
     }
@@ -144,9 +205,24 @@ function Table(props) {
             case 'Pro':
                 dispatch(deletePro(open.id));
                 break
+            case tableType.SEASON:
+                dispatch(deleteSeason(open.id));
+                break
             case tableType.TEAM:
                 dispatch(deleteTeam(open.id));
                 break
+            // case tableType.DANCE:
+
+            //     break
+            case tableType.JUDGE:
+                dispatch(deleteJudge(open.id));
+                break
+            // case tableType.SCORE:
+
+            //     break
+            // case tableType.USER:
+
+            //     break
         }
         setOpen({ edit: false, delete: false, id: null })
     }
@@ -259,6 +335,38 @@ function Table(props) {
                 { field: 'placement', headerName: 'Place', width: 100 },
                 { field: 'team_name', headerName: 'Team Name', width: 150 },
                 { field: 'extra', headerName: 'Extra', width: 250 },
+                {
+                    field: 'actions',
+                    //headerName: 'Actions',
+                    type: 'actions',
+                    width: 50,
+                    getActions: (params) => [
+                        <GridActionsCellItem
+                            icon={<EditIcon />}
+                            label="Edit"
+                            onClick={() => handleEdit(params.id)}
+                            showInMenu
+                        />,
+                        <GridActionsCellItem
+                            icon={<DeleteIcon />}
+                            label="Delete"
+                            onClick={() => handleDelete(params.id)}
+                            showInMenu
+                        />,
+                    ],
+                },
+            ]
+            break
+
+        case tableType.JUDGE:
+            columns = [
+                { field: 'id', headerName: 'ID', width: 40 },
+                { field: 'first_name', headerName: 'First Name', width: 100 },
+                { field: 'last_name', headerName: 'Last Name', width: 100 },
+                {
+                    field: 'birthdayGetter', headerName: 'Birthday', width: 100,
+                    valueGetter: convertBirthday,
+                },
                 {
                     field: 'actions',
                     //headerName: 'Actions',
