@@ -89,7 +89,12 @@ function AdminDashboard(props) {
                     </ListItemText>
                 </ListItemButton>
                 {/* Episodes nested list? */}
-                <ListItemButton onClick={() => handleComponent(<Table key={4} type={tableType.TEAM} />)}>
+                <ListItemButton onClick={() => handleComponent(<Table key={4} type={tableType.EPISODE} />)}>
+                    <ListItemText>
+                        Episodes
+                    </ListItemText>
+                </ListItemButton>
+                <ListItemButton onClick={() => handleComponent(<Table key={5} type={tableType.TEAM} />)}>
                     <ListItemText>
                         Teams
                     </ListItemText>
@@ -100,7 +105,7 @@ function AdminDashboard(props) {
                     </ListItemText>
                 </ListItemButton>
                 {/* Dancers nested list? */}
-                <ListItemButton onClick={() => handleComponent(<Table key={6} type={tableType.JUDGE} />)}>
+                <ListItemButton onClick={() => handleComponent(<Table key={7} type={tableType.JUDGE} />)}>
                     <ListItemText>
                         Judges
                     </ListItemText>

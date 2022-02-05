@@ -31,7 +31,7 @@ export const findEpisodeById = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const episode = await pool.query('SELECT * FROM episodes WHERE episode_id = $1', [id]);
+        const episode = await pool.query('SELECT * FROM episodes WHERE id = $1', [id]);
 
         res.status(200).json(episode.rows[0]);
     } catch (error) {
@@ -50,7 +50,7 @@ export const updateEpisode = async (req, res) => {
             date,
         } = req.body;
 
-        const result = await pool.query('UPDATE episodes SET season_id = $1, week = $2, night = $3, date = $4 WHERE episode_id = $5 RETURNING *', [season_id, week, night, date, id]);
+        const result = await pool.query('UPDATE episodes SET season_id = $1, week = $2, night = $3, date = $4 WHERE id = $5 RETURNING *', [season_id, week, night, date, id]);
 
         res.status(200).json(result.rows[0]);
     } catch (error) {
@@ -62,7 +62,7 @@ export const deleteEpisode = async (req, res) => {
     const { id } = req.params;
 
     try {
-        await pool.query('DELETE FROM episodes WHERE episode_id = $1', [id]);
+        await pool.query('DELETE FROM episodes WHERE id = $1', [id]);
 
         res.status(200).json({ message: "Episode successfully deleted." });
     } catch (error) {

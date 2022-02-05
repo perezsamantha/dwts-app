@@ -11,6 +11,7 @@ import { setTeamPic, updateTeam } from '../../actions/teams';
 import DialogFields from './DialogFields';
 import { setSeasonPic, updateSeason } from '../../actions/seasons';
 import { updateJudge } from '../../actions/judges';
+import { updateEpisode } from '../../actions/episodes';
 
 function EditDialog(props) {
 
@@ -33,6 +34,8 @@ function EditDialog(props) {
                 return state.loading.PROFIND;
             case tableType.SEASON:
                 return state.loading.SEASONFIND;
+            case tableType.EPISODE:
+                return state.loading.EPISODEFIND;
             case tableType.TEAM:
                 return state.loading.TEAMFIND;
             // case tableType.DANCE:
@@ -57,6 +60,10 @@ function EditDialog(props) {
 
     const handleBirthday = (date) => {
         setFormData({ ...formData, birthday: date })
+    }
+
+    const handleDate = (date) => {
+        setFormData({ ...formData, date: date })
     }
 
     const handleSubmit = (e) => {
@@ -106,6 +113,9 @@ function EditDialog(props) {
             case tableType.SEASON:
                 dispatch(updateSeason(id, formData));
                 break
+            case tableType.EPISODE:
+                dispatch(updateEpisode(id, formData));
+                break
             case tableType.TEAM:
                 dispatch(updateTeam(id, formData));
                 break
@@ -139,6 +149,7 @@ function EditDialog(props) {
                             table={table}
                             handleChange={handleChange}
                             handleBirthday={handleBirthday}
+                            handleDate={handleDate}
                             celebs={celebs}
                             pros={pros}
                             seasons={seasons}

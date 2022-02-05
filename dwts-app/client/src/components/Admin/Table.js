@@ -12,28 +12,29 @@ import DateAdapter from '@mui/lab/AdapterDateFns';
 import { TableContainer, DataGridContainer, HeaderContainer } from '../shared/shared';
 import { fetchCelebs, deleteCeleb, findCelebById } from '../../actions/celebs';
 import DeleteDialog from './DeleteDialog';
-import { convertBirthday } from '../shared/functions';
+import { convertBirthday, convertDate } from '../shared/functions';
 import EditDialog from './EditDialog';
 import { deletePro, fetchPros, findProById } from '../../actions/pros';
 import AddDialog from './AddDialog';
 
 import * as tableType from '../../constants/tableTypes';
-import { deleteTeam, fetchTeams, findTeamById, getTeamsItems } from '../../actions/teams';
+import { deleteTeam, findTeamById, getTeamsItems } from '../../actions/teams';
 import { deleteSeason, fetchSeasons, findSeasonById } from '../../actions/seasons';
 import { deleteJudge, fetchJudges, findJudgeById } from '../../actions/judges';
+import { deleteEpisode, findEpisodeById, getEpisodesItems } from '../../actions/episodes';
 
 function Table(props) {
     const table = props.type;
     const dispatch = useDispatch();
 
     // for FK dropdowns
-    const celebs = useSelector(state => state.teams.celebs);
+    const celebs = useSelector(state => state.data.celebs);
     // const [dropdownItems, setDropdownItems] = useState({
     //     celebs: [],
     //     pros: []
     // })
-    const pros = useSelector(state => state.teams.pros);
-    const seasons = useSelector(state => state.teams.seasons);
+    const pros = useSelector(state => state.data.pros);
+    const seasons = useSelector(state => state.data.seasons);
 
     const items = useSelector(state => {
         switch (table) {
@@ -43,8 +44,10 @@ function Table(props) {
                 return state.pros.pros;
             case tableType.SEASON:
                 return state.seasons.seasons;
+            case tableType.EPISODE:
+                return state.data.episodes;
             case tableType.TEAM:
-                return state.teams.teams;
+                return state.data.teams;
             //case tableType.DANCE:
             //return state.dances.dances;
             case tableType.JUDGE:
@@ -64,8 +67,10 @@ function Table(props) {
                 return state.pros.pro;
             case tableType.SEASON:
                 return state.seasons.season;
+            case tableType.EPISODE:
+                return state.data.episode;
             case tableType.TEAM:
-                return state.teams.team;
+                return state.data.team;
             //case tableType.DANCE:
             //return state.dances.dance;
             case tableType.JUDGE:
@@ -85,6 +90,8 @@ function Table(props) {
                 return state.loading.PROSEARCH;
             case tableType.SEASON:
                 return state.loading.SEASONSEARCH;
+            case tableType.EPISODE:
+                return state.loading.EPISODEITEMS;
             case tableType.TEAM:
                 return state.loading.TEAMITEMS;
             //case tableType.DANCE:
@@ -108,6 +115,9 @@ function Table(props) {
                 break
             case tableType.SEASON:
                 dispatch(fetchSeasons());
+                break
+            case tableType.EPISODE:
+                dispatch(getEpisodesItems());
                 break
             case tableType.TEAM:
                 dispatch(getTeamsItems());
@@ -148,6 +158,9 @@ function Table(props) {
             case tableType.SEASON:
                 dispatch(findSeasonById(id));
                 break
+            case tableType.EPISODE:
+                dispatch(findEpisodeById(id));
+                break
             case tableType.TEAM:
                 dispatch(findTeamById(id));
                 break
@@ -178,6 +191,9 @@ function Table(props) {
             case tableType.SEASON:
                 dispatch(findSeasonById(id));
                 break
+            case tableType.EPISODE:
+                dispatch(findEpisodeById(id));
+                break
             case tableType.TEAM:
                 dispatch(findTeamById(id));
                 break
@@ -207,6 +223,9 @@ function Table(props) {
                 break
             case tableType.SEASON:
                 dispatch(deleteSeason(open.id));
+                break
+            case tableType.EPISODE:
+                dispatch(deleteEpisode(open.id));
                 break
             case tableType.TEAM:
                 dispatch(deleteTeam(open.id));
@@ -286,6 +305,42 @@ function Table(props) {
                 },
                 { field: 'number', headerName: 'Number', width: 75 },
                 { field: 'extra', headerName: 'Extra', width: 250 },
+                {
+                    field: 'actions',
+                    //headerName: 'Actions',
+                    type: 'actions',
+                    width: 50,
+                    getActions: (params) => [
+                        <GridActionsCellItem
+                            icon={<EditIcon />}
+                            label="Edit"
+                            onClick={() => handleEdit(params.id)}
+                            showInMenu
+                        />,
+                        <GridActionsCellItem
+                            icon={<DeleteIcon />}
+                            label="Delete"
+                            onClick={() => handleDelete(params.id)}
+                            showInMenu
+                        />,
+                    ],
+                },
+            ]
+            break
+
+        case tableType.EPISODE:
+            columns = [
+                { field: 'id', headerName: 'ID', width: 40 },
+                {
+                    field: 'season_id', headerName: 'Season', width: 75,
+                    valueGetter: getSeasonNumber
+                },
+                { field: 'week', headerName: 'Week', width: 75 },
+                { field: 'night', headerName: 'Night', width: 75 },
+                {
+                    field: 'dateGetter', headerName: 'Date', width: 100,
+                    valueGetter: convertDate
+                },
                 {
                     field: 'actions',
                     //headerName: 'Actions',

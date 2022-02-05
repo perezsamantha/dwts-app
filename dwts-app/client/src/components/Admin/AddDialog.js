@@ -12,6 +12,7 @@ import { addPro } from '../../actions/pros';
 import { addTeam } from '../../actions/teams';
 import { addSeason } from '../../actions/seasons';
 import { addJudge } from '../../actions/judges';
+import { addEpisode } from '../../actions/episodes';
 
 function AddDialog(props) {
     const [open, setOpen] = useState(false);
@@ -44,6 +45,13 @@ function AddDialog(props) {
                     number: null,
                     extra: null
                 }
+            case tableType.EPISODE:
+                return {
+                    season_id: null,
+                    week: null,
+                    night: null,
+                    date: new Date().toISOString()
+                }
             case tableType.TEAM:
                 return {
                     cover_pic: null,
@@ -74,6 +82,10 @@ function AddDialog(props) {
         setFormData({ ...formData, birthday: date })
     }
 
+    const handleDate = (date) => {
+        setFormData({ ...formData, date: date })
+    }
+
     const handleOpen = () => {
         setOpen(true);
     };
@@ -90,6 +102,9 @@ function AddDialog(props) {
                 break
             case tableType.SEASON:
                 dispatch(addSeason(formData));
+                break
+            case tableType.EPISODE:
+                dispatch(addEpisode(formData));
                 break
             case tableType.TEAM:
                 dispatch(addTeam(formData));
@@ -132,6 +147,7 @@ function AddDialog(props) {
                             table={table}
                             handleChange={handleChange}
                             handleBirthday={handleBirthday}
+                            handleDate={handleDate}
                             celebs={celebs}
                             pros={pros}
                             seasons={seasons}

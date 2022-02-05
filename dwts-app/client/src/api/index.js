@@ -68,3 +68,9 @@ export const setJudgePic = (id, image) => API.patch(`/judges/setPic/${id}`, imag
 export const findJudgeById = (id) => API.get(`/judges/${id}`);
 export const fetchJudges = () => API.get('/judges/');
 export const deleteJudge = (id) => API.delete(`/judges/delete/${id}`);
+
+export const addEpisode = (episode) => API.post('/episodes/add', episode);
+export const updateEpisode = (id, episode) => API.patch(`/episodes/update/${id}`, episode);
+export const findEpisodeById = (id) => API.get(`/episodes/${id}`);
+export const fetchEpisodes = () => API.get('/episodes/');
+export const deleteEpisode = (id) => API.delete(`/episodes/delete/${id}`);

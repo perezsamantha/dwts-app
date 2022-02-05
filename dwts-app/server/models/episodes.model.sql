@@ -12,3 +12,6 @@ CREATE TABLE IF NOT EXISTS episodes(
             REFERENCES seasons(id)
             ON DELETE CASCADE
 );
+
+-- extra?
+-- viewership?

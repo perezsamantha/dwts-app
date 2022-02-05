@@ -6,4 +6,5 @@ export const DANCE = 'DANCE';
 export const JUDGE = 'JUDGE';
 export const SCORE = 'SCORE';
 export const SEASON = 'Season';
+export const EPISODE = 'Episode';
 export const USER = 'USER';

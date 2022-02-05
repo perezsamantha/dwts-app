@@ -4,7 +4,7 @@ import { MobileDatePicker } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDateFns';
 
 import * as tableType from '../../constants/tableTypes';
-import { genders, placements } from '../../constants/dropdowns';
+import { genders, placements, weeks } from '../../constants/dropdowns';
 import CoverPicUpload from '../shared/CoverPicUpload';
 import { PhotoContainer } from '../shared/shared';
 
@@ -14,6 +14,7 @@ function DialogFields(props) {
     const table = props.table;
     const handleChange = props.handleChange;
     const handleBirthday = props.handleBirthday;
+    const handleDate = props.handleDate;
     const celebs = props.celebs;
     const pros = props.pros;
     const seasons = props.seasons;
@@ -119,7 +120,7 @@ function DialogFields(props) {
                 </TextField>
             }
 
-            {Array.of(tableType.TEAM).includes(table) &&
+            {Array.of(tableType.TEAM, tableType.EPISODE).includes(table) &&
                 <TextField
                     margin="dense"
                     name="season_id"
@@ -180,6 +181,47 @@ function DialogFields(props) {
                     inputFormat="MM/dd/yyyy"
                     value={formData?.birthday}
                     onChange={handleBirthday}
+                    renderInput={(params) => <TextField {...params} />}
+                />
+            }
+
+            {Array.of(tableType.EPISODE).includes(table) &&
+                <TextField
+                    margin="dense"
+                    name="week"
+                    label="Week"
+                    type="text"
+                    select
+                    value={formData?.week}
+                    onChange={handleChange}
+                >
+                    {weeks.map((week, index) => (
+                        <MenuItem key={index} value={week}>{week}</MenuItem>
+                    ))}
+                </TextField>
+            }
+
+            {Array.of(tableType.EPISODE).includes(table) &&
+                <TextField
+                    margin="dense"
+                    name="night"
+                    select
+                    label="Night"
+                    value={formData?.night}
+                    onChange={handleChange}
+                >
+                    <MenuItem key={1} value={1}>1</MenuItem>
+                    <MenuItem key={2} value={2}>2</MenuItem>
+                </TextField>
+            }
+
+            {Array.of(tableType.EPISODE).includes(table) &&
+                <MobileDatePicker
+                    margin="dense"
+                    label="Date"
+                    inputFormat="MM/dd/yyyy"
+                    value={formData?.date}
+                    onChange={handleDate}
                     renderInput={(params) => <TextField {...params} />}
                 />
             }
