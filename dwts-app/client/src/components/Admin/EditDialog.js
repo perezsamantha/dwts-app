@@ -12,6 +12,7 @@ import DialogFields from './DialogFields';
 import { setSeasonPic, updateSeason } from '../../actions/seasons';
 import { updateJudge } from '../../actions/judges';
 import { updateEpisode } from '../../actions/episodes';
+import { updateDance } from '../../actions/dances';
 
 function EditDialog(props) {
 
@@ -25,6 +26,7 @@ function EditDialog(props) {
     const celebs = props.celebs;
     const pros = props.pros;
     const seasons = props.seasons;
+    const episodes = props.episodes;
 
     const loading = useSelector(state => {
         switch (table) {
@@ -38,8 +40,8 @@ function EditDialog(props) {
                 return state.loading.EPISODEFIND;
             case tableType.TEAM:
                 return state.loading.TEAMFIND;
-            // case tableType.DANCE:
-            //     return state.loading.DANCEFIND;
+            case tableType.DANCE:
+                return state.loading.DANCEFIND;
             case tableType.JUDGE:
                 return state.loading.JUDGEFIND;
             // case tableType.SCORE:
@@ -90,13 +92,10 @@ function EditDialog(props) {
                     case tableType.TEAM:
                         dispatch(setTeamPic(id, data));
                         break
-                    // case tableType.DANCE:
-                    //     dispatch();
-                    //     break
                     // case tableType.USER:
                     //     dispatch();
                     //     break
-                    // not judge, score ?
+                    // not judge, score, dance ?
                     default:
                     //console.log('Invald table type');
                 }
@@ -119,9 +118,9 @@ function EditDialog(props) {
             case tableType.TEAM:
                 dispatch(updateTeam(id, formData));
                 break
-            // case tableType.DANCE:
-            //     dispatch();
-            //     break
+            case tableType.DANCE:
+                dispatch(updateDance(id, formData));
+                break
             case tableType.JUDGE:
                 dispatch(updateJudge(id, formData));
                 break
@@ -153,6 +152,7 @@ function EditDialog(props) {
                             celebs={celebs}
                             pros={pros}
                             seasons={seasons}
+                            episodes={episodes}
                             editor={editor}
                             setEditor={setEditor}
                             fileData={fileData}

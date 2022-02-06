@@ -99,7 +99,7 @@ function AdminDashboard(props) {
                         Teams
                     </ListItemText>
                 </ListItemButton>
-                <ListItemButton onClick={() => handleComponent()}>
+                <ListItemButton onClick={() => handleComponent(<Table key={6} type={tableType.DANCE} />)}>
                     <ListItemText>
                         Dances
                     </ListItemText>

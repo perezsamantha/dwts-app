@@ -4,7 +4,7 @@ import { MobileDatePicker } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDateFns';
 
 import * as tableType from '../../constants/tableTypes';
-import { genders, placements, weeks } from '../../constants/dropdowns';
+import { genders, placements, weeks, styles, themes, runningOrders } from '../../constants/dropdowns';
 import CoverPicUpload from '../shared/CoverPicUpload';
 import { PhotoContainer } from '../shared/shared';
 
@@ -18,6 +18,7 @@ function DialogFields(props) {
     const celebs = props.celebs;
     const pros = props.pros;
     const seasons = props.seasons;
+    const episodes = props.episodes;
 
     useEffect(() => {
 
@@ -163,7 +164,106 @@ function DialogFields(props) {
                 />
             }
 
-            {Array.of(tableType.SEASON, tableType.TEAM).includes(table) &&
+            {/* share getEp# function? */}
+            {Array.of(tableType.DANCE).includes(table) &&
+                <TextField
+                    margin="dense"
+                    name="episode_id"
+                    label="Episode"
+                    type="text"
+                    select
+                    value={formData?.episode_id}
+                    onChange={handleChange}
+                >
+                    {episodes.map((episode, index) => seasons.map((season) => season.id === episode.season_id ? (
+                        <MenuItem key={index} value={episode.id}>{`${season.number}-${episode?.week}-${episode?.night}`}</MenuItem>
+                    ) : null))}
+                </TextField>
+            }
+
+            {Array.of(tableType.DANCE).includes(table) &&
+                <TextField
+                    margin="dense"
+                    name="style"
+                    label="Style"
+                    type="text"
+                    select
+                    value={formData?.style}
+                    onChange={handleChange}
+                >
+                    {styles.map((style, index) => (
+                        <MenuItem key={index} value={style}>{style}</MenuItem>
+                    ))}
+                </TextField>
+            }
+
+            {Array.of(tableType.DANCE).includes(table) &&
+                <TextField
+                    margin="dense"
+                    name="theme"
+                    label="Theme"
+                    type="text"
+                    select
+                    value={formData?.theme}
+                    onChange={handleChange}
+                >
+                    {themes.map((theme, index) => (
+                        <MenuItem key={index} value={theme}>{theme}</MenuItem>
+                    ))}
+                </TextField>
+            }
+
+            {Array.of(tableType.DANCE).includes(table) &&
+                <TextField
+                    margin="dense"
+                    name="running_order"
+                    label="Running Order"
+                    type="text"
+                    select
+                    value={formData?.running_order}
+                    onChange={handleChange}
+                >
+                    {runningOrders.map((ro, index) => (
+                        <MenuItem key={index} value={ro}>{ro}</MenuItem>
+                    ))}
+                </TextField>
+            }
+
+            {Array.of(tableType.DANCE).includes(table) &&
+                <TextField
+                    margin="dense"
+                    name="song_title"
+                    label="Song Title"
+                    type="text"
+                    value={formData?.song_title}
+                    onChange={handleChange}
+                />
+            }
+
+            {Array.of(tableType.DANCE).includes(table) &&
+                <TextField
+                    margin="dense"
+                    name="song_artist"
+                    label="Song Artist"
+                    type="text"
+                    value={formData?.song_artist}
+                    onChange={handleChange}
+                />
+            }
+
+            {Array.of(tableType.DANCE).includes(table) &&
+                <TextField
+                    margin="dense"
+                    name="link"
+                    label="Link"
+                    type="text"
+                    value={formData?.link}
+                    onChange={handleChange}
+                />
+            }
+
+            {/* EXTRA */}
+            {Array.of(tableType.SEASON, tableType.TEAM, tableType.DANCE).includes(table) &&
                 <TextField
                     margin="dense"
                     name="extra"

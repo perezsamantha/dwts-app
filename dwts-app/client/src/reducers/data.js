@@ -49,6 +49,17 @@ const dataReducer = (state = {
         case actionType.EPISODEITEMS_SUCCESS:
             return { ...state, episodes: action.payload.episodes, seasons: action.payload.seasons };
 
+        case actionType.DANCEADD_SUCCESS:
+            return { ...state, dances: [...state.dances, action.payload] };
+        case actionType.DANCEUPDATE_SUCCESS:
+            return { ...state, dances: [...state.dances.map(dance => dance.id === action.payload.id ? action.payload : dance)] }
+        case actionType.DANCESEARCH_SUCCESS:
+            return { ...state, dances: action.payload.dances, seasons: action.payload.seasons, episodes: action.payload.episodes };
+        case actionType.DANCEFIND_SUCCESS:
+            return { ...state, dance: action.payload };
+        case actionType.DANCEDELETE_SUCCESS:
+            return { ...state, dances: state.dances.filter((dance) => dance.id !== action.payload) };
+
         default:
             return state;
     }

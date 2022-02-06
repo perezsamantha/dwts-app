@@ -12,7 +12,7 @@ import DateAdapter from '@mui/lab/AdapterDateFns';
 import { TableContainer, DataGridContainer, HeaderContainer } from '../shared/shared';
 import { fetchCelebs, deleteCeleb, findCelebById } from '../../actions/celebs';
 import DeleteDialog from './DeleteDialog';
-import { convertBirthday, convertDate } from '../shared/functions';
+import { convertBirthday, convertDate, GetCelebName, GetProName, GetSeasonNumber, GetEpisodeNumber } from '../shared/functions';
 import EditDialog from './EditDialog';
 import { deletePro, fetchPros, findProById } from '../../actions/pros';
 import AddDialog from './AddDialog';
@@ -22,6 +22,7 @@ import { deleteTeam, findTeamById, getTeamsItems } from '../../actions/teams';
 import { deleteSeason, fetchSeasons, findSeasonById } from '../../actions/seasons';
 import { deleteJudge, fetchJudges, findJudgeById } from '../../actions/judges';
 import { deleteEpisode, findEpisodeById, getEpisodesItems } from '../../actions/episodes';
+import { deleteDance, fetchDances, findDanceById } from '../../actions/dances';
 
 function Table(props) {
     const table = props.type;
@@ -29,12 +30,9 @@ function Table(props) {
 
     // for FK dropdowns
     const celebs = useSelector(state => state.data.celebs);
-    // const [dropdownItems, setDropdownItems] = useState({
-    //     celebs: [],
-    //     pros: []
-    // })
     const pros = useSelector(state => state.data.pros);
     const seasons = useSelector(state => state.data.seasons);
+    const episodes = useSelector(state => state.data.episodes);
 
     const items = useSelector(state => {
         switch (table) {
@@ -48,8 +46,8 @@ function Table(props) {
                 return state.data.episodes;
             case tableType.TEAM:
                 return state.data.teams;
-            //case tableType.DANCE:
-            //return state.dances.dances;
+            case tableType.DANCE:
+                return state.data.dances;
             case tableType.JUDGE:
                 return state.judges.judges;
             // case tableType.SCORE:
@@ -71,8 +69,8 @@ function Table(props) {
                 return state.data.episode;
             case tableType.TEAM:
                 return state.data.team;
-            //case tableType.DANCE:
-            //return state.dances.dance;
+            case tableType.DANCE:
+                return state.data.dance;
             case tableType.JUDGE:
                 return state.judges.judge;
             // case tableType.SCORE:
@@ -94,8 +92,8 @@ function Table(props) {
                 return state.loading.EPISODEITEMS;
             case tableType.TEAM:
                 return state.loading.TEAMITEMS;
-            //case tableType.DANCE:
-            //return state.loading.DANCEITEMS; ??
+            case tableType.DANCE:
+                return state.loading.DANCESEARCH;
             case tableType.JUDGE:
                 return state.loading.JUDGESEARCH;
             // case tableType.SCORE:
@@ -122,9 +120,9 @@ function Table(props) {
             case tableType.TEAM:
                 dispatch(getTeamsItems());
                 break
-            // case tableType.DANCE:
-
-            //     break
+            case tableType.DANCE:
+                dispatch(fetchDances());
+                break
             case tableType.JUDGE:
                 dispatch(fetchJudges());
                 break
@@ -164,9 +162,9 @@ function Table(props) {
             case tableType.TEAM:
                 dispatch(findTeamById(id));
                 break
-            // case tableType.DANCE:
-
-            //     break
+            case tableType.DANCE:
+                dispatch(findDanceById(id));
+                break
             case tableType.JUDGE:
                 dispatch(findJudgeById(id));
                 break
@@ -197,9 +195,9 @@ function Table(props) {
             case tableType.TEAM:
                 dispatch(findTeamById(id));
                 break
-            // case tableType.DANCE:
-
-            //     break
+            case tableType.DANCE:
+                dispatch(findDanceById(id));
+                break
             case tableType.JUDGE:
                 dispatch(findJudgeById(id));
                 break
@@ -230,9 +228,9 @@ function Table(props) {
             case tableType.TEAM:
                 dispatch(deleteTeam(open.id));
                 break
-            // case tableType.DANCE:
-
-            //     break
+            case tableType.DANCE:
+                dispatch(deleteDance(open.id));
+                break
             case tableType.JUDGE:
                 dispatch(deleteJudge(open.id));
                 break
@@ -333,7 +331,7 @@ function Table(props) {
                 { field: 'id', headerName: 'ID', width: 40 },
                 {
                     field: 'season_id', headerName: 'Season', width: 75,
-                    valueGetter: getSeasonNumber
+                    valueGetter: GetSeasonNumber
                 },
                 { field: 'week', headerName: 'Week', width: 75 },
                 { field: 'night', headerName: 'Night', width: 75 },
@@ -373,23 +371,60 @@ function Table(props) {
                 },
                 {
                     field: 'celeb_id', headerName: 'Celeb', width: 100,
-                    valueGetter: getCelebName
+                    valueGetter: GetCelebName
                 },
                 {
                     field: 'pro_id', headerName: 'Pro', width: 100,
-                    valueGetter: getProName
+                    valueGetter: GetProName
                 },
                 {
                     field: 'mentor_id', headerName: 'Mentor', width: 100,
-                    valueGetter: getProName
+                    valueGetter: GetProName
                 },
                 {
                     field: 'season_id', headerName: 'Season', width: 75,
-                    valueGetter: getSeasonNumber
+                    valueGetter: GetSeasonNumber
                 },
                 { field: 'placement', headerName: 'Place', width: 100 },
                 { field: 'team_name', headerName: 'Team Name', width: 150 },
                 { field: 'extra', headerName: 'Extra', width: 250 },
+                {
+                    field: 'actions',
+                    //headerName: 'Actions',
+                    type: 'actions',
+                    width: 50,
+                    getActions: (params) => [
+                        <GridActionsCellItem
+                            icon={<EditIcon />}
+                            label="Edit"
+                            onClick={() => handleEdit(params.id)}
+                            showInMenu
+                        />,
+                        <GridActionsCellItem
+                            icon={<DeleteIcon />}
+                            label="Delete"
+                            onClick={() => handleDelete(params.id)}
+                            showInMenu
+                        />,
+                    ],
+                },
+            ]
+            break
+
+        case tableType.DANCE:
+            columns = [
+                { field: 'id', headerName: 'ID', width: 40 },
+                {
+                    field: 'episode_id', headerName: 'Episode', width: 100,
+                    valueGetter: GetEpisodeNumber
+                },
+                { field: 'style', headerName: 'Style', width: 100 },
+                { field: 'theme', headerName: 'Theme', width: 100 },
+                { field: 'running_order', headerName: 'RO', width: 50 },
+                { field: 'song_title', headerName: 'Song', width: 175 },
+                { field: 'song_artist', headerName: 'Artist', width: 175 },
+                { field: 'link', headerName: 'Link', width: 150 },
+                { field: 'extra', headerName: 'Extra', width: 150 },
                 {
                     field: 'actions',
                     //headerName: 'Actions',
@@ -449,23 +484,29 @@ function Table(props) {
             columns = [];
     };
 
-    function getCelebName(params) {
-        let celebName;
-        celebs.map(celeb => celeb.id === params.value ? celebName = `${celeb.first_name} ${celeb?.last_name}` : '');
-        return celebName;
-    }
+    // function getCelebName(params) {
+    //     let celebName;
+    //     celebs.map(celeb => celeb.id === params.value ? celebName = `${celeb.first_name} ${celeb?.last_name}` : '');
+    //     return celebName;
+    // }
 
-    function getProName(params) {
-        let proName;
-        pros.map(pro => pro.id === params.value ? proName = `${pro.first_name} ${pro?.last_name}` : '');
-        return proName;
-    }
+    // function getProName(params) {
+    //     let proName;
+    //     pros.map(pro => pro.id === params.value ? proName = `${pro.first_name} ${pro?.last_name}` : '');
+    //     return proName;
+    // }
 
-    function getSeasonNumber(params) {
-        let seasonNumber;
-        seasons.map(season => season.id === params.value ? seasonNumber = `${season.number}` : '');
-        return seasonNumber;
-    }
+    // function getSeasonNumber(params) {
+    //     let seasonNumber;
+    //     seasons.map(season => season.id === params.value ? seasonNumber = `${season.number}` : '');
+    //     return seasonNumber;
+    // }
+
+    // function getEpisodeNumber(params) {
+    //     let episodeNumber;
+    //     episodes.map(episode => episode.id === params.value ? seasons.map(season => season.id === episode.season_id ? episodeNumber = `${season.number}-${episode?.week}-${episode?.night}` : '') : '');
+    //     return episodeNumber;
+    // }
 
     return (
         <LocalizationProvider dateAdapter={DateAdapter}>
@@ -477,6 +518,7 @@ function Table(props) {
                         celebs={celebs}
                         pros={pros}
                         seasons={seasons}
+                        episodes={episodes}
                     />
                 </HeaderContainer>
 
@@ -495,6 +537,7 @@ function Table(props) {
                         celebs={celebs}
                         pros={pros}
                         seasons={seasons}
+                        episodes={episodes}
                         open={open.edit}
                         handleClose={handleClose}
                     />}

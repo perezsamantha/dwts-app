@@ -13,6 +13,7 @@ import { addTeam } from '../../actions/teams';
 import { addSeason } from '../../actions/seasons';
 import { addJudge } from '../../actions/judges';
 import { addEpisode } from '../../actions/episodes';
+import { addDance } from '../../actions/dances';
 
 function AddDialog(props) {
     const [open, setOpen] = useState(false);
@@ -21,6 +22,7 @@ function AddDialog(props) {
     const celebs = props.celebs;
     const pros = props.pros;
     const seasons = props.seasons;
+    const episodes = props.episodes;
 
     const initialState = () => {
         switch (table) {
@@ -63,6 +65,17 @@ function AddDialog(props) {
                     team_name: null,
                     extra: null
                 }
+            case tableType.DANCE:
+                return {
+                    episode_id: null,
+                    style: null,
+                    theme: null,
+                    running_order: null,
+                    song_title: null,
+                    song_artist: null,
+                    link: null,
+                    extra: null
+                }
             case tableType.JUDGE:
                 return {
                     first_name: null,
@@ -92,6 +105,7 @@ function AddDialog(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log(formData)
 
         switch (table) {
             case 'Celeb':
@@ -109,9 +123,9 @@ function AddDialog(props) {
             case tableType.TEAM:
                 dispatch(addTeam(formData));
                 break
-            // case tableType.DANCE:
-            //     dispatch();
-            //     break
+            case tableType.DANCE:
+                dispatch(addDance(formData));
+                break
             case tableType.JUDGE:
                 dispatch(addJudge(formData));
                 break
@@ -151,6 +165,7 @@ function AddDialog(props) {
                             celebs={celebs}
                             pros={pros}
                             seasons={seasons}
+                            episodes={episodes}
                         // editor={editor}
                         // setEditor={setEditor}
                         // fileData={fileData}

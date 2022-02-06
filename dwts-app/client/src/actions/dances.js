@@ -9,6 +9,7 @@ export const addDance = (dance) => async (dispatch) => {
 
         dispatch({ type: actionType.DANCEADD_SUCCESS, payload: data });
     } catch (error) {
+        console.log(error);
         dispatch({ type: actionType.DANCEADD_FAILURE, payload: error, error: true });
     }
 }
@@ -25,27 +26,41 @@ export const updateDance = (id, dance) => async (dispatch) => {
     }
 }
 
-export const setDancePic = (id, image) => async (dispatch) => {
-    dispatch({ type: actionType.DANCEUPDATE_REQUEST });
+// export const setDancePic = (id, image) => async (dispatch) => {
+//     dispatch({ type: actionType.DANCEUPDATE_REQUEST });
+
+//     try {
+//         const { data } = await api.setDancePic(id, image);
+
+//         dispatch({ type: actionType.DANCEUPDATE_SUCCESS, payload: data });
+//     } catch (error) {
+//         dispatch({ type: actionType.DANCEUPDATE_FAILURE, payload: error, error: true });
+//     }
+// }
+
+export const fetchDances = () => async (dispatch) => {
+    dispatch({ type: actionType.DANCESEARCH_REQUEST });
 
     try {
-        const { data } = await api.setDancePic(id, image);
+        const dances = await api.fetchDances();
+        const seasons = await api.fetchSeasons();
+        const episodes = await api.fetchEpisodes();
 
-        dispatch({ type: actionType.DANCEUPDATE_SUCCESS, payload: data });
+        dispatch({ type: actionType.DANCESEARCH_SUCCESS, payload: { dances: dances.data, seasons: seasons.data, episodes: episodes.data } });
     } catch (error) {
-        dispatch({ type: actionType.DANCEUPDATE_FAILURE, payload: error, error: true });
+        dispatch({ type: actionType.DANCESEARCH_FAILURE, payload: error, error: true });
     }
 }
 
 export const findDanceById = (id) => async (dispatch) => {
-    dispatch({ type: actionType.DANCESEARCH_REQUEST });
+    dispatch({ type: actionType.DANCEFIND_REQUEST });
 
     try {
         const { data } = await api.findDanceById(id);
 
-        dispatch({ type: actionType.DANCESEARCH_SUCCESS, payload: data });
+        dispatch({ type: actionType.DANCEFIND_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: actionType.DANCESEARCH_FAILURE, payload: error, error: true });
+        dispatch({ type: actionType.DANCEFIND_FAILURE, payload: error, error: true });
     }
 }
 

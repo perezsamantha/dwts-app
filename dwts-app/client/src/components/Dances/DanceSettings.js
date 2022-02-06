@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, makeStyles, FormControl, InputLabel, Select, MenuItem, CircularProgress, FormControlLabel, Checkbox, ListItemText, Input, Chip, ListSubheader } from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
 
-import { deleteDance, findDanceById, updateDance, setDancePic } from '../../actions/dances';
+import { deleteDance, findDanceById, updateDance } from '../../actions/dances';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPros } from '../../actions/pros';
 import { styles, seasons, weeks, themes, placements, judges, guestJudges, scores } from '../../constants/dropdowns';
@@ -72,17 +72,6 @@ function DanceSettings(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        if (editor != null) {
-            const data = new FormData();
-
-            const canvas = editor.getImageScaledToCanvas();
-
-            canvas.toBlob(function (blob) {
-                data.append("coverPic", blob, `${Date.now()}-${fileData.name}`);
-                dispatch(setDancePic(id, data));
-            })
-        }
 
         dispatch(updateDance(id, formData));
         handleClose();

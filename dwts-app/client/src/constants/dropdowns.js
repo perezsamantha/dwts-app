@@ -34,6 +34,7 @@ export const weeks = Array.from({ length: 11 }, (_, i) => i + 1);
 
 // export const placements = Array.from({ length: 16 }, (_, i) => i + 1);
 
+// turn into array of objects?
 export const placements = [
     // "1st",
     // "2nd",
@@ -104,6 +105,41 @@ export const scores = [
     8,
     9,
     10
+]
+
+export const runningOrders = [
+    // "1st",
+    // "2nd",
+    // "3rd",
+    // "4th",
+    // "5th",
+    // "6th",
+    // "7th",
+    // "8th",
+    // "9th",
+    // "10th",
+    // "11th",
+    // "12th",
+    // "13th",
+    // "14th",
+    // "15th",
+    // "16th",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
 ]
 
 export const hosts = [

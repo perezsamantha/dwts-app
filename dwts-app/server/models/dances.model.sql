@@ -1,9 +1,8 @@
 
 CREATE TABLE IF NOT EXISTS dances(
     id SERIAL NOT NULL,
-    cover_pic TEXT,
-    style VARCHAR(30) NOT NULL,
     episode_id INT,
+    style VARCHAR(30) NOT NULL,
     theme VARCHAR(30),
     running_order smallint,
     song_title VARCHAR(100),
@@ -20,3 +19,4 @@ CREATE TABLE IF NOT EXISTS dances(
 );
 
 -- cover pic?
+-- boolean/type to distinguish between main dances, group numbers, and bumpers?
