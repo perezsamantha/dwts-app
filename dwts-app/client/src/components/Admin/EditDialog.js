@@ -14,6 +14,7 @@ import { updateJudge } from '../../actions/judges';
 import { updateEpisode } from '../../actions/episodes';
 import { updateDance } from '../../actions/dances';
 import { updateScore } from '../../actions/scores';
+import { updateDancer } from '../../actions/dancers';
 
 function EditDialog(props) {
 
@@ -48,6 +49,8 @@ function EditDialog(props) {
                 return state.loading.JUDGEFIND;
             case tableType.SCORE:
                 return state.loading.SCOREFIND;
+            case tableType.DANCER:
+                return state.loading.DANCERFIND;
             // case tableType.USER:
             //     return state.loading.USERFIND;
         }
@@ -128,6 +131,9 @@ function EditDialog(props) {
                 break
             case tableType.SCORE:
                 dispatch(updateScore(id, formData));
+                break
+            case tableType.DANCER:
+                dispatch(updateDancer(id, formData));
                 break
             // case tableType.USER:
             //     dispatch();

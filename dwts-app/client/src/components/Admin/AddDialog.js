@@ -15,6 +15,7 @@ import { addJudge } from '../../actions/judges';
 import { addEpisode } from '../../actions/episodes';
 import { addDance } from '../../actions/dances';
 import { addScore } from '../../actions/scores';
+import { addDancer } from '../../actions/dancers';
 
 function AddDialog(props) {
     const [open, setOpen] = useState(false);
@@ -92,6 +93,15 @@ function AddDialog(props) {
                     order: null,
                     is_guest: false
                 }
+            case tableType.TEAM:
+                return {
+                    dance_id: null,
+                    team_id: null,
+                    pro_id: null,
+                    celeb_id: null,
+                    is_background: false,
+                    extra: null
+                }
         }
     };
 
@@ -140,6 +150,9 @@ function AddDialog(props) {
                 break
             case tableType.SCORE:
                 dispatch(addScore(formData));
+                break
+            case tableType.DANCER:
+                dispatch(addDancer(formData));
                 break
             // case tableType.USER:
             //     dispatch();

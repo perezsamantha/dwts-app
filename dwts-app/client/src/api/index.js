@@ -81,3 +81,9 @@ export const updateScore = (id, score) => API.patch(`/scores/update/${id}`, scor
 export const findScoreById = (id) => API.get(`/scores/${id}`);
 export const fetchScores = () => API.get('/scores/');
 export const deleteScore = (id) => API.delete(`/scores/delete/${id}`);
+
+export const addDancer = (dancer) => API.post('/dancers/add', dancer);
+export const updateDancer = (id, dancer) => API.patch(`/dancers/update/${id}`, dancer);
+export const findDancerById = (id) => API.get(`/dancers/${id}`);
+export const fetchDancers = () => API.get('/dancers/');
+export const deleteDancer = (id) => API.delete(`/dancers/delete/${id}`);

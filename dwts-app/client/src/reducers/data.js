@@ -11,6 +11,7 @@ const dataReducer = (state = {
     dances: [],
     judges: [],
     scores: [],
+    dancers: [],
     users: [],
     celeb: {},
     pro: {},
@@ -20,6 +21,7 @@ const dataReducer = (state = {
     dance: {},
     judge: {},
     score: {},
+    dancer: {},
     user: {},
 }, action) => {
     switch (action.type) {
@@ -70,6 +72,17 @@ const dataReducer = (state = {
             return { ...state, score: action.payload };
         case actionType.SCOREDELETE_SUCCESS:
             return { ...state, scores: state.scores.filter((score) => score.id !== action.payload) };
+
+        case actionType.DANCERADD_SUCCESS:
+            return { ...state, dancers: [...state.dancers, action.payload] };
+        case actionType.DANCERUPDATE_SUCCESS:
+            return { ...state, dancers: [...state.dancers.map(dancer => dancer.id === action.payload.id ? action.payload : dancer)] }
+        case actionType.DANCERSEARCH_SUCCESS:
+            return { ...state, dancers: action.payload.dancers, dances: action.payload.dances, teams: action.payload.teams, pros: action.payload.pros, celebs: action.payload.celebs };
+        case actionType.DANCERFIND_SUCCESS:
+            return { ...state, dancer: action.payload };
+        case actionType.DANCERDELETE_SUCCESS:
+            return { ...state, dancers: state.dancers.filter((dancer) => dancer.id !== action.payload) };
 
         default:
             return state;

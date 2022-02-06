@@ -24,6 +24,7 @@ import { deleteJudge, fetchJudges, findJudgeById } from '../../actions/judges';
 import { deleteEpisode, findEpisodeById, getEpisodesItems } from '../../actions/episodes';
 import { deleteDance, fetchDances, findDanceById } from '../../actions/dances';
 import { deleteScore, fetchScores, findScoreById } from '../../actions/scores';
+import { deleteDancer, fetchDancers, findDancerById } from '../../actions/dancers';
 
 function Table(props) {
     const table = props.type;
@@ -54,6 +55,8 @@ function Table(props) {
                 return state.judges.judges;
             case tableType.SCORE:
                 return state.data.scores;
+            case tableType.DANCER:
+                return state.data.dancers;
             // case tableType.USER:
             //     return state.users.users;
         }
@@ -77,6 +80,8 @@ function Table(props) {
                 return state.judges.judge;
             case tableType.SCORE:
                 return state.data.score;
+            case tableType.DANCER:
+                return state.data.dancer;
             // case tableType.USER:
             //     return state.users.user;
         }
@@ -100,6 +105,8 @@ function Table(props) {
                 return state.loading.JUDGESEARCH;
             case tableType.SCORE:
                 return state.loading.SCORESEARCH;
+            case tableType.DANCER:
+                return state.loading.DANCESEARCH;
             // case tableType.USER:
             //     return state.loading.USERSEARCH;
         }
@@ -130,6 +137,9 @@ function Table(props) {
                 break
             case tableType.SCORE:
                 dispatch(fetchScores());
+                break
+            case tableType.DANCER:
+                dispatch(fetchDancers());
                 break
             // case tableType.USER:
 
@@ -173,6 +183,9 @@ function Table(props) {
             case tableType.SCORE:
                 dispatch(findScoreById(id));
                 break
+            case tableType.DANCER:
+                dispatch(findDancerById(id));
+                break
             // case tableType.USER:
 
             //     break
@@ -206,6 +219,9 @@ function Table(props) {
             case tableType.SCORE:
                 dispatch(findScoreById(id));
                 break
+            case tableType.DANCER:
+                dispatch(findDancerById(id));
+                break
             // case tableType.USER:
 
             //     break
@@ -238,6 +254,9 @@ function Table(props) {
                 break
             case tableType.SCORE:
                 dispatch(deleteScore(open.id));
+                break
+            case tableType.DANCER:
+                dispatch(deleteDancer(open.id));
                 break
             // case tableType.USER:
 
@@ -495,7 +514,51 @@ function Table(props) {
                 },
                 { field: 'value', headerName: 'Value', width: 100 },
                 { field: 'order', headerName: 'Order', width: 100 },
-                { field: 'is_guest', headerName: 'Guest?', width: 100},
+                { field: 'is_guest', headerName: 'Guest?', width: 100 },
+                {
+                    field: 'actions',
+                    //headerName: 'Actions',
+                    type: 'actions',
+                    width: 50,
+                    getActions: (params) => [
+                        <GridActionsCellItem
+                            icon={<EditIcon />}
+                            label="Edit"
+                            onClick={() => handleEdit(params.id)}
+                            showInMenu
+                        />,
+                        <GridActionsCellItem
+                            icon={<DeleteIcon />}
+                            label="Delete"
+                            onClick={() => handleDelete(params.id)}
+                            showInMenu
+                        />,
+                    ],
+                },
+            ]
+            break
+
+        case tableType.DANCER:
+            columns = [
+                { field: 'id', headerName: 'ID', width: 40 },
+                {
+                    field: 'dance_id', headerName: 'Team', width: 100,
+                    //valueGetter: GetDanceName
+                },
+                {
+                    field: 'team_id', headerName: 'Team', width: 100,
+                    //valueGetter: GetTeamName
+                },
+                {
+                    field: 'pro_id', headerName: 'Pro', width: 100,
+                    valueGetter: GetProName
+                },
+                {
+                    field: 'celeb_id', headerName: 'Celeb', width: 100,
+                    valueGetter: GetCelebName
+                },
+                { field: 'is_background', headerName: 'Background?', width: 100 },
+                { field: 'extra', headerName: 'Extra', width: 250 },
                 {
                     field: 'actions',
                     //headerName: 'Actions',

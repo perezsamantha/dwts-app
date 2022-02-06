@@ -1,11 +1,11 @@
 
 CREATE TABLE IF NOT EXISTS dancers(
     id SERIAL NOT NULL,
-    dance_id INT,
+    dance_id INT NOT NULL,
     team_id INT,
     pro_id INT,
     celeb_id INT,
-    extra VARCHAR(20),
+    extra VARCHAR(100),
     is_background BOOLEAN,
     PRIMARY KEY(id),
     CONSTRAINT fk_dance
@@ -25,3 +25,5 @@ CREATE TABLE IF NOT EXISTS dancers(
             REFERENCES celebs(id)
             ON DELETE CASCADE
 );
+
+-- 

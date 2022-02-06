@@ -22,6 +22,7 @@ function DialogFields(props) {
     const episodes = props.episodes;
     const judges = props.judges;
     const dances = useSelector(state => state.data.dances);
+    const teams = useSelector(state => state.data.teams);
 
     useEffect(() => {
 
@@ -76,7 +77,7 @@ function DialogFields(props) {
                 />
             }
 
-            {Array.of(tableType.SCORE).includes(table) &&
+            {Array.of(tableType.SCORE, tableType.DANCER).includes(table) &&
                 <TextField
                     margin="dense"
                     name="dance_id"
@@ -92,7 +93,23 @@ function DialogFields(props) {
                 </TextField>
             }
 
-            {Array.of(tableType.TEAM).includes(table) &&
+            {Array.of(tableType.DANCER).includes(table) &&
+                <TextField
+                    margin="dense"
+                    name="team_id"
+                    label="Team"
+                    type="text"
+                    select
+                    value={formData?.team_id}
+                    onChange={handleChange}
+                >
+                    {teams.map((team, index) => (
+                        <MenuItem key={index} value={team.id}>{team.id}</MenuItem>
+                    ))}
+                </TextField>
+            }
+
+            {Array.of(tableType.TEAM, tableType.DANCER).includes(table) &&
                 <TextField
                     margin="dense"
                     name="celeb_id"
@@ -108,7 +125,7 @@ function DialogFields(props) {
                 </TextField>
             }
 
-            {Array.of(tableType.TEAM).includes(table) &&
+            {Array.of(tableType.TEAM, tableType.DANCER).includes(table) &&
                 <TextField
                     margin="dense"
                     name="pro_id"
@@ -281,8 +298,22 @@ function DialogFields(props) {
                 />
             }
 
+            {Array.of(tableType.DANCER).includes(table) &&
+                <TextField
+                    margin="dense"
+                    name="is_background"
+                    select
+                    label="Background Dancer?"
+                    value={formData?.is_background}
+                    onChange={handleChange}
+                >
+                    <MenuItem key={1} value={true}>Yes</MenuItem>
+                    <MenuItem key={2} value={false}>No</MenuItem>
+                </TextField>
+            }
+
             {/* EXTRA */}
-            {Array.of(tableType.SEASON, tableType.TEAM, tableType.DANCE).includes(table) &&
+            {Array.of(tableType.SEASON, tableType.TEAM, tableType.DANCE, tableType.DANCER).includes(table) &&
                 <TextField
                     margin="dense"
                     name="extra"
@@ -418,7 +449,7 @@ function DialogFields(props) {
                 </TextField>
             }
 
-{Array.of(tableType.SCORE).includes(table) &&
+            {Array.of(tableType.SCORE).includes(table) &&
                 <TextField
                     margin="dense"
                     name="judge_id"
@@ -434,7 +465,7 @@ function DialogFields(props) {
                 </TextField>
             }
 
-{Array.of(tableType.SCORE).includes(table) &&
+            {Array.of(tableType.SCORE).includes(table) &&
                 <TextField
                     margin="dense"
                     name="value"
@@ -450,7 +481,7 @@ function DialogFields(props) {
                 </TextField>
             }
 
-{Array.of(tableType.SCORE).includes(table) &&
+            {Array.of(tableType.SCORE).includes(table) &&
                 <TextField
                     margin="dense"
                     name="order"
@@ -467,7 +498,7 @@ function DialogFields(props) {
             }
 
 
-{Array.of(tableType.SCORE).includes(table) &&
+            {Array.of(tableType.SCORE).includes(table) &&
                 <TextField
                     margin="dense"
                     name="is_guest"
