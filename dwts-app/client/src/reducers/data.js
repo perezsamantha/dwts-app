@@ -60,6 +60,17 @@ const dataReducer = (state = {
         case actionType.DANCEDELETE_SUCCESS:
             return { ...state, dances: state.dances.filter((dance) => dance.id !== action.payload) };
 
+        case actionType.SCOREADD_SUCCESS:
+            return { ...state, scores: [...state.scores, action.payload] };
+        case actionType.SCOREUPDATE_SUCCESS:
+            return { ...state, scores: [...state.scores.map(score => score.id === action.payload.id ? action.payload : score)] }
+        case actionType.SCORESEARCH_SUCCESS:
+            return { ...state, scores: action.payload.scores, dances: action.payload.dances, judges: action.payload.judges };
+        case actionType.SCOREFIND_SUCCESS:
+            return { ...state, score: action.payload };
+        case actionType.SCOREDELETE_SUCCESS:
+            return { ...state, scores: state.scores.filter((score) => score.id !== action.payload) };
+
         default:
             return state;
     }

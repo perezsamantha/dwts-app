@@ -42,3 +42,21 @@ export const GetEpisodeNumber = (params) => {
     episodes.map(episode => episode.id === params.value ? seasons.map(season => season.id === episode.season_id ? episodeNumber = `${season.number}-${episode?.week}-${episode?.night}` : '') : '');
     return episodeNumber;
 }
+
+export const GetJudgeName =(params) => {
+    const judges = useSelector(state => state.data.judges);
+
+    let judgeName;
+    judges.map(judge => judge.id === params.value ? judgeName = `${judge.first_name} ${judge?.last_name}` : '');
+    return judgeName;
+}
+
+// TODO: figure this out
+export const GetDanceName = (params) => {
+    const dances = useSelector(state => state.data.dances);
+    const episodes = useSelector(state => state.data.episodes);
+
+    let episodeNumber;
+    //episodes.map(episode => episode.id === params.value ? seasons.map(season => season.id === episode.season_id ? episodeNumber = `${season.number}-${episode?.week}-${episode?.night}` : '') : '');
+    return episodeNumber;
+}

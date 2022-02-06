@@ -13,6 +13,7 @@ import { setSeasonPic, updateSeason } from '../../actions/seasons';
 import { updateJudge } from '../../actions/judges';
 import { updateEpisode } from '../../actions/episodes';
 import { updateDance } from '../../actions/dances';
+import { updateScore } from '../../actions/scores';
 
 function EditDialog(props) {
 
@@ -27,6 +28,7 @@ function EditDialog(props) {
     const pros = props.pros;
     const seasons = props.seasons;
     const episodes = props.episodes;
+    const judges = props.judges;
 
     const loading = useSelector(state => {
         switch (table) {
@@ -44,8 +46,8 @@ function EditDialog(props) {
                 return state.loading.DANCEFIND;
             case tableType.JUDGE:
                 return state.loading.JUDGEFIND;
-            // case tableType.SCORE:
-            //     return state.loading.SCOREFIND;
+            case tableType.SCORE:
+                return state.loading.SCOREFIND;
             // case tableType.USER:
             //     return state.loading.USERFIND;
         }
@@ -124,9 +126,9 @@ function EditDialog(props) {
             case tableType.JUDGE:
                 dispatch(updateJudge(id, formData));
                 break
-            // case tableType.SCORE:
-            //     dispatch();
-            //     break
+            case tableType.SCORE:
+                dispatch(updateScore(id, formData));
+                break
             // case tableType.USER:
             //     dispatch();
             //     break
@@ -153,6 +155,7 @@ function EditDialog(props) {
                             pros={pros}
                             seasons={seasons}
                             episodes={episodes}
+                            judges={judges}
                             editor={editor}
                             setEditor={setEditor}
                             fileData={fileData}

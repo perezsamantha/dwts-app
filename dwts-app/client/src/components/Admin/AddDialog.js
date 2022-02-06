@@ -14,6 +14,7 @@ import { addSeason } from '../../actions/seasons';
 import { addJudge } from '../../actions/judges';
 import { addEpisode } from '../../actions/episodes';
 import { addDance } from '../../actions/dances';
+import { addScore } from '../../actions/scores';
 
 function AddDialog(props) {
     const [open, setOpen] = useState(false);
@@ -23,6 +24,7 @@ function AddDialog(props) {
     const pros = props.pros;
     const seasons = props.seasons;
     const episodes = props.episodes;
+    const judges = props.judges;
 
     const initialState = () => {
         switch (table) {
@@ -82,6 +84,14 @@ function AddDialog(props) {
                     last_name: null,
                     birthday: new Date().toISOString(),
                 }
+            case tableType.SCORE:
+                return {
+                    dance_id: null,
+                    judge_id: null,
+                    value: null,
+                    order: null,
+                    is_guest: false
+                }
         }
     };
 
@@ -105,7 +115,6 @@ function AddDialog(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(formData)
 
         switch (table) {
             case 'Celeb':
@@ -129,9 +138,9 @@ function AddDialog(props) {
             case tableType.JUDGE:
                 dispatch(addJudge(formData));
                 break
-            // case tableType.SCORE:
-            //     dispatch();
-            //     break
+            case tableType.SCORE:
+                dispatch(addScore(formData));
+                break
             // case tableType.USER:
             //     dispatch();
             //     break
@@ -166,6 +175,7 @@ function AddDialog(props) {
                             pros={pros}
                             seasons={seasons}
                             episodes={episodes}
+                            judges={judges}
                         // editor={editor}
                         // setEditor={setEditor}
                         // fileData={fileData}

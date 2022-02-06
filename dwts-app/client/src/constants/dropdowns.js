@@ -152,3 +152,5 @@ export const genders = [
     "Other",
     // eventually be more inclusive
 ]
+
+export const scoreOrders = Array.from({ length: 5 }, (_, i) => i + 1);

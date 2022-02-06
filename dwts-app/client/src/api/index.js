@@ -75,3 +75,9 @@ export const updateEpisode = (id, episode) => API.patch(`/episodes/update/${id}`
 export const findEpisodeById = (id) => API.get(`/episodes/${id}`);
 export const fetchEpisodes = () => API.get('/episodes/');
 export const deleteEpisode = (id) => API.delete(`/episodes/delete/${id}`);
+
+export const addScore = (score) => API.post('/scores/add', score);
+export const updateScore = (id, score) => API.patch(`/scores/update/${id}`, score);
+export const findScoreById = (id) => API.get(`/scores/${id}`);
+export const fetchScores = () => API.get('/scores/');
+export const deleteScore = (id) => API.delete(`/scores/delete/${id}`);

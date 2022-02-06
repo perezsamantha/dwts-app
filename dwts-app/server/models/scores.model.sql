@@ -3,8 +3,8 @@ CREATE TABLE IF NOT EXISTS scores(
     id SERIAL NOT NULL,
     dance_id INT,
     judge_id INT, 
-    score SMALLINT,
-    position SMALLINT,
+    value SMALLINT,
+    "order" SMALLINT,
     is_guest BOOLEAN,
     PRIMARY KEY(id),
     UNIQUE (dance_id, judge_id),
@@ -17,3 +17,5 @@ CREATE TABLE IF NOT EXISTS scores(
             REFERENCES judges(id)
             ON DELETE CASCADE
 );
+
+-- add order to unique constraint?

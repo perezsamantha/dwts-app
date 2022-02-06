@@ -4,9 +4,10 @@ import { MobileDatePicker } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDateFns';
 
 import * as tableType from '../../constants/tableTypes';
-import { genders, placements, weeks, styles, themes, runningOrders } from '../../constants/dropdowns';
+import { genders, placements, weeks, styles, themes, runningOrders, scores, scoreOrders } from '../../constants/dropdowns';
 import CoverPicUpload from '../shared/CoverPicUpload';
 import { PhotoContainer } from '../shared/shared';
+import { useSelector } from 'react-redux';
 
 function DialogFields(props) {
 
@@ -19,6 +20,8 @@ function DialogFields(props) {
     const pros = props.pros;
     const seasons = props.seasons;
     const episodes = props.episodes;
+    const judges = props.judges;
+    const dances = useSelector(state => state.data.dances);
 
     useEffect(() => {
 
@@ -71,6 +74,22 @@ function DialogFields(props) {
                     value={formData?.number}
                     onChange={handleChange}
                 />
+            }
+
+            {Array.of(tableType.SCORE).includes(table) &&
+                <TextField
+                    margin="dense"
+                    name="dance_id"
+                    label="Dance"
+                    type="text"
+                    select
+                    value={formData?.dance_id}
+                    onChange={handleChange}
+                >
+                    {dances.map((dance, index) => (
+                        <MenuItem key={index} value={dance.id}>{dance?.episode_id} {dance?.style}</MenuItem>
+                    ))}
+                </TextField>
             }
 
             {Array.of(tableType.TEAM).includes(table) &&
@@ -399,7 +418,68 @@ function DialogFields(props) {
                 </TextField>
             }
 
+{Array.of(tableType.SCORE).includes(table) &&
+                <TextField
+                    margin="dense"
+                    name="judge_id"
+                    label="Judge"
+                    type="text"
+                    select
+                    value={formData?.judge_id}
+                    onChange={handleChange}
+                >
+                    {judges.map((judge, index) => (
+                        <MenuItem key={index} value={judge.id}>{judge.first_name} {judge?.last_name}</MenuItem>
+                    ))}
+                </TextField>
+            }
 
+{Array.of(tableType.SCORE).includes(table) &&
+                <TextField
+                    margin="dense"
+                    name="value"
+                    label="Value"
+                    type="text"
+                    select
+                    value={formData?.value}
+                    onChange={handleChange}
+                >
+                    {scores.map((score, index) => (
+                        <MenuItem key={index} value={score}>{score}</MenuItem>
+                    ))}
+                </TextField>
+            }
+
+{Array.of(tableType.SCORE).includes(table) &&
+                <TextField
+                    margin="dense"
+                    name="order"
+                    label="Order Given"
+                    type="text"
+                    select
+                    value={formData?.order}
+                    onChange={handleChange}
+                >
+                    {scoreOrders.map((so, index) => (
+                        <MenuItem key={index} value={so}>{so}</MenuItem>
+                    ))}
+                </TextField>
+            }
+
+
+{Array.of(tableType.SCORE).includes(table) &&
+                <TextField
+                    margin="dense"
+                    name="is_guest"
+                    select
+                    label="Guest Judge?"
+                    value={formData?.is_guest}
+                    onChange={handleChange}
+                >
+                    <MenuItem key={1} value={true}>Yes</MenuItem>
+                    <MenuItem key={2} value={false}>No</MenuItem>
+                </TextField>
+            }
 
         </div>
     )

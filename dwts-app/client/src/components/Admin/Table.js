@@ -12,7 +12,7 @@ import DateAdapter from '@mui/lab/AdapterDateFns';
 import { TableContainer, DataGridContainer, HeaderContainer } from '../shared/shared';
 import { fetchCelebs, deleteCeleb, findCelebById } from '../../actions/celebs';
 import DeleteDialog from './DeleteDialog';
-import { convertBirthday, convertDate, GetCelebName, GetProName, GetSeasonNumber, GetEpisodeNumber } from '../shared/functions';
+import { convertBirthday, convertDate, GetCelebName, GetProName, GetSeasonNumber, GetEpisodeNumber, GetJudgeName } from '../shared/functions';
 import EditDialog from './EditDialog';
 import { deletePro, fetchPros, findProById } from '../../actions/pros';
 import AddDialog from './AddDialog';
@@ -23,6 +23,7 @@ import { deleteSeason, fetchSeasons, findSeasonById } from '../../actions/season
 import { deleteJudge, fetchJudges, findJudgeById } from '../../actions/judges';
 import { deleteEpisode, findEpisodeById, getEpisodesItems } from '../../actions/episodes';
 import { deleteDance, fetchDances, findDanceById } from '../../actions/dances';
+import { deleteScore, fetchScores, findScoreById } from '../../actions/scores';
 
 function Table(props) {
     const table = props.type;
@@ -33,6 +34,7 @@ function Table(props) {
     const pros = useSelector(state => state.data.pros);
     const seasons = useSelector(state => state.data.seasons);
     const episodes = useSelector(state => state.data.episodes);
+    const judges = useSelector(state => state.data.judges);
 
     const items = useSelector(state => {
         switch (table) {
@@ -50,8 +52,8 @@ function Table(props) {
                 return state.data.dances;
             case tableType.JUDGE:
                 return state.judges.judges;
-            // case tableType.SCORE:
-            //     return state.scores.scores;
+            case tableType.SCORE:
+                return state.data.scores;
             // case tableType.USER:
             //     return state.users.users;
         }
@@ -73,8 +75,8 @@ function Table(props) {
                 return state.data.dance;
             case tableType.JUDGE:
                 return state.judges.judge;
-            // case tableType.SCORE:
-            //     return state.scores.score;
+            case tableType.SCORE:
+                return state.data.score;
             // case tableType.USER:
             //     return state.users.user;
         }
@@ -96,8 +98,8 @@ function Table(props) {
                 return state.loading.DANCESEARCH;
             case tableType.JUDGE:
                 return state.loading.JUDGESEARCH;
-            // case tableType.SCORE:
-            //     return state.loading.SCOREITEMS; ??
+            case tableType.SCORE:
+                return state.loading.SCORESEARCH;
             // case tableType.USER:
             //     return state.loading.USERSEARCH;
         }
@@ -126,9 +128,9 @@ function Table(props) {
             case tableType.JUDGE:
                 dispatch(fetchJudges());
                 break
-            // case tableType.SCORE:
-
-            //     break
+            case tableType.SCORE:
+                dispatch(fetchScores());
+                break
             // case tableType.USER:
 
             //     break
@@ -168,9 +170,9 @@ function Table(props) {
             case tableType.JUDGE:
                 dispatch(findJudgeById(id));
                 break
-            // case tableType.SCORE:
-
-            //     break
+            case tableType.SCORE:
+                dispatch(findScoreById(id));
+                break
             // case tableType.USER:
 
             //     break
@@ -201,9 +203,9 @@ function Table(props) {
             case tableType.JUDGE:
                 dispatch(findJudgeById(id));
                 break
-            // case tableType.SCORE:
-
-            //     break
+            case tableType.SCORE:
+                dispatch(findScoreById(id));
+                break
             // case tableType.USER:
 
             //     break
@@ -234,9 +236,9 @@ function Table(props) {
             case tableType.JUDGE:
                 dispatch(deleteJudge(open.id));
                 break
-            // case tableType.SCORE:
-
-            //     break
+            case tableType.SCORE:
+                dispatch(deleteScore(open.id));
+                break
             // case tableType.USER:
 
             //     break
@@ -480,6 +482,43 @@ function Table(props) {
             ]
             break
 
+        case tableType.SCORE:
+            columns = [
+                { field: 'id', headerName: 'ID', width: 40 },
+                {
+                    field: 'dance_id', headerName: 'Dance', width: 200,
+                    // valueGetter: GetDanceName,
+                },
+                {
+                    field: 'judge_id', headerName: 'Judge', width: 150,
+                    valueGetter: GetJudgeName,
+                },
+                { field: 'value', headerName: 'Value', width: 100 },
+                { field: 'order', headerName: 'Order', width: 100 },
+                { field: 'is_guest', headerName: 'Guest?', width: 100},
+                {
+                    field: 'actions',
+                    //headerName: 'Actions',
+                    type: 'actions',
+                    width: 50,
+                    getActions: (params) => [
+                        <GridActionsCellItem
+                            icon={<EditIcon />}
+                            label="Edit"
+                            onClick={() => handleEdit(params.id)}
+                            showInMenu
+                        />,
+                        <GridActionsCellItem
+                            icon={<DeleteIcon />}
+                            label="Delete"
+                            onClick={() => handleDelete(params.id)}
+                            showInMenu
+                        />,
+                    ],
+                },
+            ]
+            break
+
         default:
             columns = [];
     };
@@ -519,6 +558,7 @@ function Table(props) {
                         pros={pros}
                         seasons={seasons}
                         episodes={episodes}
+                        judges={judges}
                     />
                 </HeaderContainer>
 
@@ -538,6 +578,7 @@ function Table(props) {
                         pros={pros}
                         seasons={seasons}
                         episodes={episodes}
+                        judges={judges}
                         open={open.edit}
                         handleClose={handleClose}
                     />}

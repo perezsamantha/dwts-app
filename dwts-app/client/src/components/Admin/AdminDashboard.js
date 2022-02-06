@@ -110,7 +110,7 @@ function AdminDashboard(props) {
                         Judges
                     </ListItemText>
                 </ListItemButton>
-                <ListItemButton onClick={() => handleComponent()}>
+                <ListItemButton onClick={() => handleComponent(<Table key={8} type={tableType.SCORE} />)}>
                     <ListItemText>
                         Scores
                     </ListItemText>
