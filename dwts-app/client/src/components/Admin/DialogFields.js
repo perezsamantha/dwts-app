@@ -8,6 +8,7 @@ import { genders, placements, weeks, styles, themes, runningOrders, scores, scor
 import CoverPicUpload from '../shared/CoverPicUpload';
 import { PhotoContainer } from '../shared/shared';
 import { useSelector } from 'react-redux';
+import { GetCelebName, GetDanceName, GetEpisodeNumber, GetJudgeName, GetProName, GetSeasonNumber, GetTeamName } from '../shared/functions';
 
 function DialogFields(props) {
 
@@ -87,9 +88,13 @@ function DialogFields(props) {
                     value={formData?.dance_id}
                     onChange={handleChange}
                 >
-                    {dances.map((dance, index) => (
-                        <MenuItem key={index} value={dance.id}>{dance?.episode_id} {dance?.style}</MenuItem>
-                    ))}
+                    {dances.map((dance, index) => {
+                        const danceName = GetDanceName(dance.id); 
+                        return (
+                            // <MenuItem key={index} value={dance.id}>{dance?.episode_id} {dance?.style}</MenuItem>
+                            <MenuItem key={index} value={dance.id}>{danceName}</MenuItem>
+                        )
+                    })}
                 </TextField>
             }
 
@@ -103,9 +108,12 @@ function DialogFields(props) {
                     value={formData?.team_id}
                     onChange={handleChange}
                 >
-                    {teams.map((team, index) => (
-                        <MenuItem key={index} value={team.id}>{team.id}</MenuItem>
-                    ))}
+                    {teams.map((team, index) => {
+                        const teamName = GetTeamName(team.id); 
+                        return (
+                            <MenuItem key={index} value={team.id}>{teamName}</MenuItem>
+                        )
+                    })}
                 </TextField>
             }
 
@@ -119,9 +127,12 @@ function DialogFields(props) {
                     value={formData?.celeb_id}
                     onChange={handleChange}
                 >
-                    {celebs.map((celeb, index) => (
-                        <MenuItem key={index} value={celeb.id}>{celeb.first_name} {celeb?.last_name}</MenuItem>
-                    ))}
+                    {celebs.map((celeb, index) => {
+                        const celebName = GetCelebName(celeb.id); 
+                        return (
+                            <MenuItem key={index} value={celeb.id}>{celebName}</MenuItem>
+                        )
+                    })}
                 </TextField>
             }
 
@@ -135,9 +146,12 @@ function DialogFields(props) {
                     value={formData?.pro_id}
                     onChange={handleChange}
                 >
-                    {pros.map((pro, index) => (
-                        <MenuItem key={index} value={pro.id}>{pro.first_name} {pro?.last_name}</MenuItem>
-                    ))}
+                    {pros.map((pro, index) => {
+                        const proName = GetProName(pro.id); 
+                        return (
+                            <MenuItem key={index} value={pro.id}>{proName}</MenuItem>
+                        )
+                    })}
                 </TextField>
             }
 
@@ -151,9 +165,12 @@ function DialogFields(props) {
                     value={formData?.mentor_id}
                     onChange={handleChange}
                 >
-                    {pros.map((pro, index) => (
-                        <MenuItem key={index} value={pro.id}>{pro.first_name} {pro?.last_name}</MenuItem>
-                    ))}
+                    {pros.map((pro, index) => {
+                        const proName = GetProName(pro.id); 
+                        return (
+                            <MenuItem key={index} value={pro.id}>{proName}</MenuItem>
+                        )
+                    })}
                 </TextField>
             }
 
@@ -167,9 +184,12 @@ function DialogFields(props) {
                     value={formData?.season_id}
                     onChange={handleChange}
                 >
-                    {seasons.map((season, index) => (
-                        <MenuItem key={index} value={season.id}>{season.number}</MenuItem>
-                    ))}
+                    {seasons.map((season, index) => {
+                        const seasonNumber = GetSeasonNumber(season.id); 
+                        return (
+                            <MenuItem key={index} value={season.id}>{seasonNumber}</MenuItem>
+                        )
+                    })}
                 </TextField>
             }
 
@@ -211,9 +231,12 @@ function DialogFields(props) {
                     value={formData?.episode_id}
                     onChange={handleChange}
                 >
-                    {episodes.map((episode, index) => seasons.map((season) => season.id === episode.season_id ? (
-                        <MenuItem key={index} value={episode.id}>{`${season.number}-${episode?.week}-${episode?.night}`}</MenuItem>
-                    ) : null))}
+                    {episodes.map((episode, index) => {
+                        const episodeNumber = GetEpisodeNumber(episode.id); 
+                        return (
+                            <MenuItem key={index} value={episode.id}>{episodeNumber}</MenuItem>
+                        )
+                    })}
                 </TextField>
             }
 
@@ -459,9 +482,12 @@ function DialogFields(props) {
                     value={formData?.judge_id}
                     onChange={handleChange}
                 >
-                    {judges.map((judge, index) => (
-                        <MenuItem key={index} value={judge.id}>{judge.first_name} {judge?.last_name}</MenuItem>
-                    ))}
+                    {judges.map((judge, index) => {
+                        const judgeName = GetJudgeName(judge.id); 
+                        return (
+                            <MenuItem key={index} value={judge.id}>{judgeName}</MenuItem>
+                        )
+                    })}
                 </TextField>
             }
 

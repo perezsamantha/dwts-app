@@ -45,8 +45,10 @@ export const fetchScores = () => async (dispatch) => {
         const scores = await api.fetchScores();
         const dances = await api.fetchDances();
         const judges = await api.fetchJudges();
+        const episodes = await api.fetchEpisodes();
+        const seasons = await api.fetchSeasons();
 
-        dispatch({ type: actionType.SCORESEARCH_SUCCESS, payload: { scores: scores.data, dances: dances.data, judges: judges.data } });
+        dispatch({ type: actionType.SCORESEARCH_SUCCESS, payload: { scores: scores.data, dances: dances.data, judges: judges.data, episodes: episodes.data, seasons: seasons.data } });
     } catch (error) {
         dispatch({ type: actionType.SCORESEARCH_FAILURE, payload: error, error: true });
     }

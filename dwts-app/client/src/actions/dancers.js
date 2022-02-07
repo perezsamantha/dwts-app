@@ -47,8 +47,10 @@ export const fetchDancers = () => async (dispatch) => {
         const teams = await api.fetchTeams();
         const pros = await api.fetchPros();
         const celebs = await api.fetchCelebs();
+        const episodes = await api.fetchEpisodes();
+        const seasons = await api.fetchSeasons();
 
-        dispatch({ type: actionType.DANCERSEARCH_SUCCESS, payload: { dancers: dancers.data, dances: dances.data, teams: teams.data, pros: pros.data, celebs: celebs.data } });
+        dispatch({ type: actionType.DANCERSEARCH_SUCCESS, payload: { dancers: dancers.data, dances: dances.data, teams: teams.data, pros: pros.data, celebs: celebs.data, episodes: episodes.data, seasons: seasons.data } });
     } catch (error) {
         dispatch({ type: actionType.DANCERSEARCH_FAILURE, payload: error, error: true });
     }

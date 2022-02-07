@@ -68,7 +68,7 @@ const dataReducer = (state = {
             return { ...state, team: action.payload };
         case actionType.TEAMDELETE_SUCCESS:
             return { ...state, teams: state.teams.filter((team) => team.id !== action.payload) };
-    
+
         case actionType.EPISODEADD_SUCCESS:
             return { ...state, episodes: [...state.episodes, action.payload] };
         case actionType.EPISODEUPDATE_SUCCESS:
@@ -79,7 +79,7 @@ const dataReducer = (state = {
             return { ...state, episode: action.payload };
         case actionType.EPISODEDELETE_SUCCESS:
             return { ...state, episodes: state.episodes.filter((episode) => episode.id !== action.payload) };
-        
+
         case actionType.DANCEADD_SUCCESS:
             return { ...state, dances: [...state.dances, action.payload] };
         case actionType.DANCEUPDATE_SUCCESS:
@@ -107,7 +107,7 @@ const dataReducer = (state = {
         case actionType.SCOREUPDATE_SUCCESS:
             return { ...state, scores: [...state.scores.map(score => score.id === action.payload.id ? action.payload : score)] }
         case actionType.SCORESEARCH_SUCCESS:
-            return { ...state, scores: action.payload.scores, dances: action.payload.dances, judges: action.payload.judges };
+            return { ...state, scores: action.payload.scores, dances: action.payload.dances, judges: action.payload.judges, episodes: action.payload.episodes, seasons: action.payload.seasons };
         case actionType.SCOREFIND_SUCCESS:
             return { ...state, score: action.payload };
         case actionType.SCOREDELETE_SUCCESS:
@@ -118,7 +118,7 @@ const dataReducer = (state = {
         case actionType.DANCERUPDATE_SUCCESS:
             return { ...state, dancers: [...state.dancers.map(dancer => dancer.id === action.payload.id ? action.payload : dancer)] }
         case actionType.DANCERSEARCH_SUCCESS:
-            return { ...state, dancers: action.payload.dancers, dances: action.payload.dances, teams: action.payload.teams, pros: action.payload.pros, celebs: action.payload.celebs };
+            return { ...state, dancers: action.payload.dancers, dances: action.payload.dances, teams: action.payload.teams, pros: action.payload.pros, celebs: action.payload.celebs, episodes: action.payload.episodes, seasons: action.payload.seasons };
         case actionType.DANCERFIND_SUCCESS:
             return { ...state, dancer: action.payload };
         case actionType.DANCERDELETE_SUCCESS:

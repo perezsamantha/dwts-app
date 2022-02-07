@@ -10,53 +10,72 @@ export const convertDate = (params) => {
     return ((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '/' + ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate())) + '/' + date.getFullYear();
 };
 
-export const GetCelebName = (params) => {
+export const GetCelebName = (id) => {
     const celebs = useSelector(state => state.data.celebs);
 
     let celebName;
-    celebs.map(celeb => celeb.id === params.value ? celebName = `${celeb.first_name} ${celeb?.last_name}` : '');
+    celebs.map(celeb => celeb.id === id ? celebName = `${celeb.first_name} ${celeb?.last_name}` : '');
     return celebName;
 }
 
-export const GetProName =(params) => {
+export const GetProName = (id) => {
     const pros = useSelector(state => state.data.pros);
 
     let proName;
-    pros.map(pro => pro.id === params.value ? proName = `${pro.first_name} ${pro?.last_name}` : '');
+    pros.map(pro => pro.id === id ? proName = `${pro.first_name} ${pro?.last_name}` : '');
     return proName;
 }
 
-export const GetSeasonNumber = (params) => {
+export const GetTeamName = (id) => {
+    const teams = useSelector(state => state.data.teams);
+    const celebs = useSelector(state => state.data.celebs);
+    const pros = useSelector(state => state.data.pros);
+
+    let celebName;
+    let proName;
+    teams.map(team => team.id === id ? celebs.map(celeb => celeb.id === team.celeb_id ? celebName = `${celeb.first_name}` : '') : '');
+    teams.map(team => team.id === id ? pros.map(pro => pro.id === team.pro_id ? proName = `${pro.first_name}` : '') : '');
+    return celebName + ' & ' + proName;
+}
+
+export const GetSeasonNumber = (id) => {
     const seasons = useSelector(state => state.data.seasons);
-    
+
     let seasonNumber;
-    seasons.map(season => season.id === params.value ? seasonNumber = `${season.number}` : '');
+    seasons.map(season => season.id === id ? seasonNumber = `${season.number}` : '');
     return seasonNumber;
 }
 
-export const GetEpisodeNumber = (params) => {
+export const GetEpisodeNumber = (id) => {
     const seasons = useSelector(state => state.data.seasons);
     const episodes = useSelector(state => state.data.episodes);
-    
+
     let episodeNumber;
-    episodes.map(episode => episode.id === params.value ? seasons.map(season => season.id === episode.season_id ? episodeNumber = `${season.number}-${episode?.week}-${episode?.night}` : '') : '');
+    episodes.map(episode =>
+        episode.id === id ? seasons.map(season =>
+            season.id === episode.season_id && episode.night ? episodeNumber = `S${season.number} W${episode?.week} N${episode?.night}` :
+                season.id === episode.season_id ? episodeNumber = `S${season.number} W${episode?.week}` : '') : '');
     return episodeNumber;
 }
 
-export const GetJudgeName =(params) => {
+export const GetJudgeName = (id) => {
     const judges = useSelector(state => state.data.judges);
 
     let judgeName;
-    judges.map(judge => judge.id === params.value ? judgeName = `${judge.first_name} ${judge?.last_name}` : '');
+    judges.map(judge => judge.id === id ? judgeName = `${judge.first_name} ${judge?.last_name}` : '');
     return judgeName;
 }
 
-// TODO: figure this out
-export const GetDanceName = (params) => {
+export const GetDanceName = (id) => {
     const dances = useSelector(state => state.data.dances);
-    const episodes = useSelector(state => state.data.episodes);
 
     let episodeNumber;
-    //episodes.map(episode => episode.id === params.value ? seasons.map(season => season.id === episode.season_id ? episodeNumber = `${season.number}-${episode?.week}-${episode?.night}` : '') : '');
-    return episodeNumber;
+    let danceName;
+    dances.map(dance => dance.id === id ?
+        episodeNumber = GetEpisodeNumber(dance.episode_id) : '');
+    dances.map(dance => dance.id === id ?
+        danceName = `${dance.style} - ${dance?.song_title} by ${dance?.song_artist}` : ''
+    );
+
+    return danceName + ' | ' + episodeNumber;
 }
