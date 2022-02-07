@@ -25,17 +25,12 @@ function EditDialog(props) {
     const dispatch = useDispatch();
     const id = props.item?.id;
     const table = props.table;
-    const celebs = props.celebs;
-    const pros = props.pros;
-    const seasons = props.seasons;
-    const episodes = props.episodes;
-    const judges = props.judges;
 
     const loading = useSelector(state => {
         switch (table) {
-            case 'Celeb':
+            case tableType.CELEB:
                 return state.loading.CELEBFIND;
-            case 'Pro':
+            case tableType.PRO:
                 return state.loading.PROFIND;
             case tableType.SEASON:
                 return state.loading.SEASONFIND;
@@ -85,10 +80,10 @@ function EditDialog(props) {
                 data.append("cover_pic", blob, `${Date.now()}-${fileData.name}`);
 
                 switch (table) {
-                    case 'Celeb':
+                    case tableType.CELEB:
                         dispatch(setCelebPic(id, data));
                         break
-                    case 'Pro':
+                    case tableType.PRO:
                         dispatch(setProPic(id, data));
                         break
                     case tableType.SEASON:
@@ -108,10 +103,10 @@ function EditDialog(props) {
         }
 
         switch (table) {
-            case 'Celeb':
+            case tableType.CELEB:
                 dispatch(updateCeleb(id, formData));
                 break
-            case 'Pro':
+            case tableType.PRO:
                 dispatch(updatePro(id, formData));
                 break
             case tableType.SEASON:
@@ -157,11 +152,6 @@ function EditDialog(props) {
                             handleChange={handleChange}
                             handleBirthday={handleBirthday}
                             handleDate={handleDate}
-                            celebs={celebs}
-                            pros={pros}
-                            seasons={seasons}
-                            episodes={episodes}
-                            judges={judges}
                             editor={editor}
                             setEditor={setEditor}
                             fileData={fileData}

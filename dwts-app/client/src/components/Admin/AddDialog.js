@@ -21,16 +21,11 @@ function AddDialog(props) {
     const [open, setOpen] = useState(false);
     const dispatch = useDispatch();
     const table = props.table;
-    const celebs = props.celebs;
-    const pros = props.pros;
-    const seasons = props.seasons;
-    const episodes = props.episodes;
-    const judges = props.judges;
 
     const initialState = () => {
         switch (table) {
-            case 'Celeb':
-            case 'Pro':
+            case tableType.CELEB:
+            case tableType.PRO:
                 return {
                     cover_pic: null,
                     first_name: null,
@@ -93,7 +88,7 @@ function AddDialog(props) {
                     order: null,
                     is_guest: false
                 }
-            case tableType.TEAM:
+            case tableType.DANCER:
                 return {
                     dance_id: null,
                     team_id: null,
@@ -127,10 +122,10 @@ function AddDialog(props) {
         e.preventDefault();
 
         switch (table) {
-            case 'Celeb':
+            case tableType.CELEB:
                 dispatch(addCeleb(formData));
                 break
-            case 'Pro':
+            case tableType.PRO:
                 dispatch(addPro(formData));
                 break
             case tableType.SEASON:
@@ -184,11 +179,6 @@ function AddDialog(props) {
                             handleChange={handleChange}
                             handleBirthday={handleBirthday}
                             handleDate={handleDate}
-                            celebs={celebs}
-                            pros={pros}
-                            seasons={seasons}
-                            episodes={episodes}
-                            judges={judges}
                         // editor={editor}
                         // setEditor={setEditor}
                         // fileData={fileData}

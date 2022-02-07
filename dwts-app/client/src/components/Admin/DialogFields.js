@@ -16,11 +16,11 @@ function DialogFields(props) {
     const handleChange = props.handleChange;
     const handleBirthday = props.handleBirthday;
     const handleDate = props.handleDate;
-    const celebs = props.celebs;
-    const pros = props.pros;
-    const seasons = props.seasons;
-    const episodes = props.episodes;
-    const judges = props.judges;
+    const celebs = useSelector(state => state.data.celebs);
+    const pros = useSelector(state => state.data.pros);
+    const seasons = useSelector(state => state.data.seasons);
+    const episodes = useSelector(state => state.data.episodes);
+    const judges = useSelector(state => state.data.judges);
     const dances = useSelector(state => state.data.dances);
     const teams = useSelector(state => state.data.teams);
 
@@ -30,7 +30,7 @@ function DialogFields(props) {
 
     return (
         <div>
-            {Array.of('Celeb', 'Pro', tableType.SEASON, tableType.TEAM).includes(table) && props.dialog === 'Edit' &&
+            {Array.of(tableType.CELEB, tableType.PRO, tableType.SEASON, tableType.TEAM).includes(table) && props.dialog === 'Edit' &&
                 <PhotoContainer>
                     <Avatar sx={{ width: 150, height: 150 }} src={formData?.cover_pic} />
 
@@ -43,7 +43,7 @@ function DialogFields(props) {
                 </PhotoContainer>
             }
 
-            {Array.of('Celeb', 'Pro', tableType.JUDGE).includes(table) &&
+            {Array.of(tableType.CELEB, tableType.PRO, tableType.JUDGE).includes(table) &&
                 <TextField
                     margin="dense"
                     name="first_name"
@@ -54,7 +54,7 @@ function DialogFields(props) {
                 />
             }
 
-            {Array.of('Celeb', 'Pro', tableType.JUDGE).includes(table) &&
+            {Array.of(tableType.CELEB, tableType.PRO, tableType.JUDGE).includes(table) &&
                 <TextField
                     margin="dense"
                     name="last_name"
@@ -324,7 +324,7 @@ function DialogFields(props) {
                 />
             }
 
-            {Array.of('Celeb', 'Pro', tableType.JUDGE).includes(table) &&
+            {Array.of(tableType.CELEB, tableType.PRO, tableType.JUDGE).includes(table) &&
                 <MobileDatePicker
                     margin="dense"
                     label="Birthday"
@@ -376,7 +376,7 @@ function DialogFields(props) {
                 />
             }
 
-            {Array.of('Celeb', 'Pro').includes(table) &&
+            {Array.of(tableType.CELEB, tableType.PRO).includes(table) &&
                 <TextField
                     margin="dense"
                     name="height"
@@ -386,7 +386,7 @@ function DialogFields(props) {
                     onChange={handleChange}
                 />}
 
-            {Array.of('Celeb', 'Pro').includes(table) &&
+            {Array.of(tableType.CELEB, tableType.PRO).includes(table) &&
                 <TextField
                     margin="dense"
                     name="gender"
@@ -402,7 +402,7 @@ function DialogFields(props) {
                 </TextField>
             }
 
-            {Array.of('Celeb', 'Pro').includes(table) &&
+            {Array.of(tableType.CELEB, tableType.PRO).includes(table) &&
                 <TextField
                     margin="dense"
                     name="instagram"
@@ -413,7 +413,7 @@ function DialogFields(props) {
                 />
             }
 
-            {Array.of('Celeb', 'Pro').includes(table) &&
+            {Array.of(tableType.CELEB, tableType.PRO).includes(table) &&
                 <TextField
                     margin="dense"
                     name="twitter"
@@ -424,7 +424,7 @@ function DialogFields(props) {
                 />
             }
 
-            {Array.of('Celeb', 'Pro').includes(table) &&
+            {Array.of(tableType.CELEB, tableType.PRO).includes(table) &&
                 <TextField
                     margin="dense"
                     name="tiktok"
@@ -435,7 +435,7 @@ function DialogFields(props) {
                 />
             }
 
-            {Array.of('Celeb', 'Pro').includes(table) &&
+            {Array.of(tableType.CELEB, tableType.PRO).includes(table) &&
                 <TextField
                     margin="dense"
                     name="is_junior"

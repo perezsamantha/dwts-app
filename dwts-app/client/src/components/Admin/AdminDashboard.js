@@ -73,12 +73,12 @@ function AdminDashboard(props) {
                         Dashboard
                     </ListItemText>
                 </ListItemButton>
-                <ListItemButton onClick={() => handleComponent(<Table key={1} type='Celeb' />)}>
+                <ListItemButton onClick={() => handleComponent(<Table key={1} type={tableType.CELEB} />)}>
                     <ListItemText>
                         Celebs
                     </ListItemText>
                 </ListItemButton>
-                <ListItemButton onClick={() => handleComponent(<Table key={2} type='Pro' />)}>
+                <ListItemButton onClick={() => handleComponent(<Table key={2} type={tableType.PRO} />)}>
                     <ListItemText>
                         Pros
                     </ListItemText>
@@ -115,7 +115,7 @@ function AdminDashboard(props) {
                         Scores
                     </ListItemText>
                 </ListItemButton>
-                <ListItemButton onClick={() => handleComponent(<Table key={8} type={tableType.DANCER} />)}>
+                <ListItemButton onClick={() => handleComponent(<Table key={9} type={tableType.DANCER} />)}>
                     <ListItemText>
                         Dancers
                     </ListItemText>

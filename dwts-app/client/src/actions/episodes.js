@@ -41,9 +41,10 @@ export const fetchEpisodes = () => async (dispatch) => {
     dispatch({ type: actionType.EPISODESEARCH_REQUEST });
 
     try {
-        const { data } = await api.fetchEpisodes();
+        const episodes = await api.fetchEpisodes();
+        const seasons = await api.fetchSeasons();
 
-        dispatch({ type: actionType.EPISODESEARCH_SUCCESS, payload: data });
+        dispatch({ type: actionType.EPISODESEARCH_SUCCESS, payload: { episodes: episodes.data, seasons: seasons.data} });
     } catch (error) {
         dispatch({ type: actionType.EPISODESEARCH_FAILURE, payload: error, error: true });
     }
@@ -58,19 +59,5 @@ export const deleteEpisode = (id) => async (dispatch) => {
         dispatch({ type: actionType.EPISODEDELETE_SUCCESS, payload: id });
     } catch (error) {
         dispatch({ type: actionType.EPISODEDELETE_FAILURE, payload: error, error: true });
-    }
-}
-
-//
-export const getEpisodesItems = () => async (dispatch) => {
-    dispatch({ type: actionType.EPISODEITEMS_REQUEST });
-
-    try {
-        const episodes = await api.fetchEpisodes();
-        const seasons = await api.fetchSeasons();
-
-        dispatch({ type: actionType.EPISODEITEMS_SUCCESS, payload: { episodes: episodes.data, seasons: seasons.data} });
-    } catch (error) {
-        dispatch({ type: actionType.EPISODEITEMS_FAILURE, payload: error, error: true });
     }
 }

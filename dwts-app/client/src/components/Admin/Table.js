@@ -18,10 +18,10 @@ import { deletePro, fetchPros, findProById } from '../../actions/pros';
 import AddDialog from './AddDialog';
 
 import * as tableType from '../../constants/tableTypes';
-import { deleteTeam, findTeamById, getTeamsItems } from '../../actions/teams';
+import { deleteTeam, fetchTeams, findTeamById } from '../../actions/teams';
 import { deleteSeason, fetchSeasons, findSeasonById } from '../../actions/seasons';
 import { deleteJudge, fetchJudges, findJudgeById } from '../../actions/judges';
-import { deleteEpisode, findEpisodeById, getEpisodesItems } from '../../actions/episodes';
+import { deleteEpisode, fetchEpisodes, findEpisodeById } from '../../actions/episodes';
 import { deleteDance, fetchDances, findDanceById } from '../../actions/dances';
 import { deleteScore, fetchScores, findScoreById } from '../../actions/scores';
 import { deleteDancer, fetchDancers, findDancerById } from '../../actions/dancers';
@@ -30,21 +30,14 @@ function Table(props) {
     const table = props.type;
     const dispatch = useDispatch();
 
-    // for FK dropdowns
-    const celebs = useSelector(state => state.data.celebs);
-    const pros = useSelector(state => state.data.pros);
-    const seasons = useSelector(state => state.data.seasons);
-    const episodes = useSelector(state => state.data.episodes);
-    const judges = useSelector(state => state.data.judges);
-
     const items = useSelector(state => {
         switch (table) {
-            case 'Celeb':
-                return state.celebs.celebs;
-            case 'Pro':
-                return state.pros.pros;
+            case tableType.CELEB:
+                return state.data.celebs;
+            case tableType.PRO:
+                return state.data.pros;
             case tableType.SEASON:
-                return state.seasons.seasons;
+                return state.data.seasons;
             case tableType.EPISODE:
                 return state.data.episodes;
             case tableType.TEAM:
@@ -52,7 +45,7 @@ function Table(props) {
             case tableType.DANCE:
                 return state.data.dances;
             case tableType.JUDGE:
-                return state.judges.judges;
+                return state.data.judges;
             case tableType.SCORE:
                 return state.data.scores;
             case tableType.DANCER:
@@ -64,12 +57,12 @@ function Table(props) {
 
     const item = useSelector(state => {
         switch (table) {
-            case 'Celeb':
-                return state.celebs.celeb;
-            case 'Pro':
-                return state.pros.pro;
+            case tableType.CELEB:
+                return state.data.celeb;
+            case tableType.PRO:
+                return state.data.pro;
             case tableType.SEASON:
-                return state.seasons.season;
+                return state.data.season;
             case tableType.EPISODE:
                 return state.data.episode;
             case tableType.TEAM:
@@ -77,7 +70,7 @@ function Table(props) {
             case tableType.DANCE:
                 return state.data.dance;
             case tableType.JUDGE:
-                return state.judges.judge;
+                return state.data.judge;
             case tableType.SCORE:
                 return state.data.score;
             case tableType.DANCER:
@@ -89,9 +82,9 @@ function Table(props) {
 
     const loading = useSelector(state => {
         switch (table) {
-            case 'Celeb':
+            case tableType.CELEB:
                 return state.loading.CELEBSEARCH;
-            case 'Pro':
+            case tableType.PRO:
                 return state.loading.PROSEARCH;
             case tableType.SEASON:
                 return state.loading.SEASONSEARCH;
@@ -106,7 +99,7 @@ function Table(props) {
             case tableType.SCORE:
                 return state.loading.SCORESEARCH;
             case tableType.DANCER:
-                return state.loading.DANCESEARCH;
+                return state.loading.DANCERSEARCH;
             // case tableType.USER:
             //     return state.loading.USERSEARCH;
         }
@@ -114,20 +107,20 @@ function Table(props) {
 
     useEffect(() => {
         switch (table) {
-            case 'Celeb':
+            case tableType.CELEB:
                 dispatch(fetchCelebs());
                 break
-            case 'Pro':
+            case tableType.PRO:
                 dispatch(fetchPros());
                 break
             case tableType.SEASON:
                 dispatch(fetchSeasons());
                 break
             case tableType.EPISODE:
-                dispatch(getEpisodesItems());
+                dispatch(fetchEpisodes());
                 break
             case tableType.TEAM:
-                dispatch(getTeamsItems());
+                dispatch(fetchTeams());
                 break
             case tableType.DANCE:
                 dispatch(fetchDances());
@@ -159,10 +152,10 @@ function Table(props) {
 
     const handleEdit = async (id) => {
         switch (table) {
-            case 'Celeb':
+            case tableType.CELEB:
                 dispatch(findCelebById(id));
                 break
-            case 'Pro':
+            case tableType.PRO:
                 dispatch(findProById(id));
                 break
             case tableType.SEASON:
@@ -195,10 +188,10 @@ function Table(props) {
 
     const handleDelete = (id) => {
         switch (table) {
-            case 'Celeb':
+            case tableType.CELEB:
                 dispatch(findCelebById(id));
                 break
-            case 'Pro':
+            case tableType.PRO:
                 dispatch(findProById(id));
                 break
             case tableType.SEASON:
@@ -231,10 +224,10 @@ function Table(props) {
 
     const confirmDelete = () => {
         switch (table) {
-            case 'Celeb':
+            case tableType.CELEB:
                 dispatch(deleteCeleb(open.id));
                 break
-            case 'Pro':
+            case tableType.PRO:
                 dispatch(deletePro(open.id));
                 break
             case tableType.SEASON:
@@ -269,8 +262,8 @@ function Table(props) {
     //const columns = () => {
     switch (table) {
 
-        case 'Celeb':
-        case 'Pro':
+        case tableType.CELEB:
+        case tableType.PRO:
             columns = [
                 { field: 'id', headerName: 'ID', width: 40 },
                 {
@@ -617,11 +610,6 @@ function Table(props) {
                     <Typography variant="h4">{table}s Table</Typography>
                     <AddDialog
                         table={table}
-                        celebs={celebs}
-                        pros={pros}
-                        seasons={seasons}
-                        episodes={episodes}
-                        judges={judges}
                     />
                 </HeaderContainer>
 
@@ -637,11 +625,6 @@ function Table(props) {
                     {open.edit && <EditDialog
                         item={item}
                         table={table}
-                        celebs={celebs}
-                        pros={pros}
-                        seasons={seasons}
-                        episodes={episodes}
-                        judges={judges}
                         open={open.edit}
                         handleClose={handleClose}
                     />}
