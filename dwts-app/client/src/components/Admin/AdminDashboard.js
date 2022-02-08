@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { DataGrid } from '@mui/x-data-grid';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchTeams } from '../../actions/teams';
+import { useDispatch } from 'react-redux';
 
-import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,7 +11,6 @@ import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MailIcon from '@mui/icons-material/Mail';
@@ -23,10 +19,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import PeopleIcon from '@mui/icons-material/People';
 import { ListItemButton, Switch } from '@mui/material';
-import TeamsTable from './TeamsTable';
-import { Link } from 'react-router-dom';
-import CelebsTable from './CelebsTable';
-import ProsTable from './ProsTable';
 import Table from './Table';
 import * as tableType from '../../constants/tableTypes'; 
 
@@ -35,11 +27,10 @@ const drawerWidth = 180;
 function AdminDashboard(props) {
     
     const dispatch = useDispatch();
-    //const teams = useSelector(state => state.teams.teams);
 
     useEffect(() => {
-        //dispatch(fetchTeams());
-    }, [dispatch]);
+        
+    }, []);
 
     const { window } = props;
     const [mobileOpen, setMobileOpen] = useState(false);

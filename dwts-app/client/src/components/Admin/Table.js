@@ -10,14 +10,14 @@ import { LocalizationProvider } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDateFns';
 
 import { TableContainer, DataGridContainer, HeaderContainer } from '../shared/shared';
-import { fetchCelebs, deleteCeleb, findCelebById } from '../../actions/celebs';
-import DeleteDialog from './DeleteDialog';
-import { convertBirthday, convertDate, GetCelebName, GetProName, GetSeasonNumber, GetEpisodeNumber, GetJudgeName, GetDanceName, GetTeamName } from '../shared/functions';
-import EditDialog from './EditDialog';
-import { deletePro, fetchPros, findProById } from '../../actions/pros';
+import { convertDate, GetCelebName, GetProName, GetSeasonNumber, GetEpisodeNumber, GetJudgeName, GetDanceName, GetTeamName } from '../shared/functions';
 import AddDialog from './AddDialog';
+import EditDialog from './EditDialog';
+import DeleteDialog from './DeleteDialog';
 
 import * as tableType from '../../constants/tableTypes';
+import { deleteCeleb, fetchCelebs, findCelebById } from '../../actions/celebs';
+import { deletePro, fetchPros, findProById } from '../../actions/pros';
 import { deleteTeam, fetchTeams, findTeamById } from '../../actions/teams';
 import { deleteSeason, fetchSeasons, findSeasonById } from '../../actions/seasons';
 import { deleteJudge, fetchJudges, findJudgeById } from '../../actions/judges';
@@ -273,8 +273,8 @@ function Table(props) {
                 { field: 'first_name', headerName: 'First Name', width: 100 },
                 { field: 'last_name', headerName: 'Last Name', width: 100 },
                 {
-                    field: 'birthdayGetter', headerName: 'Birthday', width: 100,
-                    valueGetter: convertBirthday,
+                    field: 'birthday', headerName: 'Birthday', width: 100,
+                    valueGetter: dateGetter,
                 },
                 { field: 'height', headerName: 'Height', width: 80 },
                 { field: 'gender', headerName: 'Gender', width: 80 },
@@ -337,7 +337,7 @@ function Table(props) {
                         />,
                     ],
                 },
-            ] 
+            ]
             break
 
         case tableType.EPISODE:
@@ -350,8 +350,8 @@ function Table(props) {
                 { field: 'week', headerName: 'Week', width: 75 },
                 { field: 'night', headerName: 'Night', width: 75 },
                 {
-                    field: 'dateGetter', headerName: 'Date', width: 100,
-                    valueGetter: convertDate
+                    field: 'date', headerName: 'Date', width: 100,
+                    valueGetter: dateGetter
                 },
                 {
                     field: 'actions',
@@ -468,8 +468,8 @@ function Table(props) {
                 { field: 'first_name', headerName: 'First Name', width: 100 },
                 { field: 'last_name', headerName: 'Last Name', width: 100 },
                 {
-                    field: 'birthdayGetter', headerName: 'Birthday', width: 100,
-                    valueGetter: convertBirthday,
+                    field: 'birthday', headerName: 'Birthday', width: 100,
+                    valueGetter: dateGetter,
                 },
                 {
                     field: 'actions',
@@ -507,7 +507,10 @@ function Table(props) {
                 },
                 { field: 'value', headerName: 'Value', width: 100 },
                 { field: 'order', headerName: 'Order', width: 100 },
-                { field: 'is_guest', headerName: 'Guest?', width: 100 },
+                {
+                    field: 'is_guest', headerName: 'Guest?', width: 100,
+                    renderCell: (params) => params.value ? 'Yes' : 'No'
+                },
                 {
                     field: 'actions',
                     //headerName: 'Actions',
@@ -578,6 +581,10 @@ function Table(props) {
         default:
             columns = [];
     };
+
+    function dateGetter(params) {
+        return convertDate(params.value);
+    }
 
     function celebGetter(params) {
         return GetCelebName(params.value);

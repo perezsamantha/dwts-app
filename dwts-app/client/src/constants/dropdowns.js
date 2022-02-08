@@ -52,6 +52,7 @@ export const placements = [
     // "14th",
     // "15th",
     // "16th",
+    null,
     "1",
     "2",
     "3",
@@ -78,23 +79,12 @@ export const themes = [
     "Trio"
 ]
 
-export const judges = [
-    "Carrie Ann Inaba",
-    "Len Goodman",
-    "Bruno Tonioli",
-    "Derek Hough",
-    "Julianne Hough"
-]
-
-export const guestJudges = [ 
-    "Zendaya"
-]
-
 export const guestDancers = [
 
 ]
 
 export const scores = [
+    null,
     1,
     2,
     3,
@@ -124,6 +114,7 @@ export const runningOrders = [
     // "14th",
     // "15th",
     // "16th",
+    null,
     "1",
     "2",
     "3",
@@ -145,8 +136,12 @@ export const runningOrders = [
 export const hosts = [
 
 ]
+export const judges = []
+
+export const guestJudges = []
 
 export const genders = [
+    null,
     "Male",
     "Female",
     "Other",

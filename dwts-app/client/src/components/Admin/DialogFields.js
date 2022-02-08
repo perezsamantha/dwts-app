@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MenuItem, TextField, Avatar } from '@mui/material';
+import { MenuItem, TextField, Avatar, InputAdornment } from '@mui/material';
 import { MobileDatePicker } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDateFns';
 
@@ -50,7 +50,7 @@ function DialogFields(props) {
                     name="first_name"
                     label="First Name"
                     type="text"
-                    value={formData?.first_name}
+                    value={formData.first_name || ''}
                     onChange={handleChange}
                 />
             }
@@ -61,7 +61,7 @@ function DialogFields(props) {
                     name="last_name"
                     label="Last Name"
                     type="text"
-                    value={formData?.last_name}
+                    value={formData.last_name || ''}
                     onChange={handleChange}
                 />
             }
@@ -73,7 +73,7 @@ function DialogFields(props) {
                     name="number"
                     label="Number"
                     type="text"
-                    value={formData?.number}
+                    value={formData.number || ''}
                     onChange={handleChange}
                 />
             }
@@ -85,7 +85,7 @@ function DialogFields(props) {
                     label="Dance"
                     type="text"
                     select
-                    value={formData?.dance_id}
+                    value={formData.dance_id || ''}
                     onChange={handleChange}
                 >
                     {dances.map((dance, index) => {
@@ -105,7 +105,7 @@ function DialogFields(props) {
                     label="Team"
                     type="text"
                     select
-                    value={formData?.team_id}
+                    value={formData.team_id || ''}
                     onChange={handleChange}
                 >
                     {teams.map((team, index) => {
@@ -124,7 +124,7 @@ function DialogFields(props) {
                     label="Celeb"
                     type="text"
                     select
-                    value={formData?.celeb_id}
+                    value={formData.celeb_id || ''}
                     onChange={handleChange}
                 >
                     {celebs.map((celeb, index) => {
@@ -143,7 +143,7 @@ function DialogFields(props) {
                     label="Pro"
                     type="text"
                     select
-                    value={formData?.pro_id}
+                    value={formData.pro_id || ''}
                     onChange={handleChange}
                 >
                     {pros.map((pro, index) => {
@@ -162,7 +162,7 @@ function DialogFields(props) {
                     label="Mentor"
                     type="text"
                     select
-                    value={formData?.mentor_id}
+                    value={formData.mentor_id || ''}
                     onChange={handleChange}
                 >
                     {pros.map((pro, index) => {
@@ -181,7 +181,7 @@ function DialogFields(props) {
                     label="Season"
                     type="text"
                     select
-                    value={formData?.season_id}
+                    value={formData.season_id || ''}
                     onChange={handleChange}
                 >
                     {seasons.map((season, index) => {
@@ -200,7 +200,7 @@ function DialogFields(props) {
                     label="Placement"
                     type="text"
                     select
-                    value={formData?.placement}
+                    value={formData.placement || ''}
                     onChange={handleChange}
                 >
                     {placements.map((placement, index) => (
@@ -215,8 +215,11 @@ function DialogFields(props) {
                     name="team_name"
                     label="Team Name"
                     type="text"
-                    value={formData?.team_name}
+                    value={formData.team_name || ''}
                     onChange={handleChange}
+                    InputProps={{
+                        startAdornment: <InputAdornment position="start">#team</InputAdornment>,
+                      }}
                 />
             }
 
@@ -228,7 +231,7 @@ function DialogFields(props) {
                     label="Episode"
                     type="text"
                     select
-                    value={formData?.episode_id}
+                    value={formData.episode_id || ''}
                     onChange={handleChange}
                 >
                     {episodes.map((episode, index) => {
@@ -247,7 +250,7 @@ function DialogFields(props) {
                     label="Style"
                     type="text"
                     select
-                    value={formData?.style}
+                    value={formData.style || ''}
                     onChange={handleChange}
                 >
                     {styles.map((style, index) => (
@@ -263,7 +266,7 @@ function DialogFields(props) {
                     label="Theme"
                     type="text"
                     select
-                    value={formData?.theme}
+                    value={formData.theme || ''}
                     onChange={handleChange}
                 >
                     {themes.map((theme, index) => (
@@ -279,7 +282,7 @@ function DialogFields(props) {
                     label="Running Order"
                     type="text"
                     select
-                    value={formData?.running_order}
+                    value={formData.running_order || ''}
                     onChange={handleChange}
                 >
                     {runningOrders.map((ro, index) => (
@@ -294,7 +297,7 @@ function DialogFields(props) {
                     name="song_title"
                     label="Song Title"
                     type="text"
-                    value={formData?.song_title}
+                    value={formData.song_title || ''}
                     onChange={handleChange}
                 />
             }
@@ -305,7 +308,7 @@ function DialogFields(props) {
                     name="song_artist"
                     label="Song Artist"
                     type="text"
-                    value={formData?.song_artist}
+                    value={formData.song_artist || ''}
                     onChange={handleChange}
                 />
             }
@@ -316,7 +319,7 @@ function DialogFields(props) {
                     name="link"
                     label="Link"
                     type="text"
-                    value={formData?.link}
+                    value={formData.link || ''}
                     onChange={handleChange}
                 />
             }
@@ -327,7 +330,7 @@ function DialogFields(props) {
                     name="is_background"
                     select
                     label="Background Dancer?"
-                    value={formData?.is_background}
+                    value={formData.is_background}
                     onChange={handleChange}
                 >
                     <MenuItem key={1} value={true}>Yes</MenuItem>
@@ -342,7 +345,7 @@ function DialogFields(props) {
                     name="extra"
                     label="Extra"
                     type="text"
-                    value={formData?.extra}
+                    value={formData.extra || ''}
                     onChange={handleChange}
                 />
             }
@@ -352,7 +355,7 @@ function DialogFields(props) {
                     margin="dense"
                     label="Birthday"
                     inputFormat="MM/dd/yyyy"
-                    value={formData?.birthday}
+                    value={formData.birthday || ''}
                     onChange={handleBirthday}
                     renderInput={(params) => <TextField {...params} />}
                 />
@@ -365,7 +368,7 @@ function DialogFields(props) {
                     label="Week"
                     type="text"
                     select
-                    value={formData?.week}
+                    value={formData.week || ''}
                     onChange={handleChange}
                 >
                     {weeks.map((week, index) => (
@@ -380,7 +383,7 @@ function DialogFields(props) {
                     name="night"
                     select
                     label="Night"
-                    value={formData?.night}
+                    value={formData.night || ''}
                     onChange={handleChange}
                 >
                     <MenuItem key={1} value={1}>1</MenuItem>
@@ -393,7 +396,7 @@ function DialogFields(props) {
                     margin="dense"
                     label="Date"
                     inputFormat="MM/dd/yyyy"
-                    value={formData?.date}
+                    value={formData.date || ''}
                     onChange={handleDate}
                     renderInput={(params) => <TextField {...params} />}
                 />
@@ -405,7 +408,7 @@ function DialogFields(props) {
                     name="height"
                     label="Height (_'__)"
                     type="text"
-                    value={formData?.height}
+                    value={formData.height || ''}
                     onChange={handleChange}
                 />}
 
@@ -416,7 +419,7 @@ function DialogFields(props) {
                     label="Gender"
                     type="text"
                     select
-                    value={formData?.gender}
+                    value={formData.gender || ''}
                     onChange={handleChange}
                 >
                     {genders.map((gender, index) => (
@@ -431,7 +434,7 @@ function DialogFields(props) {
                     name="instagram"
                     label="Instagram Username"
                     type="text"
-                    value={formData?.instagram}
+                    value={formData.instagram || ''}
                     onChange={handleChange}
                 />
             }
@@ -442,7 +445,7 @@ function DialogFields(props) {
                     name="twitter"
                     label="Twitter Username"
                     type="text"
-                    value={formData?.twitter}
+                    value={formData.twitter || ''}
                     onChange={handleChange}
                 />
             }
@@ -453,7 +456,7 @@ function DialogFields(props) {
                     name="tiktok"
                     label="TikTok Username"
                     type="text"
-                    value={formData?.tiktok}
+                    value={formData.tiktok || ''}
                     onChange={handleChange}
                 />
             }
@@ -464,7 +467,7 @@ function DialogFields(props) {
                     name="is_junior"
                     select
                     label="Junior?"
-                    value={formData?.is_junior}
+                    value={formData.is_junior}
                     onChange={handleChange}
                 >
                     <MenuItem key={1} value={true}>Yes</MenuItem>
@@ -479,7 +482,7 @@ function DialogFields(props) {
                     label="Judge"
                     type="text"
                     select
-                    value={formData?.judge_id}
+                    value={formData.judge_id || ''}
                     onChange={handleChange}
                 >
                     {judges.map((judge, index) => {
@@ -498,7 +501,7 @@ function DialogFields(props) {
                     label="Value"
                     type="text"
                     select
-                    value={formData?.value}
+                    value={formData.value || ''}
                     onChange={handleChange}
                 >
                     {scores.map((score, index) => (
@@ -514,7 +517,7 @@ function DialogFields(props) {
                     label="Order Given"
                     type="text"
                     select
-                    value={formData?.order}
+                    value={formData.order || ''}
                     onChange={handleChange}
                 >
                     {scoreOrders.map((so, index) => (
@@ -530,7 +533,7 @@ function DialogFields(props) {
                     name="is_guest"
                     select
                     label="Guest Judge?"
-                    value={formData?.is_guest}
+                    value={formData.is_guest}
                     onChange={handleChange}
                 >
                     <MenuItem key={1} value={true}>Yes</MenuItem>
