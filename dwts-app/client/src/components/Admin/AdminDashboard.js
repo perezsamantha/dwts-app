@@ -111,6 +111,11 @@ function AdminDashboard(props) {
                         Dancers
                     </ListItemText>
                 </ListItemButton>
+                <ListItemButton onClick={() => handleComponent(<Table key={10} type={tableType.USER} />)}>
+                    <ListItemText>
+                        Users
+                    </ListItemText>
+                </ListItemButton>
             </List>
             <Divider />
             <List>

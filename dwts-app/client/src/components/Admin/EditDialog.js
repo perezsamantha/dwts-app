@@ -15,6 +15,7 @@ import { updateEpisode } from '../../actions/episodes';
 import { updateDance } from '../../actions/dances';
 import { updateScore } from '../../actions/scores';
 import { updateDancer } from '../../actions/dancers';
+import { setUserPic, updateUser } from '../../actions/fans';
 
 function EditDialog(props) {
 
@@ -46,8 +47,8 @@ function EditDialog(props) {
                 return state.loading.SCOREFIND;
             case tableType.DANCER:
                 return state.loading.DANCERFIND;
-            // case tableType.USER:
-            //     return state.loading.USERFIND;
+            case tableType.USER:
+                return state.loading.USERFIND;
         }
     })
 
@@ -92,9 +93,9 @@ function EditDialog(props) {
                     case tableType.TEAM:
                         dispatch(setTeamPic(id, data));
                         break
-                    // case tableType.USER:
-                    //     dispatch();
-                    //     break
+                    case tableType.USER:
+                        dispatch(setUserPic(id, data));
+                        break
                     // not judge, score, dance ?
                     default:
                     //console.log('Invald table type');
@@ -130,9 +131,9 @@ function EditDialog(props) {
             case tableType.DANCER:
                 dispatch(updateDancer(id, formData));
                 break
-            // case tableType.USER:
-            //     dispatch();
-            //     break
+            case tableType.USER:
+                dispatch(updateUser(id, formData));
+                break
             default:
             //console.log('Invald table type');
         }

@@ -149,3 +149,10 @@ export const genders = [
 ]
 
 export const scoreOrders = Array.from({ length: 5 }, (_, i) => i + 1);
+
+
+export const roles = [
+    'fan',
+    'pro',
+    'admin'
+]

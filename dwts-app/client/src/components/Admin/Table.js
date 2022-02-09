@@ -25,6 +25,7 @@ import { deleteEpisode, fetchEpisodes, findEpisodeById } from '../../actions/epi
 import { deleteDance, fetchDances, findDanceById } from '../../actions/dances';
 import { deleteScore, fetchScores, findScoreById } from '../../actions/scores';
 import { deleteDancer, fetchDancers, findDancerById } from '../../actions/dancers';
+import { deleteUser, fetchUsers, findUserById } from '../../actions/fans';
 
 function Table(props) {
     const table = props.type;
@@ -50,8 +51,8 @@ function Table(props) {
                 return state.data.scores;
             case tableType.DANCER:
                 return state.data.dancers;
-            // case tableType.USER:
-            //     return state.users.users;
+            case tableType.USER:
+                return state.data.users;
         }
     })
 
@@ -75,8 +76,8 @@ function Table(props) {
                 return state.data.score;
             case tableType.DANCER:
                 return state.data.dancer;
-            // case tableType.USER:
-            //     return state.users.user;
+            case tableType.USER:
+                return state.data.user;
         }
     })
 
@@ -100,8 +101,8 @@ function Table(props) {
                 return state.loading.SCORESEARCH;
             case tableType.DANCER:
                 return state.loading.DANCERSEARCH;
-            // case tableType.USER:
-            //     return state.loading.USERSEARCH;
+            case tableType.USER:
+                return state.loading.USERSEARCH;
         }
     })
 
@@ -134,9 +135,9 @@ function Table(props) {
             case tableType.DANCER:
                 dispatch(fetchDancers());
                 break
-            // case tableType.USER:
-
-            //     break
+            case tableType.USER:
+                dispatch(fetchUsers());
+                break
         }
     }, [dispatch]);
 
@@ -179,9 +180,9 @@ function Table(props) {
             case tableType.DANCER:
                 dispatch(findDancerById(id));
                 break
-            // case tableType.USER:
-
-            //     break
+            case tableType.USER:
+                dispatch(findUserById(id));
+                break
         }
         setOpen({ edit: true })
     }
@@ -215,9 +216,9 @@ function Table(props) {
             case tableType.DANCER:
                 dispatch(findDancerById(id));
                 break
-            // case tableType.USER:
-
-            //     break
+            case tableType.USER:
+                dispatch(findUserById(id));
+                break
         }
         setOpen({ delete: true, id: id });
     }
@@ -251,15 +252,14 @@ function Table(props) {
             case tableType.DANCER:
                 dispatch(deleteDancer(open.id));
                 break
-            // case tableType.USER:
-
-            //     break
+            case tableType.USER:
+                dispatch(deleteUser(open.id));
+                break
         }
         setOpen({ edit: false, delete: false, id: null })
     }
 
     let columns;
-    //const columns = () => {
     switch (table) {
 
         case tableType.CELEB:
@@ -555,6 +555,50 @@ function Table(props) {
                 },
                 { field: 'is_background', headerName: 'Background?', width: 100 },
                 { field: 'extra', headerName: 'Extra', width: 150 },
+                {
+                    field: 'actions',
+                    //headerName: 'Actions',
+                    type: 'actions',
+                    width: 50,
+                    getActions: (params) => [
+                        <GridActionsCellItem
+                            icon={<EditIcon />}
+                            label="Edit"
+                            onClick={() => handleEdit(params.id)}
+                            showInMenu
+                        />,
+                        <GridActionsCellItem
+                            icon={<DeleteIcon />}
+                            label="Delete"
+                            onClick={() => handleDelete(params.id)}
+                            showInMenu
+                        />,
+                    ],
+                },
+            ]
+            break
+
+        case tableType.USER:
+            columns = [
+                { field: 'id', headerName: 'ID', width: 40 },
+                {
+                    field: 'cover_pic', headerName: 'Pic', width: 60,
+                    renderCell: (params) => <Avatar src={params.value} />
+                },
+                { field: 'username', headerName: 'Username', width: 100 },
+                { field: 'email', headerName: 'Email', width: 100 },
+                {
+                    field: 'email_verified', headerName: 'Email Verified?', width: 80,
+                    renderCell: (params) => params.value ? 'Yes' : 'No'
+                },
+                { field: 'nickname', headerName: 'Nickname', width: 80 },
+                {
+                    field: 'watching_since', headerName: 'Watching Since', width: 80,
+                    valueGetter: seasonGetter
+                },
+                { field: 'twitter', headerName: 'Twitter', width: 100 },
+                { field: 'instagram', headerName: 'Instagram', width: 100 },
+                { field: 'user_role', headerName: 'Role', width: 80 },
                 {
                     field: 'actions',
                     //headerName: 'Actions',

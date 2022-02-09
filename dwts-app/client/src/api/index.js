@@ -10,8 +10,14 @@ API.interceptors.request.use((req) => {
     return req;
 }) // for future auth actions (liking cards)
 
-export const signIn = (formData) => API.post('/users/signin', formData);
-export const signUp = (formData) => API.post('/users/signup', formData);
+export const signIn = (formData) => API.post('/users/signIn', formData);
+export const signUp = (formData) => API.post('/users/signUp', formData);
+export const updateUser = (id, user) => API.patch(`/users/update/${id}`, user);
+export const setUserPic = (id, image) => API.patch(`/users/setPic/${id}`, image)
+export const findUserById = (id) => API.get(`/users/${id}`);
+export const fetchUsers = () => API.get('/users/');
+export const searchUsers = (input) => API.post('/users/search', input);
+export const deleteUser = (id) => API.delete(`/users/delete/${id}`);
 
 export const searchFans = (input) => API.post('/fans/search', input);
 export const findFanById = (id) => API.get(`/fans/${id}`);

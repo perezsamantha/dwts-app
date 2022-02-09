@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import FansPreview from '../Previews/FansPreview';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { searchfans } from '../../actions/fans';
+import { searchUsers } from '../../actions/fans';
 import { CircularProgress, makeStyles } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
@@ -27,7 +27,7 @@ function Fans(props) {
 
     useEffect(() => {
         const input = { search: props.search };
-        dispatch(searchfans(input));
+        dispatch(searchUsers(input));
     }, [dispatch, props]);
 
     return (

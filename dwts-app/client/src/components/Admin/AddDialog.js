@@ -16,6 +16,7 @@ import { addEpisode } from '../../actions/episodes';
 import { addDance } from '../../actions/dances';
 import { addScore } from '../../actions/scores';
 import { addDancer } from '../../actions/dancers';
+import { addUser } from '../../actions/fans';
 
 function AddDialog(props) {
     const [open, setOpen] = useState(false);
@@ -31,7 +32,6 @@ function AddDialog(props) {
                     first_name: null,
                     last_name: null,
                     birthday: new Date().toISOString(),
-                    //birthday: null,
                     height: null,
                     gender: null,
                     twitter: null,
@@ -97,6 +97,20 @@ function AddDialog(props) {
                     is_background: false,
                     extra: null
                 }
+            case tableType.USER:
+                return {
+                    cover_pic: null,
+                    username: null,
+                    email: null,
+                    password: null,
+                    confirm_password: null,
+                    email_verified: false,
+                    nickname: null,
+                    watching_since: null,
+                    instagram: null,
+                    twitter: null,
+                    user_role: 'fan'
+                }
         }
     };
 
@@ -149,9 +163,9 @@ function AddDialog(props) {
             case tableType.DANCER:
                 dispatch(addDancer(formData));
                 break
-            // case tableType.USER:
-            //     dispatch();
-            //     break
+            case tableType.USER:
+                dispatch(addUser(formData));
+                break
             default:
             //console.log('Invald table type');
         }
@@ -179,10 +193,11 @@ function AddDialog(props) {
                             handleChange={handleChange}
                             handleBirthday={handleBirthday}
                             handleDate={handleDate}
-                        // editor={editor}
-                        // setEditor={setEditor}
-                        // fileData={fileData}
-                        // setFileData={setFileData}
+                            // editor={editor}
+                            // setEditor={setEditor}
+                            // fileData={fileData}
+                            // setFileData={setFileData}
+                            dialog={'Add'}
                         />
 
                     </DialogContent>

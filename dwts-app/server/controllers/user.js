@@ -9,7 +9,7 @@ import ac from '../roles.js';
 export const signUp = async (req, res) => {
     try {
         const {
-            profile_pic,
+            cover_pic,
             username,
             email,
             password,
@@ -26,9 +26,9 @@ export const signUp = async (req, res) => {
 
         const hashed_password = await bcrypt.hash(password, 12);
 
-        const result = await pool.query(`INSERT INTO users (profile_pic, username, email, password, nickname, email_verified, watching_since, twitter, instagram, user_role) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`, [profile_pic, username, email, hashed_password, nickname, email_verified, watching_since, twitter, instagram, user_role]);
+        const result = await pool.query(`INSERT INTO users (username, email, password, nickname, email_verified, watching_since, twitter, instagram, user_role) VALUES($1, $2, $3, $4, default, $5, $6, $7, default) RETURNING *`, [username, email, hashed_password, nickname, watching_since, twitter, instagram]);
 
-        const token = jwt.sign({ username: result.rows[0].username, id: result.rows[0].user_id }, process.env.SECRET_STRING, { expiresIn: "1h" });
+        const token = jwt.sign({ username: result.rows[0].username, id: result.rows[0].id }, process.env.SECRET_STRING, { expiresIn: "1h" });
         
         res.status(200).json({ result: result.rows[0], token});
     } catch (error) {
@@ -51,7 +51,7 @@ export const signIn = async (req, res) => {
 
         if (!isPasswordCorrect) return res.status(400).json({ message: "Incorrect password." });
 
-        const token = jwt.sign({ username: existing_user.rows[0].username, id: existing_user.rows[0].user_id }, process.env.SECRET_STRING, { expiresIn: "1h" });
+        const token = jwt.sign({ username: existing_user.rows[0].username, id: existing_user.rows[0].id }, process.env.SECRET_STRING, { expiresIn: "1h" });
 
         res.status(200).json({ result: existing_user.rows[0], token });
     } catch (error) {
@@ -59,7 +59,7 @@ export const signIn = async (req, res) => {
     }
 }
 
-export const fetchAllUsers = async (req, res) => {
+export const fetchUsers = async (req, res) => {
     try {
         const users = await pool.query('SELECT * FROM users');
 
@@ -73,7 +73,7 @@ export const findUserById = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const user = await pool.query('SELECT * FROM users WHERE user_id = $1', [id]);
+        const user = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
 
         res.status(200).json(user.rows[0]);
     } catch (error) {
@@ -98,7 +98,7 @@ export const updateUser = async (req, res) => {
 
     try {
         const {
-            profile_pic,
+            cover_pic,
             username,
             email,
             password,
@@ -110,7 +110,7 @@ export const updateUser = async (req, res) => {
             user_role
         } = req.body;
 
-        const result = await pool.query(`UPDATE users SET username = $1, nickname = $2, watching_since = $3, twitter = $4, instagram = $5 WHERE user_id = $6 RETURNING *`, [username, nickname, watching_since, twitter, instagram, id]);
+        const result = await pool.query(`UPDATE users SET username = $1, email = $2, nickname = $3, email_verified = $4, watching_since = $5, twitter = $6, instagram = $7, user_role = $8 WHERE id = $9 RETURNING *`, [username, email, nickname, email_verified, watching_since, twitter, instagram, user_role, id]);
 
         res.status(200).json(result.rows[0]);
     } catch (error) {
@@ -143,7 +143,7 @@ export const setUserPic = async (req, res) => {
         blobWriter.on('finish', async () => {
             const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURI(blob.name)}?alt=media`;
 
-            const result = await pool.query('UPDATE users SET profile_pic = $1 WHERE user_id = $2 RETURNING *', [publicUrl, req.params.id]);
+            const result = await pool.query('UPDATE users SET cover_pic = $1 WHERE id = $2 RETURNING *', [publicUrl, req.params.id]);
 
             res.status(200).json(result.rows[0]);
         })
@@ -158,7 +158,7 @@ export const deleteUser = async (req, res) => {
     const { id } = req.params;
 
     try {
-        await pool.query('DELETE FROM users WHERE user_id = $1', [id]);
+        await pool.query('DELETE FROM users WHERE id = $1', [id]);
 
         res.status(200).json({ message: "User successfully deleted." });
     } catch (error) {
@@ -169,7 +169,7 @@ export const deleteUser = async (req, res) => {
 export const grantAccess = function(action, resource) {
     return async (req, res, next) => {
         try {
-            const user = await pool.query('SELECT * FROM users WHERE user_id = $1', [req.userId]);
+            const user = await pool.query('SELECT * FROM users WHERE id = $1', [req.userId]);
 
             const permission = ac.can(user.rows[0].role)[action](resource);
             

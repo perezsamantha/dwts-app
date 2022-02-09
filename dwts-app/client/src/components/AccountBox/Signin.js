@@ -12,7 +12,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { signin } from '../../actions/auth';
+import { signIn } from '../../actions/auth';
 
 import { BoxContainer, FormContainer, MutedLink, BoldLink, SubmitButton } from './common';
 import { AccountContext } from './AccountContext';
@@ -36,7 +36,7 @@ function Signin(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        dispatch(signin(formData, navigate));
+        dispatch(signIn(formData, navigate));
     }
 
     const handleShowPass = () => setShowPass((prevShowPass) => !prevShowPass);

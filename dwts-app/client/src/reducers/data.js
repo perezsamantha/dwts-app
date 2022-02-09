@@ -124,6 +124,17 @@ const dataReducer = (state = {
         case actionType.DANCERDELETE_SUCCESS:
             return { ...state, dancers: state.dancers.filter((dancer) => dancer.id !== action.payload) };
 
+        case actionType.USERADD_SUCCESS:
+            return { ...state, users: [...state.users, action.payload.result] };
+        case actionType.USERUPDATE_SUCCESS:
+            return { ...state, users: [...state.users.map(user => user.id === action.payload.id ? action.payload : user)] }
+        case actionType.USERSEARCH_SUCCESS:
+            return { ...state, users: action.payload.users, seasons: action.payload.seasons };
+        case actionType.USERFIND_SUCCESS:
+            return { ...state, user: action.payload };
+        case actionType.USERDELETE_SUCCESS:
+            return { ...state, users: state.users.filter((user) => user.id !== action.payload) };
+
         default:
             return state;
     }

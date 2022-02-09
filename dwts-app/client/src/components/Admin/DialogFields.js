@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { MenuItem, TextField, Avatar, InputAdornment } from '@mui/material';
 import { MobileDatePicker } from '@mui/lab';
-import DateAdapter from '@mui/lab/AdapterDateFns';
 
 import * as tableType from '../../constants/tableTypes';
-import { genders, placements, weeks, styles, themes, runningOrders, scores, scoreOrders } from '../../constants/dropdowns';
+import { genders, placements, weeks, styles, themes, runningOrders, scores, scoreOrders, roles } from '../../constants/dropdowns';
 import CoverPicUpload from '../shared/CoverPicUpload';
 import { PhotoContainer } from '../shared/shared';
 import { useSelector } from 'react-redux';
@@ -31,7 +30,7 @@ function DialogFields(props) {
 
     return (
         <div>
-            {Array.of(tableType.CELEB, tableType.PRO, tableType.SEASON, tableType.TEAM).includes(table) && props.dialog === 'Edit' &&
+            {Array.of(tableType.CELEB, tableType.PRO, tableType.SEASON, tableType.TEAM, tableType.USER).includes(table) && props.dialog === 'Edit' &&
                 <PhotoContainer>
                     <Avatar sx={{ width: 150, height: 150 }} src={formData?.cover_pic} />
 
@@ -89,7 +88,7 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {dances.map((dance, index) => {
-                        const danceName = GetDanceName(dance.id); 
+                        const danceName = GetDanceName(dance.id);
                         return (
                             // <MenuItem key={index} value={dance.id}>{dance?.episode_id} {dance?.style}</MenuItem>
                             <MenuItem key={index} value={dance.id}>{danceName}</MenuItem>
@@ -109,7 +108,7 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {teams.map((team, index) => {
-                        const teamName = GetTeamName(team.id); 
+                        const teamName = GetTeamName(team.id);
                         return (
                             <MenuItem key={index} value={team.id}>{teamName}</MenuItem>
                         )
@@ -128,7 +127,7 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {celebs.map((celeb, index) => {
-                        const celebName = GetCelebName(celeb.id); 
+                        const celebName = GetCelebName(celeb.id);
                         return (
                             <MenuItem key={index} value={celeb.id}>{celebName}</MenuItem>
                         )
@@ -147,7 +146,7 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {pros.map((pro, index) => {
-                        const proName = GetProName(pro.id); 
+                        const proName = GetProName(pro.id);
                         return (
                             <MenuItem key={index} value={pro.id}>{proName}</MenuItem>
                         )
@@ -166,7 +165,7 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {pros.map((pro, index) => {
-                        const proName = GetProName(pro.id); 
+                        const proName = GetProName(pro.id);
                         return (
                             <MenuItem key={index} value={pro.id}>{proName}</MenuItem>
                         )
@@ -185,7 +184,7 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {seasons.map((season, index) => {
-                        const seasonNumber = GetSeasonNumber(season.id); 
+                        const seasonNumber = GetSeasonNumber(season.id);
                         return (
                             <MenuItem key={index} value={season.id}>{seasonNumber}</MenuItem>
                         )
@@ -219,7 +218,7 @@ function DialogFields(props) {
                     onChange={handleChange}
                     InputProps={{
                         startAdornment: <InputAdornment position="start">#team</InputAdornment>,
-                      }}
+                    }}
                 />
             }
 
@@ -235,7 +234,7 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {episodes.map((episode, index) => {
-                        const episodeNumber = GetEpisodeNumber(episode.id); 
+                        const episodeNumber = GetEpisodeNumber(episode.id);
                         return (
                             <MenuItem key={index} value={episode.id}>{episodeNumber}</MenuItem>
                         )
@@ -428,7 +427,71 @@ function DialogFields(props) {
                 </TextField>
             }
 
-            {Array.of(tableType.CELEB, tableType.PRO).includes(table) &&
+            {Array.of(tableType.USER).includes(table) &&
+                <TextField
+                    margin="dense"
+                    name="username"
+                    label="Username"
+                    type="text"
+                    value={formData.username || ''}
+                    onChange={handleChange}
+                />}
+
+            {Array.of(tableType.USER).includes(table) &&
+                <TextField
+                    margin="dense"
+                    name="email"
+                    label="Email"
+                    type="text"
+                    value={formData.email || ''}
+                    onChange={handleChange}
+                />}
+
+            {/* checkbox? */}
+            {Array.of(tableType.USER).includes(table) &&
+                <TextField
+                    margin="dense"
+                    name="email_verified"
+                    select
+                    label="Email Verified?"
+                    value={formData.email_verified}
+                    onChange={handleChange}
+                >
+                    <MenuItem key={1} value={true}>Yes</MenuItem>
+                    <MenuItem key={2} value={false}>No</MenuItem>
+                </TextField>
+            }
+
+            {Array.of(tableType.USER).includes(table) &&
+                <TextField
+                    margin="dense"
+                    name="nickname"
+                    label="Nickname"
+                    type="text"
+                    value={formData.nickname || ''}
+                    onChange={handleChange}
+                />}
+
+            {Array.of(tableType.USER).includes(table) &&
+                <TextField
+                    margin="dense"
+                    name="watching_since"
+                    label="Watching Since"
+                    type="text"
+                    select
+                    value={formData.watching_since || ''}
+                    onChange={handleChange}
+                >
+                    {seasons.map((season, index) => {
+                        const seasonNumber = GetSeasonNumber(season.id);
+                        return (
+                            <MenuItem key={index} value={season.id}>{seasonNumber}</MenuItem>
+                        )
+                    })}
+                </TextField>
+            }
+
+            {Array.of(tableType.CELEB, tableType.PRO, tableType.USER).includes(table) &&
                 <TextField
                     margin="dense"
                     name="instagram"
@@ -439,7 +502,7 @@ function DialogFields(props) {
                 />
             }
 
-            {Array.of(tableType.CELEB, tableType.PRO).includes(table) &&
+            {Array.of(tableType.CELEB, tableType.PRO, tableType.USER).includes(table) &&
                 <TextField
                     margin="dense"
                     name="twitter"
@@ -486,7 +549,7 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {judges.map((judge, index) => {
-                        const judgeName = GetJudgeName(judge.id); 
+                        const judgeName = GetJudgeName(judge.id);
                         return (
                             <MenuItem key={index} value={judge.id}>{judgeName}</MenuItem>
                         )
@@ -539,6 +602,44 @@ function DialogFields(props) {
                     <MenuItem key={1} value={true}>Yes</MenuItem>
                     <MenuItem key={2} value={false}>No</MenuItem>
                 </TextField>
+            }
+
+            {Array.of(tableType.USER).includes(table) &&
+                <TextField
+                    margin="dense"
+                    name="user_role"
+                    label="Role"
+                    type="text"
+                    select
+                    value={formData.user_role || ''}
+                    onChange={handleChange}
+                >
+                    {roles.map((role, index) => (
+                        <MenuItem key={index} value={role}>{role}</MenuItem>
+                    ))}
+                </TextField>
+            }
+
+            {Array.of(tableType.USER).includes(table) && props.dialog === 'Add' &&
+                <TextField
+                    margin="dense"
+                    name="password"
+                    label="Password"
+                    type="text"
+                    value={formData.password || ''}
+                    onChange={handleChange}
+                />
+            }
+
+            {Array.of(tableType.USER).includes(table) && props.dialog === 'Add' &&
+                <TextField
+                    margin="dense"
+                    name="confirm_password"
+                    label="Confirm Password"
+                    type="text"
+                    value={formData.confirm_password || ''}
+                    onChange={handleChange}
+                />
             }
 
         </div>

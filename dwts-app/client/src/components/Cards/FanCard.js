@@ -4,7 +4,7 @@ import { Avatar, Button, makeStyles } from "@material-ui/core";
 import CheckJWT from "../shared/logout";
 import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { findFanById } from "../../actions/fans";
+import { findUserById } from "../../actions/fans";
 
 import { Container, TeamName } from '../shared/shared.js'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
@@ -36,7 +36,7 @@ function FanCard() {
     const { id } = useParams();
 
     useEffect(() => {
-        dispatch(findFanById(id));
+        dispatch(findUserById(id));
     }, [dispatch, id])
 
     return (

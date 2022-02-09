@@ -12,13 +12,13 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { signup } from '../../actions/auth';
+import { signUp } from '../../actions/auth';
 
 import { BoxContainer, FormContainer, MutedLink, BoldLink, SubmitButton } from './common';
 import { AccountContext } from './AccountContext';
 import { IconButton, InputAdornment } from '@material-ui/core';
 
-const initialState = { username: '', email: '', password: '', confirmPassword: '' }
+const initialState = { username: '', email: '', password: '', confirm_password: '' }
 
 function Signup() {
 
@@ -36,7 +36,7 @@ function Signup() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        dispatch(signup(formData, navigate));
+        dispatch(signUp(formData, navigate));
     }
 
     const handleShowPass = () => setShowPass((prevShowPass) => !prevShowPass);
@@ -103,7 +103,7 @@ function Signup() {
                 <TextField 
                     required 
                     id="confirmPass" 
-                    name="confirmPassword" 
+                    name="confirm_password" 
                     label="confirm password" 
                     type="password" 
                     onChange={handleChange} 
