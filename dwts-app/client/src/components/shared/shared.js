@@ -22,7 +22,7 @@ export const TeamName = styled.h4`
     font-size: 25px;
     font-weight: 500;
     margin: 10px auto 5px auto;
-    color: white;
+    //color: white;
 `;
 
 export const Preview = styled.div`
@@ -38,23 +38,24 @@ export const PreviewPhoto = styled.img`
 export const Names = styled.h3`
     font-size: 12px;
     font-weight: 500;
-    color: rgba(0, 0, 0, 0.7);
+    //color: rgba(0, 0, 0, 0.7);
     margin: 2px 0;
     padding: 0 1px;
     letter-spacing: 0.05em;
-    color: white;
+    //color: white;
     max-width: 85%;
 `;
 
 export const Details = styled.h4`
     font-size: 10px;
     font-weight: 400;
-    color: rgba(0, 0, 0, 0.5);
+    //color: rgba(0, 0, 0, 0.5);
     margin: 2px 0;
     padding: 0 1px;
     letter-spacing: 0.05em;
-    color: rgb(179, 179, 179);
+    //color: rgb(179, 179, 179);
     max-width: 85%;
+    color: ${props => props.lightMode ? 'red' : 'black'}
 `;
 
 // main container for search pages

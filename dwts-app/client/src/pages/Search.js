@@ -7,8 +7,8 @@ import Teams from '../components/Search/Teams';
 import Fans from '../components/Search/Fans';
 import Pros from '../components/Search/Pros';
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Chip, Paper, Slider, Tab, Tabs } from '@material-ui/core';
+
+import { Chip, Paper, Slider, Tab, Tabs } from '@mui/material';
 import { Link } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
 import FilterListIcon from '@material-ui/icons/FilterList';
@@ -16,7 +16,9 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import CheckIcon from '@material-ui/icons/Check';
 
-import { seasons, styles } from '../constants/dropdowns';
+import { styles } from '../constants/dropdowns';
+import { Switch } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
     root: {
@@ -27,24 +29,24 @@ const useStyles = makeStyles({
         position: "relative"
     },
     search: {
-        backgroundColor: "black",
+        
     },
-    tabs: {
-        color: "#fff",
-        textColor: "#fff",
-        '&:hover': {
-            color: "rgb(255, 255, 255, 0.9)",
-        },
-        '&:selected': {
-            color: "#fff",
-        },
-        '&:focus': {
-            color: "#fff",
-        },
-        '&:active': {
-            color: "rgb(255, 255, 255, 0.8)",
-        },
-    },
+    // tabs: {
+    //     color: "#fff",
+    //     textColor: "#fff",
+    //     '&:hover': {
+    //         color: "rgb(255, 255, 255, 0.9)",
+    //     },
+    //     '&:selected': {
+    //         color: "#fff",
+    //     },
+    //     '&:focus': {
+    //         color: "#fff",
+    //     },
+    //     '&:active': {
+    //         color: "rgb(255, 255, 255, 0.8)",
+    //     },
+    // },
     indicator: {
         background: "rgb(243,229,171)",
         height: 3,
@@ -149,8 +151,17 @@ function Search(props) {
         placeholderText(pathname);
     }, [])
 
+    const setToggleDark = props.setToggleDark;
+    const toggleDark = props.toggleDark;
+
+    const handleMode = () => {
+        setToggleDark(!toggleDark);
+        localStorage.setItem('lightMode', toggleDark);
+    }
+
     return (
         <Page >
+            <Switch checked={toggleDark} onChange={handleMode} />
             <SearchContainer>
                 <SearchTitle>Search</SearchTitle>
                 <SearchBoxContainer>
@@ -219,13 +230,13 @@ function Search(props) {
     )
 }
 
-const Page = styled.div`
+const Page = styled(Paper)`
     width: 100%;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: rgba(18, 18, 18);
+    //background-color: rgba(18, 18, 18);
     //background: rgb(73,69,38);
     //background: linear-gradient(160deg, rgba(73,69,38,1) 0%, rgba(18,18,18,1) 30%, rgba(18,18,18,1) 100%);
 `;
@@ -264,7 +275,7 @@ background: linear-gradient(99deg, rgba(198,161,67,1) 0%, rgba(232,216,136,1) 55
 
 const SearchTitle = styled.h2`
     width: 75%;
-    color: #fff;
+    //color: #fff;
     font-size: 25px;
     font-weight: 500;
     margin: 30px auto 15px auto;
@@ -285,7 +296,7 @@ const SearchBox = styled.div`
     //padding: 0.5em 0em 0.5em 1.5em;
     //padding: 0.5em;
     //background: rgba(255, 255, 255, 0.4);
-    background: rgba(255, 255, 255, 1);
+    //background: rgba(255, 255, 255, 1);
     //color: white !important;
     //display: block;
     //margin: 0 auto;
@@ -315,7 +326,7 @@ const SearchInput = styled.input`
         outline: none;
     };
     ::placeholder {
-        color: black;
+        //color: black;
         opacity: 1;
         //font-family: 'Urbanist', sans-serif;
     }
@@ -337,7 +348,7 @@ const FilterTitleContainer = styled.div`
 `;
 
 const FilterTitle = styled.h3`
-    color: white;
+    //color: white;
     font-size: 16px;
     cursor: pointer;
     margin: 5px 0;

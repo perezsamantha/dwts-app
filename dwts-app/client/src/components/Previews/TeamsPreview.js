@@ -2,31 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import { Preview, PreviewPhoto, Names, Details } from "../shared/shared.js";
 
-//import { makeStyles } from '@material-ui/core';
-
-// const useStyles = makeStyles({
-//     avi: {
-//         width: "40px",
-//         height: "40px",
-//         margin: "8px auto",
-//     }
-// })
-
 function TeamsPreview(props) {
-    //const classes = useStyles();
-
-    const celebFirst = props.team.celeb.split(" ");
+    const team = props.team;
+    const pro = props.pro;
+    const celeb = props.celeb;
 
     return (
-        props.preview === "dance" ?
-            <Preview>
-                <SmallPhoto src={props.team.coverPic ? props.team.coverPic : "/defaultPic.jpeg"} />
-                <SmallText>{celebFirst[0]} & {props.pro.name.split(" ")[0]}</SmallText>
-            </Preview> : 
-            <Preview>
-                <PreviewPhoto src={props.team.coverPic ? props.team.coverPic : "/defaultPic.jpeg"} />
-                <Names>{celebFirst[0]} & {props.pro.name.split(" ")[0]}</Names>
-                <Details>Season {props.team.season} &#8226; 1st Place</Details>
+        <Preview>
+                <PreviewPhoto src={team.cover_pic ? team.cover_pic : "/defaultPic.jpeg"} />
+                <Names>{celeb.first_name} & {pro.first_name}</Names>
+                <Details>Season {team.season_id} &#8226; {team.placement}</Details>
             </Preview>
     )
 }

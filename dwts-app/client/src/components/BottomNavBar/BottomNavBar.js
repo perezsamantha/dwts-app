@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import { BottomNavigation, BottomNavigationAction, makeStyles } from '@material-ui/core';
+//import { BottomNavigation, BottomNavigationAction, makeStyles } from '@material-ui/core';
+
 import HomeIcon from '@material-ui/icons/Home';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Link } from 'react-router-dom';
 import CheckJWT from '../shared/logout';
+import { BottomNavigation, BottomNavigationAction } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+
 
 const useStyles = makeStyles({
     stickToBottom: {
@@ -13,15 +17,13 @@ const useStyles = makeStyles({
         position: 'fixed',
         bottom: 0,
         zIndex: 1000,
-        background: "rgb(24, 24, 24)",
-        color: "white",
     },
     root : {
         color: "grey",
     },
     selected: {
         //color: "white !important",
-        color: "rgb(250,240,190) !important",
+        //color: "rgb(250,240,190) !important",
         fontFamily: "Urbanist"
     },
 })

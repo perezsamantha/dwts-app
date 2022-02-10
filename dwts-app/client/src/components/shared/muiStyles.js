@@ -12,11 +12,11 @@ export const AddButton = styled(Button)`
     min-width: 10px;
     max-height: 10px;
     max-width: 10px;
-    color: grey;
+    //color: grey;
 `;
 
 export const OpenSettings = styled(SettingsIcon)`
-    color: lightgrey;
+    //color: lightgrey;
 `;
 
 export const AddJudge = styled(Button)`
@@ -62,7 +62,7 @@ export const FormControlScore = styled(FormControl)`
 
 export const RemoveJudge = styled(CloseIcon)`
     width: 1%;
-    color: grey;
+    //color: grey;
     cursor: pointer;
     margin-top: 20px;
 `;

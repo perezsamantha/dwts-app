@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Outlet } from 'react-router-dom';
-import { searchTeams } from '../../actions/teams';
-import { makeStyles, CircularProgress } from '@material-ui/core';
-import TeamAdd from '../Teams/TeamAdd';
+import { Link } from 'react-router-dom';
+import { fetchTeams, searchTeams } from '../../actions/teams';
+import { CircularProgress, Paper } from '@mui/material';
 import TeamsPreview from '../Previews/TeamsPreview';
 
 import Carousel from 'react-multi-carousel';
@@ -16,6 +15,7 @@ import { fetchPros } from '../../actions/pros';
 import { createLoadingSelector } from '../../api/selectors';
 
 import * as actionType from '../../constants/actionTypes';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
     root: {
@@ -38,24 +38,21 @@ function Teams(props) {
     // const history = useHistory();
     //const input = { search: props.search };
 
-    const teams = useSelector(state => state.teams.teams);
+    const teams = useSelector(state => state.data.teams);
     //const loading = useSelector(state => state.teams.loading);
-    const pros = useSelector(state => state.pros.pros);
+    const pros = useSelector(state => state.data.pros);
+    const celebs = useSelector(state => state.data.celebs);
 
-    console.log(useSelector(state => state.loading))
-
-    const loadingSelector = createLoadingSelector([actionType.PROSEARCH, actionType.TEAMSEARCH]);
-    
-    //console.log(loadingSelector)
-    const isFetching = useSelector((state) => loadingSelector(state));
-    console.log(isFetching);
+    //const loadingSelector = createLoadingSelector([actionType.PROSEARCH, actionType.TEAMSEARCH]);
+    const loading = useSelector(state => state.loading.TEAMSEARCH);
+    //const isFetching = useSelector((state) => loadingSelector(state));
     
     const arr = [];
 
     useEffect(() => {
         const input = { search: props.search };
-        dispatch(searchTeams(input));
-        dispatch(fetchPros());
+        //dispatch(searchTeams(input));
+        dispatch(fetchTeams());
     }, [dispatch, props]);
 
     // bug: following functions load before teams is correctly updated
@@ -81,11 +78,8 @@ function Teams(props) {
 
     return (
         <Container>
-            <AdminAdd>
-                <TeamAdd />
-            </AdminAdd>
 
-            {isFetching ? <CircularProgress className={classes.progress} /> :
+            {loading ? <CircularProgress className={classes.progress} /> :
                 // <ContentContainer>
                 //     <Grid container justify="flex-start" className={classes.root} spacing={2}>
                 //         {teams.map((team, index) => (
@@ -101,23 +95,24 @@ function Teams(props) {
                 //     </Grid>
                 // </ContentContainer>
                 <div>
-                    {arr.map((item, index) => (
-                        <ContentContainer key={index}>
-                            <Subtitle>Season {item}</Subtitle>
+                    {/* {arr.map((item, index) => ( */}
+                        <ContentContainer >
+                            <Subtitle>Season __</Subtitle>
                             <Carousel
                                 responsive={responsive}
                                 partialVisible={true}
                             >
-                                {teams.filter(team => Number(team.season) === Number(item))
-                                    .map((team, index) => (
+                                {/* {teams.filter(team => Number(team.season) === Number(item)) */}
+                                    {teams.map((team, index) => (
 
-                                        <Link key={index} to={{ pathname: `/teams/${team._id}` }} style={{ textDecoration: "none" }} >
-                                            <TeamsPreview team={team} pro={pros.find(pro => pro._id === team.pro)} />
+                                        <Link key={index} to={{ pathname: `/teams/${team.id}` }} style={{ textDecoration: "none" }} >
+                                            <TeamsPreview team={team} pro={pros.find(pro => pro.id === team.pro_id)} celeb={celebs.find(celeb => celeb.id === team.celeb_id)} />
                                         </Link>
                                     ))}
                             </Carousel>
                         </ContentContainer>
-                    ))}
+                    
+                    {/* } */}
                 </div>
             }
         </Container>
@@ -145,9 +140,9 @@ const Container = styled.div`
 
 const Subtitle = styled.h2`
     //float: left;
-    color: rgba(0, 0, 0, 0.8);
+    //color: rgba(0, 0, 0, 0.8);
     margin: 0 auto 15px auto;
-    color: white;
+    //color: white;
 `;
 
 const AdminAdd = styled.div`

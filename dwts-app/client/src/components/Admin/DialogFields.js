@@ -7,7 +7,7 @@ import { genders, placements, weeks, styles, themes, runningOrders, scores, scor
 import CoverPicUpload from '../shared/CoverPicUpload';
 import { PhotoContainer } from '../shared/shared';
 import { useSelector } from 'react-redux';
-import { GetCelebName, GetDanceName, GetEpisodeNumber, GetJudgeName, GetProName, GetSeasonNumber, GetTeamName } from '../shared/functions';
+import DataGetter from '../shared/DataGetter';
 
 function DialogFields(props) {
 
@@ -88,10 +88,10 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {dances.map((dance, index) => {
-                        const danceName = GetDanceName(dance.id);
                         return (
-                            // <MenuItem key={index} value={dance.id}>{dance?.episode_id} {dance?.style}</MenuItem>
-                            <MenuItem key={index} value={dance.id}>{danceName}</MenuItem>
+                            <MenuItem key={index} value={dance.id}>
+                                <DataGetter id={dance.id} type={tableType.DANCE} />
+                            </MenuItem>
                         )
                     })}
                 </TextField>
@@ -108,9 +108,10 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {teams.map((team, index) => {
-                        const teamName = GetTeamName(team.id);
                         return (
-                            <MenuItem key={index} value={team.id}>{teamName}</MenuItem>
+                            <MenuItem key={index} value={team.id}>
+                                <DataGetter id={team.id} type={tableType.TEAM} />
+                            </MenuItem>
                         )
                     })}
                 </TextField>
@@ -127,9 +128,10 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {celebs.map((celeb, index) => {
-                        const celebName = GetCelebName(celeb.id);
                         return (
-                            <MenuItem key={index} value={celeb.id}>{celebName}</MenuItem>
+                            <MenuItem key={index} value={celeb.id}>
+                                <DataGetter id={celeb.id} type={tableType.CELEB} />
+                            </MenuItem>
                         )
                     })}
                 </TextField>
@@ -146,9 +148,10 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {pros.map((pro, index) => {
-                        const proName = GetProName(pro.id);
                         return (
-                            <MenuItem key={index} value={pro.id}>{proName}</MenuItem>
+                            <MenuItem key={index} value={pro.id}>
+                                <DataGetter id={pro.id} type={tableType.PRO} />
+                            </MenuItem>
                         )
                     })}
                 </TextField>
@@ -165,9 +168,10 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {pros.map((pro, index) => {
-                        const proName = GetProName(pro.id);
                         return (
-                            <MenuItem key={index} value={pro.id}>{proName}</MenuItem>
+                            <MenuItem key={index} value={pro.id}>
+                                <DataGetter id={pro.id} type={tableType.PRO} />
+                            </MenuItem>
                         )
                     })}
                 </TextField>
@@ -184,9 +188,10 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {seasons.map((season, index) => {
-                        const seasonNumber = GetSeasonNumber(season.id);
                         return (
-                            <MenuItem key={index} value={season.id}>{seasonNumber}</MenuItem>
+                            <MenuItem key={index} value={season.id}>
+                                <DataGetter id={season.id} type={tableType.SEASON} />
+                            </MenuItem>
                         )
                     })}
                 </TextField>
@@ -234,9 +239,10 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {episodes.map((episode, index) => {
-                        const episodeNumber = GetEpisodeNumber(episode.id);
                         return (
-                            <MenuItem key={index} value={episode.id}>{episodeNumber}</MenuItem>
+                            <MenuItem key={index} value={episode.id}>
+                                <DataGetter id={episode.id} type={tableType.EPISODE} />
+                            </MenuItem>
                         )
                     })}
                 </TextField>
@@ -483,9 +489,10 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {seasons.map((season, index) => {
-                        const seasonNumber = GetSeasonNumber(season.id);
                         return (
-                            <MenuItem key={index} value={season.id}>{seasonNumber}</MenuItem>
+                            <MenuItem key={index} value={season.id}>
+                                <DataGetter id={season.id} type={tableType.SEASON} />
+                            </MenuItem>
                         )
                     })}
                 </TextField>
@@ -549,9 +556,10 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {judges.map((judge, index) => {
-                        const judgeName = GetJudgeName(judge.id);
                         return (
-                            <MenuItem key={index} value={judge.id}>{judgeName}</MenuItem>
+                            <MenuItem key={index} value={judge.id}>
+                                <DataGetter id={judge.id} type={tableType.JUDGE} />
+                            </MenuItem>
                         )
                     })}
                 </TextField>

@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { searchDances } from '../../actions/dances';
-import { makeStyles, CircularProgress } from '@material-ui/core';
+import { fetchDances, searchDances } from '../../actions/dances';
+import { CircularProgress } from '@mui/material';
 
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import DancesPreview from '../Previews/DancesPreview';
-import DanceAdd from '../Dances/DanceAdd';
 import responsive from '../shared/responsive';
 import { ResultsContainer } from '../shared/shared.js';
 import CheckJWT from '../shared/logout';
@@ -16,6 +15,7 @@ import { fetchTeams } from '../../actions/teams';
 import { createLoadingSelector } from '../../api/selectors';
 
 import * as actionType from '../../constants/actionTypes';
+import { makeStyles } from '@mui/styles';
 
 
 const useStyles = makeStyles({
@@ -27,24 +27,16 @@ const useStyles = makeStyles({
     },
 })
 
-function actionCreator(input) {
-    return dispatch => {
-        dispatch(searchDances(input));
-        dispatch(fetchTeams());
-        return Promise.resolve();
-    }
-}
-
 function Dances(props) {
     CheckJWT();
     const classes = useStyles();
     const dispatch = useDispatch();
-    const dances = useSelector(state => state.dances.dances);
-    //const loading = useSelector(state => state.dances.loading);
-    const teams = useSelector(state => state.teams.teams);
+    const dances = useSelector(state => state.data.dances);
+    //const teams = useSelector(state => state.data.teams);
 
-    const loadingSelector = createLoadingSelector([actionType.DANCESEARCH, actionType.TEAMSEARCH]);
-    const isFetching = useSelector((state) => loadingSelector(state));
+    //const loadingSelector = createLoadingSelector([actionType.DANCESEARCH, actionType.TEAMSEARCH]);
+    //const isFetching = useSelector((state) => loadingSelector(state));
+    const loading = useSelector(state => state.loading.DANCESEARCH)
 
     const filters = {
         style: props.filters.styles.length !== 0 ? style => props.filters.styles.includes(style) : [],
@@ -55,8 +47,7 @@ function Dances(props) {
 
     useEffect(() => {
         const input = { search: props.search };
-        dispatch(searchDances(input));
-        dispatch(fetchTeams());
+        dispatch(fetchDances())
     }, [dispatch, props]);
 
     const multiFilter = (array, filters) => {
@@ -93,61 +84,42 @@ function Dances(props) {
     }
 
     return (
-         <ResultsContainer>
-            <AdminAdd>
-                <DanceAdd />
-            </AdminAdd>
+        <ResultsContainer>
 
 
-            {isFetching  ? <CircularProgress className={classes.progress} /> :
+            {loading ? <CircularProgress className={classes.progress} /> :
                 <div>
-                {arr.map((item, index) => ( 
-                    <ContentContainer key={index} >
-                        <Subtitle>Season {item}</Subtitle>
+                    {/* {arr.map((item, index) => (  */}
+                    <ContentContainer  >
+                        {/* <Subtitle>Season {item}</Subtitle> */}
                         <Carousel
                             responsive={responsive}
                             partialVisible={true}
                         >
-                            {filteredDances.filter(dance => Number(dance.season) === Number(item))
-                                .map((dance, index) => (
+                            {/* {filteredDances.filter(dance => Number(dance.season) === Number(item)) */}
+                            {dances.map((dance, index) => (
 
-                                    <Link key={index} to={{ pathname: `/dances/${dance.id}` }} style={{ textDecoration: "none" }} >
-                                        <DancesPreview 
-                                            dance={dance}
-                                            teams={teams}
-                                             />
-                                    </Link>
-                                ))}
+                                <Link key={index} to={{ pathname: `/dances/${dance.id}` }} style={{ textDecoration: "none" }} >
+                                    <DancesPreview
+                                        dance={dance}
+                                    />
+                                </Link>
+                            ))}
                         </Carousel>
                     </ContentContainer>
-                ))}
-            </div>}
-            
+                    ))
+                    {/* } */}
+                </div>}
+
         </ResultsContainer>
     )
 };
 
-// const Container = styled.div`
-//     width: 100%;
-//     min-height: 300px;
-//     display: flex;
-//     flex-direction: column;
-//     position: relative;
-//     padding-bottom: 70px;
-// `;
-
 const Subtitle = styled.h2`
     //float: left;
-    color: rgba(0, 0, 0, 0.8);
+    //color: rgba(0, 0, 0, 0.8);
     margin: 0 auto 15px auto;
     color: white;
-`;
-
-const AdminAdd = styled.div`
-    margin: 2px;
-    width: 20%;
-    margin-right: 0;
-    margin-left: auto;
 `;
 
 const ContentContainer = styled.div`

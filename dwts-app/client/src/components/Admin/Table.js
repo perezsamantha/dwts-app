@@ -10,7 +10,7 @@ import { LocalizationProvider } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDateFns';
 
 import { TableContainer, DataGridContainer, HeaderContainer } from '../shared/shared';
-import { convertDate, GetCelebName, GetProName, GetSeasonNumber, GetEpisodeNumber, GetJudgeName, GetDanceName, GetTeamName } from '../shared/functions';
+import { convertDate } from '../shared/functions';
 import AddDialog from './AddDialog';
 import EditDialog from './EditDialog';
 import DeleteDialog from './DeleteDialog';
@@ -26,6 +26,7 @@ import { deleteDance, fetchDances, findDanceById } from '../../actions/dances';
 import { deleteScore, fetchScores, findScoreById } from '../../actions/scores';
 import { deleteDancer, fetchDancers, findDancerById } from '../../actions/dancers';
 import { deleteUser, fetchUsers, findUserById } from '../../actions/fans';
+import DataGetter from '../shared/DataGetter';
 
 function Table(props) {
     const table = props.type;
@@ -345,7 +346,7 @@ function Table(props) {
                 { field: 'id', headerName: 'ID', width: 40 },
                 {
                     field: 'season_id', headerName: 'Season', width: 75,
-                    valueGetter: seasonGetter
+                    renderCell: (params) => <DataGetter id={params.value} type={tableType.SEASON}/>
                 },
                 { field: 'week', headerName: 'Week', width: 75 },
                 { field: 'night', headerName: 'Night', width: 75 },
@@ -385,19 +386,19 @@ function Table(props) {
                 },
                 {
                     field: 'celeb_id', headerName: 'Celeb', width: 100,
-                    valueGetter: celebGetter
+                    renderCell: (params) => <DataGetter id={params.value} type={tableType.CELEB}/>
                 },
                 {
                     field: 'pro_id', headerName: 'Pro', width: 100,
-                    valueGetter: proGetter
+                    renderCell: (params) => <DataGetter id={params.value} type={tableType.PRO}/>
                 },
                 {
                     field: 'mentor_id', headerName: 'Mentor', width: 100,
-                    valueGetter: proGetter
+                    renderCell: (params) => <DataGetter id={params.value} type={tableType.PRO}/>
                 },
                 {
                     field: 'season_id', headerName: 'Season', width: 75,
-                    valueGetter: seasonGetter
+                    renderCell: (params) => <DataGetter id={params.value} type={tableType.SEASON}/>
                 },
                 { field: 'placement', headerName: 'Place', width: 100 },
                 { field: 'team_name', headerName: 'Team Name', width: 150 },
@@ -430,7 +431,7 @@ function Table(props) {
                 { field: 'id', headerName: 'ID', width: 40 },
                 {
                     field: 'episode_id', headerName: 'Episode', width: 100,
-                    valueGetter: episodeGetter
+                    renderCell: (params) => <DataGetter id={params.value} type={tableType.EPISODE}/>
                 },
                 { field: 'style', headerName: 'Style', width: 100 },
                 { field: 'theme', headerName: 'Theme', width: 100 },
@@ -499,11 +500,11 @@ function Table(props) {
                 { field: 'id', headerName: 'ID', width: 40 },
                 {
                     field: 'dance_id', headerName: 'Dance', width: 450,
-                    valueGetter: danceGetter,
+                    renderCell: (params) => <DataGetter id={params.value} type={tableType.DANCE}/>
                 },
                 {
                     field: 'judge_id', headerName: 'Judge', width: 150,
-                    valueGetter: judgeGetter,
+                    renderCell: (params) => <DataGetter id={params.value} type={tableType.JUDGE}/>
                 },
                 { field: 'value', headerName: 'Value', width: 100 },
                 { field: 'order', headerName: 'Order', width: 100 },
@@ -539,19 +540,19 @@ function Table(props) {
                 { field: 'id', headerName: 'ID', width: 40 },
                 {
                     field: 'dance_id', headerName: 'Dance', width: 450,
-                    valueGetter: danceGetter
+                    renderCell: (params) => <DataGetter id={params.value} type={tableType.DANCE}/>
                 },
                 {
                     field: 'team_id', headerName: 'Team', width: 100,
-                    valueGetter: teamGetter
+                    renderCell: (params) => <DataGetter id={params.value} type={tableType.TEAM}/>
                 },
                 {
                     field: 'pro_id', headerName: 'Pro', width: 100,
-                    valueGetter: proGetter
+                    renderCell: (params) => <DataGetter id={params.value} type={tableType.PRO}/>
                 },
                 {
                     field: 'celeb_id', headerName: 'Celeb', width: 100,
-                    valueGetter: celebGetter
+                    renderCell: (params) => <DataGetter id={params.value} type={tableType.CELEB}/>
                 },
                 { field: 'is_background', headerName: 'Background?', width: 100 },
                 { field: 'extra', headerName: 'Extra', width: 150 },
@@ -594,7 +595,7 @@ function Table(props) {
                 { field: 'nickname', headerName: 'Nickname', width: 80 },
                 {
                     field: 'watching_since', headerName: 'Watching Since', width: 80,
-                    valueGetter: seasonGetter
+                    renderCell: (params) => <DataGetter id={params.value} type={tableType.SEASON}/>
                 },
                 { field: 'twitter', headerName: 'Twitter', width: 100 },
                 { field: 'instagram', headerName: 'Instagram', width: 100 },
@@ -628,34 +629,6 @@ function Table(props) {
 
     function dateGetter(params) {
         return convertDate(params.value);
-    }
-
-    function celebGetter(params) {
-        return GetCelebName(params.value);
-    }
-
-    function proGetter(params) {
-        return GetProName(params.value);
-    }
-
-    function seasonGetter(params) {
-        return GetSeasonNumber(params.value);
-    }
-
-    function teamGetter(params) {
-        return GetTeamName(params.value);
-    }
-
-    function episodeGetter(params) {
-        return GetEpisodeNumber(params.value);
-    }
-
-    function judgeGetter(params) {
-        return GetJudgeName(params.value);
-    }
-
-    function danceGetter(params) {
-        return GetDanceName(params.value);
     }
 
     return (

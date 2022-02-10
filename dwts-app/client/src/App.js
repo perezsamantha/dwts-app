@@ -15,7 +15,6 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 function App(props) {
   const [toggleDark, setToggleDark] = useState(false);
 
-
   const muiTheme = createTheme({
     palette: {
       mode: toggleDark ? 'dark' : 'light',
@@ -50,14 +49,14 @@ function App(props) {
           },
         }
       },
-      MuiDrawer: {
-        styleOverrides: {
-          paper: {
-            boxShadow: toggleDark ? '1px 1px 1px dimgrey' : "1px 65px 5px gainsboro",
-            //backgroundColor: toggleDark ? 'rgb(39, 39, 39)' : 'rgba(241, 220, 125, 0.2)',
-          }
-        }
-      }
+      // MuiDrawer: {
+      //   styleOverrides: {
+      //     paper: {
+      //       boxShadow: toggleDark ? '1px 1px 1px dimgrey' : "1px 65px 5px gainsboro",
+      //       //backgroundColor: toggleDark ? 'rgb(39, 39, 39)' : 'rgba(241, 220, 125, 0.2)',
+      //     }
+      //   }
+      // }
     }
   })
   //const [token, setToken] = useState();
@@ -74,12 +73,12 @@ function App(props) {
         <Container>
           <Routes >
             <Route exact path="/" element={<Landing />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard toggleDark={toggleDark} setToggleDark={setToggleDark} />} />
             <Route path="/favorites" element={<Favorites />} />
-            <Route path="/search/dances" element={<Search />} />
-            <Route path="/search/teams" element={<Search />} />
-            <Route path="/search/pros" element={<Search />} />
-            <Route path="/search/fans" element={<Search />} />
+            <Route path="/search/dances" element={<Search toggleDark={toggleDark} setToggleDark={setToggleDark}/>} />
+            <Route path="/search/teams" element={<Search toggleDark={toggleDark} setToggleDark={setToggleDark}/>} />
+            <Route path="/search/pros" element={<Search toggleDark={toggleDark} setToggleDark={setToggleDark}/>} />
+            <Route path="/search/fans" element={<Search toggleDark={toggleDark} setToggleDark={setToggleDark}/>} />
             <Route path="/account" element={<Account />} />
             <Route path="/admin" element={<Admin toggleDark={toggleDark} setToggleDark={setToggleDark} />} />
             {/* eventually move function to account */}
