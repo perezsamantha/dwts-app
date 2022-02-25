@@ -41,9 +41,13 @@ export const findTeamById = (id) => async (dispatch) => {
     dispatch({ type: actionType.TEAMFIND_REQUEST });
 
     try {
-        const { data } = await api.findTeamById(id);
+        //const { data } = await api.findTeamById(id);
+        const team = await api.findTeamById(id);
+        const celebs = await api.fetchCelebs();
+        const pros = await api.fetchPros();
+        const seasons = await api.fetchSeasons();
 
-        dispatch({ type: actionType.TEAMFIND_SUCCESS, payload: data });
+        dispatch({ type: actionType.TEAMFIND_SUCCESS, payload: { team: team.data, celebs: celebs.data, pros: pros.data, seasons: seasons.data} });
     } catch (error) {
         dispatch({ type: actionType.TEAMFIND_FAILURE, payload: error, error: true });
     }
@@ -89,13 +93,13 @@ export const deleteTeam = (id) => async (dispatch) => {
 }
 
 //todo
-export const addPic = (id, image) => async (dispatch) => {
+export const addTeamPic = (id, image) => async (dispatch) => {
     dispatch({ type: actionType.TEAMUPDATE_REQUEST });
 
     try {
-        const { data } = await api.addPic(id, image);
+        const { data } = await api.addTeamPic(id, image);
 
-        dispatch({ type: actionType.TEAMUPDATE_SUCCESS, payload: data });
+        dispatch({ type: actionType.TEAMUPDATE_SUCCESS, payload: { team: data } });
     } catch (error) {
         dispatch({ type: actionType.TEAMUPDATE_FAILURE, payload: error, error: true });
     }

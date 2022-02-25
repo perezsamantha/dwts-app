@@ -23,7 +23,6 @@ import { makeStyles } from '@mui/styles';
 const useStyles = makeStyles({
     root: {
         //flexGrow: 1,
-        backgroundColor: "transparent",
         width: "100%",
         boxShadow: "none",
         position: "relative"
@@ -48,8 +47,8 @@ const useStyles = makeStyles({
     //     },
     // },
     indicator: {
-        background: "rgb(243,229,171)",
-        height: 3,
+        //background: "rgb(243,229,171)",
+        height: 4,
         borderRadius: "10px"
     },
     icon: {
@@ -162,12 +161,12 @@ function Search(props) {
     return (
         <Page >
             <Switch checked={toggleDark} onChange={handleMode} />
-            <SearchContainer>
+            <SearchContainer elevation={4}>
                 <SearchTitle>Search</SearchTitle>
                 <SearchBoxContainer>
                     <SearchBox >
                         <SearchIcon className={classes.icon} />
-                        <SearchInput type="search" placeholder={placeholder} value={searchVal} onChange={searchChange} />
+                        <SearchInput toggleDark type="search" placeholder={placeholder} value={searchVal} onChange={searchChange} />
                     </SearchBox>
                     <FilterListIcon className={classes.filterIcon} onClick={() => setShowFilters(prev => !prev)} />
                 </SearchBoxContainer>
@@ -205,7 +204,7 @@ function Search(props) {
                     </SliderContainer>}
                 </FilterContainer>}
 
-                <Paper className={classes.root}>
+                {/* <Paper elevation={4} > */}
                     <Tabs
                         classes={{ indicator: classes.indicator }}
                         value={value}
@@ -217,7 +216,7 @@ function Search(props) {
                         <Tab disableRipple component={Link} to="/search/pros" className={classes.tabs} label="PROS" value="/search/pros" />
                         <Tab disableRipple component={Link} to="/search/fans" className={classes.tabs} label="FANS" value="/search/fans" />
                     </Tabs>
-                </Paper>
+                {/* </Paper> */}
             </SearchContainer>
 
             {value === "/search/dances" && <Dances key={key} search={searchVal} filters={filters} />}
@@ -251,39 +250,28 @@ const Page = styled(Paper)`
 // `;
 
 
-const SearchContainer = styled.div`
-    /* width: 100%;
-    height: 200px;
-    background: rgb(198,161,67);
-background: linear-gradient(99deg, rgba(198,161,67,1) 0%, rgba(232,216,136,1) 55%, rgba(198,161,67,1) 100%);
-    top: 0;
-    position: relative;
-    box-shadow: 0px 1px 100px grey;
-    align-items: center;
-    border-radius: 0 0 15px 15px; */
+const SearchContainer = styled(Paper)`
 
     width: 100%;
     min-height: 175px;
-    //background: rgb(250,240,190, 0.8);
-    //background: rgba(0, 0, 0, 0.9);
-
     position: relative;
-    //margin: 15px;
-    //box-shadow: 0px 1px 100px grey;
     border-radius: 0 0 10px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `;
 
 const SearchTitle = styled.h2`
-    width: 75%;
-    //color: #fff;
+    //width: 85%;
     font-size: 25px;
     font-weight: 500;
-    margin: 30px auto 15px auto;
+    margin: 15px auto;
+    align-self: center;
 `;
 
 const SearchBoxContainer = styled.div`
-    width: 75%;
-    margin: 15px auto;
+    width: 85%;
+    margin: 10px auto;
     display: flex;
     flex-direction: row;
 `;
@@ -291,15 +279,9 @@ const SearchBoxContainer = styled.div`
 const SearchBox = styled.div`
     width: 80%;
     //height: 40px;
-    border: none;
+    //border: 2px solid white;
     border-radius: 5px;
-    //padding: 0.5em 0em 0.5em 1.5em;
-    //padding: 0.5em;
-    //background: rgba(255, 255, 255, 0.4);
-    //background: rgba(255, 255, 255, 1);
-    //color: white !important;
-    //display: block;
-    //margin: 0 auto;
+    background-color: ${props => props.toggleDark ? 'black' : 'white'};
     display: flex;
     flex-direction: row;
     margin-right: auto;
@@ -310,6 +292,7 @@ const SearchInput = styled.input`
     width: 90%;
     height: 100%;
     margin: auto 0;
+    background: transparent;
     //height: 40px;
     //border: 2px solid white;
     border: none;

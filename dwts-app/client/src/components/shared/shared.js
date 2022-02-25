@@ -1,4 +1,5 @@
 
+import { Avatar, Paper } from '@mui/material';
 import styled from 'styled-components';
 
 export const Container = styled.div`
@@ -16,6 +17,41 @@ export const Container = styled.div`
     overflow-x: auto;
     text-align: center;
     padding: 30px 0 70px 0;
+`;
+
+export const CardContainer = styled(Paper)`
+    width: 100%;
+    min-height: 30%;
+    max-height: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: auto;
+    text-align: center;
+    padding: 30px 0 70px 0;
+`;
+
+export const Header = styled.div`
+    display: flex;
+    flex-direction: row;
+    //justify-content: center;
+    //justify-items: center;
+    margin: 0;
+    //justify-content: space-between;
+    //width: 80%;
+`;
+
+export const CardAvatar = styled.img`
+    width: 75;
+    height: 75;
+    //margin: auto;
+    border-radius: 15px;
+    margin: 10px;
+`;
+
+export const LikesContainer = styled.div`
+    margin: auto;
 `;
 
 export const TeamName = styled.h4`

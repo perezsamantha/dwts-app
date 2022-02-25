@@ -40,7 +40,7 @@ export const findTeamById = (id) => API.get(`/teams/${id}`);
 export const fetchTeams = () => API.get('/teams/');
 export const searchTeams = (input) => API.post('/teams/search', input);
 export const deleteTeam = (id) => API.delete(`/teams/delete/${id}`);
-export const addPic = (id, image) => API.patch(`/teams/addPic/${id}`, image)
+export const addTeamPic = (id, image) => API.patch(`/teams/addPic/${id}`, image)
 export const likeTeam = (id) => API.patch(`/teams/${id}/likeTeam`);
 export const getFavoriteTeams = () => API.get('/teams/favorites'); // eventually make a combined favorites function
 
