@@ -49,6 +49,14 @@ function App(props) {
           },
         }
       },
+      MuiTabs: {
+        styleOverrides: {
+          indicator: {
+            height: 4,
+            borderRadius: 1
+          }
+        }
+      }
       // MuiDrawer: {
       //   styleOverrides: {
       //     paper: {

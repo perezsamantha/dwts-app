@@ -43,8 +43,8 @@ export const Header = styled.div`
 `;
 
 export const CardAvatar = styled.img`
-    width: 75;
-    height: 75;
+    width: 175px;
+    height: 175px;
     //margin: auto;
     border-radius: 15px;
     margin: 10px;
@@ -92,6 +92,74 @@ export const Details = styled.h4`
     //color: rgb(179, 179, 179);
     max-width: 85%;
     color: ${props => props.lightMode ? 'red' : 'black'}
+`;
+
+/* const GridText = styled.h6`
+    font-size: 15px;
+    font-weight: 500;
+    margin: 2px auto 10px auto;
+    //color: lightgrey;
+`;
+
+const Season = styled.h5`
+    font-size: 20px;
+    font-weight: 500;
+    margin: 5px auto;
+    //color: lightgrey;
+`;
+
+const Placement = styled.h6`
+    font-size: 15px;
+    font-weight: 500;
+    margin: 2px auto 10px auto;
+    //color: grey;
+`;
+
+const LikeText = styled.h6`
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    color: white;
+    margin: 10px 0;
+`;
+
+/*
+const DanceText = styled.h6`
+    font-size: 12px;
+    font-weight: 500;
+    margin: 5px 0;
+    //color: lightgrey;
+`;
+
+
+
+const HiddenInput = styled.input`
+    opacity: 0;
+    width: 0.1px;
+    height: 0.1px;
+    position: absolute;
+`;
+
+const ContentContainer = styled.div`
+    width: 100%;
+    margin: 10px auto;
+`;
+
+const InnerContainer = styled.div`
+    width: 100%;
+`;
+
+ */
+export const Picture = styled.img`
+   width: 100px;
+   height: 100px;
+   display: flex;
+   flex-direction: column;
+   border-radius: 15px;
+   position: relative;
+`;
+export const SocialsRow = styled.div`
+    width: 100%;
 `;
 
 // main container for search pages

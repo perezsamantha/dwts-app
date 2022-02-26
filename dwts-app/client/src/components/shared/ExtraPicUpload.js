@@ -5,6 +5,7 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import { Button, Slider } from "@mui/material";
 import * as tableType from '../../constants/tableTypes';
 import { addTeamPic } from "../../actions/teams";
+import { addProPic } from '../../actions/pros';
 import { useDispatch } from "react-redux";
 
 function ExtraPicUpload(props) {
@@ -46,6 +47,9 @@ function ExtraPicUpload(props) {
                     case tableType.TEAM:
                         dispatch(addTeamPic(props.id, data));
                         break
+                    case tableType.PRO:
+                        dispatch(addProPic(props.id, data));
+                        break
                 }
                 setFileData(null);
             })
@@ -69,7 +73,7 @@ function ExtraPicUpload(props) {
                         image={fileData}
                         width={200}
                         height={200}
-                        borderRadius={100}
+                        borderRadius={15}
                         border={0}
                         scale={scaleValue}
                         ref={setEditorRef}

@@ -1,35 +1,23 @@
 import React, { useState } from 'react';
 //import { BottomNavigation, BottomNavigationAction, makeStyles } from '@material-ui/core';
 
-import HomeIcon from '@material-ui/icons/Home';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import SearchIcon from '@material-ui/icons/Search';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import HomeIcon from '@mui/icons-material/Home';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import SearchIcon from '@mui/icons-material/Search';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link } from 'react-router-dom';
 import CheckJWT from '../shared/logout';
-import { BottomNavigation, BottomNavigationAction } from '@mui/material';
+import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import styled from 'styled-components';
 
 
 const useStyles = makeStyles({
-    stickToBottom: {
-        width: '100%',
-        position: 'fixed',
-        bottom: 0,
-        zIndex: 1000,
-    },
-    root : {
-        color: "grey",
-    },
-    selected: {
-        //color: "white !important",
-        //color: "rgb(250,240,190) !important",
-        fontFamily: "Urbanist"
-    },
+    
 })
 
 function BottomNavBar() {
-    CheckJWT();
+    //CheckJWT();
     const classes = useStyles();
     //const pathname = window.location.pathname;
     //const [value, setValue] = useState(pathname.split("/")[1]);
@@ -45,13 +33,21 @@ function BottomNavBar() {
     }
 
     return (
-            <BottomNavigation value={value} onChange={handleChange} className={classes.stickToBottom}>
-                <BottomNavigationAction classes={{ root: classes.root, selected: classes.selected }} disableRipple component={Link} to="/dashboard" label="Home" value="dashboard" icon={<HomeIcon />} />
-                <BottomNavigationAction classes={{ root: classes.root, selected: classes.selected }} disableRipple component={Link} to="/favorites" label="Favorites" value="favorites" icon={<FavoriteIcon />} />
-                <BottomNavigationAction classes={{ root: classes.root, selected: classes.selected }} disableRipple component={Link} to="/search/dances" label="Search" value="search" icon={<SearchIcon />} />
-                <BottomNavigationAction classes={{ root: classes.root, selected: classes.selected }} disableRipple component={Link} to="/account" label="Account" value="account" icon={<AccountCircleIcon />} />
+        <NavBarContainer elevation={4}>
+            <BottomNavigation value={value} onChange={handleChange} >
+                <BottomNavigationAction disableRipple component={Link} to="/dashboard" label="Home" value="dashboard" icon={<HomeIcon />} />
+                <BottomNavigationAction disableRipple component={Link} to="/favorites" label="Favorites" value="favorites" icon={<FavoriteIcon />} />
+                <BottomNavigationAction disableRipple component={Link} to="/search/dances" label="Search" value="search" icon={<SearchIcon />} />
+                <BottomNavigationAction disableRipple component={Link} to="/account" label="Account" value="account" icon={<AccountCircleIcon />} />
             </BottomNavigation>
+            </NavBarContainer>
     );
 }
+
+const NavBarContainer = styled(Paper)`
+    bottom: 0;
+    position: fixed;
+    width: 100%;
+`;
 
 export default BottomNavBar;

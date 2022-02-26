@@ -39,7 +39,7 @@ const dataReducer = (state = {
         case actionType.PROADD_SUCCESS:
             return { ...state, pros: [...state.pros, action.payload] };
         case actionType.PROUPDATE_SUCCESS:
-            return { ...state, pros: [...state.pros.map(pro => pro.id === action.payload.id ? action.payload : pro)] };
+            return { ...state, pros: [...state.pros.map(pro => pro.id === action.payload.id ? action.payload : pro)], pro: action.payload.pro };
         case actionType.PROSEARCH_SUCCESS:
             return { ...state, pros: action.payload };
         case actionType.PROFIND_SUCCESS:

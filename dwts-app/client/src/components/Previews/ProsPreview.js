@@ -3,10 +3,12 @@ import { Names, Preview, PreviewPhoto } from "../shared/shared";
 
 function ProsPreview(props) {
 
+    const pro = props.pro;
+
     return (
         <Preview>
-            <PreviewPhoto src={props.pro.coverPic ? props.pro.coverPic : "/defaultPic.jpeg"} />
-            <Names>{props.pro.name}</Names>
+            <PreviewPhoto src={pro.cover_pic ? pro.cover_pic : "/defaultPic.jpeg"} />
+            <Names>{pro.first_name} {pro.last_name}</Names>
         </Preview>
     )
 }

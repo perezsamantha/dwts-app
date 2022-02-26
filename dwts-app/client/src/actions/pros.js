@@ -94,7 +94,7 @@ export const addProPic = (id, image) => async (dispatch) => {
     try {
         const { data } = await api.addProPic(id, image);
 
-        dispatch({ type: actionType.PROUPDATE_SUCCESS, payload: data });
+        dispatch({ type: actionType.PROUPDATE_SUCCESS, payload: { pro: data } });
     } catch (error) {
         dispatch({ type: actionType.PROUPDATE_FAILURE, payload: error, error: true });
     }

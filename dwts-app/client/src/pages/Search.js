@@ -8,55 +8,24 @@ import Fans from '../components/Search/Fans';
 import Pros from '../components/Search/Pros';
 
 
-import { Chip, Paper, Slider, Tab, Tabs } from '@mui/material';
+import { Chip, InputAdornment, Paper, Slider, Tab, Tabs, TextField, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-import SearchIcon from '@material-ui/icons/Search';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
-import CheckIcon from '@material-ui/icons/Check';
+import SearchIcon from '@mui/icons-material/Search';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import CheckIcon from '@mui/icons-material/Check';
 
 import { styles } from '../constants/dropdowns';
 import { Switch } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
-    root: {
-        //flexGrow: 1,
-        width: "100%",
-        boxShadow: "none",
-        position: "relative"
-    },
-    search: {
-        
-    },
-    // tabs: {
-    //     color: "#fff",
-    //     textColor: "#fff",
-    //     '&:hover': {
-    //         color: "rgb(255, 255, 255, 0.9)",
-    //     },
-    //     '&:selected': {
-    //         color: "#fff",
-    //     },
-    //     '&:focus': {
-    //         color: "#fff",
-    //     },
-    //     '&:active': {
-    //         color: "rgb(255, 255, 255, 0.8)",
-    //     },
-    // },
-    indicator: {
-        //background: "rgb(243,229,171)",
-        height: 4,
-        borderRadius: "10px"
-    },
     icon: {
         width: "10%",
         margin: "auto"
     },
     filterIcon: {
-        color: "white",
         width: "10%",
         margin: "auto",
         cursor: "pointer"
@@ -79,11 +48,14 @@ const useStyles = makeStyles({
     },
     arrowIcon: {
         margin: "auto 0",
-        color: "lightgrey"
     },
 });
 
 function Search(props) {
+
+    // TODO: move filters to new component !!!!!!!!!
+
+
     const classes = useStyles();
     const pathname = window.location.pathname;
     const [value, setValue] = useState(pathname);
@@ -110,7 +82,7 @@ function Search(props) {
         } else if (value === "/search/teams") {
             setPlaceholder("Celebrity, professional");
         } else if (value === "/search/pros") {
-            setPlaceholder("Name, ");
+            setPlaceholder("Name ");
         } else if (value === "/search/fans") {
             setPlaceholder("Username, nickname");
         }
@@ -132,10 +104,10 @@ function Search(props) {
 
         if (index > -1) {
             setStyleFilters(styleFilters.filter((style, i) => i !== index));
-            setFilters({...filters, styles: filters.styles.filter((style, i) => i !== index) })
+            setFilters({ ...filters, styles: filters.styles.filter((style, i) => i !== index) })
         } else {
             setStyleFilters(styleFilters => [...styleFilters, style]);
-            setFilters({...filters, styles: [...filters.styles, style]});
+            setFilters({ ...filters, styles: [...filters.styles, style] });
         }
 
         //console.log(filters);
@@ -143,7 +115,7 @@ function Search(props) {
 
     const handleSeasonFilters = (e, newValue) => {
         setSeasonFilters(newValue);
-        setFilters({...filters, seasons: newValue});
+        setFilters({ ...filters, seasons: newValue });
     }
 
     useEffect(() => {
@@ -160,14 +132,32 @@ function Search(props) {
 
     return (
         <Page >
-            <Switch checked={toggleDark} onChange={handleMode} />
-            <SearchContainer elevation={4}>
-                <SearchTitle>Search</SearchTitle>
+            {/* <Switch checked={toggleDark} onChange={handleMode} /> */}
+            <SearchContainer elevation={0}>
+                <Typography variant='h4' my={2}>Search</Typography>
                 <SearchBoxContainer>
-                    <SearchBox >
-                        <SearchIcon className={classes.icon} />
-                        <SearchInput toggleDark type="search" placeholder={placeholder} value={searchVal} onChange={searchChange} />
-                    </SearchBox>
+                    {/* <SearchBox >
+                        <SearchIcon className={classes.icon} /> */}
+                    <TextField
+                        size='small'
+                        placeholder={placeholder}
+                        variant='outlined'
+                        value={searchVal}
+                        onChange={searchChange}
+                        focused
+                        InputProps={{
+                            startAdornment: <InputAdornment position="start">
+                                <SearchIcon />
+                            </InputAdornment>,
+                          }}
+                        sx={{
+                            width: '90%', '& .MuiOutlinedInput-root': {
+                                background: 'grey', 
+                            }
+                        }}
+                    />
+                    {/* <SearchInput type="search" placeholder={placeholder} value={searchVal} onChange={searchChange} /> */}
+                    {/* </SearchBox> */}
                     <FilterListIcon className={classes.filterIcon} onClick={() => setShowFilters(prev => !prev)} />
                 </SearchBoxContainer>
 
@@ -199,26 +189,24 @@ function Search(props) {
                             onChange={handleSeasonFilters}
                             min={1}
                             max={lastSeason}
-                            //className={classes.slider}
+                        //className={classes.slider}
                         />
                     </SliderContainer>}
                 </FilterContainer>}
 
-                {/* <Paper elevation={4} > */}
-                    <Tabs
-                        classes={{ indicator: classes.indicator }}
-                        value={value}
-                        onChange={handleChange}
-                        centered
-                    >
-                        <Tab disableRipple component={Link} to="/search/dances" className={classes.tabs} label="DANCES" value="/search/dances" />
-                        <Tab disableRipple component={Link} to="/search/teams" className={classes.tabs} label="TEAMS" value="/search/teams" />
-                        <Tab disableRipple component={Link} to="/search/pros" className={classes.tabs} label="PROS" value="/search/pros" />
-                        <Tab disableRipple component={Link} to="/search/fans" className={classes.tabs} label="FANS" value="/search/fans" />
-                    </Tabs>
-                {/* </Paper> */}
+                <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    centered
+                >
+                    <Tab disableRipple component={Link} to="/search/dances" className={classes.tabs} label="DANCES" value="/search/dances" />
+                    <Tab disableRipple component={Link} to="/search/teams" className={classes.tabs} label="TEAMS" value="/search/teams" />
+                    <Tab disableRipple component={Link} to="/search/pros" className={classes.tabs} label="PROS" value="/search/pros" />
+                    <Tab disableRipple component={Link} to="/search/fans" className={classes.tabs} label="FANS" value="/search/fans" />
+                </Tabs>
             </SearchContainer>
 
+{/* change to switch case before return? */}
             {value === "/search/dances" && <Dances key={key} search={searchVal} filters={filters} />}
             {value === "/search/teams" && <Teams key={key} search={searchVal} />}
             {value === "/search/pros" && <Pros key={key} search={searchVal} />}
@@ -235,9 +223,6 @@ const Page = styled(Paper)`
     display: flex;
     flex-direction: column;
     align-items: center;
-    //background-color: rgba(18, 18, 18);
-    //background: rgb(73,69,38);
-    //background: linear-gradient(160deg, rgba(73,69,38,1) 0%, rgba(18,18,18,1) 30%, rgba(18,18,18,1) 100%);
 `;
 
 // const InnerContainer = styled.div`
@@ -250,27 +235,21 @@ const Page = styled(Paper)`
 // `;
 
 
-const SearchContainer = styled(Paper)`
+const SearchContainer = styled.div`
 
     width: 100%;
-    min-height: 175px;
+    //min-height: 170px;
     position: relative;
-    border-radius: 0 0 10px 10px;
+    //border-radius: 0 0 10px 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
-`;
-
-const SearchTitle = styled.h2`
-    //width: 85%;
-    font-size: 25px;
-    font-weight: 500;
-    margin: 15px auto;
-    align-self: center;
+    //box-shadow: 1px 1px 5px lightgrey;
+    border-bottom: 1px solid grey;
 `;
 
 const SearchBoxContainer = styled.div`
-    width: 85%;
+    width: 90%;
     margin: 10px auto;
     display: flex;
     flex-direction: row;
@@ -288,7 +267,14 @@ const SearchBox = styled.div`
     padding: 8px;
 `;
 
-const SearchInput = styled.input`
+const SearchInput = styled(TextField)`
+    width: 100;
+    //height: fit-content;
+    margin: auto 0;
+    //color: grey;
+`;
+
+const SearchInput1 = styled.input`
     width: 90%;
     height: 100%;
     margin: auto 0;
