@@ -157,6 +157,7 @@ export const Picture = styled.img`
    flex-direction: column;
    border-radius: 15px;
    position: relative;
+   box-shadow: 1px 5px 15px lightgrey;
 `;
 export const SocialsRow = styled.div`
     width: 100%;

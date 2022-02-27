@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS pro_likes(
     pro_id INT,
     user_id INT,
     PRIMARY KEY(id),
+    UNIQUE (pro_id, user_id),
     CONSTRAINT fk_pro
         FOREIGN KEY(pro_id)
             REFERENCES pros(id)
@@ -12,4 +13,4 @@ CREATE TABLE IF NOT EXISTS pro_likes(
         FOREIGN KEY(user_id)
             REFERENCES users(id)
             ON DELETE CASCADE
-)
+);

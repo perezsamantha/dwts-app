@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { CoverPicSlider, FileInput, HiddenInput, Label, UploadContainer } from '../shared/shared';
+import { FileInput, HiddenInput, Label, UploadContainer } from '../shared/shared';
 import AvatarEditor from 'react-avatar-editor';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import { Button, Slider } from "@mui/material";
@@ -65,7 +65,9 @@ function ExtraPicUpload(props) {
                 id="file"
             />
             <Label htmlFor="file">
-                <AddAPhotoIcon />
+                {/* <Button> */}
+                    <AddAPhotoIcon />
+                {/* </Button> */}
             </Label>
             <FileInput>
                 {fileData != null && <UploadContainer>

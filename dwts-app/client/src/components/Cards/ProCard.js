@@ -22,8 +22,6 @@ import ExtraPicUpload from '../shared/ExtraPicUpload';
 import * as tableType from '../../constants/tableTypes';
 import { makeStyles } from "@mui/styles";
 
-
-
 const useStyles = makeStyles({
     root: {
         flexGrow: 1,
@@ -41,6 +39,7 @@ function ProCard() {
     //const loadingSelector = createLoadingSelector([actionType.PROSEARCH]);
     //const isFetching = useSelector((state) => loadingSelector(state));
     const loading = useSelector(state => state.loading.PROFIND);
+    const likes = useSelector(state => state.likes.pros);
 
     const birthday = convertDate(pro.birthday);
     const age = getAge(pro.birthday);
@@ -55,21 +54,21 @@ function ProCard() {
             <CardContainer>
                 <Header>
                     <Button onClick={() => navigate(-1)}>
-                        <ArrowBackIosIcon  />
+                        <ArrowBackIosIcon />
                     </Button>
                     <CardAvatar src={pro.cover_pic ? pro.cover_pic : "/defaultPic.jpeg"} />
                     <LikesContainer>
                         <Button disableRipple onClick={() => dispatch(likePro(id))}>
-                            <Likes item={pro} user={user}/>
+                            <Likes user={user} likes={likes} />
                         </Button>
-                        {pro?.likes?.length > 0 && <h2>{pro.likes.length}</h2>}
+                        <Typography variant="subtitle1">{likes.length}</Typography>
                     </LikesContainer>
                 </Header>
 
 
                 <Typography variant="h4" gutterBottom>{pro.first_name} {pro?.last_name}</Typography>
-                {pro.birthday && <Typography variant="h5">Age - {age} ({birthday})</Typography>}
-                {pro.height && <Typography variant="h5">Height - {pro.height}</Typography>}
+                {pro?.birthday && <Typography variant="h5">Age - {age} ({birthday})</Typography>}
+                {pro?.height && <Typography variant="h5">Height - {pro.height}</Typography>}
                 {/* is junior? */}
 
                 <Typography variant="h6" my={2}>SOCIALS</Typography>
@@ -95,19 +94,17 @@ function ProCard() {
                 </Grid>
 
                 <Typography variant="h6" my={2}>PICTURES</Typography>
-                <Paper>
-                    <Grid container justifyContent="center" className={classes.root} spacing={2}>
 
-                        {pro?.pictures?.map((picture, index) => (
-                            <Grid key={index} item>
-                                <Paper>
-                                    <Picture src={picture} />
-                                </Paper>
-                            </Grid>
-                        ))}
+                <Grid container justifyContent="center" className={classes.root} spacing={2} mb={2}>
+                    {pro?.pictures?.map((picture, index) => (
+                        <Grid key={index} item>
+                            <Paper elevation={0}>
+                                <Picture src={picture} />
+                            </Paper>
+                        </Grid>
+                    ))}
+                </Grid>
 
-                    </Grid>
-                </Paper>
 
                 <ExtraPicUpload
                     id={pro.id}

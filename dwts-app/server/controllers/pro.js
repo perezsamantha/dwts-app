@@ -176,18 +176,20 @@ export const likePro = async (req, res, next) => {
         if (!req.userId) {
             return res.status(401).json({ message: "Unauthenticated" });
         }
+        
+        const query = await pool.query('select exists(SELECT 1 FROM pro_likes WHERE pro_id = $1 AND user_id = $2)', [id, req.userId]);
+        let result;
 
-        // check if like is in table
-        if (pool.query(`exists(SELECT 1 FROM pro_likes WHERE id = ${id}, user_id = ${userId}`)) {
-            await pool.query(`DELETE FROM pro_likes WHERE id = ${id}, user_id = ${userId}`);
-            // json message
+        if (query.rows[0].exists) {
+            await pool.query('DELETE FROM pro_likes WHERE pro_id = $1 AND user_id = $2', [id, req.userId]);
+            result = await pool.query('SELECT * FROM pro_likes');
         } else {
-            const result = await pool.query(`INSERT INTO pros (id, user_id) VALUES($1, $2)`, [id, userId]);
-            // json message with resulting row ?? row[0]
+            result = await pool.query('INSERT INTO pro_likes (pro_id, user_id) VALUES($1, $2) RETURNING *', [id, req.userId]);
         }
 
+        res.status(200).json(result.rows);
     } catch (error) {
-        res.status(500).json({ message: error });
+        res.status(500).json({ message: error }); 
     }
 }
 

@@ -4,5 +4,6 @@ import auth from './auth';
 import fans from './fans';
 import loading from './loading';
 import data from './data';
+import likes from './likes';
 
-export const reducers = combineReducers({ auth, fans, loading, data });
+export const reducers = combineReducers({ auth, fans, loading, data, likes });

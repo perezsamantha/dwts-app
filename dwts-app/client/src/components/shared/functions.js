@@ -36,11 +36,10 @@ export const convertPlacement = (i) => {
 }
 
 export const Likes = (props) => {
-    const item = props.item;
-    const user = props.user;
+    const { user, likes } = props;
 
-    if (item.likes?.length > 0) {
-        return item.likes.find((like) => like === user?.result?.id) ?
+    if (likes.length > 0) {
+        return likes.find((like) => like.user_id === user?.result?.id) ?
             (
                 <><FavoriteIcon /></>
             ) : (
