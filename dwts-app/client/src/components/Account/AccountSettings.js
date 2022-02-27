@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, Button, InputAdornment, IconButton } from '@material-ui/core';
-import SettingsIcon from '@material-ui/icons/Settings';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import { makeStyles } from '@material-ui/core';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, Button, InputAdornment, IconButton, Box } from '@mui/material';
+import SettingsIcon from '@mui/icons-material/Settings';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
     button: {
-        color: "white",
         margin: "15px auto 5px 5px",
         float: "right"
     }
@@ -40,7 +39,7 @@ function AccountSettings() {
 
     return (
         <div>
-            <Button className={classes.button} onClick={handleOpen}>
+            <Button onClick={handleOpen}>
                 <SettingsIcon />
             </Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">

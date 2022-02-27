@@ -83,10 +83,10 @@ function App(props) {
             <Route exact path="/" element={<Landing />} />
             <Route path="/dashboard" element={<Dashboard toggleDark={toggleDark} setToggleDark={setToggleDark} />} />
             <Route path="/favorites" element={<Favorites />} />
-            <Route path="/search/dances" element={<Search toggleDark={toggleDark} setToggleDark={setToggleDark}/>} />
-            <Route path="/search/teams" element={<Search toggleDark={toggleDark} setToggleDark={setToggleDark}/>} />
-            <Route path="/search/pros" element={<Search toggleDark={toggleDark} setToggleDark={setToggleDark}/>} />
-            <Route path="/search/fans" element={<Search toggleDark={toggleDark} setToggleDark={setToggleDark}/>} />
+            <Route path="/search/dances" element={<Search />} />
+            <Route path="/search/teams" element={<Search />} />
+            <Route path="/search/pros" element={<Search />} />
+            <Route path="/search/fans" element={<Search />} />
             <Route path="/account" element={<Account />} />
             <Route path="/admin" element={<Admin toggleDark={toggleDark} setToggleDark={setToggleDark} />} />
             {/* eventually move function to account */}

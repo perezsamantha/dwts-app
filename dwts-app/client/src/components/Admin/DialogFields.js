@@ -30,7 +30,7 @@ function DialogFields(props) {
 
     return (
         <div>
-            {Array.of(tableType.CELEB, tableType.PRO, tableType.SEASON, tableType.TEAM, tableType.USER).includes(table) && props.dialog === 'Edit' &&
+            {Array.of(tableType.CELEB, tableType.PRO, tableType.SEASON, tableType.TEAM, tableType.USER, tableType.AUTH).includes(table) && props.dialog === 'Edit' &&
                 <PhotoContainer>
                     <Avatar sx={{ width: 150, height: 150 }} src={formData?.cover_pic} />
 
@@ -468,7 +468,17 @@ function DialogFields(props) {
                 </TextField>
             }
 
-            {Array.of(tableType.USER).includes(table) &&
+            {Array.of(tableType.AUTH).includes(table) &&
+                <TextField
+                    margin="dense"
+                    name="username"
+                    label="Username"
+                    type="text"
+                    value={formData.username || ''}
+                    onChange={handleChange}
+                />}
+
+            {Array.of(tableType.USER, tableType.AUTH).includes(table) &&
                 <TextField
                     margin="dense"
                     name="nickname"
@@ -478,7 +488,7 @@ function DialogFields(props) {
                     onChange={handleChange}
                 />}
 
-            {Array.of(tableType.USER).includes(table) &&
+            {Array.of(tableType.USER, tableType.AUTH).includes(table) &&
                 <TextField
                     margin="dense"
                     name="watching_since"
@@ -498,7 +508,7 @@ function DialogFields(props) {
                 </TextField>
             }
 
-            {Array.of(tableType.CELEB, tableType.PRO, tableType.USER).includes(table) &&
+            {Array.of(tableType.CELEB, tableType.PRO, tableType.USER, tableType.AUTH).includes(table) &&
                 <TextField
                     margin="dense"
                     name="instagram"
@@ -509,7 +519,7 @@ function DialogFields(props) {
                 />
             }
 
-            {Array.of(tableType.CELEB, tableType.PRO, tableType.USER).includes(table) &&
+            {Array.of(tableType.CELEB, tableType.PRO, tableType.USER, tableType.AUTH).includes(table) &&
                 <TextField
                     margin="dense"
                     name="twitter"

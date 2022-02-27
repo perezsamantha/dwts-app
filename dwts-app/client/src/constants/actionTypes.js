@@ -2,6 +2,13 @@
 export const AUTH = 'AUTH';
 export const LOGOUT = 'LOGOUT';
 
+export const AUTHUPDATE_REQUEST = 'AUTHUPDATE_REQUEST';
+export const AUTHUPDATE_SUCCESS = 'AUTHUPDATE_SUCCESS';
+export const AUTHUPDATE_FAILURE = 'AUTHUPDATE_FAILURE';
+export const AUTHDELETE_REQUEST = 'AUTHDELETE_REQUEST';
+export const AUTHDELETE_SUCCESS = 'AUTHDELETE_SUCCESS';
+export const AUTHDELETE_FAILURE = 'AUTHDELETE_FAILURE';
+
 export const SEARCH = 'SEARCH';
 export const ADD = 'ADD';
 export const UPDATE = 'UPDATE';

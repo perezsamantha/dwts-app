@@ -9,3 +9,4 @@ export const SEASON = 'Season';
 export const EPISODE = 'Episode';
 export const DANCER = 'Dancer';
 export const USER = 'User';
+export const AUTH = 'Auth'
