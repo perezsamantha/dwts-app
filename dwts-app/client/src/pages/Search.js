@@ -7,8 +7,16 @@ import Teams from '../components/Search/Teams';
 import Fans from '../components/Search/Fans';
 import Pros from '../components/Search/Pros';
 
-
-import { Chip, InputAdornment, Paper, Slider, Tab, Tabs, TextField, Typography } from '@mui/material';
+import {
+    Chip,
+    InputAdornment,
+    Paper,
+    Slider,
+    Tab,
+    Tabs,
+    TextField,
+    Typography,
+} from '@mui/material';
 import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import FilterListIcon from '@mui/icons-material/FilterList';
@@ -17,51 +25,49 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import CheckIcon from '@mui/icons-material/Check';
 
 import { styles } from '../constants/dropdowns';
-import { Switch } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { Page, SearchTextField } from '../components/shared/muiStyles';
 
 const useStyles = makeStyles({
     icon: {
-        width: "10%",
-        margin: "auto"
+        width: '10%',
+        margin: 'auto',
     },
     filterIcon: {
-        width: "10%",
-        margin: "auto",
-        cursor: "pointer"
+        width: '10%',
+        margin: 'auto',
+        cursor: 'pointer',
     },
     chip: {
-        backgroundColor: "white",
-        margin: "2px",
+        backgroundColor: 'white',
+        margin: '2px',
         '&:active, &:hover': {
-            backgroundColor: "rgb(243,229,171)"
+            backgroundColor: 'rgb(243,229,171)',
         },
         '&:focus': {
-            backgroundColor: "white"
-        }
+            backgroundColor: 'white',
+        },
     },
     selectedChip: {
-        backgroundColor: "rgb(243,229,171)",
+        backgroundColor: 'rgb(243,229,171)',
         '&:focus, &:hover': {
-            backgroundColor: "rgb(243,229,171)"
-        }
+            backgroundColor: 'rgb(243,229,171)',
+        },
     },
     arrowIcon: {
-        margin: "auto 0",
+        margin: 'auto 0',
     },
 });
 
 function Search(props) {
-
     // TODO: move filters to new component !!!!!!!!!
-
 
     const classes = useStyles();
     const pathname = window.location.pathname;
     const [value, setValue] = useState(pathname);
-    const [searchVal, setSearchVal] = useState("");
+    const [searchVal, setSearchVal] = useState('');
     const [key, setKey] = useState(1);
-    const [placeholder, setPlaceholder] = useState("");
+    const [placeholder, setPlaceholder] = useState('');
     const [showFilters, setShowFilters] = useState(false);
     const [showStyleFilters, setShowStyleFilters] = useState(false);
     const [showSeasonFilters, setShowSeasonFilters] = useState(false);
@@ -72,31 +78,34 @@ function Search(props) {
     //console.log(lastSeason)
     const [seasonFilters, setSeasonFilters] = useState([1, lastSeason]);
 
-    const [filters, setFilters] = useState({ styles: [], seasons: [1, lastSeason] });
+    const [filters, setFilters] = useState({
+        styles: [],
+        seasons: [1, lastSeason],
+    });
 
     localStorage.setItem('parentPath', window.location.pathname);
 
     const placeholderText = (value) => {
-        if (value === "/search/dances") {
-            setPlaceholder("Style, song, team");
-        } else if (value === "/search/teams") {
-            setPlaceholder("Celebrity, professional");
-        } else if (value === "/search/pros") {
-            setPlaceholder("Name ");
-        } else if (value === "/search/fans") {
-            setPlaceholder("Username, nickname");
+        if (value === '/search/dances') {
+            setPlaceholder('Style, song, team');
+        } else if (value === '/search/teams') {
+            setPlaceholder('Celebrity, professional');
+        } else if (value === '/search/pros') {
+            setPlaceholder('Name ');
+        } else if (value === '/search/fans') {
+            setPlaceholder('Username, nickname');
         }
-    }
+    };
 
     const handleChange = (e, newValue) => {
         setValue(newValue);
         placeholderText(newValue);
-    }
+    };
 
     const searchChange = (e) => {
         setSearchVal(e.target.value);
         setKey(key + 1);
-    }
+    };
 
     const handleStyleFilters = (e) => {
         const style = e.target.innerHTML;
@@ -104,139 +113,178 @@ function Search(props) {
 
         if (index > -1) {
             setStyleFilters(styleFilters.filter((style, i) => i !== index));
-            setFilters({ ...filters, styles: filters.styles.filter((style, i) => i !== index) })
+            setFilters({
+                ...filters,
+                styles: filters.styles.filter((style, i) => i !== index),
+            });
         } else {
-            setStyleFilters(styleFilters => [...styleFilters, style]);
+            setStyleFilters((styleFilters) => [...styleFilters, style]);
             setFilters({ ...filters, styles: [...filters.styles, style] });
         }
 
         //console.log(filters);
-    }
+    };
 
     const handleSeasonFilters = (e, newValue) => {
         setSeasonFilters(newValue);
         setFilters({ ...filters, seasons: newValue });
-    }
+    };
 
     useEffect(() => {
         placeholderText(pathname);
-    }, [])
-
-    const setToggleDark = props.setToggleDark;
-    const toggleDark = props.toggleDark;
-
-    const handleMode = () => {
-        setToggleDark(!toggleDark);
-        localStorage.setItem('lightMode', toggleDark);
-    }
+    }, [pathname]);
 
     return (
-        <Page >
-            {/* <Switch checked={toggleDark} onChange={handleMode} /> */}
+        <Page>
             <SearchContainer elevation={0}>
-                <Typography variant='h4' my={2}>Search</Typography>
+                <Typography variant="h4" my={2}>
+                    Search
+                </Typography>
                 <SearchBoxContainer>
-                    {/* <SearchBox >
-                        <SearchIcon className={classes.icon} /> */}
-                    <TextField
-                        size='small'
+                    <SearchTextField
+                        size="small"
                         placeholder={placeholder}
-                        variant='outlined'
+                        variant="outlined"
                         value={searchVal}
                         onChange={searchChange}
                         focused
                         InputProps={{
-                            startAdornment: <InputAdornment position="start">
-                                <SearchIcon />
-                            </InputAdornment>,
-                          }}
-                        sx={{
-                            width: '90%', '& .MuiOutlinedInput-root': {
-                                background: 'grey', 
-                            }
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <SearchIcon />
+                                </InputAdornment>
+                            ),
                         }}
                     />
-                    {/* <SearchInput type="search" placeholder={placeholder} value={searchVal} onChange={searchChange} /> */}
-                    {/* </SearchBox> */}
-                    <FilterListIcon className={classes.filterIcon} onClick={() => setShowFilters(prev => !prev)} />
+                    <FilterListIcon
+                        className={classes.filterIcon}
+                        onClick={() => setShowFilters((prev) => !prev)}
+                    />
                 </SearchBoxContainer>
 
-                {showFilters && <FilterContainer>
-                    <FilterTitleContainer onClick={() => setShowStyleFilters(prev => !prev)} >
-                        {showStyleFilters ? <KeyboardArrowDownIcon className={classes.arrowIcon} /> : <KeyboardArrowRightIcon className={classes.arrowIcon} />}
-                        <FilterTitle>
-                            Filter by style
-                        </FilterTitle>
-                    </FilterTitleContainer>
+                {showFilters && (
+                    <FilterContainer>
+                        <FilterTitleContainer
+                            onClick={() => setShowStyleFilters((prev) => !prev)}
+                        >
+                            {showStyleFilters ? (
+                                <KeyboardArrowDownIcon
+                                    className={classes.arrowIcon}
+                                />
+                            ) : (
+                                <KeyboardArrowRightIcon
+                                    className={classes.arrowIcon}
+                                />
+                            )}
+                            <FilterTitle>Filter by style</FilterTitle>
+                        </FilterTitleContainer>
 
-                    <ChipContainer>
-                        {showStyleFilters && styles.map((style, index) => (
-                            <Chip key={index} size="small" className={styleFilters.includes(style) ? classes.selectedChip : classes.chip} icon={styleFilters.includes(style) && <CheckIcon />} label={style} onClick={handleStyleFilters} />
-                        ))}
-                    </ChipContainer>
+                        <ChipContainer>
+                            {showStyleFilters &&
+                                styles.map((style, index) => (
+                                    <Chip
+                                        key={index}
+                                        size="small"
+                                        className={
+                                            styleFilters.includes(style)
+                                                ? classes.selectedChip
+                                                : classes.chip
+                                        }
+                                        icon={
+                                            styleFilters.includes(style) && (
+                                                <CheckIcon />
+                                            )
+                                        }
+                                        label={style}
+                                        onClick={handleStyleFilters}
+                                    />
+                                ))}
+                        </ChipContainer>
 
-                    <FilterTitleContainer onClick={() => setShowSeasonFilters(prev => !prev)} >
-                        {showSeasonFilters ? <KeyboardArrowDownIcon className={classes.arrowIcon} /> : <KeyboardArrowRightIcon className={classes.arrowIcon} />}
-                        <FilterTitle>
-                            Filter by season
-                        </FilterTitle>
-                    </FilterTitleContainer>
+                        <FilterTitleContainer
+                            onClick={() =>
+                                setShowSeasonFilters((prev) => !prev)
+                            }
+                        >
+                            {showSeasonFilters ? (
+                                <KeyboardArrowDownIcon
+                                    className={classes.arrowIcon}
+                                />
+                            ) : (
+                                <KeyboardArrowRightIcon
+                                    className={classes.arrowIcon}
+                                />
+                            )}
+                            <FilterTitle>Filter by season</FilterTitle>
+                        </FilterTitleContainer>
 
-                    {showSeasonFilters && <SliderContainer>
-                        <Slider
-                            value={seasonFilters}
-                            valueLabelDisplay="auto"
-                            onChange={handleSeasonFilters}
-                            min={1}
-                            max={lastSeason}
-                        //className={classes.slider}
-                        />
-                    </SliderContainer>}
-                </FilterContainer>}
+                        {showSeasonFilters && (
+                            <SliderContainer>
+                                <Slider
+                                    value={seasonFilters}
+                                    valueLabelDisplay="auto"
+                                    onChange={handleSeasonFilters}
+                                    min={1}
+                                    max={lastSeason}
+                                    //className={classes.slider}
+                                />
+                            </SliderContainer>
+                        )}
+                    </FilterContainer>
+                )}
 
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    centered
-                >
-                    <Tab disableRipple component={Link} to="/search/dances" className={classes.tabs} label="DANCES" value="/search/dances" />
-                    <Tab disableRipple component={Link} to="/search/teams" className={classes.tabs} label="TEAMS" value="/search/teams" />
-                    <Tab disableRipple component={Link} to="/search/pros" className={classes.tabs} label="PROS" value="/search/pros" />
-                    <Tab disableRipple component={Link} to="/search/fans" className={classes.tabs} label="FANS" value="/search/fans" />
+                <Tabs value={value} onChange={handleChange} centered>
+                    <Tab
+                        disableRipple
+                        component={Link}
+                        to="/search/dances"
+                        className={classes.tabs}
+                        label="DANCES"
+                        value="/search/dances"
+                    />
+                    <Tab
+                        disableRipple
+                        component={Link}
+                        to="/search/teams"
+                        className={classes.tabs}
+                        label="TEAMS"
+                        value="/search/teams"
+                    />
+                    <Tab
+                        disableRipple
+                        component={Link}
+                        to="/search/pros"
+                        className={classes.tabs}
+                        label="PROS"
+                        value="/search/pros"
+                    />
+                    <Tab
+                        disableRipple
+                        component={Link}
+                        to="/search/fans"
+                        className={classes.tabs}
+                        label="FANS"
+                        value="/search/fans"
+                    />
                 </Tabs>
             </SearchContainer>
 
-{/* change to switch case before return? */}
-            {value === "/search/dances" && <Dances key={key} search={searchVal} filters={filters} />}
-            {value === "/search/teams" && <Teams key={key} search={searchVal} />}
-            {value === "/search/pros" && <Pros key={key} search={searchVal} />}
-            {value === "/search/fans" && <Fans key={key} search={searchVal} />}
+            {/* change to switch case before return? */}
+            {value === '/search/dances' && (
+                <Dances key={key} search={searchVal} filters={filters} />
+            )}
+            {value === '/search/teams' && (
+                <Teams key={key} search={searchVal} />
+            )}
+            {value === '/search/pros' && <Pros key={key} search={searchVal} />}
+            {value === '/search/fans' && <Fans key={key} search={searchVal} />}
 
             <BottomNavBar />
         </Page>
-    )
+    );
 }
 
-const Page = styled(Paper)`
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;
-
-// const InnerContainer = styled.div`
-//     width: 100%;
-//     display: flex;
-//     flex-direction: column;
-//     position: relative;
-//     align-items: center;
-//     padding-bottom: 70px;
-// `;
-
-
 const SearchContainer = styled.div`
-
     width: 100%;
     //min-height: 170px;
     position: relative;
@@ -253,55 +301,6 @@ const SearchBoxContainer = styled.div`
     margin: 10px auto;
     display: flex;
     flex-direction: row;
-`;
-
-const SearchBox = styled.div`
-    width: 80%;
-    //height: 40px;
-    //border: 2px solid white;
-    border-radius: 5px;
-    background-color: ${props => props.toggleDark ? 'black' : 'white'};
-    display: flex;
-    flex-direction: row;
-    margin-right: auto;
-    padding: 8px;
-`;
-
-const SearchInput = styled(TextField)`
-    width: 100;
-    //height: fit-content;
-    margin: auto 0;
-    //color: grey;
-`;
-
-const SearchInput1 = styled.input`
-    width: 90%;
-    height: 100%;
-    margin: auto 0;
-    background: transparent;
-    //height: 40px;
-    //border: 2px solid white;
-    border: none;
-    //border-radius: 10px;
-    //padding: 0.5em 0em 0.5em 1.5em;
-    //background: rgba(255, 255, 255, 0.4);
-    //background: rgba(255, 255, 255, .3);
-    //color: white !important;
-    //display: block;
-    //margin: 0 auto;
-    font-family: 'Urbanist', sans-serif;
-    font-size: 18px;
-    &:focus {
-        outline: none;
-    };
-    ::placeholder {
-        //color: black;
-        opacity: 1;
-        //font-family: 'Urbanist', sans-serif;
-    }
-    ::-webkit-search-decoration, ::-webkit-search-cancel-button, ::-webkit-search-results-button, ::-webkit-search-results-decoration {
-        display: none;
-    };
 `;
 
 const FilterContainer = styled.div`

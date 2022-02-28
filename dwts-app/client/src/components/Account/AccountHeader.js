@@ -80,7 +80,8 @@ function AccountHeader() {
                     {/* <AccountSettings /> */}
                     <Button onClick={() => setOpen(true)}><SettingsIcon /></Button>
                 </Box>
-                <Typography variant='h4'>{user.username}</Typography>
+                <Typography variant='h4'>{user.nickname}</Typography>
+                <Typography variant='h5'>@{user.username}</Typography>
                 {user.watching_since > 0 && <Typography variant='subtitle1'>Watching since season {user.watching_since}</Typography>}
 
                 {/* {Array.isArray(favorites) && <ContentContainer>
@@ -99,7 +100,7 @@ function AccountHeader() {
                     </Carousel>
                 </ContentContainer>} */}
 
-                <Button onClick={logout}>
+                <Button variant='filled' onClick={logout}>
                     Logout
                 </Button>
             </AccountContainer>

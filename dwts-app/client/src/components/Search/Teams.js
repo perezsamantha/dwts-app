@@ -3,14 +3,13 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchTeams, searchTeams } from '../../actions/teams';
-import { CircularProgress, Paper } from '@mui/material';
+import { CircularProgress, Paper, Typography } from '@mui/material';
 import TeamsPreview from '../Previews/TeamsPreview';
 
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
 import responsive from '../shared/responsive';
-import { fetchPros } from '../../actions/pros';
 
 import { createLoadingSelector } from '../../api/selectors';
 
@@ -22,9 +21,9 @@ const useStyles = makeStyles({
         flexGrow: 1,
     },
     progress: {
-        margin: "auto",
-    }
-})
+        margin: 'auto',
+    },
+});
 
 function Teams(props) {
     const classes = useStyles();
@@ -38,16 +37,16 @@ function Teams(props) {
     // const history = useHistory();
     //const input = { search: props.search };
 
-    const teams = useSelector(state => state.data.teams);
+    const teams = useSelector((state) => state.data.teams);
     //const loading = useSelector(state => state.teams.loading);
-    const pros = useSelector(state => state.data.pros);
-    const celebs = useSelector(state => state.data.celebs);
+    const pros = useSelector((state) => state.data.pros);
+    const celebs = useSelector((state) => state.data.celebs);
 
     //const loadingSelector = createLoadingSelector([actionType.PROSEARCH, actionType.TEAMSEARCH]);
-    const loading = useSelector(state => state.loading.TEAMSEARCH);
+    const loading = useSelector((state) => state.loading.TEAMSEARCH);
     //const isFetching = useSelector((state) => loadingSelector(state));
-    
-    const arr = [];
+
+    let arr = [];
 
     useEffect(() => {
         const input = { search: props.search };
@@ -55,68 +54,77 @@ function Teams(props) {
         dispatch(fetchTeams());
     }, [dispatch, props]);
 
-    // bug: following functions load before teams is correctly updated
-    //      tried combining in useEffect() but no luck :()
-    //      probably need to utilize selectors with loading flags in reducers
-    //      https://medium.com/stashaway-engineering/react-redux-tips-better-way-to-handle-loading-flags-in-your-reducers-afda42a804c6
-    if (Array.isArray(teams)) {
+    if (!loading) {
         const categorizeBySeason = teams.reduce((acc, item) => {
-            if (!acc[item.season]) {
-                acc[item.season] = [];
+            if (!acc[item.season_id]) {
+                acc[item.season_id] = [];
             }
 
-            acc[item.season].push(item);
+            acc[item.season_id].push(item);
             return acc;
-        }, {})
+        }, {});
 
-
-        for (let [season] of Object.entries(categorizeBySeason)) {
-            arr.push(season);
+        for (let [season_id] of Object.entries(categorizeBySeason)) {
+            arr.push(season_id);
         }
-    }
 
+        // reverses array, to start with newst season working backwards
+        arr.reverse();
+    }
 
     return (
         <Container>
-
-            {loading ? <CircularProgress className={classes.progress} /> :
-                // <ContentContainer>
-                //     <Grid container justify="flex-start" className={classes.root} spacing={2}>
-                //         {teams.map((team, index) => (
-                //             <Grid key={index} item>
-                //             <InnerContainer>
-                //                 <Link to={{ pathname: `/teams/${team._id}` }} style={{ textDecoration: "none" }} >
-                //                 {/* <TeamsPreview team={team}/> */}
-                //                 <TeamsPreview team={team} />
-                //             </Link>
-                //             </InnerContainer>
-                //             </Grid>
-                //         ))}
-                //     </Grid>
-                // </ContentContainer>
+            {loading ? (
+                <CircularProgress className={classes.progress} />
+            ) : (
                 <div>
-                    {/* {arr.map((item, index) => ( */}
-                        <ContentContainer >
-                            <Subtitle>Season __</Subtitle>
+                    {arr.map((item, index) => (
+                        <ContentContainer>
+                            <Typography variant="h5" my={1}>
+                                Season {item}
+                            </Typography>
                             <Carousel
                                 responsive={responsive}
                                 partialVisible={true}
                             >
-                                {/* {teams.filter(team => Number(team.season) === Number(item)) */}
-                                    {teams.map((team, index) => (
-
-                                        <Link key={index} to={{ pathname: `/teams/${team.id}` }} style={{ textDecoration: "none" }} >
-                                            <TeamsPreview team={team} pro={pros.find(pro => pro.id === team.pro_id)} celeb={celebs.find(celeb => celeb.id === team.celeb_id)} />
+                                {teams
+                                    .filter(
+                                        (team) =>
+                                            Number(team.season_id) ===
+                                            Number(item)
+                                    )
+                                    .map((team, index) => (
+                                        <Link
+                                            key={index}
+                                            to={{
+                                                pathname: `/teams/${team.id}`,
+                                            }}
+                                            style={{
+                                                textDecoration: 'inherit',
+                                                color: 'inherit',
+                                            }}
+                                        >
+                                            <TeamsPreview
+                                                team={team}
+                                                pro={pros.find(
+                                                    (pro) =>
+                                                        pro.id === team.pro_id
+                                                )}
+                                                celeb={celebs.find(
+                                                    (celeb) =>
+                                                        celeb.id ===
+                                                        team.celeb_id
+                                                )}
+                                            />
                                         </Link>
                                     ))}
                             </Carousel>
                         </ContentContainer>
-                    
-                    {/* } */}
+                    ))}
                 </div>
-            }
+            )}
         </Container>
-    )
+    );
 }
 
 const Container = styled.div`
@@ -128,45 +136,9 @@ const Container = styled.div`
     padding-bottom: 70px;
 `;
 
-// const Spacer = styled.div`
-//     margin: 15px;
-// `;
-
-// const SubtitleContainer = styled.div`
-//     clear: both;
-//     margin: 0 auto;
-//     width: 75%;
-// `;
-
-const Subtitle = styled.h2`
-    //float: left;
-    //color: rgba(0, 0, 0, 0.8);
-    margin: 0 auto 15px auto;
-    //color: white;
-`;
-
-const AdminAdd = styled.div`
-    margin: 2px;
-    width: 20%;
-    margin-right: 0;
-    margin-left: auto;
-`;
-
-// const Divider = styled.div`
-//     width: 75%;
-//     margin: 10px auto;
-//     height: 2px;
-//     background: white;
-// `;
-
 const ContentContainer = styled.div`
-    width: 75%;
+    width: 85%;
     margin: 15px auto;
 `;
-
-// const InnerContainer = styled.div`
-//     width: 100%;
-//     float: left;
-// `;
 
 export default Teams;

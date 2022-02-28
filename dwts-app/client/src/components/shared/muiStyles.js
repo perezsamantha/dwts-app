@@ -1,71 +1,6 @@
-
-import styled from "styled-components";
-import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, FormControl, InputLabel, Select, MenuItem, CircularProgress, FormControlLabel, Checkbox, ListItemText, Input, Chip, ListSubheader, Slider, Avatar } from '@mui/material';
-import CloseIcon from '@material-ui/icons/Close';
-import AddIcon from '@material-ui/icons/Add';
-import SettingsIcon from '@material-ui/icons/Settings';
-import { KeyboardDatePicker } from "@material-ui/pickers";
-import { makeStyles } from "@mui/styles";
-
-export const AddButton = styled(Button)`
-    min-height: 10px;
-    min-width: 10px;
-    max-height: 10px;
-    max-width: 10px;
-    //color: grey;
-`;
-
-export const OpenSettings = styled(SettingsIcon)`
-    //color: lightgrey;
-`;
-
-export const AddJudge = styled(Button)`
-    && { 
-        margin: 15px auto 5px auto;
-    }
-`;
-
-export const FormControl1 = styled(FormControl)`
-    width: 96%;
-    margin-right: 2%;
-`;
-
-export const TextField1 = styled(TextField)`
-    width: 96%;
-    margin-right: 2%;
-`;
-
-export const FormControl2 = styled(FormControl)`
-    width: 47%;
-    margin-right: 2%;
-`;
-
-export const TextField2 = styled(TextField)`
-    width: 47%;
-    margin-right: 2%;
-`;
-
-export const FormControl3 = styled(FormControl)`
-    width: 31%;
-    margin-right: 1.5%;
-`;
-
-export const FormControlJudge = styled(FormControl)`
-    width: 58%;
-    margin-right: 2%;
-`;
-
-export const FormControlScore = styled(FormControl)`
-    width: 28%;
-    margin-right: 2%;
-`;
-
-export const RemoveJudge = styled(CloseIcon)`
-    width: 1%;
-    //color: grey;
-    cursor: pointer;
-    margin-top: 20px;
-`;
+//import styled from 'styled-components';
+import styled from '@emotion/styled';
+import { Chip, Paper, TextField } from '@mui/material';
 
 export const ChipsWrapper = styled.div`
     display: flex;
@@ -76,7 +11,43 @@ export const IndividualChip = styled(Chip)`
     margin-right: 2px;
 `;
 
-export const KeyboardDatePicker2 = styled(KeyboardDatePicker)`
-    width: 47%;
-    margin-right: 2%;
+export const Page = styled(Paper)`
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `;
+
+// search
+
+export const Container = styled(Paper)`
+    width: 100%;
+    //min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding-bottom: 70px;
+`;
+
+export const ContentContainer = styled(Paper)`
+    width: 90%;
+    margin: 15px auto;
+`;
+
+export const SearchTextField = styled(TextField)(({ theme }) => ({
+    width: '90%',
+    '& .MuiOutlinedInput-root': {
+        background:
+            theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.04)' : 'white',
+        '&.Mui-focused': {
+            color: theme.palette.mode === 'light' ? 'black' : 'black',
+        },
+        '& .MuiOutlinedInput-notchedOutline': {
+            border: 'none',
+        },
+        '& .MuiSvgIcon-root': {
+            color: theme.palette.mode === 'light' ? 'black' : 'black',
+        },
+    },
+}));

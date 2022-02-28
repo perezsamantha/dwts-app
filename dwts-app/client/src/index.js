@@ -10,6 +10,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { BrowserRouter } from 'react-router-dom';
 
 const muiTheme = createTheme({
   palette: {
@@ -74,7 +75,9 @@ const store = createStore(reducers, compose(applyMiddleware(thunk), window.__RED
 ReactDOM.render(
   <Provider store={store}>
     {/* <ThemeProvider theme={muiTheme}> */}
+    <BrowserRouter>
     <App />
+    </BrowserRouter>
     {/* </ThemeProvider> */}
   </Provider>,
   document.getElementById('root')

@@ -17,54 +17,58 @@ import { addDancePic, likeDance } from '../../actions/dances';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
-import { Container, TeamName, HiddenInput, Label, FileInput } from '../shared/shared.js'
+import {
+    Container,
+    TeamName,
+    HiddenInput,
+    Label,
+    FileInput,
+} from '../shared/shared.js';
 import CheckJWT from '../shared/logout';
 
 import TeamsPreview from '../Previews/TeamsPreview';
-import DanceSettings from '../Dances/DanceSettings';
 import { fetchPros } from '../../actions/pros';
-
 
 const useStyles = makeStyles({
     avi: {
-        width: "100px",
-        height: "100px",
-        margin: "auto",
+        width: '100px',
+        height: '100px',
+        margin: 'auto',
     },
     statsGrid: {
         flexGrow: 1,
     },
     progress: {
-        margin: "auto",
+        margin: 'auto',
     },
     back: {
-        float: "left",
-        margin: "0",
-        position: "relative",
+        float: 'left',
+        margin: '0',
+        position: 'relative',
     },
     slider: {
-        width: "20ch",
-        position: "relative",
+        width: '20ch',
+        position: 'relative',
     },
     editor: {
-        width: "100%",
-        margin: "10px auto",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        width: '100%',
+        margin: '10px auto',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     root: {
         flexGrow: 1,
     },
     icons: {
-        color: "lightgrey",
+        color: 'lightgrey',
     },
     button: {
-        margin: "0",
-        padding: "0",
-        maxWidth: "20px",
+        margin: '0',
+        padding: '0',
+        maxWidth: '20px',
     },
-})
+});
 
 function DanceCard() {
     CheckJWT();
@@ -72,10 +76,10 @@ function DanceCard() {
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('profile'));
     const dispatch = useDispatch();
-    const dance = useSelector(state => state.dances.dances);
-    const loading = useSelector(state => state.dances.loading);
-    const teams = useSelector(state => state.teams.teams);
-    const pros = useSelector(state => state.pros.pros);
+    const dance = useSelector((state) => state.dances.dances);
+    const loading = useSelector((state) => state.dances.loading);
+    const teams = useSelector((state) => state.teams.teams);
+    const pros = useSelector((state) => state.pros.pros);
     const { id } = useParams();
 
     const [picData, setPicData] = useState(null);
@@ -83,12 +87,12 @@ function DanceCard() {
 
     const handleFile = (e) => {
         setPicData(e.target.files[0]);
-    }
+    };
 
     const handleScale = (e, newValue) => {
         e.preventDefault();
         setScaleValue(newValue);
-    }
+    };
 
     const handlePicture = (e) => {
         e.preventDefault();
@@ -99,19 +103,19 @@ function DanceCard() {
             const canvas = editor.getImageScaledToCanvas();
 
             canvas.toBlob(function (blob) {
-                data.append("pictures", blob, `${Date.now()}-${picData.name}`);
+                data.append('pictures', blob, `${Date.now()}-${picData.name}`);
                 dispatch(addDancePic(id, data));
                 dispatch(findDanceById(id));
                 setPicData(null);
-            })
+            });
         }
-    }
+    };
 
     const [editor, setEditor] = useState(null);
 
     const setEditorRef = (editor) => {
         setEditor(editor);
-    }
+    };
 
     useEffect(() => {
         dispatch(findDanceById(id));
@@ -119,40 +123,57 @@ function DanceCard() {
         dispatch(fetchPros());
         setScaleValue(1);
         setPicData(null);
-    }, [dispatch, id])
+    }, [dispatch, id]);
 
     const Likes = () => {
         if (dance.likes?.length > 0) {
-            return dance.likes.find((like) => like === user?.result?._id) ?
-                (
-                    <><FavoriteIcon className={classes.icons} /></>
-                ) : (
-                    <><FavoriteBorderIcon className={classes.icons} /></>
-                )
+            return dance.likes.find((like) => like === user?.result?._id) ? (
+                <>
+                    <FavoriteIcon className={classes.icons} />
+                </>
+            ) : (
+                <>
+                    <FavoriteBorderIcon className={classes.icons} />
+                </>
+            );
         }
 
-        return <><FavoriteBorderIcon className={classes.icons} /></>;
-    }
+        return (
+            <>
+                <FavoriteBorderIcon className={classes.icons} />
+            </>
+        );
+    };
 
-    return (
-
-        (loading || Array.isArray(dance)) || !Array.isArray(pros) ? <CircularProgress className={classes.progress} /> :
-            <Container>
-                <Header>
-                    <Button className={classes.back} onClick={() => navigate(-1)}>
-                        <ArrowBackIosIcon className={classes.icons} />
+    return loading || Array.isArray(dance) || !Array.isArray(pros) ? (
+        <CircularProgress className={classes.progress} />
+    ) : (
+        <Container>
+            <Header>
+                <Button className={classes.back} onClick={() => navigate(-1)}>
+                    <ArrowBackIosIcon className={classes.icons} />
+                </Button>
+                <LikesContainer>
+                    <Button
+                        className={classes.button}
+                        disableRipple
+                        onClick={() => dispatch(likeDance(id))}
+                    >
+                        <Likes />
                     </Button>
-                    <LikesContainer>
-                        <Button className={classes.button} disableRipple onClick={() => dispatch(likeDance(id))}>
-                            <Likes />
-                        </Button>
-                        {dance.likes?.length > 0 && <LikeText>{dance.likes.length}</LikeText>}
-                    </LikesContainer>
-                </Header>
-                <Avatar className={classes.avi} alt={dance.style} src={dance.coverPic} />
+                    {dance.likes?.length > 0 && (
+                        <LikeText>{dance.likes.length}</LikeText>
+                    )}
+                </LikesContainer>
+            </Header>
+            <Avatar
+                className={classes.avi}
+                alt={dance.style}
+                src={dance.coverPic}
+            />
 
-                <ContentContainer>
-                    {/* <Grid container justify="center" className={classes.root} spacing={2}>
+            <ContentContainer>
+                {/* <Grid container justify="center" className={classes.root} spacing={2}>
                         {dance.teams.map((id, index) => (
                             <div key={index} style={{ margin: "5px" }}>
                                 {Array.isArray(teams) && teams.filter(team => team._id === id)
@@ -166,54 +187,74 @@ function DanceCard() {
                             </div>
                         ))}
                     </Grid> */}
-                </ContentContainer>
+            </ContentContainer>
 
-                {/* <TeamName>Dancer Names</TeamName> */}
-                <Season>Season {dance.season} &bull; Week {dance.week} {dance.night && `\u2022 Night ${dance.night}`}</Season>
-                <Season>{dance.style}</Season>
-                {dance?.song_title && dance?.song_artist &&<Season>{dance.song_title} - {dance.song_artist}</Season>}
-                {dance.running_order && <Placement>Running Order - {dance.running_order}</Placement>}
+            {/* <TeamName>Dancer Names</TeamName> */}
+            <Season>
+                Season {dance.season} &bull; Week {dance.week}{' '}
+                {dance.night && `\u2022 Night ${dance.night}`}
+            </Season>
+            <Season>{dance.style}</Season>
+            {dance?.song_title && dance?.song_artist && (
+                <Season>
+                    {dance.song_title} - {dance.song_artist}
+                </Season>
+            )}
+            {dance.running_order && (
+                <Placement>Running Order - {dance.running_order}</Placement>
+            )}
 
-                <BasicText>Judges Scores</BasicText>
-                <Grid container justify="center" className={classes.statsGrid} spacing={2}>
-                    {dance?.scores_judges.map((judge, index) => (
+            <BasicText>Judges Scores</BasicText>
+            <Grid
+                container
+                justify="center"
+                className={classes.statsGrid}
+                spacing={2}
+            >
+                {dance?.scores_judges.map((judge, index) => (
+                    <Grid key={index} item>
+                        <BasicText>
+                            {judge.substring(0, judge.lastIndexOf(' '))}
+                        </BasicText>
+                        <GridText>{dance.scores_values[index]}</GridText>
+                    </Grid>
+                ))}
+            </Grid>
+
+            {dance?.link && <DanceLink>{dance?.link}</DanceLink>}
+            {dance?.theme && <Placement>{dance.theme} Week</Placement>}
+
+            {dance?.extra && <Placement>Notes - {dance.extra}</Placement>}
+
+            <ContentContainer>
+                <Grid
+                    container
+                    justify="center"
+                    className={classes.root}
+                    spacing={2}
+                >
+                    {dance.pictures?.map((picture, index) => (
                         <Grid key={index} item>
-                            <BasicText>{judge.substring(0, judge.lastIndexOf(" "))}</BasicText>
-                            <GridText>{dance.scores_values[index]}</GridText>
+                            <InnerContainer>
+                                <Picture src={picture} />
+                            </InnerContainer>
                         </Grid>
                     ))}
                 </Grid>
+            </ContentContainer>
+            <FileInput>
+                <HiddenInput
+                    type="file"
+                    accept=".jpeg, .jpg, .png"
+                    onChange={handleFile}
+                    id="pic"
+                />
+                <Label htmlFor="pic">
+                    <AddAPhotoIcon className={classes.icons} />
+                </Label>
 
-                {dance?.link && <DanceLink>{dance?.link}</DanceLink>}
-                {dance?.theme && <Placement>{dance.theme} Week</Placement>}
-
-                {dance?.extra && <Placement>Notes - {dance.extra}</Placement>}
-
-                <ContentContainer>
-                    <Grid container justify="center" className={classes.root} spacing={2}>
-
-                        {dance.pictures?.map((picture, index) => (
-                            <Grid key={index} item>
-                                <InnerContainer>
-                                    <Picture src={picture} />
-                                </InnerContainer>
-                            </Grid>
-                        ))}
-
-                    </Grid>
-                </ContentContainer>
-                <FileInput>
-                    <HiddenInput
-                        type="file"
-                        accept=".jpeg, .jpg, .png"
-                        onChange={handleFile}
-                        id="pic"
-                    />
-                    <Label htmlFor="pic">
-                        <AddAPhotoIcon className={classes.icons} />
-                    </Label>
-
-                    {picData != null && <div>
+                {picData != null && (
+                    <div>
                         <AvatarEditor
                             image={picData}
                             width={200}
@@ -224,17 +265,21 @@ function DanceCard() {
                             ref={setEditorRef}
                             className={classes.editor}
                         />
-                        <Slider className={classes.slider} value={scaleValue} onChange={handleScale} min={1} max={5} step={0.01} />
+                        <Slider
+                            className={classes.slider}
+                            value={scaleValue}
+                            onChange={handleScale}
+                            min={1}
+                            max={5}
+                            step={0.01}
+                        />
                         <AddPic onClick={handlePicture}>Add Picture</AddPic>
-                    </div>}
-                </FileInput>
-
-                {user.result.role === "admin" && <DanceSettings id={dance.id} />}
-                
-            </Container>
-
+                    </div>
+                )}
+            </FileInput>
+        </Container>
     );
-};
+}
 
 const LikesContainer = styled.div`
     float: right;
@@ -287,14 +332,17 @@ const BasicText = styled.h6`
     color: white;
 `;
 
-
-
 const AddPic = styled.button`
     display: block;
     position: relative;
     width: fit-content;
     border-radius: 25px;
-    background: linear-gradient(99deg, rgba(198,161,67,1) 0%, rgba(232,216,136,1) 55%, rgba(198,161,67,1) 100%);
+    background: linear-gradient(
+        99deg,
+        rgba(198, 161, 67, 1) 0%,
+        rgba(232, 216, 136, 1) 55%,
+        rgba(198, 161, 67, 1) 100%
+    );
     box-shadow: 0 4px 7px rgba(0, 0, 0, 0.2);
     display: flex;
     align-items: center;
@@ -302,7 +350,7 @@ const AddPic = styled.button`
     color: #fff;
     font-weight: bold;
     cursor: pointer;
-    transition: transform .2s ease-out;
+    transition: transform 0.2s ease-out;
     padding: 10px;
     overflow: hidden;
     font-size: 10px;
@@ -320,12 +368,12 @@ const InnerContainer = styled.div`
 `;
 
 const Picture = styled.img`
-   width: 100px;
-   height: 100px;
-   display: flex;
-   flex-direction: column;
-   border-radius: 15px;
-   position: relative;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+    position: relative;
 `;
 
 const DanceLink = styled.a`
