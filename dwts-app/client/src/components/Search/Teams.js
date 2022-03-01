@@ -50,8 +50,8 @@ function Teams(props) {
 
     useEffect(() => {
         const input = { search: props.search };
-        //dispatch(searchTeams(input));
-        dispatch(fetchTeams());
+        dispatch(searchTeams(input));
+        //dispatch(fetchTeams());
     }, [dispatch, props]);
 
     if (!loading) {
@@ -105,16 +105,8 @@ function Teams(props) {
                                             }}
                                         >
                                             <TeamsPreview
+                                                key={index}
                                                 team={team}
-                                                pro={pros.find(
-                                                    (pro) =>
-                                                        pro.id === team.pro_id
-                                                )}
-                                                celeb={celebs.find(
-                                                    (celeb) =>
-                                                        celeb.id ===
-                                                        team.celeb_id
-                                                )}
                                             />
                                         </Link>
                                     ))}

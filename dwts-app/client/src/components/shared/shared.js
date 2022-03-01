@@ -1,4 +1,3 @@
-
 import { Avatar, Paper } from '@mui/material';
 import styled from 'styled-components';
 
@@ -91,7 +90,7 @@ export const Details = styled.h4`
     letter-spacing: 0.05em;
     //color: rgb(179, 179, 179);
     max-width: 85%;
-    color: ${props => props.lightMode ? 'red' : 'black'}
+    color: ${(props) => (props.lightMode ? 'red' : 'black')};
 `;
 
 /* const GridText = styled.h6`
@@ -151,16 +150,18 @@ const InnerContainer = styled.div`
 
  */
 export const Picture = styled.img`
-   width: 100px;
-   height: 100px;
-   display: flex;
-   flex-direction: column;
-   border-radius: 15px;
-   position: relative;
-   box-shadow: 1px 5px 15px lightgrey;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+    position: relative;
+    box-shadow: 1px 5px 15px lightgrey;
 `;
 export const SocialsRow = styled.div`
     width: 100%;
+    display: flex;
+    flex-direction: column;
 `;
 
 // main container for search pages
@@ -183,9 +184,7 @@ export const HiddenInput = styled.input`
     position: absolute;
 `;
 
-export const Label = styled.label`
-
-`;
+export const Label = styled.label``;
 
 export const FileInput = styled.div`
     display: flex;

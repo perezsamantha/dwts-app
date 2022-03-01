@@ -10,11 +10,9 @@ import Pros from '../components/Search/Pros';
 import {
     Chip,
     InputAdornment,
-    Paper,
     Slider,
     Tab,
     Tabs,
-    TextField,
     Typography,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -87,11 +85,11 @@ function Search(props) {
 
     const placeholderText = (value) => {
         if (value === '/search/dances') {
-            setPlaceholder('Style, song, team');
+            setPlaceholder('Song title, song artist');
         } else if (value === '/search/teams') {
             setPlaceholder('Celebrity, professional');
         } else if (value === '/search/pros') {
-            setPlaceholder('Name ');
+            setPlaceholder('First name, last name');
         } else if (value === '/search/fans') {
             setPlaceholder('Username, nickname');
         }

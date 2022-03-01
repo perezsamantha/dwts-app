@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { Avatar, Button, Grid } from '@mui/material';
+import React, { useEffect } from 'react';
+import { Button, Grid, Link, Paper, Typography } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 import { CircularProgress } from '@mui/material';
@@ -8,65 +7,28 @@ import { useDispatch, useSelector } from 'react-redux';
 import { findTeamById } from '../../actions/teams';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import AvatarEditor from 'react-avatar-editor';
-import { Slider } from '@mui/material';
-import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import { addTeamPic, likeTeam } from '../../actions/teams';
 
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 
 import {
-    Container,
-    TeamName,
     CardContainer,
     CardAvatar,
     Header,
     LikesContainer,
+    Picture,
+    SocialsRow,
 } from '../shared/shared.js';
 import { makeStyles } from '@mui/styles';
 import ExtraPicUpload from '../shared/ExtraPicUpload';
 import * as tableType from '../../constants/tableTypes';
-import { convertPlacement } from '../shared/functions';
+import { convertPlacement, Likes } from '../shared/functions';
 
 const useStyles = makeStyles({
-    avi: {
-        width: '100px',
-        height: '100px',
-        margin: 'auto',
-    },
-    progress: {
-        margin: 'auto',
-    },
-    back: {
-        float: 'left',
-        margin: '0',
-        position: 'relative',
-    },
-    slider: {
-        width: '20ch',
-        position: 'relative',
-    },
-    editor: {
-        width: '100%',
-        margin: '10px auto',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
     root: {
         flexGrow: 1,
-    },
-    icons: {
-        color: 'lightgrey',
-    },
-    button: {
-        margin: '0',
-        padding: '0',
-        maxWidth: '20px',
     },
 });
 
@@ -91,120 +53,116 @@ function TeamCard(props) {
     const pros = useSelector((state) => state.data.pros);
     const celebs = useSelector((state) => state.data.celebs);
     const { id } = useParams();
+    const likes = useSelector((state) => state.likes.teams);
 
     useEffect(() => {
         dispatch(findTeamById(id));
         //const input = { search: id };
         //dispatch(searchDances(input));
         //dispatch(fetchPros());
-    }, [dispatch]);
+    }, [dispatch, id]);
 
     const pro = pros.find((pro) => pro.id === team.pro_id);
     const celeb = celebs.find((celeb) => celeb.id === team.celeb_id);
     const placement = convertPlacement(team.placement);
 
-    // move to shared exports?
-    const Likes = () => {
-        if (team.likes?.length > 0) {
-            return team.likes.find((like) => like === user?.result?._id) ? (
-                <>
-                    <FavoriteIcon className={classes.icons} />
-                </>
-            ) : (
-                <>
-                    <FavoriteBorderIcon className={classes.icons} />
-                </>
-            );
-        }
-
-        return (
-            <>
-                <FavoriteBorderIcon className={classes.icons} />
-            </>
-        );
-    };
-
     return loading ? (
         <CircularProgress className={classes.progress} />
     ) : (
-        <CardContainer>
+        <CardContainer elevation={0}>
             <Header>
-                <Button className={classes.back} onClick={() => navigate(-1)}>
-                    <ArrowBackIosIcon className={classes.icons} />
+                <Button onClick={() => navigate(-1)}>
+                    <ArrowBackIosIcon />
                 </Button>
-                <CardAvatar src={team.cover_pic} />
+                <CardAvatar
+                    src={team.cover_pic ? team.cover_pic : '/defaultPic.jpeg'}
+                />
                 <LikesContainer>
                     <Button
                         disableRipple
                         onClick={() => dispatch(likeTeam(id))}
                     >
-                        <Likes />
+                        <Likes user={user} likes={likes} />
                     </Button>
-                    {team?.likes?.length > 0 && (
-                        <LikeText>{team.likes.length}</LikeText>
-                    )}
+                    <Typography variant="subtitle1">{likes.length}</Typography>
                 </LikesContainer>
             </Header>
 
-            <TeamName>
+            <Typography variant="h4" gutterBottom>
                 {celeb?.first_name} {celeb?.last_name} & {pro?.first_name}{' '}
                 {pro?.last_name}
-            </TeamName>
-            {team.team_name && <TeamName>#team{team.team_name}</TeamName>}
-            <Season>Season {team.season_id}</Season>
-            {team.placement && <Placement>{placement} Place</Placement>}
+            </Typography>
+            {team.team_name && (
+                <Typography variant="h5">#team{team.team_name}</Typography>
+            )}
+            <Typography variant="h5" mb={1}>
+                Season {team.season_id}
+            </Typography>
+            {team.placement && (
+                <Typography variant="h5">{placement} Place</Typography>
+            )}
             <Grid
                 container
                 justifyContent="center"
                 className={classes.root}
                 spacing={2}
+                mb={2}
             >
                 <Grid item>
-                    <BasicText>DANCES</BasicText>
-                    {/* <GridText>{dances?.length}</GridText> */}
+                    <Typography variant="subtitle1">DANCES</Typography>
+                    {/* <Typography variant="subtitle1">{dances?.length}</Typography> */}
                 </Grid>
                 <Grid item>
-                    <BasicText>TENS</BasicText>
-                    {/* <GridText>{dances?.filter(dance => dance.scores.some(score => score.score === 10)).length}</GridText> */}
+                    <Typography variant="subtitle1">TENS</Typography>
+                    {/* <Typography variant="subtitle1">{dances?.filter(dance => dance.scores.some(score => score.score === 10)).length}</Typography> */}
                 </Grid>
                 <Grid item>
-                    <BasicText>PERFECTS</BasicText>
-                    {/* <GridText>{dances?.filter(dance => dance.isPerfect === true).length}</GridText> */}
+                    <Typography variant="subtitle1">PERFECTS</Typography>
+                    {/* <Typography variant="subtitle1">{dances?.filter(dance => dance.isPerfect === true).length}</Typography> */}
                 </Grid>
             </Grid>
 
-            {/* {dances && <BasicText>DANCES (IN ORDER)</BasicText>}
+            {/* {dances && <Typography variant="subtitle1">DANCES (IN ORDER)</Typography>}
                 {dances?.map(dance => 
-                    <DanceText>{dance.style} - {dance?.scores.reduce(((a, b) => a + b["score"]), 0)}</DanceText>)
+                    <Typography variant="subtitle1">{dance.style} - {dance?.scores.reduce(((a, b) => a + b["score"]), 0)}</Typography>)
                 } */}
-            <BasicText>SOCIALS</BasicText>
+            <Typography variant="h5" mb={2}>
+                SOCIALS
+            </Typography>
             <Grid
                 container
                 justifyContent="center"
                 className={classes.root}
                 spacing={2}
+                mb={2}
             >
                 <Grid item>
                     <InstagramIcon className={classes.icons} />
                     <SocialsRow>
                         {celeb?.instagram && (
-                            <SocialsText
+                            <Link
                                 href={
                                     'https://www.instagram.com/' +
                                     celeb.instagram
                                 }
+                                target="_blank"
+                                rel="noopener"
+                                underline="none"
                             >
                                 @{celeb.instagram}
-                            </SocialsText>
+                            </Link>
                         )}
                         {pro?.instagram && (
-                            <SocialsText
+                            <Link
                                 href={
                                     'https://www.instagram.com/' + pro.instagram
                                 }
+                                target="_blank"
+                                rel="noopener"
+                                underline="none"
                             >
                                 @{pro.instagram}
-                            </SocialsText>
+                            </Link>
                         )}
                     </SocialsRow>
                 </Grid>
@@ -212,20 +170,26 @@ function TeamCard(props) {
                     <TwitterIcon className={classes.icons} />
                     <SocialsRow>
                         {celeb?.twitter && (
-                            <SocialsText
+                            <Link
                                 href={
                                     'https://www.twitter.com/' + celeb.twitter
                                 }
+                                target="_blank"
+                                rel="noopener"
+                                underline="none"
                             >
                                 @{celeb.twitter}
-                            </SocialsText>
+                            </Link>
                         )}
                         {pro?.twitter && (
-                            <SocialsText
+                            <Link
                                 href={'https://www.twitter.com/' + pro.twitter}
+                                target="_blank"
+                                rel="noopener"
+                                underline="none"
                             >
                                 @{pro.twitter}
-                            </SocialsText>
+                            </Link>
                         )}
                     </SocialsRow>
                 </Grid>
@@ -233,128 +197,52 @@ function TeamCard(props) {
                     <FacebookIcon className={classes.icons} />
                     <SocialsRow>
                         {celeb?.tiktok && (
-                            <SocialsText
+                            <Link
                                 href={'https://www.tiktok.com/' + celeb.tiktok}
+                                target="_blank"
+                                rel="noopener"
+                                underline="none"
                             >
                                 @{celeb.tiktok}
-                            </SocialsText>
+                            </Link>
                         )}
                         {pro?.tiktok && (
-                            <SocialsText
+                            <Link
                                 href={'https://www.tiktok.com/' + pro.tiktok}
+                                target="_blank"
+                                rel="noopener"
+                                underline="none"
                             >
                                 @{pro.tiktok}
-                            </SocialsText>
+                            </Link>
                         )}
                     </SocialsRow>
                 </Grid>
             </Grid>
 
-            <BasicText>PICTURES</BasicText>
-            <ContentContainer>
-                <Grid
-                    container
-                    justifyContent="center"
-                    className={classes.root}
-                    spacing={2}
-                >
-                    {team?.pictures?.map((picture, index) => (
-                        <Grid key={index} item>
-                            <InnerContainer>
-                                <Picture src={picture} />
-                            </InnerContainer>
-                        </Grid>
-                    ))}
-                </Grid>
-            </ContentContainer>
+            <Typography variant="h5" mb={2}>
+                PICTURES
+            </Typography>
+
+            <Grid
+                container
+                justifyContent="center"
+                className={classes.root}
+                spacing={2}
+                mb={2}
+            >
+                {team?.pictures?.map((picture, index) => (
+                    <Grid key={index} item>
+                        <Paper elevation={0}>
+                            <Picture src={picture} />
+                        </Paper>
+                    </Grid>
+                ))}
+            </Grid>
 
             <ExtraPicUpload id={team.id} type={tableType.TEAM} />
         </CardContainer>
     );
 }
-
-const GridText = styled.h6`
-    font-size: 15px;
-    font-weight: 500;
-    margin: 2px auto 10px auto;
-    //color: lightgrey;
-`;
-
-const Season = styled.h5`
-    font-size: 20px;
-    font-weight: 500;
-    margin: 5px auto;
-    //color: lightgrey;
-`;
-
-const Placement = styled.h6`
-    font-size: 15px;
-    font-weight: 500;
-    margin: 2px auto 10px auto;
-    //color: grey;
-`;
-
-const LikeText = styled.h6`
-    font-size: 12px;
-    font-weight: 500;
-    text-align: center;
-    color: white;
-    margin: 10px 0;
-`;
-
-const BasicText = styled.h6`
-    /* font-size: 12px;
-    font-weight: 500;
-    margin: 5px 0;
-    //color: rgba(0, 0, 0, 0.6);
-    text-align: center;
-    padding: 5px 1px;
-    color: white; */
-`;
-
-const DanceText = styled.h6`
-    font-size: 12px;
-    font-weight: 500;
-    margin: 5px 0;
-    //color: lightgrey;
-`;
-
-const SocialsText = styled.a`
-    font-size: 12px;
-    font-weight: 500;
-    margin: 0 5px;
-    //color: black;
-    text-decoration: none;
-    //color: white
-`;
-
-const HiddenInput = styled.input`
-    opacity: 0;
-    width: 0.1px;
-    height: 0.1px;
-    position: absolute;
-`;
-
-const ContentContainer = styled.div`
-    width: 100%;
-    margin: 10px auto;
-`;
-
-const InnerContainer = styled.div`
-    width: 100%;
-`;
-
-const Picture = styled.img`
-    width: 100px;
-    height: 100px;
-    display: flex;
-    flex-direction: column;
-    border-radius: 15px;
-    position: relative;
-`;
-
-const SocialsRow = styled.div`
-    width: 100%;
-`;
 
 export default TeamCard;

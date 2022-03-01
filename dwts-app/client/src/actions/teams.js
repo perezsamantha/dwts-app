@@ -108,9 +108,20 @@ export const searchTeams = (input) => async (dispatch) => {
     dispatch({ type: actionType.TEAMSEARCH_REQUEST });
 
     try {
-        const { data } = await api.searchTeams(input);
+        const teams = await api.searchTeams(input);
+        const celebs = await api.fetchCelebs();
+        const pros = await api.fetchPros();
+        const seasons = await api.fetchSeasons();
 
-        dispatch({ type: actionType.TEAMSEARCH_SUCCESS, payload: data });
+        dispatch({
+            type: actionType.TEAMSEARCH_SUCCESS,
+            payload: {
+                teams: teams.data,
+                celebs: celebs.data,
+                pros: pros.data,
+                seasons: seasons.data,
+            },
+        });
     } catch (error) {
         dispatch({
             type: actionType.TEAMSEARCH_FAILURE,
