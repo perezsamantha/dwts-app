@@ -62,9 +62,9 @@ function DataGetter(props) {
                 episode.id === id
                     ? seasons.map((season) =>
                           season.id === episode.season_id && episode.night
-                              ? (string = `S${season.number} W${episode?.week} N${episode?.night}`)
+                              ? (string = `S${season.id} W${episode?.week} N${episode?.night}`)
                               : season.id === episode.season_id
-                              ? (string = `S${season.number} W${episode?.week}`)
+                              ? (string = `S${season.id} W${episode?.week}`)
                               : ''
                       )
                     : ''
@@ -79,12 +79,28 @@ function DataGetter(props) {
             break;
         case tableType.DANCE:
             let episodeNumber, danceName;
+            // dances.map((dance) =>
+            //     dance.id === id
+            //         ? (episodeNumber = DataGetter({
+            //               id: dance.episode_id,
+            //               type: tableType.EPISODE,
+            //           }))
+            //         : ''
+            // );
             dances.map((dance) =>
                 dance.id === id
-                    ? (episodeNumber = DataGetter({
-                          id: dance.episode_id,
-                          type: tableType.EPISODE,
-                      }))
+                    ? episodes.map((episode) =>
+                          episode.id === dance.episode_id
+                              ? seasons.map((season) =>
+                                    season.id === episode.season_id &&
+                                    episode.night
+                                        ? (episodeNumber = `S${season.id} W${episode?.week} N${episode?.night}`)
+                                        : season.id === episode.season_id
+                                        ? (episodeNumber = `S${season.id} W${episode?.week}`)
+                                        : ''
+                                )
+                              : ''
+                      )
                     : ''
             );
             dances.map((dance) =>
