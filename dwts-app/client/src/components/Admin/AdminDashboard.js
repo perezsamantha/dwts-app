@@ -20,17 +20,16 @@ import Typography from '@mui/material/Typography';
 import PeopleIcon from '@mui/icons-material/People';
 import { ListItemButton, Switch } from '@mui/material';
 import Table from './Table';
-import * as tableType from '../../constants/tableTypes'; 
+import * as tableType from '../../constants/tableTypes';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 180;
 
 function AdminDashboard(props) {
-    
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        
-    }, []);
+    useEffect(() => {}, []);
 
     const { window } = props;
     const [mobileOpen, setMobileOpen] = useState(false);
@@ -43,14 +42,14 @@ function AdminDashboard(props) {
 
     const handleComponent = (c) => {
         setTable(c);
-    }
+    };
 
     const setToggleDark = props.setToggleDark;
     const toggleDark = props.toggleDark;
 
     const handleMode = () => {
         setToggleDark(!toggleDark);
-    }
+    };
 
     const drawer = (
         <DrawerContainer>
@@ -60,69 +59,113 @@ function AdminDashboard(props) {
                     <ListItemIcon>
                         <PeopleIcon />
                     </ListItemIcon>
-                    <ListItemText>
-                        Dashboard
-                    </ListItemText>
+                    <ListItemText>Dashboard</ListItemText>
                 </ListItemButton>
-                <ListItemButton onClick={() => handleComponent(<Table key={1} type={tableType.CELEB} />)}>
-                    <ListItemText>
-                        Celebs
-                    </ListItemText>
+                <ListItemButton
+                    onClick={() =>
+                        handleComponent(
+                            <Table key={1} type={tableType.CELEB} />
+                        )
+                    }
+                >
+                    <ListItemText>Celebs</ListItemText>
                 </ListItemButton>
-                <ListItemButton onClick={() => handleComponent(<Table key={2} type={tableType.PRO} />)}>
-                    <ListItemText>
-                        Pros
-                    </ListItemText>
+                <ListItemButton
+                    onClick={() =>
+                        handleComponent(<Table key={2} type={tableType.PRO} />)
+                    }
+                >
+                    <ListItemText>Pros</ListItemText>
                 </ListItemButton>
-                <ListItemButton onClick={() => handleComponent(<Table key={3} type={tableType.SEASON} />)}>
-                    <ListItemText>
-                        Seasons
-                    </ListItemText>
+                <ListItemButton
+                    onClick={() =>
+                        handleComponent(
+                            <Table key={3} type={tableType.SEASON} />
+                        )
+                    }
+                >
+                    <ListItemText>Seasons</ListItemText>
                 </ListItemButton>
                 {/* Episodes nested list? */}
-                <ListItemButton onClick={() => handleComponent(<Table key={4} type={tableType.EPISODE} />)}>
-                    <ListItemText>
-                        Episodes
-                    </ListItemText>
+                <ListItemButton
+                    onClick={() =>
+                        handleComponent(
+                            <Table key={4} type={tableType.EPISODE} />
+                        )
+                    }
+                >
+                    <ListItemText>Episodes</ListItemText>
                 </ListItemButton>
-                <ListItemButton onClick={() => handleComponent(<Table key={5} type={tableType.TEAM} />)}>
-                    <ListItemText>
-                        Teams
-                    </ListItemText>
+                <ListItemButton
+                    onClick={() =>
+                        handleComponent(<Table key={5} type={tableType.TEAM} />)
+                    }
+                >
+                    <ListItemText>Teams</ListItemText>
                 </ListItemButton>
-                <ListItemButton onClick={() => handleComponent(<Table key={6} type={tableType.DANCE} />)}>
-                    <ListItemText>
-                        Dances
-                    </ListItemText>
+                <ListItemButton
+                    onClick={() =>
+                        handleComponent(
+                            <Table key={6} type={tableType.DANCE} />
+                        )
+                    }
+                >
+                    <ListItemText>Dances</ListItemText>
                 </ListItemButton>
                 {/* Dancers nested list? */}
-                <ListItemButton onClick={() => handleComponent(<Table key={7} type={tableType.JUDGE} />)}>
-                    <ListItemText>
-                        Judges
-                    </ListItemText>
+                <ListItemButton
+                    onClick={() =>
+                        handleComponent(
+                            <Table key={7} type={tableType.JUDGE} />
+                        )
+                    }
+                >
+                    <ListItemText>Judges</ListItemText>
                 </ListItemButton>
-                <ListItemButton onClick={() => handleComponent(<Table key={8} type={tableType.SCORE} />)}>
-                    <ListItemText>
-                        Scores
-                    </ListItemText>
+                <ListItemButton
+                    onClick={() =>
+                        handleComponent(
+                            <Table key={8} type={tableType.SCORE} />
+                        )
+                    }
+                >
+                    <ListItemText>Scores</ListItemText>
                 </ListItemButton>
-                <ListItemButton onClick={() => handleComponent(<Table key={9} type={tableType.DANCER} />)}>
-                    <ListItemText>
-                        Dancers
-                    </ListItemText>
+                <ListItemButton
+                    onClick={() =>
+                        handleComponent(
+                            <Table key={9} type={tableType.DANCER} />
+                        )
+                    }
+                >
+                    <ListItemText>Dancers</ListItemText>
                 </ListItemButton>
-                <ListItemButton onClick={() => handleComponent(<Table key={10} type={tableType.USER} />)}>
-                    <ListItemText>
-                        Users
-                    </ListItemText>
+                <ListItemButton
+                    onClick={() =>
+                        handleComponent(
+                            <Table key={10} type={tableType.USER} />
+                        )
+                    }
+                >
+                    <ListItemText>Users</ListItemText>
                 </ListItemButton>
             </List>
             <Divider />
             <List>
+                <ListItemButton onClick={() => navigate('/dashboard')}>
+                    <ListItemIcon>
+                        <InboxIcon />
+                    </ListItemIcon>
+                    <ListItemText>Home</ListItemText>
+                </ListItemButton>
                 {['Home', 'Logout'].map((text, index) => (
                     <ListItemButton key={text}>
                         <ListItemIcon>
-                            {index % 2 === 0 ? <InboxIcon /> : <MailIcon color="secondary" />}
+                            {index % 2 === 0 ? (
+                                <InboxIcon />
+                            ) : (
+                                <MailIcon color="secondary" />
+                            )}
                         </ListItemIcon>
                         <ListItemText primary={text} />
                     </ListItemButton>
@@ -131,7 +174,8 @@ function AdminDashboard(props) {
         </DrawerContainer>
     );
 
-    const container = window !== undefined ? () => window().document.body : undefined;
+    const container =
+        window !== undefined ? () => window().document.body : undefined;
 
     return (
         <Container>
@@ -176,7 +220,10 @@ function AdminDashboard(props) {
                         }}
                         sx={{
                             display: { xs: 'block', sm: 'none' },
-                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                            '& .MuiDrawer-paper': {
+                                boxSizing: 'border-box',
+                                width: drawerWidth,
+                            },
                         }}
                     >
                         {drawer}
@@ -185,7 +232,10 @@ function AdminDashboard(props) {
                         variant="permanent"
                         sx={{
                             display: { xs: 'none', sm: 'block' },
-                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                            '& .MuiDrawer-paper': {
+                                boxSizing: 'border-box',
+                                width: drawerWidth,
+                            },
                         }}
                         open
                     >
@@ -194,7 +244,11 @@ function AdminDashboard(props) {
                 </Box>
                 <Box
                     component="main"
-                    sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+                    sx={{
+                        flexGrow: 1,
+                        p: 3,
+                        width: { sm: `calc(100% - ${drawerWidth}px)` },
+                    }}
                 >
                     <Toolbar />
                     {/* <Typography paragraph>
@@ -204,7 +258,7 @@ function AdminDashboard(props) {
                 </Box>
             </Box>
         </Container>
-    )
+    );
 }
 
 const Container = styled.div`

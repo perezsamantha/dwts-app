@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import {
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Button,
+} from '@mui/material';
 import { LocalizationProvider } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDateFns';
 
@@ -18,7 +24,6 @@ import { updateDancer } from '../../actions/dancers';
 import { setUserPic, updateUser } from '../../actions/fans';
 
 function EditDialog(props) {
-
     const [open, setOpen] = useState(props.open);
     const [formData, setFormData] = useState(props.item);
     const [fileData, setFileData] = useState(null);
@@ -27,7 +32,7 @@ function EditDialog(props) {
     const id = props.item?.id;
     const table = props.table;
 
-    const loading = useSelector(state => {
+    const loading = useSelector((state) => {
         switch (table) {
             case tableType.CELEB:
                 return state.loading.CELEBFIND;
@@ -49,8 +54,9 @@ function EditDialog(props) {
                 return state.loading.DANCERFIND;
             case tableType.USER:
                 return state.loading.USERFIND;
+            default:
         }
-    })
+    });
 
     useEffect(() => {
         setFormData(props.item);
@@ -62,12 +68,12 @@ function EditDialog(props) {
     };
 
     const handleBirthday = (date) => {
-        setFormData({ ...formData, birthday: date })
-    }
+        setFormData({ ...formData, birthday: date });
+    };
 
     const handleDate = (date) => {
-        setFormData({ ...formData, date: date })
-    }
+        setFormData({ ...formData, date: date });
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -78,101 +84,120 @@ function EditDialog(props) {
             const canvas = editor.getImageScaledToCanvas();
 
             canvas.toBlob(function (blob) {
-                data.append("cover_pic", blob, `${Date.now()}-${fileData.name}`);
+                data.append(
+                    'cover_pic',
+                    blob,
+                    `${Date.now()}-${fileData.name}`
+                );
 
                 switch (table) {
                     case tableType.CELEB:
                         dispatch(setCelebPic(id, data));
-                        break
+                        break;
                     case tableType.PRO:
                         dispatch(setProPic(id, data));
-                        break
+                        break;
                     case tableType.SEASON:
                         dispatch(setSeasonPic(id, data));
-                        break
+                        break;
                     case tableType.TEAM:
                         dispatch(setTeamPic(id, data));
-                        break
+                        break;
                     case tableType.USER:
                         dispatch(setUserPic(id, data));
-                        break
+                        break;
                     // not judge, score, dance ?
                     default:
                     //console.log('Invald table type');
                 }
-            })
+            });
         }
 
         switch (table) {
             case tableType.CELEB:
                 dispatch(updateCeleb(id, formData));
-                break
+                break;
             case tableType.PRO:
                 dispatch(updatePro(id, formData));
-                break
+                break;
             case tableType.SEASON:
                 dispatch(updateSeason(id, formData));
-                break
+                break;
             case tableType.EPISODE:
                 dispatch(updateEpisode(id, formData));
-                break
+                break;
             case tableType.TEAM:
                 dispatch(updateTeam(id, formData));
-                break
+                break;
             case tableType.DANCE:
                 dispatch(updateDance(id, formData));
-                break
+                break;
             case tableType.JUDGE:
                 dispatch(updateJudge(id, formData));
-                break
+                break;
             case tableType.SCORE:
                 dispatch(updateScore(id, formData));
-                break
+                break;
             case tableType.DANCER:
                 dispatch(updateDancer(id, formData));
-                break
+                break;
             case tableType.USER:
                 dispatch(updateUser(id, formData));
-                break
+                break;
             default:
             //console.log('Invald table type');
         }
         props.handleClose();
     };
 
-    return (
-        loading ? <div>loading bar (move)</div> : <div>
+    return loading ? (
+        <div>loading bar (move)</div>
+    ) : (
+        <div>
             <LocalizationProvider dateAdapter={DateAdapter}>
-                {<Dialog fullWidth maxWidth={'lg'} open={open} onClose={props.handleClose} >
-                    <DialogTitle>Update {table}</DialogTitle>
-                    <DialogContent >
-
-                        <DialogFields
-                            formData={formData}
-                            table={table}
-                            handleChange={handleChange}
-                            handleBirthday={handleBirthday}
-                            handleDate={handleDate}
-                            editor={editor}
-                            setEditor={setEditor}
-                            fileData={fileData}
-                            setFileData={setFileData}
-                            dialog={'Edit'}
-                        />
-
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={props.handleClose} variant="contained" color="error">
-                            Cancel
-                        </Button>
-                        <Button onClick={handleSubmit} variant="contained" color="primary">
-                            Update {table}
-                        </Button>
-                    </DialogActions>
-                </Dialog>}
+                {
+                    <Dialog
+                        fullWidth
+                        maxWidth={'lg'}
+                        open={open}
+                        onClose={props.handleClose}
+                    >
+                        <DialogTitle>Update {table}</DialogTitle>
+                        <DialogContent>
+                            <DialogFields
+                                formData={formData}
+                                table={table}
+                                handleChange={handleChange}
+                                handleBirthday={handleBirthday}
+                                handleDate={handleDate}
+                                editor={editor}
+                                setEditor={setEditor}
+                                fileData={fileData}
+                                setFileData={setFileData}
+                                dialog={'Edit'}
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button
+                                onClick={props.handleClose}
+                                variant="contained"
+                                color="error"
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                onClick={handleSubmit}
+                                variant="contained"
+                                color="primary"
+                            >
+                                Update {table}
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                }
             </LocalizationProvider>
         </div>
-    )
+    );
 }
 
 export default EditDialog;

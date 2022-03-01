@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import {
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Button,
+} from '@mui/material';
 
 import { LocalizationProvider } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDateFns';
@@ -37,21 +43,22 @@ function AddDialog(props) {
                     twitter: null,
                     instagram: null,
                     tiktok: null,
-                    is_junior: false
-                }
+                    is_junior: false,
+                };
             case tableType.SEASON:
                 return {
                     cover_pic: null,
-                    number: null,
-                    extra: null
-                }
+                    //number: null,
+                    id: null,
+                    extra: null,
+                };
             case tableType.EPISODE:
                 return {
                     season_id: null,
                     week: null,
                     night: null,
-                    date: new Date().toISOString()
-                }
+                    date: new Date().toISOString(),
+                };
             case tableType.TEAM:
                 return {
                     cover_pic: null,
@@ -61,8 +68,8 @@ function AddDialog(props) {
                     season_id: null,
                     placement: null,
                     team_name: null,
-                    extra: null
-                }
+                    extra: null,
+                };
             case tableType.DANCE:
                 return {
                     episode_id: null,
@@ -72,22 +79,22 @@ function AddDialog(props) {
                     song_title: null,
                     song_artist: null,
                     link: null,
-                    extra: null
-                }
+                    extra: null,
+                };
             case tableType.JUDGE:
                 return {
                     first_name: null,
                     last_name: null,
                     birthday: new Date().toISOString(),
-                }
+                };
             case tableType.SCORE:
                 return {
                     dance_id: null,
                     judge_id: null,
                     value: null,
                     order: null,
-                    is_guest: false
-                }
+                    is_guest: false,
+                };
             case tableType.DANCER:
                 return {
                     dance_id: null,
@@ -95,8 +102,8 @@ function AddDialog(props) {
                     pro_id: null,
                     celeb_id: null,
                     is_background: false,
-                    extra: null
-                }
+                    extra: null,
+                };
             case tableType.USER:
                 return {
                     cover_pic: null,
@@ -109,8 +116,9 @@ function AddDialog(props) {
                     watching_since: null,
                     instagram: null,
                     twitter: null,
-                    user_role: 'fan'
-                }
+                    user_role: 'fan',
+                };
+            default:
         }
     };
 
@@ -121,12 +129,12 @@ function AddDialog(props) {
     };
 
     const handleBirthday = (date) => {
-        setFormData({ ...formData, birthday: date })
-    }
+        setFormData({ ...formData, birthday: date });
+    };
 
     const handleDate = (date) => {
-        setFormData({ ...formData, date: date })
-    }
+        setFormData({ ...formData, date: date });
+    };
 
     const handleOpen = () => {
         setOpen(true);
@@ -138,34 +146,34 @@ function AddDialog(props) {
         switch (table) {
             case tableType.CELEB:
                 dispatch(addCeleb(formData));
-                break
+                break;
             case tableType.PRO:
                 dispatch(addPro(formData));
-                break
+                break;
             case tableType.SEASON:
                 dispatch(addSeason(formData));
-                break
+                break;
             case tableType.EPISODE:
                 dispatch(addEpisode(formData));
-                break
+                break;
             case tableType.TEAM:
                 dispatch(addTeam(formData));
-                break
+                break;
             case tableType.DANCE:
                 dispatch(addDance(formData));
-                break
+                break;
             case tableType.JUDGE:
                 dispatch(addJudge(formData));
-                break
+                break;
             case tableType.SCORE:
                 dispatch(addScore(formData));
-                break
+                break;
             case tableType.DANCER:
                 dispatch(addDancer(formData));
-                break
+                break;
             case tableType.USER:
                 dispatch(addUser(formData));
-                break
+                break;
             default:
             //console.log('Invald table type');
         }
@@ -183,10 +191,14 @@ function AddDialog(props) {
                 <Button variant="contained" disableRipple onClick={handleOpen}>
                     Add {table}
                 </Button>
-                <Dialog fullWidth maxWidth={'lg'} open={open} onClose={handleClose} >
+                <Dialog
+                    fullWidth
+                    maxWidth={'lg'}
+                    open={open}
+                    onClose={handleClose}
+                >
                     <DialogTitle>Add {table}</DialogTitle>
-                    <DialogContent >
-
+                    <DialogContent>
                         <DialogFields
                             formData={formData}
                             table={table}
@@ -199,20 +211,27 @@ function AddDialog(props) {
                             // setFileData={setFileData}
                             dialog={'Add'}
                         />
-
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleClose} variant="contained" color="error">
+                        <Button
+                            onClick={handleClose}
+                            variant="contained"
+                            color="error"
+                        >
                             Cancel
                         </Button>
-                        <Button onClick={handleSubmit} variant="contained" color="primary">
+                        <Button
+                            onClick={handleSubmit}
+                            variant="contained"
+                            color="primary"
+                        >
                             Add {table}
                         </Button>
                     </DialogActions>
                 </Dialog>
             </LocalizationProvider>
         </div>
-    )
+    );
 }
 
 export default AddDialog;

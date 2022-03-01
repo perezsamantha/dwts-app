@@ -1,8 +1,8 @@
 
 CREATE TABLE IF NOT EXISTS episodes(
     id SERIAL NOT NULL,
-    season_id INT,
-    week SMALLINT,
+    season_id INT NOT NULL,
+    week SMALLINT NOT NULL,
     night SMALLINT,
     date DATE,
     PRIMARY KEY(id),

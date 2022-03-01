@@ -2,10 +2,10 @@
 CREATE TABLE IF NOT EXISTS teams(
     id SERIAL NOT NULL,
     cover_pic TEXT,
-    celeb_id INT,
-    pro_id INT, 
+    celeb_id INT NOT NULL,
+    pro_id INT NOT NULL, 
     mentor_id INT,
-    season_id INT,
+    season_id INT NOT NULL,
     placement SMALLINT,
     team_name VARCHAR(30),
     pictures TEXT[],

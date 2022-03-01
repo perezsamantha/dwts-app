@@ -1,9 +1,9 @@
 
 CREATE TABLE IF NOT EXISTS scores(
     id SERIAL NOT NULL,
-    dance_id INT,
-    judge_id INT, 
-    value SMALLINT,
+    dance_id INT NOT NULL,
+    judge_id INT NOT NULL, 
+    value SMALLINT NOT NULL,
     "order" SMALLINT,
     is_guest BOOLEAN,
     PRIMARY KEY(id),
@@ -19,3 +19,4 @@ CREATE TABLE IF NOT EXISTS scores(
 );
 
 -- add order to unique constraint?
+-- bool if score counts?

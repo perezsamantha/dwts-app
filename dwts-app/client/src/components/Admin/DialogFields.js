@@ -3,47 +3,67 @@ import { MenuItem, TextField, Avatar, InputAdornment } from '@mui/material';
 import { MobileDatePicker } from '@mui/lab';
 
 import * as tableType from '../../constants/tableTypes';
-import { genders, placements, weeks, styles, themes, runningOrders, scores, scoreOrders, roles } from '../../constants/dropdowns';
+import {
+    genders,
+    placements,
+    weeks,
+    styles,
+    themes,
+    runningOrders,
+    scores,
+    scoreOrders,
+    roles,
+} from '../../constants/dropdowns';
 import CoverPicUpload from '../shared/CoverPicUpload';
 import { PhotoContainer } from '../shared/shared';
 import { useSelector } from 'react-redux';
 import DataGetter from '../shared/DataGetter';
 
 function DialogFields(props) {
-
     const formData = props.formData;
     const table = props.table;
     const handleChange = props.handleChange;
     const handleBirthday = props.handleBirthday;
     const handleDate = props.handleDate;
-    const celebs = useSelector(state => state.data.celebs);
-    const pros = useSelector(state => state.data.pros);
-    const seasons = useSelector(state => state.data.seasons);
-    const episodes = useSelector(state => state.data.episodes);
-    const judges = useSelector(state => state.data.judges);
-    const dances = useSelector(state => state.data.dances);
-    const teams = useSelector(state => state.data.teams);
+    const celebs = useSelector((state) => state.data.celebs);
+    const pros = useSelector((state) => state.data.pros);
+    const seasons = useSelector((state) => state.data.seasons);
+    const episodes = useSelector((state) => state.data.episodes);
+    const judges = useSelector((state) => state.data.judges);
+    const dances = useSelector((state) => state.data.dances);
+    const teams = useSelector((state) => state.data.teams);
 
-    useEffect(() => {
-
-    }, []);
+    useEffect(() => {}, []);
 
     return (
         <div>
-            {Array.of(tableType.CELEB, tableType.PRO, tableType.SEASON, tableType.TEAM, tableType.USER, tableType.AUTH).includes(table) && props.dialog === 'Edit' &&
-                <PhotoContainer>
-                    <Avatar sx={{ width: 150, height: 150 }} src={formData?.cover_pic} />
+            {Array.of(
+                tableType.CELEB,
+                tableType.PRO,
+                tableType.SEASON,
+                tableType.TEAM,
+                tableType.USER,
+                tableType.AUTH
+            ).includes(table) &&
+                props.dialog === 'Edit' && (
+                    <PhotoContainer>
+                        <Avatar
+                            sx={{ width: 150, height: 150 }}
+                            src={formData?.cover_pic}
+                        />
 
-                    <CoverPicUpload
-                        editor={props.editor}
-                        setEditor={props.setEditor}
-                        fileData={props.fileData}
-                        setFileData={props.setFileData}
-                    />
-                </PhotoContainer>
-            }
+                        <CoverPicUpload
+                            editor={props.editor}
+                            setEditor={props.setEditor}
+                            fileData={props.fileData}
+                            setFileData={props.setFileData}
+                        />
+                    </PhotoContainer>
+                )}
 
-            {Array.of(tableType.CELEB, tableType.PRO, tableType.JUDGE).includes(table) &&
+            {Array.of(tableType.CELEB, tableType.PRO, tableType.JUDGE).includes(
+                table
+            ) && (
                 <TextField
                     margin="dense"
                     name="first_name"
@@ -52,9 +72,11 @@ function DialogFields(props) {
                     value={formData.first_name || ''}
                     onChange={handleChange}
                 />
-            }
+            )}
 
-            {Array.of(tableType.CELEB, tableType.PRO, tableType.JUDGE).includes(table) &&
+            {Array.of(tableType.CELEB, tableType.PRO, tableType.JUDGE).includes(
+                table
+            ) && (
                 <TextField
                     margin="dense"
                     name="last_name"
@@ -63,10 +85,10 @@ function DialogFields(props) {
                     value={formData.last_name || ''}
                     onChange={handleChange}
                 />
-            }
+            )}
 
             {/* change to dropdown of constants */}
-            {Array.of(tableType.SEASON).includes(table) &&
+            {/* {Array.of(tableType.SEASON).includes(table) &&
                 <TextField
                     margin="dense"
                     name="number"
@@ -75,9 +97,20 @@ function DialogFields(props) {
                     value={formData.number || ''}
                     onChange={handleChange}
                 />
-            }
+            } */}
 
-            {Array.of(tableType.SCORE, tableType.DANCER).includes(table) &&
+            {Array.of(tableType.SEASON).includes(table) && (
+                <TextField
+                    margin="dense"
+                    name="id"
+                    label="ID"
+                    type="text"
+                    value={formData.id || ''}
+                    onChange={handleChange}
+                />
+            )}
+
+            {Array.of(tableType.SCORE, tableType.DANCER).includes(table) && (
                 <TextField
                     margin="dense"
                     name="dance_id"
@@ -90,14 +123,17 @@ function DialogFields(props) {
                     {dances.map((dance, index) => {
                         return (
                             <MenuItem key={index} value={dance.id}>
-                                <DataGetter id={dance.id} type={tableType.DANCE} />
+                                <DataGetter
+                                    id={dance.id}
+                                    type={tableType.DANCE}
+                                />
                             </MenuItem>
-                        )
+                        );
                     })}
                 </TextField>
-            }
+            )}
 
-            {Array.of(tableType.DANCER).includes(table) &&
+            {Array.of(tableType.DANCER).includes(table) && (
                 <TextField
                     margin="dense"
                     name="team_id"
@@ -110,14 +146,17 @@ function DialogFields(props) {
                     {teams.map((team, index) => {
                         return (
                             <MenuItem key={index} value={team.id}>
-                                <DataGetter id={team.id} type={tableType.TEAM} />
+                                <DataGetter
+                                    id={team.id}
+                                    type={tableType.TEAM}
+                                />
                             </MenuItem>
-                        )
+                        );
                     })}
                 </TextField>
-            }
+            )}
 
-            {Array.of(tableType.TEAM, tableType.DANCER).includes(table) &&
+            {Array.of(tableType.TEAM, tableType.DANCER).includes(table) && (
                 <TextField
                     margin="dense"
                     name="celeb_id"
@@ -130,14 +169,17 @@ function DialogFields(props) {
                     {celebs.map((celeb, index) => {
                         return (
                             <MenuItem key={index} value={celeb.id}>
-                                <DataGetter id={celeb.id} type={tableType.CELEB} />
+                                <DataGetter
+                                    id={celeb.id}
+                                    type={tableType.CELEB}
+                                />
                             </MenuItem>
-                        )
+                        );
                     })}
                 </TextField>
-            }
+            )}
 
-            {Array.of(tableType.TEAM, tableType.DANCER).includes(table) &&
+            {Array.of(tableType.TEAM, tableType.DANCER).includes(table) && (
                 <TextField
                     margin="dense"
                     name="pro_id"
@@ -152,12 +194,12 @@ function DialogFields(props) {
                             <MenuItem key={index} value={pro.id}>
                                 <DataGetter id={pro.id} type={tableType.PRO} />
                             </MenuItem>
-                        )
+                        );
                     })}
                 </TextField>
-            }
+            )}
 
-            {Array.of(tableType.TEAM).includes(table) &&
+            {Array.of(tableType.TEAM).includes(table) && (
                 <TextField
                     margin="dense"
                     name="mentor_id"
@@ -172,12 +214,12 @@ function DialogFields(props) {
                             <MenuItem key={index} value={pro.id}>
                                 <DataGetter id={pro.id} type={tableType.PRO} />
                             </MenuItem>
-                        )
+                        );
                     })}
                 </TextField>
-            }
+            )}
 
-            {Array.of(tableType.TEAM, tableType.EPISODE).includes(table) &&
+            {Array.of(tableType.TEAM, tableType.EPISODE).includes(table) && (
                 <TextField
                     margin="dense"
                     name="season_id"
@@ -190,14 +232,17 @@ function DialogFields(props) {
                     {seasons.map((season, index) => {
                         return (
                             <MenuItem key={index} value={season.id}>
-                                <DataGetter id={season.id} type={tableType.SEASON} />
+                                <DataGetter
+                                    id={season.id}
+                                    type={tableType.SEASON}
+                                />
                             </MenuItem>
-                        )
+                        );
                     })}
                 </TextField>
-            }
+            )}
 
-            {Array.of(tableType.TEAM).includes(table) &&
+            {Array.of(tableType.TEAM).includes(table) && (
                 <TextField
                     margin="dense"
                     name="placement"
@@ -208,12 +253,14 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {placements.map((placement, index) => (
-                        <MenuItem key={index} value={placement}>{placement}</MenuItem>
+                        <MenuItem key={index} value={placement}>
+                            {placement}
+                        </MenuItem>
                     ))}
                 </TextField>
-            }
+            )}
 
-            {Array.of(tableType.TEAM).includes(table) &&
+            {Array.of(tableType.TEAM).includes(table) && (
                 <TextField
                     margin="dense"
                     name="team_name"
@@ -222,13 +269,17 @@ function DialogFields(props) {
                     value={formData.team_name || ''}
                     onChange={handleChange}
                     InputProps={{
-                        startAdornment: <InputAdornment position="start">#team</InputAdornment>,
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                #team
+                            </InputAdornment>
+                        ),
                     }}
                 />
-            }
+            )}
 
             {/* share getEp# function? */}
-            {Array.of(tableType.DANCE).includes(table) &&
+            {Array.of(tableType.DANCE).includes(table) && (
                 <TextField
                     margin="dense"
                     name="episode_id"
@@ -241,14 +292,17 @@ function DialogFields(props) {
                     {episodes.map((episode, index) => {
                         return (
                             <MenuItem key={index} value={episode.id}>
-                                <DataGetter id={episode.id} type={tableType.EPISODE} />
+                                <DataGetter
+                                    id={episode.id}
+                                    type={tableType.EPISODE}
+                                />
                             </MenuItem>
-                        )
+                        );
                     })}
                 </TextField>
-            }
+            )}
 
-            {Array.of(tableType.DANCE).includes(table) &&
+            {Array.of(tableType.DANCE).includes(table) && (
                 <TextField
                     margin="dense"
                     name="style"
@@ -259,12 +313,14 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {styles.map((style, index) => (
-                        <MenuItem key={index} value={style}>{style}</MenuItem>
+                        <MenuItem key={index} value={style}>
+                            {style}
+                        </MenuItem>
                     ))}
                 </TextField>
-            }
+            )}
 
-            {Array.of(tableType.DANCE).includes(table) &&
+            {Array.of(tableType.DANCE).includes(table) && (
                 <TextField
                     margin="dense"
                     name="theme"
@@ -275,12 +331,14 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {themes.map((theme, index) => (
-                        <MenuItem key={index} value={theme}>{theme}</MenuItem>
+                        <MenuItem key={index} value={theme}>
+                            {theme}
+                        </MenuItem>
                     ))}
                 </TextField>
-            }
+            )}
 
-            {Array.of(tableType.DANCE).includes(table) &&
+            {Array.of(tableType.DANCE).includes(table) && (
                 <TextField
                     margin="dense"
                     name="running_order"
@@ -291,12 +349,14 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {runningOrders.map((ro, index) => (
-                        <MenuItem key={index} value={ro}>{ro}</MenuItem>
+                        <MenuItem key={index} value={ro}>
+                            {ro}
+                        </MenuItem>
                     ))}
                 </TextField>
-            }
+            )}
 
-            {Array.of(tableType.DANCE).includes(table) &&
+            {Array.of(tableType.DANCE).includes(table) && (
                 <TextField
                     margin="dense"
                     name="song_title"
@@ -305,9 +365,9 @@ function DialogFields(props) {
                     value={formData.song_title || ''}
                     onChange={handleChange}
                 />
-            }
+            )}
 
-            {Array.of(tableType.DANCE).includes(table) &&
+            {Array.of(tableType.DANCE).includes(table) && (
                 <TextField
                     margin="dense"
                     name="song_artist"
@@ -316,9 +376,9 @@ function DialogFields(props) {
                     value={formData.song_artist || ''}
                     onChange={handleChange}
                 />
-            }
+            )}
 
-            {Array.of(tableType.DANCE).includes(table) &&
+            {Array.of(tableType.DANCE).includes(table) && (
                 <TextField
                     margin="dense"
                     name="link"
@@ -327,9 +387,9 @@ function DialogFields(props) {
                     value={formData.link || ''}
                     onChange={handleChange}
                 />
-            }
+            )}
 
-            {Array.of(tableType.DANCER).includes(table) &&
+            {Array.of(tableType.DANCER).includes(table) && (
                 <TextField
                     margin="dense"
                     name="is_background"
@@ -338,13 +398,22 @@ function DialogFields(props) {
                     value={formData.is_background}
                     onChange={handleChange}
                 >
-                    <MenuItem key={1} value={true}>Yes</MenuItem>
-                    <MenuItem key={2} value={false}>No</MenuItem>
+                    <MenuItem key={1} value={true}>
+                        Yes
+                    </MenuItem>
+                    <MenuItem key={2} value={false}>
+                        No
+                    </MenuItem>
                 </TextField>
-            }
+            )}
 
             {/* EXTRA */}
-            {Array.of(tableType.SEASON, tableType.TEAM, tableType.DANCE, tableType.DANCER).includes(table) &&
+            {Array.of(
+                tableType.SEASON,
+                tableType.TEAM,
+                tableType.DANCE,
+                tableType.DANCER
+            ).includes(table) && (
                 <TextField
                     margin="dense"
                     name="extra"
@@ -353,9 +422,11 @@ function DialogFields(props) {
                     value={formData.extra || ''}
                     onChange={handleChange}
                 />
-            }
+            )}
 
-            {Array.of(tableType.CELEB, tableType.PRO, tableType.JUDGE).includes(table) &&
+            {Array.of(tableType.CELEB, tableType.PRO, tableType.JUDGE).includes(
+                table
+            ) && (
                 <MobileDatePicker
                     margin="dense"
                     label="Birthday"
@@ -364,9 +435,9 @@ function DialogFields(props) {
                     onChange={handleBirthday}
                     renderInput={(params) => <TextField {...params} />}
                 />
-            }
+            )}
 
-            {Array.of(tableType.EPISODE).includes(table) &&
+            {Array.of(tableType.EPISODE).includes(table) && (
                 <TextField
                     margin="dense"
                     name="week"
@@ -377,12 +448,14 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {weeks.map((week, index) => (
-                        <MenuItem key={index} value={week}>{week}</MenuItem>
+                        <MenuItem key={index} value={week}>
+                            {week}
+                        </MenuItem>
                     ))}
                 </TextField>
-            }
+            )}
 
-            {Array.of(tableType.EPISODE).includes(table) &&
+            {Array.of(tableType.EPISODE).includes(table) && (
                 <TextField
                     margin="dense"
                     name="night"
@@ -391,12 +464,16 @@ function DialogFields(props) {
                     value={formData.night || ''}
                     onChange={handleChange}
                 >
-                    <MenuItem key={1} value={1}>1</MenuItem>
-                    <MenuItem key={2} value={2}>2</MenuItem>
+                    <MenuItem key={1} value={1}>
+                        1
+                    </MenuItem>
+                    <MenuItem key={2} value={2}>
+                        2
+                    </MenuItem>
                 </TextField>
-            }
+            )}
 
-            {Array.of(tableType.EPISODE).includes(table) &&
+            {Array.of(tableType.EPISODE).includes(table) && (
                 <MobileDatePicker
                     margin="dense"
                     label="Date"
@@ -405,9 +482,9 @@ function DialogFields(props) {
                     onChange={handleDate}
                     renderInput={(params) => <TextField {...params} />}
                 />
-            }
+            )}
 
-            {Array.of(tableType.CELEB, tableType.PRO).includes(table) &&
+            {Array.of(tableType.CELEB, tableType.PRO).includes(table) && (
                 <TextField
                     margin="dense"
                     name="height"
@@ -415,9 +492,10 @@ function DialogFields(props) {
                     type="text"
                     value={formData.height || ''}
                     onChange={handleChange}
-                />}
+                />
+            )}
 
-            {Array.of(tableType.CELEB, tableType.PRO).includes(table) &&
+            {Array.of(tableType.CELEB, tableType.PRO).includes(table) && (
                 <TextField
                     margin="dense"
                     name="gender"
@@ -428,12 +506,14 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {genders.map((gender, index) => (
-                        <MenuItem key={index} value={gender}>{gender}</MenuItem>
+                        <MenuItem key={index} value={gender}>
+                            {gender}
+                        </MenuItem>
                     ))}
                 </TextField>
-            }
+            )}
 
-            {Array.of(tableType.USER).includes(table) &&
+            {Array.of(tableType.USER).includes(table) && (
                 <TextField
                     margin="dense"
                     name="username"
@@ -441,9 +521,10 @@ function DialogFields(props) {
                     type="text"
                     value={formData.username || ''}
                     onChange={handleChange}
-                />}
+                />
+            )}
 
-            {Array.of(tableType.USER).includes(table) &&
+            {Array.of(tableType.USER).includes(table) && (
                 <TextField
                     margin="dense"
                     name="email"
@@ -451,10 +532,11 @@ function DialogFields(props) {
                     type="text"
                     value={formData.email || ''}
                     onChange={handleChange}
-                />}
+                />
+            )}
 
             {/* checkbox? */}
-            {Array.of(tableType.USER).includes(table) &&
+            {Array.of(tableType.USER).includes(table) && (
                 <TextField
                     margin="dense"
                     name="email_verified"
@@ -463,12 +545,16 @@ function DialogFields(props) {
                     value={formData.email_verified}
                     onChange={handleChange}
                 >
-                    <MenuItem key={1} value={true}>Yes</MenuItem>
-                    <MenuItem key={2} value={false}>No</MenuItem>
+                    <MenuItem key={1} value={true}>
+                        Yes
+                    </MenuItem>
+                    <MenuItem key={2} value={false}>
+                        No
+                    </MenuItem>
                 </TextField>
-            }
+            )}
 
-            {Array.of(tableType.AUTH).includes(table) &&
+            {Array.of(tableType.AUTH).includes(table) && (
                 <TextField
                     margin="dense"
                     name="username"
@@ -476,9 +562,10 @@ function DialogFields(props) {
                     type="text"
                     value={formData.username || ''}
                     onChange={handleChange}
-                />}
+                />
+            )}
 
-            {Array.of(tableType.USER, tableType.AUTH).includes(table) &&
+            {Array.of(tableType.USER, tableType.AUTH).includes(table) && (
                 <TextField
                     margin="dense"
                     name="nickname"
@@ -486,9 +573,10 @@ function DialogFields(props) {
                     type="text"
                     value={formData.nickname || ''}
                     onChange={handleChange}
-                />}
+                />
+            )}
 
-            {Array.of(tableType.USER, tableType.AUTH).includes(table) &&
+            {Array.of(tableType.USER, tableType.AUTH).includes(table) && (
                 <TextField
                     margin="dense"
                     name="watching_since"
@@ -501,14 +589,22 @@ function DialogFields(props) {
                     {seasons.map((season, index) => {
                         return (
                             <MenuItem key={index} value={season.id}>
-                                <DataGetter id={season.id} type={tableType.SEASON} />
+                                <DataGetter
+                                    id={season.id}
+                                    type={tableType.SEASON}
+                                />
                             </MenuItem>
-                        )
+                        );
                     })}
                 </TextField>
-            }
+            )}
 
-            {Array.of(tableType.CELEB, tableType.PRO, tableType.USER, tableType.AUTH).includes(table) &&
+            {Array.of(
+                tableType.CELEB,
+                tableType.PRO,
+                tableType.USER,
+                tableType.AUTH
+            ).includes(table) && (
                 <TextField
                     margin="dense"
                     name="instagram"
@@ -517,9 +613,14 @@ function DialogFields(props) {
                     value={formData.instagram || ''}
                     onChange={handleChange}
                 />
-            }
+            )}
 
-            {Array.of(tableType.CELEB, tableType.PRO, tableType.USER, tableType.AUTH).includes(table) &&
+            {Array.of(
+                tableType.CELEB,
+                tableType.PRO,
+                tableType.USER,
+                tableType.AUTH
+            ).includes(table) && (
                 <TextField
                     margin="dense"
                     name="twitter"
@@ -528,9 +629,9 @@ function DialogFields(props) {
                     value={formData.twitter || ''}
                     onChange={handleChange}
                 />
-            }
+            )}
 
-            {Array.of(tableType.CELEB, tableType.PRO).includes(table) &&
+            {Array.of(tableType.CELEB, tableType.PRO).includes(table) && (
                 <TextField
                     margin="dense"
                     name="tiktok"
@@ -539,9 +640,9 @@ function DialogFields(props) {
                     value={formData.tiktok || ''}
                     onChange={handleChange}
                 />
-            }
+            )}
 
-            {Array.of(tableType.CELEB, tableType.PRO).includes(table) &&
+            {Array.of(tableType.CELEB, tableType.PRO).includes(table) && (
                 <TextField
                     margin="dense"
                     name="is_junior"
@@ -550,12 +651,16 @@ function DialogFields(props) {
                     value={formData.is_junior}
                     onChange={handleChange}
                 >
-                    <MenuItem key={1} value={true}>Yes</MenuItem>
-                    <MenuItem key={2} value={false}>No</MenuItem>
+                    <MenuItem key={1} value={true}>
+                        Yes
+                    </MenuItem>
+                    <MenuItem key={2} value={false}>
+                        No
+                    </MenuItem>
                 </TextField>
-            }
+            )}
 
-            {Array.of(tableType.SCORE).includes(table) &&
+            {Array.of(tableType.SCORE).includes(table) && (
                 <TextField
                     margin="dense"
                     name="judge_id"
@@ -568,14 +673,17 @@ function DialogFields(props) {
                     {judges.map((judge, index) => {
                         return (
                             <MenuItem key={index} value={judge.id}>
-                                <DataGetter id={judge.id} type={tableType.JUDGE} />
+                                <DataGetter
+                                    id={judge.id}
+                                    type={tableType.JUDGE}
+                                />
                             </MenuItem>
-                        )
+                        );
                     })}
                 </TextField>
-            }
+            )}
 
-            {Array.of(tableType.SCORE).includes(table) &&
+            {Array.of(tableType.SCORE).includes(table) && (
                 <TextField
                     margin="dense"
                     name="value"
@@ -586,12 +694,14 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {scores.map((score, index) => (
-                        <MenuItem key={index} value={score}>{score}</MenuItem>
+                        <MenuItem key={index} value={score}>
+                            {score}
+                        </MenuItem>
                     ))}
                 </TextField>
-            }
+            )}
 
-            {Array.of(tableType.SCORE).includes(table) &&
+            {Array.of(tableType.SCORE).includes(table) && (
                 <TextField
                     margin="dense"
                     name="order"
@@ -602,13 +712,14 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {scoreOrders.map((so, index) => (
-                        <MenuItem key={index} value={so}>{so}</MenuItem>
+                        <MenuItem key={index} value={so}>
+                            {so}
+                        </MenuItem>
                     ))}
                 </TextField>
-            }
+            )}
 
-
-            {Array.of(tableType.SCORE).includes(table) &&
+            {Array.of(tableType.SCORE).includes(table) && (
                 <TextField
                     margin="dense"
                     name="is_guest"
@@ -617,12 +728,16 @@ function DialogFields(props) {
                     value={formData.is_guest}
                     onChange={handleChange}
                 >
-                    <MenuItem key={1} value={true}>Yes</MenuItem>
-                    <MenuItem key={2} value={false}>No</MenuItem>
+                    <MenuItem key={1} value={true}>
+                        Yes
+                    </MenuItem>
+                    <MenuItem key={2} value={false}>
+                        No
+                    </MenuItem>
                 </TextField>
-            }
+            )}
 
-            {Array.of(tableType.USER).includes(table) &&
+            {Array.of(tableType.USER).includes(table) && (
                 <TextField
                     margin="dense"
                     name="user_role"
@@ -633,35 +748,38 @@ function DialogFields(props) {
                     onChange={handleChange}
                 >
                     {roles.map((role, index) => (
-                        <MenuItem key={index} value={role}>{role}</MenuItem>
+                        <MenuItem key={index} value={role}>
+                            {role}
+                        </MenuItem>
                     ))}
                 </TextField>
-            }
+            )}
 
-            {Array.of(tableType.USER).includes(table) && props.dialog === 'Add' &&
-                <TextField
-                    margin="dense"
-                    name="password"
-                    label="Password"
-                    type="text"
-                    value={formData.password || ''}
-                    onChange={handleChange}
-                />
-            }
+            {Array.of(tableType.USER).includes(table) &&
+                props.dialog === 'Add' && (
+                    <TextField
+                        margin="dense"
+                        name="password"
+                        label="Password"
+                        type="text"
+                        value={formData.password || ''}
+                        onChange={handleChange}
+                    />
+                )}
 
-            {Array.of(tableType.USER).includes(table) && props.dialog === 'Add' &&
-                <TextField
-                    margin="dense"
-                    name="confirm_password"
-                    label="Confirm Password"
-                    type="text"
-                    value={formData.confirm_password || ''}
-                    onChange={handleChange}
-                />
-            }
-
+            {Array.of(tableType.USER).includes(table) &&
+                props.dialog === 'Add' && (
+                    <TextField
+                        margin="dense"
+                        name="confirm_password"
+                        label="Confirm Password"
+                        type="text"
+                        value={formData.confirm_password || ''}
+                        onChange={handleChange}
+                    />
+                )}
         </div>
-    )
+    );
 }
 
 export default DialogFields;

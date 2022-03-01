@@ -9,9 +9,13 @@ export const addTeam = (team) => async (dispatch) => {
 
         dispatch({ type: actionType.TEAMADD_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: actionType.TEAMADD_FAILURE, payload: error, error: true });
+        dispatch({
+            type: actionType.TEAMADD_FAILURE,
+            payload: error,
+            error: true,
+        });
     }
-}
+};
 
 export const updateTeam = (id, team) => async (dispatch) => {
     dispatch({ type: actionType.TEAMUPDATE_REQUEST });
@@ -21,9 +25,13 @@ export const updateTeam = (id, team) => async (dispatch) => {
 
         dispatch({ type: actionType.TEAMUPDATE_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: actionType.TEAMUPDATE_FAILURE, payload: error, error: true });
+        dispatch({
+            type: actionType.TEAMUPDATE_FAILURE,
+            payload: error,
+            error: true,
+        });
     }
-}
+};
 
 export const setTeamPic = (id, image) => async (dispatch) => {
     dispatch({ type: actionType.TEAMUPDATE_REQUEST });
@@ -33,9 +41,13 @@ export const setTeamPic = (id, image) => async (dispatch) => {
 
         dispatch({ type: actionType.TEAMUPDATE_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: actionType.TEAMUPDATE_FAILURE, payload: error, error: true });
+        dispatch({
+            type: actionType.TEAMUPDATE_FAILURE,
+            payload: error,
+            error: true,
+        });
     }
-}
+};
 
 export const findTeamById = (id) => async (dispatch) => {
     dispatch({ type: actionType.TEAMFIND_REQUEST });
@@ -47,11 +59,23 @@ export const findTeamById = (id) => async (dispatch) => {
         const pros = await api.fetchPros();
         const seasons = await api.fetchSeasons();
 
-        dispatch({ type: actionType.TEAMFIND_SUCCESS, payload: { team: team.data, celebs: celebs.data, pros: pros.data, seasons: seasons.data} });
+        dispatch({
+            type: actionType.TEAMFIND_SUCCESS,
+            payload: {
+                team: team.data,
+                celebs: celebs.data,
+                pros: pros.data,
+                seasons: seasons.data,
+            },
+        });
     } catch (error) {
-        dispatch({ type: actionType.TEAMFIND_FAILURE, payload: error, error: true });
+        dispatch({
+            type: actionType.TEAMFIND_FAILURE,
+            payload: error,
+            error: true,
+        });
     }
-}
+};
 
 export const fetchTeams = () => async (dispatch) => {
     dispatch({ type: actionType.TEAMSEARCH_REQUEST });
@@ -62,11 +86,23 @@ export const fetchTeams = () => async (dispatch) => {
         const pros = await api.fetchPros();
         const seasons = await api.fetchSeasons();
 
-        dispatch({ type: actionType.TEAMSEARCH_SUCCESS, payload: { teams: teams.data, celebs: celebs.data, pros: pros.data, seasons: seasons.data} });
+        dispatch({
+            type: actionType.TEAMSEARCH_SUCCESS,
+            payload: {
+                teams: teams.data,
+                celebs: celebs.data,
+                pros: pros.data,
+                seasons: seasons.data,
+            },
+        });
     } catch (error) {
-        dispatch({ type: actionType.TEAMSEARCH_FAILURE, payload: error, error: true });
+        dispatch({
+            type: actionType.TEAMSEARCH_FAILURE,
+            payload: error,
+            error: true,
+        });
     }
-}
+};
 
 export const searchTeams = (input) => async (dispatch) => {
     dispatch({ type: actionType.TEAMSEARCH_REQUEST });
@@ -76,9 +112,13 @@ export const searchTeams = (input) => async (dispatch) => {
 
         dispatch({ type: actionType.TEAMSEARCH_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: actionType.TEAMSEARCH_FAILURE, payload: error, error: true });
+        dispatch({
+            type: actionType.TEAMSEARCH_FAILURE,
+            payload: error,
+            error: true,
+        });
     }
-}
+};
 
 export const deleteTeam = (id) => async (dispatch) => {
     dispatch({ type: actionType.TEAMDELETE_REQUEST });
@@ -88,9 +128,13 @@ export const deleteTeam = (id) => async (dispatch) => {
 
         dispatch({ type: actionType.TEAMDELETE_SUCCESS, payload: id });
     } catch (error) {
-        dispatch({ type: actionType.TEAMDELETE_FAILURE, payload: error, error: true });
+        dispatch({
+            type: actionType.TEAMDELETE_FAILURE,
+            payload: error,
+            error: true,
+        });
     }
-}
+};
 
 //todo
 export const addTeamPic = (id, image) => async (dispatch) => {
@@ -99,11 +143,18 @@ export const addTeamPic = (id, image) => async (dispatch) => {
     try {
         const { data } = await api.addTeamPic(id, image);
 
-        dispatch({ type: actionType.TEAMUPDATE_SUCCESS, payload: { team: data } });
+        dispatch({
+            type: actionType.TEAMUPDATE_SUCCESS,
+            payload: { team: data },
+        });
     } catch (error) {
-        dispatch({ type: actionType.TEAMUPDATE_FAILURE, payload: error, error: true });
+        dispatch({
+            type: actionType.TEAMUPDATE_FAILURE,
+            payload: error,
+            error: true,
+        });
     }
-}
+};
 
 export const likeTeam = (id) => async (dispatch) => {
     dispatch({ type: actionType.TEAMLIKE_REQUEST });
@@ -112,12 +163,16 @@ export const likeTeam = (id) => async (dispatch) => {
 
     try {
         const { data } = await api.likeTeam(id, user?.token);
-        
+
         dispatch({ type: actionType.TEAMLIKE_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: actionType.TEAMLIKE_FAILURE, payload: error, error: true });
+        dispatch({
+            type: actionType.TEAMLIKE_FAILURE,
+            payload: error,
+            error: true,
+        });
     }
-}
+};
 
 export const getFavoriteTeams = () => async (dispatch) => {
     dispatch({ type: actionType.TEAMSEARCH_REQUEST });
@@ -127,6 +182,10 @@ export const getFavoriteTeams = () => async (dispatch) => {
 
         dispatch({ type: actionType.TEAMSEARCH_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: actionType.TEAMSEARCH_FAILURE, payload: error, error: true });
+        dispatch({
+            type: actionType.TEAMSEARCH_FAILURE,
+            payload: error,
+            error: true,
+        });
     }
-}
+};
