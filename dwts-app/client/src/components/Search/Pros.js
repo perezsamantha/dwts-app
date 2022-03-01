@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchPros, searchPros } from '../../actions/pros';
-import { makeStyles, CircularProgress, Grid } from '@material-ui/core';
+import { CircularProgress, Grid } from '@mui/material';
 import ProsPreview from '../Previews/ProsPreview';
 import { createLoadingSelector } from '../../api/selectors';
 
 import * as actionType from '../../constants/actionTypes';
 import { Container, ContentContainer } from '../shared/muiStyles';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
     root: {

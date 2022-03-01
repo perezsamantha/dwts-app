@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-//import { BottomNavigation, BottomNavigationAction, makeStyles } from '@material-ui/core';
 
 import HomeIcon from '@mui/icons-material/Home';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -11,10 +10,7 @@ import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import styled from 'styled-components';
 
-
-const useStyles = makeStyles({
-    
-})
+const useStyles = makeStyles({});
 
 function BottomNavBar() {
     //CheckJWT();
@@ -22,25 +18,58 @@ function BottomNavBar() {
     //const pathname = window.location.pathname;
     //const [value, setValue] = useState(pathname.split("/")[1]);
     const pathname = localStorage.getItem('parentPath');
-    const [value, setValue] = useState(pathname?.split("/")[1]);
+    const [value, setValue] = useState(pathname?.split('/')[1]);
 
-    if (value != "dashboard" && value != "favorites" && value != "search" && value != "account") {
-        setValue("home");
+    if (
+        value != 'dashboard' &&
+        value != 'favorites' &&
+        value != 'search' &&
+        value != 'account'
+    ) {
+        setValue('home');
     }
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
-    }
+    };
 
     return (
         <NavBarContainer elevation={4}>
-            <BottomNavigation value={value} onChange={handleChange} >
-                <BottomNavigationAction disableRipple component={Link} to="/dashboard" label="Home" value="dashboard" icon={<HomeIcon />} />
-                <BottomNavigationAction disableRipple component={Link} to="/favorites" label="Favorites" value="favorites" icon={<FavoriteIcon />} />
-                <BottomNavigationAction disableRipple component={Link} to="/search/dances" label="Search" value="search" icon={<SearchIcon />} />
-                <BottomNavigationAction disableRipple component={Link} to="/account" label="Account" value="account" icon={<AccountCircleIcon />} />
+            <BottomNavigation value={value} onChange={handleChange}>
+                <BottomNavigationAction
+                    disableRipple
+                    component={Link}
+                    to="/dashboard"
+                    label="Home"
+                    value="dashboard"
+                    icon={<HomeIcon />}
+                />
+                <BottomNavigationAction
+                    disableRipple
+                    component={Link}
+                    to="/favorites"
+                    label="Favorites"
+                    value="favorites"
+                    icon={<FavoriteIcon />}
+                />
+                <BottomNavigationAction
+                    disableRipple
+                    component={Link}
+                    to="/search/dances"
+                    label="Search"
+                    value="search"
+                    icon={<SearchIcon />}
+                />
+                <BottomNavigationAction
+                    disableRipple
+                    component={Link}
+                    to="/account"
+                    label="Account"
+                    value="account"
+                    icon={<AccountCircleIcon />}
+                />
             </BottomNavigation>
-            </NavBarContainer>
+        </NavBarContainer>
     );
 }
 

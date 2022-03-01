@@ -1,69 +1,66 @@
 {
-  "name": "dwts-app",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@date-io/date-fns": "^1.3.13",
-    "@fortawesome/fontawesome-svg-core": "^1.2.35",
-    "@fortawesome/free-brands-svg-icons": "^5.15.3",
-    "@fortawesome/free-solid-svg-icons": "^5.15.3",
-    "@fortawesome/react-fontawesome": "^0.1.14",
-    "@material-ui/core": "^4.11.4",
-    "@material-ui/icons": "^4.11.2",
-    "@material-ui/pickers": "^3.3.10",
-    "@mui/icons-material": "^5.2.0",
-    "@mui/lab": "^5.0.0-alpha.58",
-    "@mui/material": "^5.2.1",
-    "@mui/styles": "^5.2.1",
-    "@mui/x-data-grid": "^5.0.1",
-    "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react": "^11.2.5",
-    "@testing-library/user-event": "^12.8.1",
-    "axios": "^0.21.4",
-    "bootstrap": "^5.0.1",
-    "date-fns": "^2.23.0",
-    "framer-motion": "^4.1.17",
-    "history": "^5.0.1",
-    "jwt-decode": "^3.1.2",
-    "mui-datatables": "^4.0.0",
-    "react": "^17.0.2",
-    "react-avatar-edit": "^1.0.0",
-    "react-avatar-editor": "^12.0.0",
-    "react-bootstrap": "^1.6.1",
-    "react-dom": "^17.0.2",
-    "react-google-login": "^5.2.2",
-    "react-items-carousel": "^2.8.0",
-    "react-multi-carousel": "^2.6.5",
-    "react-redux": "^7.2.6",
-    "react-router-dom": "^6.0.0-beta.3",
-    "react-scripts": "4.0.3",
-    "redux": "^4.1.0",
-    "redux-thunk": "^2.3.0",
-    "styled-components": "^5.3.0",
-    "web-vitals": "^1.1.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+    "name": "dwts-app",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@date-io/date-fns": "^1.3.13",
+        "@fortawesome/fontawesome-svg-core": "^1.2.35",
+        "@fortawesome/free-brands-svg-icons": "^5.15.3",
+        "@fortawesome/free-solid-svg-icons": "^5.15.3",
+        "@fortawesome/react-fontawesome": "^0.1.14",
+        "@mui/icons-material": "^5.2.0",
+        "@mui/lab": "^5.0.0-alpha.58",
+        "@mui/material": "^5.2.1",
+        "@mui/styles": "^5.2.1",
+        "@mui/x-data-grid": "^5.0.1",
+        "@testing-library/jest-dom": "^5.11.9",
+        "@testing-library/react": "^11.2.5",
+        "@testing-library/user-event": "^12.8.1",
+        "axios": "^0.21.4",
+        "bootstrap": "^5.0.1",
+        "date-fns": "^2.23.0",
+        "framer-motion": "^4.1.17",
+        "history": "^5.0.1",
+        "jwt-decode": "^3.1.2",
+        "mui-datatables": "^4.0.0",
+        "react": "^17.0.2",
+        "react-avatar-edit": "^1.0.0",
+        "react-avatar-editor": "^12.0.0",
+        "react-bootstrap": "^1.6.1",
+        "react-dom": "^17.0.2",
+        "react-google-login": "^5.2.2",
+        "react-items-carousel": "^2.8.0",
+        "react-multi-carousel": "^2.6.5",
+        "react-redux": "^7.2.6",
+        "react-router-dom": "^6.0.0-beta.3",
+        "react-scripts": "4.0.3",
+        "redux": "^4.1.0",
+        "redux-thunk": "^2.3.0",
+        "styled-components": "^5.3.0",
+        "web-vitals": "^1.1.0"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    }
 }

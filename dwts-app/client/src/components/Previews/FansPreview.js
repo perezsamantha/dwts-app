@@ -1,24 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Avatar, makeStyles } from '@material-ui/core';
+import { Avatar } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
     avi: {
-        width: "40px",
-        height: "40px",
-        position: "relative",
-        margin: "auto 0 auto 8px",
-    }
-})
-
+        width: '40px',
+        height: '40px',
+        position: 'relative',
+        margin: 'auto 0 auto 8px',
+    },
+});
 
 function FansPreview(props) {
     const classes = useStyles();
     // eventually need to bring in src file for avi
 
     return (
-        <Container >
+        <Container>
             <Avatar className={classes.avi} alt="default" />
             <InnerContainer>
                 <Nickname>Nickname</Nickname>
@@ -56,6 +56,5 @@ const Username = styled.h4`
     color: rgba(255, 255, 255, 0.7);
     margin: 0;
 `;
-
 
 export default FansPreview;

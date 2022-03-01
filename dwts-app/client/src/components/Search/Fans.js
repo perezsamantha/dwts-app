@@ -4,45 +4,51 @@ import FansPreview from '../Previews/FansPreview';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { searchUsers } from '../../actions/fans';
-import { CircularProgress, makeStyles } from '@material-ui/core';
+import { CircularProgress } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
     root: {
         flexGrow: 1,
     },
     progress: {
-        position: "absolute",
-        left: "50%",
-        top: "50%",
-    }
-})
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+    },
+});
 
 function Fans(props) {
     const classes = useStyles();
     const dispatch = useDispatch();
 
-    const fans = useSelector(state => state.fans.fans);
-    const loading = useSelector(state => state.fans.loading);
+    const fans = useSelector((state) => state.fans.fans);
+    const loading = useSelector((state) => state.fans.loading);
 
     useEffect(() => {
         const input = { search: props.search };
         dispatch(searchUsers(input));
     }, [dispatch, props]);
 
-    return (
-        loading || !Array.isArray(fans ) ? <CircularProgress className={classes.progress}/> :
+    return loading || !Array.isArray(fans) ? (
+        <CircularProgress className={classes.progress} />
+    ) : (
         <Container>
             <Spacer />
-            {fans.map((fan, index) => ( 
+            {fans.map((fan, index) => (
                 <InnerContainer>
-                    <Link key={index} to={{ pathname: `/fans/${fan._id}` }} style={{ textDecoration: "none" }} >
+                    <Link
+                        key={index}
+                        to={{ pathname: `/fans/${fan._id}` }}
+                        style={{ textDecoration: 'none' }}
+                    >
                         <FansPreview username={fan.username} />
                     </Link>
                 </InnerContainer>
             ))}
-        </Container>  
-    )
+        </Container>
+    );
 }
 
 const Container = styled.div`

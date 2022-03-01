@@ -1,9 +1,7 @@
 import React, { useState, useContext } from 'react';
 
-import TextField from '@material-ui/core/TextField';
-
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 // import GoogleLogin from 'react-google-login';
 
@@ -14,14 +12,20 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { signIn } from '../../actions/auth';
 
-import { BoxContainer, FormContainer, MutedLink, BoldLink, SubmitButton } from './common';
+import {
+    BoxContainer,
+    FormContainer,
+    MutedLink,
+    BoldLink,
+    SubmitButton,
+} from './common';
 import { AccountContext } from './AccountContext';
-import { IconButton, InputAdornment } from '@material-ui/core';
+import { IconButton, InputAdornment } from '@mui/material';
+import { TextField } from '@mui/material';
 
-const initialState = { username: '', password: '' }
+const initialState = { username: '', password: '' };
 
 function Signin(props) {
-
     const [showPass, setShowPass] = useState(false);
 
     const [formData, setFormData] = useState(initialState);
@@ -31,13 +35,13 @@ function Signin(props) {
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
-    }
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         dispatch(signIn(formData, navigate));
-    }
+    };
 
     const handleShowPass = () => setShowPass((prevShowPass) => !prevShowPass);
 
@@ -64,39 +68,49 @@ function Signin(props) {
     return (
         <BoxContainer>
             <FormContainer onSubmit={handleSubmit}>
-                <TextField 
-                    required 
-                    id="username" 
-                    name="username" 
-                    label="username" 
-                    type="text" 
-                    onChange={handleChange} 
+                <TextField
+                    required
+                    id="username"
+                    name="username"
+                    label="username"
+                    type="text"
+                    onChange={handleChange}
                     margin="dense"
                     //InputProps={{
-                        //startAdornment: '@'
+                    //startAdornment: '@'
                     //}}
                 />
-                <TextField 
-                    required 
-                    id="pass" 
-                    name="password" 
-                    label="password" 
-                    type={showPass ? "text" : "password"} 
-                    onChange={handleChange} 
-                    handleShowPass={handleShowPass} 
+                <TextField
+                    required
+                    id="pass"
+                    name="password"
+                    label="password"
+                    type={showPass ? 'text' : 'password'}
+                    onChange={handleChange}
+                    handleShowPass={handleShowPass}
                     margin="dense"
                     InputProps={{
-                        endAdornment:
-                        <InputAdornment position="end">
-                            <IconButton onClick={handleShowPass}>
-                                {showPass ? <Visibility /> : <VisibilityOff />}
-                            </IconButton>
-                        </InputAdornment>
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton onClick={handleShowPass}>
+                                    {showPass ? (
+                                        <Visibility />
+                                    ) : (
+                                        <VisibilityOff />
+                                    )}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
                     }}
                 />
                 <MutedLink href="#">Forgot your password?</MutedLink>
                 <SubmitButton type="submit">Sign In</SubmitButton>
-                <MutedLink href="#">Don't have an account? <BoldLink href="#" onClick={switchToSignup}>Sign up.</BoldLink></MutedLink>
+                <MutedLink href="#">
+                    Don't have an account?{' '}
+                    <BoldLink href="#" onClick={switchToSignup}>
+                        Sign up.
+                    </BoldLink>
+                </MutedLink>
             </FormContainer>
         </BoxContainer>
         /* keep for when implementing google oauth

@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Avatar, Button, Grid, makeStyles } from '@material-ui/core';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import { Avatar, Button, Grid } from '@mui/material';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { findDanceById } from '../../actions/dances';
 import { fetchTeams } from '../../actions/teams';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 
 import AvatarEditor from 'react-avatar-editor';
-import { Slider } from '@material-ui/core';
-import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+import { Slider } from '@mui/material';
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import { addDancePic, likeDance } from '../../actions/dances';
 
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 import {
     Container,
@@ -28,6 +28,7 @@ import CheckJWT from '../shared/logout';
 
 import TeamsPreview from '../Previews/TeamsPreview';
 import { fetchPros } from '../../actions/pros';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
     avi: {

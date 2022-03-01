@@ -1,9 +1,7 @@
 import React, { useContext, useState } from 'react';
 
-import TextField from '@material-ui/core/TextField';
-
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 // import GoogleLogin from 'react-google-login';
 
@@ -14,14 +12,24 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { signUp } from '../../actions/auth';
 
-import { BoxContainer, FormContainer, MutedLink, BoldLink, SubmitButton } from './common';
+import {
+    BoxContainer,
+    FormContainer,
+    MutedLink,
+    BoldLink,
+    SubmitButton,
+} from './common';
 import { AccountContext } from './AccountContext';
-import { IconButton, InputAdornment } from '@material-ui/core';
+import { IconButton, InputAdornment, TextField } from '@mui/material';
 
-const initialState = { username: '', email: '', password: '', confirm_password: '' }
+const initialState = {
+    username: '',
+    email: '',
+    password: '',
+    confirm_password: '',
+};
 
 function Signup() {
-
     const [showPass, setShowPass] = useState(false);
 
     const [formData, setFormData] = useState(initialState);
@@ -31,13 +39,13 @@ function Signup() {
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
-    }
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         dispatch(signUp(formData, navigate));
-    }
+    };
 
     const handleShowPass = () => setShowPass((prevShowPass) => !prevShowPass);
 
@@ -64,53 +72,63 @@ function Signup() {
     return (
         <BoxContainer>
             <FormContainer onSubmit={handleSubmit}>
-                <TextField  
-                    required 
-                    id="username" 
-                    name="username" 
-                    label="username" 
-                    type="text" 
-                    onChange={handleChange} 
+                <TextField
+                    required
+                    id="username"
+                    name="username"
+                    label="username"
+                    type="text"
+                    onChange={handleChange}
                     margin="dense"
                 />
-                <TextField  
-                    required 
-                    id="email" 
-                    name="email" 
-                    label="email" 
-                    type="email" 
-                    onChange={handleChange} 
+                <TextField
+                    required
+                    id="email"
+                    name="email"
+                    label="email"
+                    type="email"
+                    onChange={handleChange}
                     margin="dense"
                 />
-                <TextField 
-                    required 
-                    id="pass" 
-                    name="password" 
-                    label="password" 
-                    type={showPass ? "text" : "password"} 
-                    onChange={handleChange} 
-                    handleShowPass={handleShowPass} 
+                <TextField
+                    required
+                    id="pass"
+                    name="password"
+                    label="password"
+                    type={showPass ? 'text' : 'password'}
+                    onChange={handleChange}
+                    handleShowPass={handleShowPass}
                     margin="dense"
                     InputProps={{
-                        endAdornment:
-                        <InputAdornment position="end">
-                            <IconButton onClick={handleShowPass}>
-                                {showPass ? <Visibility /> : <VisibilityOff />}
-                            </IconButton>
-                        </InputAdornment>
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton onClick={handleShowPass}>
+                                    {showPass ? (
+                                        <Visibility />
+                                    ) : (
+                                        <VisibilityOff />
+                                    )}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
                     }}
                 />
-                <TextField 
-                    required 
-                    id="confirmPass" 
-                    name="confirm_password" 
-                    label="confirm password" 
-                    type="password" 
-                    onChange={handleChange} 
+                <TextField
+                    required
+                    id="confirmPass"
+                    name="confirm_password"
+                    label="confirm password"
+                    type="password"
+                    onChange={handleChange}
                     margin="dense"
                 />
                 <SubmitButton type="submit">Sign Up</SubmitButton>
-                <MutedLink href="#">Already have an account? <BoldLink href="#" onClick={switchToSignin}>Sign in.</BoldLink></MutedLink>
+                <MutedLink href="#">
+                    Already have an account?{' '}
+                    <BoldLink href="#" onClick={switchToSignin}>
+                        Sign in.
+                    </BoldLink>
+                </MutedLink>
             </FormContainer>
         </BoxContainer>
         /*

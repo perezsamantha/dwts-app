@@ -272,8 +272,4 @@ const DrawerContainer = styled.div`
     height: 100vh;
 `;
 
-const Title = styled.h3`
-    color: green;
-`;
-
 export default AdminDashboard;
