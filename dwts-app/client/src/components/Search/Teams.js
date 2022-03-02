@@ -42,16 +42,27 @@ function Teams(props) {
     const pros = useSelector((state) => state.data.pros);
     const celebs = useSelector((state) => state.data.celebs);
 
-    //const loadingSelector = createLoadingSelector([actionType.PROSEARCH, actionType.TEAMSEARCH]);
-    const loading = useSelector((state) => state.loading.TEAMSEARCH);
-    //const isFetching = useSelector((state) => loadingSelector(state));
+    const loading2 = useSelector(
+        (state) =>
+            state.loading.TEAMSEARCH ||
+            state.loading.CELEBSEARCH ||
+            state.loading.PROSEARCH ||
+            state.loading.SEASONSEARCH
+    );
+
+    const loadingSelector = createLoadingSelector([
+        actionType.TEAMSEARCH,
+        actionType.PROSEARCH,
+        actionType.CELEBSEARCH,
+        actionType.SEASONSEARCH,
+    ]);
+    const loading = useSelector((state) => loadingSelector(state));
 
     let arr = [];
 
     useEffect(() => {
         const input = { search: props.search };
         dispatch(searchTeams(input));
-        //dispatch(fetchTeams());
     }, [dispatch, props]);
 
     if (!loading) {

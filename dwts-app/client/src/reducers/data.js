@@ -113,21 +113,12 @@ const dataReducer = (
         case actionType.TEAMSEARCH_SUCCESS:
             return {
                 ...state,
-                teams: action.payload.teams,
-                celebs: action.payload.celebs,
-                pros: action.payload.pros,
-                seasons: action.payload.seasons,
+                teams: action.payload,
             };
         case actionType.TEAMFIND_SUCCESS:
             return {
                 ...state,
-                team: action.payload.team,
-                celebs: action.payload.celebs,
-                pros: action.payload.pros,
-                seasons: action.payload.seasons,
-                dances: action.payload.dances,
-                dancers: action.payload.dancers,
-                scores: action.payload.scores,
+                team: action.payload,
             };
         case actionType.TEAMDELETE_SUCCESS:
             return {
@@ -151,8 +142,7 @@ const dataReducer = (
         case actionType.EPISODESEARCH_SUCCESS:
             return {
                 ...state,
-                episodes: action.payload.episodes,
-                seasons: action.payload.seasons,
+                episodes: action.payload,
             };
         case actionType.EPISODEFIND_SUCCESS:
             return { ...state, episode: action.payload };
@@ -178,18 +168,12 @@ const dataReducer = (
         case actionType.DANCESEARCH_SUCCESS:
             return {
                 ...state,
-                dances: action.payload.dances,
-                seasons: action.payload.seasons,
-                episodes: action.payload.episodes,
+                dances: action.payload,
             };
         case actionType.DANCEFIND_SUCCESS:
             return {
                 ...state,
-                dance: action.payload.dance,
-                seasons: action.payload.seasons,
-                episodes: action.payload.episodes,
-                dancers: action.payload.dancers,
-                scores: action.payload.scores,
+                dance: action.payload,
             };
         case actionType.DANCEDELETE_SUCCESS:
             return {
@@ -236,11 +220,7 @@ const dataReducer = (
         case actionType.SCORESEARCH_SUCCESS:
             return {
                 ...state,
-                scores: action.payload.scores,
-                dances: action.payload.dances,
-                judges: action.payload.judges,
-                episodes: action.payload.episodes,
-                seasons: action.payload.seasons,
+                scores: action.payload,
             };
         case actionType.SCOREFIND_SUCCESS:
             return { ...state, score: action.payload };
@@ -268,13 +248,7 @@ const dataReducer = (
         case actionType.DANCERSEARCH_SUCCESS:
             return {
                 ...state,
-                dancers: action.payload.dancers,
-                dances: action.payload.dances,
-                teams: action.payload.teams,
-                pros: action.payload.pros,
-                celebs: action.payload.celebs,
-                episodes: action.payload.episodes,
-                seasons: action.payload.seasons,
+                dancers: action.payload,
             };
         case actionType.DANCERFIND_SUCCESS:
             return { ...state, dancer: action.payload };
@@ -300,8 +274,7 @@ const dataReducer = (
         case actionType.USERSEARCH_SUCCESS:
             return {
                 ...state,
-                users: action.payload.users,
-                seasons: action.payload.seasons,
+                users: action.payload,
             };
         case actionType.USERFIND_SUCCESS:
             return { ...state, user: action.payload };

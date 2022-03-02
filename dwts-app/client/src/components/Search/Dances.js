@@ -32,7 +32,20 @@ function Dances(props) {
 
     //const loadingSelector = createLoadingSelector([actionType.DANCESEARCH, actionType.TEAMSEARCH]);
     //const isFetching = useSelector((state) => loadingSelector(state));
-    const loading = useSelector((state) => state.loading.DANCESEARCH);
+    const loading2 = useSelector((state) => state.loading.DANCESEARCH);
+
+    const loadingSelector = createLoadingSelector([
+        actionType.DANCESEARCH,
+        actionType.CELEBSEARCH,
+        actionType.PROSEARCH,
+        actionType.TEAMSEARCH,
+        actionType.SEASONSEARCH,
+        actionType.EPISODESEARCH,
+        actionType.DANCERSEARCH,
+        actionType.JUDGESEARCH,
+        actionType.SCORESEARCH,
+    ]);
+    const loading = useSelector((state) => loadingSelector(state));
 
     const filters = {
         style:
@@ -49,7 +62,6 @@ function Dances(props) {
     useEffect(() => {
         const input = { search: props.search };
         dispatch(searchDances(input));
-        //dispatch(fetchDances());
     }, [dispatch, props]);
 
     const multiFilter = (array, filters) => {

@@ -25,12 +25,14 @@ import {
 } from '../shared/shared.js';
 
 import TeamsPreview from '../Previews/TeamsPreview';
-import { fetchPros } from '../../actions/pros';
 import { makeStyles } from '@mui/styles';
 import { convertPlacement, Likes } from '../shared/functions';
 import ExtraPicUpload from '../shared/ExtraPicUpload';
 import DataGetter from '../shared/DataGetter';
 
+import { createLoadingSelector } from '../../api/selectors';
+
+import * as actionType from '../../constants/actionTypes';
 const useStyles = makeStyles({
     avi: {
         width: '100px',
@@ -78,7 +80,7 @@ function DanceCard() {
     const user = JSON.parse(localStorage.getItem('profile'));
     const dispatch = useDispatch();
     const dance = useSelector((state) => state.data.dance);
-    const loading = useSelector((state) => state.loading.DANCEFIND);
+    const loading2 = useSelector((state) => state.loading.DANCEFIND);
     const teams = useSelector((state) => state.data.teams);
     const pros = useSelector((state) => state.data.pros);
     const { id } = useParams();
@@ -86,12 +88,24 @@ function DanceCard() {
 
     const ro = convertPlacement(dance.running_order);
 
+    const loadingSelector = createLoadingSelector([
+        actionType.DANCEFIND,
+        actionType.CELEBSEARCH,
+        actionType.PROSEARCH,
+        actionType.TEAMSEARCH,
+        actionType.SEASONSEARCH,
+        actionType.EPISODESEARCH,
+        actionType.DANCERSEARCH,
+        actionType.JUDGESEARCH,
+        actionType.SCORESEARCH,
+    ]);
+    const loading = useSelector((state) => loadingSelector(state));
+
     useEffect(() => {
         dispatch(findDanceById(id));
-        console.log(dance);
     }, [dispatch, id]);
 
-    return loading ? (
+    return loading || Object.keys(dance).length === 0 ? (
         <CircularProgress className={classes.progress} />
     ) : (
         <CardContainer elevation={0}>

@@ -1,5 +1,6 @@
 import * as actionType from '../constants/actionTypes';
 import * as api from '../api/index.js';
+import { getAllData, getDanceData } from './multipleActions';
 
 export const addDance = (dance) => async (dispatch) => {
     dispatch({ type: actionType.DANCEADD_REQUEST });
@@ -50,18 +51,19 @@ export const fetchDances = () => async (dispatch) => {
     dispatch({ type: actionType.DANCESEARCH_REQUEST });
 
     try {
-        const dances = await api.fetchDances();
-        const seasons = await api.fetchSeasons();
-        const episodes = await api.fetchEpisodes();
+        const { data } = await api.fetchDances();
 
-        dispatch({
-            type: actionType.DANCESEARCH_SUCCESS,
-            payload: {
-                dances: dances.data,
-                seasons: seasons.data,
-                episodes: episodes.data,
-            },
-        });
+        Promise.resolve(dispatch(getDanceData())).then(() =>
+            dispatch({
+                type: actionType.DANCESEARCH_SUCCESS,
+                payload: data,
+            })
+        );
+
+        // dispatch({
+        //     type: actionType.DANCESEARCH_SUCCESS,
+        //     payload: data,
+        // });
     } catch (error) {
         dispatch({
             type: actionType.DANCESEARCH_FAILURE,
@@ -75,23 +77,19 @@ export const findDanceById = (id) => async (dispatch) => {
     dispatch({ type: actionType.DANCEFIND_REQUEST });
 
     try {
-        const dance = await api.findDanceById(id);
-        //fetch dependencies as well
-        const seasons = await api.fetchSeasons();
-        const episodes = await api.fetchEpisodes();
-        const dancers = await api.fetchDancers();
-        const scores = await api.fetchScores();
+        const { data } = await api.findDanceById(id);
 
-        dispatch({
-            type: actionType.DANCEFIND_SUCCESS,
-            payload: {
-                dance: dance.data,
-                seasons: seasons.data,
-                episodes: episodes.data,
-                dancers: dancers.data,
-                scores: scores.data,
-            },
-        });
+        Promise.resolve(dispatch(getAllData())).then(() =>
+            dispatch({
+                type: actionType.DANCEFIND_SUCCESS,
+                payload: data,
+            })
+        );
+
+        // dispatch({
+        //     type: actionType.DANCEFIND_SUCCESS,
+        //     payload: data,
+        // });
     } catch (error) {
         dispatch({
             type: actionType.DANCEFIND_FAILURE,
@@ -105,18 +103,19 @@ export const searchDances = (input) => async (dispatch) => {
     dispatch({ type: actionType.DANCESEARCH_REQUEST });
 
     try {
-        const dances = await api.searchDances(input);
-        const seasons = await api.fetchSeasons();
-        const episodes = await api.fetchEpisodes();
+        const { data } = await api.searchDances(input);
 
-        dispatch({
-            type: actionType.DANCESEARCH_SUCCESS,
-            payload: {
-                dances: dances.data,
-                seasons: seasons.data,
-                episodes: episodes.data,
-            },
-        });
+        Promise.resolve(dispatch(getDanceData())).then(() =>
+            dispatch({
+                type: actionType.DANCESEARCH_SUCCESS,
+                payload: data,
+            })
+        );
+
+        // dispatch({
+        //     type: actionType.DANCESEARCH_SUCCESS,
+        //     payload: data,
+        // });
     } catch (error) {
         dispatch({
             type: actionType.DANCESEARCH_FAILURE,

@@ -1,5 +1,6 @@
 import * as actionType from '../constants/actionTypes';
 import * as api from '../api/index.js';
+import { getAllData, getTeamData } from './multipleActions';
 
 export const addTeam = (team) => async (dispatch) => {
     dispatch({ type: actionType.TEAMADD_REQUEST });
@@ -53,27 +54,19 @@ export const findTeamById = (id) => async (dispatch) => {
     dispatch({ type: actionType.TEAMFIND_REQUEST });
 
     try {
-        //const { data } = await api.findTeamById(id);
-        const team = await api.findTeamById(id);
-        const celebs = await api.fetchCelebs();
-        const pros = await api.fetchPros();
-        const seasons = await api.fetchSeasons();
-        const dances = await api.fetchDances();
-        const dancers = await api.fetchDancers();
-        const scores = await api.fetchScores();
+        const { data } = await api.findTeamById(id);
 
-        dispatch({
-            type: actionType.TEAMFIND_SUCCESS,
-            payload: {
-                team: team.data,
-                celebs: celebs.data,
-                pros: pros.data,
-                seasons: seasons.data,
-                dances: dances.data,
-                dancers: dancers.data,
-                scores: scores.data,
-            },
-        });
+        Promise.resolve(dispatch(getAllData())).then(() =>
+            dispatch({
+                type: actionType.TEAMFIND_SUCCESS,
+                payload: data,
+            })
+        );
+
+        // dispatch({
+        //     type: actionType.TEAMFIND_SUCCESS,
+        //     payload: data,
+        // });
     } catch (error) {
         dispatch({
             type: actionType.TEAMFIND_FAILURE,
@@ -87,20 +80,19 @@ export const fetchTeams = () => async (dispatch) => {
     dispatch({ type: actionType.TEAMSEARCH_REQUEST });
 
     try {
-        const teams = await api.fetchTeams();
-        const celebs = await api.fetchCelebs();
-        const pros = await api.fetchPros();
-        const seasons = await api.fetchSeasons();
+        const { data } = await api.fetchTeams();
 
-        dispatch({
-            type: actionType.TEAMSEARCH_SUCCESS,
-            payload: {
-                teams: teams.data,
-                celebs: celebs.data,
-                pros: pros.data,
-                seasons: seasons.data,
-            },
-        });
+        Promise.resolve(dispatch(getTeamData())).then(() =>
+            dispatch({
+                type: actionType.TEAMSEARCH_SUCCESS,
+                payload: data,
+            })
+        );
+
+        // dispatch({
+        //     type: actionType.TEAMSEARCH_SUCCESS,
+        //     payload: data,
+        // });
     } catch (error) {
         dispatch({
             type: actionType.TEAMSEARCH_FAILURE,
@@ -114,21 +106,21 @@ export const searchTeams = (input) => async (dispatch) => {
     dispatch({ type: actionType.TEAMSEARCH_REQUEST });
 
     try {
-        const teams = await api.searchTeams(input);
-        const celebs = await api.fetchCelebs();
-        const pros = await api.fetchPros();
-        const seasons = await api.fetchSeasons();
+        const { data } = await api.searchTeams(input);
 
-        dispatch({
-            type: actionType.TEAMSEARCH_SUCCESS,
-            payload: {
-                teams: teams.data,
-                celebs: celebs.data,
-                pros: pros.data,
-                seasons: seasons.data,
-            },
-        });
+        Promise.resolve(dispatch(getTeamData())).then(() =>
+            dispatch({
+                type: actionType.TEAMSEARCH_SUCCESS,
+                payload: data,
+            })
+        );
+
+        // dispatch({
+        //     type: actionType.TEAMSEARCH_SUCCESS,
+        //     payload: data,
+        // });
     } catch (error) {
+        console.log(error);
         dispatch({
             type: actionType.TEAMSEARCH_FAILURE,
             payload: error,
@@ -172,6 +164,8 @@ export const addTeamPic = (id, image) => async (dispatch) => {
         });
     }
 };
+
+// getLikes
 
 export const likeTeam = (id) => async (dispatch) => {
     dispatch({ type: actionType.TEAMLIKE_REQUEST });

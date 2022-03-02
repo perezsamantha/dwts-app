@@ -34,6 +34,10 @@ import {
 import DataGetter from '../shared/DataGetter';
 import SocialsLink from '../shared/SocialsLink';
 
+import { createLoadingSelector } from '../../api/selectors';
+
+import * as actionType from '../../constants/actionTypes';
+
 const useStyles = makeStyles({
     root: {
         flexGrow: 1,
@@ -54,9 +58,27 @@ function TeamCard(props) {
 
     const team = useSelector((state) => state.data.team);
     // separate loadings?
-    const loading = useSelector(
-        (state) => state.loading.TEAMFIND || state.loading.TEAMUPDATE
+    const isFetching = useSelector(
+        (state) =>
+            state.loading.TEAMFIND ||
+            state.loading.TEAMUPDATE ||
+            state.loading.CELEBSEARCH ||
+            state.loading.PROSEARCH ||
+            state.loading.DANCESEARCH
     );
+
+    // issue where on refresh because there's no loading state, data undefined
+    // temp solution by adding 'team !== null'
+    const loadingSelector = createLoadingSelector([
+        actionType.TEAMFIND,
+        actionType.PROSEARCH,
+        actionType.CELEBSEARCH,
+        actionType.SEASONSEARCH,
+        actionType.DANCESEARCH,
+        actionType.DANCERSEARCH,
+        actionType.SCORESEARCH,
+    ]);
+    const loading = useSelector((state) => loadingSelector(state));
 
     const pros = useSelector((state) => state.data.pros);
     const celebs = useSelector((state) => state.data.celebs);
@@ -88,7 +110,7 @@ function TeamCard(props) {
         dancesByTeam = getDancesByTeam(team, dances, dancers);
         numTens = getNumberOfTens(dancesByTeam, scores);
     }
-    return loading ? (
+    return loading || Object.keys(team).length === 0 ? (
         <CircularProgress className={classes.progress} />
     ) : (
         <CardContainer elevation={0}>

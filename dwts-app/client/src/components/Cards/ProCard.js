@@ -30,6 +30,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import ExtraPicUpload from '../shared/ExtraPicUpload';
 import * as tableType from '../../constants/tableTypes';
 import { makeStyles } from '@mui/styles';
+import SocialsLink from '../shared/SocialsLink';
 
 const useStyles = makeStyles({
     root: {
@@ -102,16 +103,10 @@ function ProCard() {
                     <Grid item>
                         <InstagramIcon />
                         <SocialsRow>
-                            <Link
-                                href={
-                                    'https://www.instagram.com/' + pro.instagram
-                                }
-                                target="_blank"
-                                rel="noopener"
-                                underline="none"
-                            >
-                                @{pro.instagram}
-                            </Link>
+                            <SocialsLink
+                                platform={'instagram'}
+                                username={pro.instagram}
+                            />
                         </SocialsRow>
                     </Grid>
                 )}
@@ -119,14 +114,10 @@ function ProCard() {
                     <Grid item>
                         <TwitterIcon />
                         <SocialsRow>
-                            <Link
-                                href={'https://www.twitter.com/' + pro.twitter}
-                                target="_blank"
-                                rel="noopener"
-                                underline="none"
-                            >
-                                @{pro.twitter}
-                            </Link>
+                            <SocialsLink
+                                platform={'twitter'}
+                                username={pro.twitter}
+                            />
                         </SocialsRow>
                     </Grid>
                 )}
@@ -134,14 +125,10 @@ function ProCard() {
                     <Grid item>
                         <FacebookIcon />
                         <SocialsRow>
-                            <Link
-                                href={'https://www.tiktok.com/' + pro.tiktok}
-                                target="_blank"
-                                rel="noopener"
-                                underline="none"
-                            >
-                                @{pro.tiktok}
-                            </Link>
+                            <SocialsLink
+                                platform={'tiktok'}
+                                username={pro.tiktok}
+                            />
                         </SocialsRow>
                     </Grid>
                 )}

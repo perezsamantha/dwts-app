@@ -9,7 +9,7 @@ const loadingReducer = (state = {}, action) => {
     return {
         ...state,
         [requestName]: requestState === 'REQUEST',
-    }
-}
+    };
+};
 
 export default loadingReducer;

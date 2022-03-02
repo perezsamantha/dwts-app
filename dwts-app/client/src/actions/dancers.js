@@ -1,5 +1,6 @@
 import * as actionType from '../constants/actionTypes';
 import * as api from '../api/index.js';
+import { getDancerData } from './multipleActions';
 
 export const addDancer = (dancer) => async (dispatch) => {
     dispatch({ type: actionType.DANCERADD_REQUEST });
@@ -9,9 +10,13 @@ export const addDancer = (dancer) => async (dispatch) => {
 
         dispatch({ type: actionType.DANCERADD_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: actionType.DANCERADD_FAILURE, payload: error, error: true });
+        dispatch({
+            type: actionType.DANCERADD_FAILURE,
+            payload: error,
+            error: true,
+        });
     }
-}
+};
 
 export const updateDancer = (id, dancer) => async (dispatch) => {
     dispatch({ type: actionType.DANCERUPDATE_REQUEST });
@@ -21,9 +26,13 @@ export const updateDancer = (id, dancer) => async (dispatch) => {
 
         dispatch({ type: actionType.DANCERUPDATE_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: actionType.DANCERUPDATE_FAILURE, payload: error, error: true });
+        dispatch({
+            type: actionType.DANCERUPDATE_FAILURE,
+            payload: error,
+            error: true,
+        });
     }
-}
+};
 
 export const findDancerById = (id) => async (dispatch) => {
     dispatch({ type: actionType.DANCERFIND_REQUEST });
@@ -33,28 +42,39 @@ export const findDancerById = (id) => async (dispatch) => {
 
         dispatch({ type: actionType.DANCERFIND_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: actionType.DANCERFIND_FAILURE, payload: error, error: true });
+        dispatch({
+            type: actionType.DANCERFIND_FAILURE,
+            payload: error,
+            error: true,
+        });
     }
-}
+};
 
 export const fetchDancers = () => async (dispatch) => {
     dispatch({ type: actionType.DANCERSEARCH_REQUEST });
 
     try {
-        //const { data } = await api.fetchDancers();
-        const dancers = await api.fetchDancers();
-        const dances = await api.fetchDances();
-        const teams = await api.fetchTeams();
-        const pros = await api.fetchPros();
-        const celebs = await api.fetchCelebs();
-        const episodes = await api.fetchEpisodes();
-        const seasons = await api.fetchSeasons();
+        const { data } = await api.fetchDancers();
 
-        dispatch({ type: actionType.DANCERSEARCH_SUCCESS, payload: { dancers: dancers.data, dances: dances.data, teams: teams.data, pros: pros.data, celebs: celebs.data, episodes: episodes.data, seasons: seasons.data } });
+        Promise.resolve(dispatch(getDancerData())).then(() =>
+            dispatch({
+                type: actionType.DANCERSEARCH_SUCCESS,
+                payload: data,
+            })
+        );
+
+        // dispatch({
+        //     type: actionType.DANCERSEARCH_SUCCESS,
+        //     payload: data,
+        // });
     } catch (error) {
-        dispatch({ type: actionType.DANCERSEARCH_FAILURE, payload: error, error: true });
+        dispatch({
+            type: actionType.DANCERSEARCH_FAILURE,
+            payload: error,
+            error: true,
+        });
     }
-}
+};
 
 export const deleteDancer = (id) => async (dispatch) => {
     dispatch({ type: actionType.DANCERDELETE_REQUEST });
@@ -64,6 +84,10 @@ export const deleteDancer = (id) => async (dispatch) => {
 
         dispatch({ type: actionType.DANCERDELETE_SUCCESS, payload: id });
     } catch (error) {
-        dispatch({ type: actionType.DANCERDELETE_FAILURE, payload: error, error: true });
+        dispatch({
+            type: actionType.DANCERDELETE_FAILURE,
+            payload: error,
+            error: true,
+        });
     }
-}
+};

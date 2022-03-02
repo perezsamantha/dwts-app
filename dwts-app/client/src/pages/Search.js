@@ -25,6 +25,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import { styles } from '../constants/dropdowns';
 import { makeStyles } from '@mui/styles';
 import { Page, SearchTextField } from '../components/shared/muiStyles';
+import Filters from '../components/Search/Filters';
 
 const useStyles = makeStyles({
     icon: {
@@ -154,10 +155,11 @@ function Search(props) {
                             ),
                         }}
                     />
-                    <FilterListIcon
+                    {/* <FilterListIcon
                         className={classes.filterIcon}
                         onClick={() => setShowFilters((prev) => !prev)}
-                    />
+                    /> */}
+                    <Filters />
                 </SearchBoxContainer>
 
                 {showFilters && (
