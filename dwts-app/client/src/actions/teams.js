@@ -58,6 +58,9 @@ export const findTeamById = (id) => async (dispatch) => {
         const celebs = await api.fetchCelebs();
         const pros = await api.fetchPros();
         const seasons = await api.fetchSeasons();
+        const dances = await api.fetchDances();
+        const dancers = await api.fetchDancers();
+        const scores = await api.fetchScores();
 
         dispatch({
             type: actionType.TEAMFIND_SUCCESS,
@@ -66,6 +69,9 @@ export const findTeamById = (id) => async (dispatch) => {
                 celebs: celebs.data,
                 pros: pros.data,
                 seasons: seasons.data,
+                dances: dances.data,
+                dancers: dancers.data,
+                scores: scores.data,
             },
         });
     } catch (error) {

@@ -17,16 +17,12 @@ import * as tableType from '../../constants/tableTypes';
 
 import {
     Container,
-    HiddenInput,
-    Label,
-    FileInput,
     CardContainer,
     Picture,
     Header,
     LikesContainer,
     CardAvatar,
 } from '../shared/shared.js';
-import CheckJWT from '../shared/logout';
 
 import TeamsPreview from '../Previews/TeamsPreview';
 import { fetchPros } from '../../actions/pros';
@@ -92,6 +88,7 @@ function DanceCard() {
 
     useEffect(() => {
         dispatch(findDanceById(id));
+        console.log(dance);
     }, [dispatch, id]);
 
     return loading ? (

@@ -125,6 +125,9 @@ const dataReducer = (
                 celebs: action.payload.celebs,
                 pros: action.payload.pros,
                 seasons: action.payload.seasons,
+                dances: action.payload.dances,
+                dancers: action.payload.dancers,
+                scores: action.payload.scores,
             };
         case actionType.TEAMDELETE_SUCCESS:
             return {
@@ -180,7 +183,14 @@ const dataReducer = (
                 episodes: action.payload.episodes,
             };
         case actionType.DANCEFIND_SUCCESS:
-            return { ...state, dance: action.payload };
+            return {
+                ...state,
+                dance: action.payload.dance,
+                seasons: action.payload.seasons,
+                episodes: action.payload.episodes,
+                dancers: action.payload.dancers,
+                scores: action.payload.scores,
+            };
         case actionType.DANCEDELETE_SUCCESS:
             return {
                 ...state,

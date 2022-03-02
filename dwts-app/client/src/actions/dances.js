@@ -75,10 +75,23 @@ export const findDanceById = (id) => async (dispatch) => {
     dispatch({ type: actionType.DANCEFIND_REQUEST });
 
     try {
-        const { data } = await api.findDanceById(id);
+        const dance = await api.findDanceById(id);
         //fetch dependencies as well
+        const seasons = await api.fetchSeasons();
+        const episodes = await api.fetchEpisodes();
+        const dancers = await api.fetchDancers();
+        const scores = await api.fetchScores();
 
-        dispatch({ type: actionType.DANCEFIND_SUCCESS, payload: data });
+        dispatch({
+            type: actionType.DANCEFIND_SUCCESS,
+            payload: {
+                dance: dance.data,
+                seasons: seasons.data,
+                episodes: episodes.data,
+                dancers: dancers.data,
+                scores: scores.data,
+            },
+        });
     } catch (error) {
         dispatch({
             type: actionType.DANCEFIND_FAILURE,

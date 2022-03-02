@@ -79,7 +79,7 @@ function Teams(props) {
             ) : (
                 <div>
                     {arr.map((item, index) => (
-                        <ContentContainer>
+                        <ContentContainer key={index}>
                             <Typography variant="h5" my={1}>
                                 Season {item}
                             </Typography>
