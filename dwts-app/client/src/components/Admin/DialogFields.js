@@ -25,13 +25,13 @@ function DialogFields(props) {
     const handleChange = props.handleChange;
     const handleBirthday = props.handleBirthday;
     const handleDate = props.handleDate;
-    const celebs = useSelector((state) => state.data.celebs);
-    const pros = useSelector((state) => state.data.pros);
-    const seasons = useSelector((state) => state.data.seasons);
-    const episodes = useSelector((state) => state.data.episodes);
-    const judges = useSelector((state) => state.data.judges);
-    const dances = useSelector((state) => state.data.dances);
-    const teams = useSelector((state) => state.data.teams);
+    const celebs = useSelector((state) => state.celebs.celebs);
+    const pros = useSelector((state) => state.pros.pros);
+    const seasons = useSelector((state) => state.seasons.seasons);
+    const episodes = useSelector((state) => state.episodes.episodes);
+    const judges = useSelector((state) => state.judges.judges);
+    const dances = useSelector((state) => state.dances.dances);
+    const teams = useSelector((state) => state.teams.teams);
 
     useEffect(() => {}, []);
 

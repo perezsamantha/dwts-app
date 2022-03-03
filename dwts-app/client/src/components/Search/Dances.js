@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchDances, searchDances } from '../../actions/dances';
+import { searchDances } from '../../actions/dances';
 import { CircularProgress } from '@mui/material';
 
 import Carousel from 'react-multi-carousel';
@@ -27,12 +26,7 @@ const useStyles = makeStyles({
 function Dances(props) {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const dances = useSelector((state) => state.data.dances);
-    //const teams = useSelector(state => state.data.teams);
-
-    //const loadingSelector = createLoadingSelector([actionType.DANCESEARCH, actionType.TEAMSEARCH]);
-    //const isFetching = useSelector((state) => loadingSelector(state));
-    const loading2 = useSelector((state) => state.loading.DANCESEARCH);
+    const dances = useSelector((state) => state.dances.dances);
 
     const loadingSelector = createLoadingSelector([
         actionType.DANCESEARCH,

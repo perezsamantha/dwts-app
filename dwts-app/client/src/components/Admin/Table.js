@@ -51,25 +51,25 @@ function Table(props) {
     const items = useSelector((state) => {
         switch (table) {
             case tableType.CELEB:
-                return state.data.celebs;
+                return state.celebs.celebs;
             case tableType.PRO:
-                return state.data.pros;
+                return state.pros.pros;
             case tableType.SEASON:
-                return state.data.seasons;
+                return state.seasons.seasons;
             case tableType.EPISODE:
-                return state.data.episodes;
+                return state.episodes.episodes;
             case tableType.TEAM:
-                return state.data.teams;
+                return state.teams.teams;
             case tableType.DANCE:
-                return state.data.dances;
+                return state.dances.dances;
             case tableType.JUDGE:
-                return state.data.judges;
+                return state.judges.judges;
             case tableType.SCORE:
-                return state.data.scores;
+                return state.scores.scores;
             case tableType.DANCER:
-                return state.data.dancers;
+                return state.dancers.dancers;
             case tableType.USER:
-                return state.data.users;
+                return state.users.users;
             default:
         }
     });
@@ -77,25 +77,25 @@ function Table(props) {
     const item = useSelector((state) => {
         switch (table) {
             case tableType.CELEB:
-                return state.data.celeb;
+                return state.celebs.celeb;
             case tableType.PRO:
-                return state.data.pro;
+                return state.pros.pro;
             case tableType.SEASON:
-                return state.data.season;
+                return state.seasons.season;
             case tableType.EPISODE:
-                return state.data.episode;
+                return state.episodes.episode;
             case tableType.TEAM:
-                return state.data.team;
+                return state.teams.team;
             case tableType.DANCE:
-                return state.data.dance;
+                return state.dances.dance;
             case tableType.JUDGE:
-                return state.data.judge;
+                return state.judges.judge;
             case tableType.SCORE:
-                return state.data.score;
+                return state.scores.score;
             case tableType.DANCER:
-                return state.data.dancer;
+                return state.dancers.dancer;
             case tableType.USER:
-                return state.data.user;
+                return state.users.user;
             default:
         }
     });

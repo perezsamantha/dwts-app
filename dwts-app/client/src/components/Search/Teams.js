@@ -37,10 +37,8 @@ function Teams(props) {
     // const history = useHistory();
     //const input = { search: props.search };
 
-    const teams = useSelector((state) => state.data.teams);
+    const teams = useSelector((state) => state.teams.teams);
     //const loading = useSelector(state => state.teams.loading);
-    const pros = useSelector((state) => state.data.pros);
-    const celebs = useSelector((state) => state.data.celebs);
 
     const loading2 = useSelector(
         (state) =>

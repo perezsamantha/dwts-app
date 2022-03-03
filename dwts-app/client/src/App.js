@@ -5,7 +5,7 @@ import Favorites from './pages/Favorites';
 import Search from './pages/Search';
 import Account from './pages/Account';
 import Landing from './pages/Landing';
-import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import Individuals from './pages/Individuals';
 import Admin from './pages/Admin';
 import styled from 'styled-components';

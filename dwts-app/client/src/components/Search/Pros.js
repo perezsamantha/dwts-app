@@ -23,7 +23,7 @@ const useStyles = makeStyles({
 function Pros(props) {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const pros = useSelector((state) => state.data.pros);
+    const pros = useSelector((state) => state.pros.pros);
 
     //const loadingSelector = createLoadingSelector([actionType.PROSEARCH]);
     //const isFetching = useSelector((state) => loadingSelector(state));

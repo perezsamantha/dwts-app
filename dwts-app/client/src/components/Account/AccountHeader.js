@@ -16,16 +16,15 @@ import { Button, Paper, Typography } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import EditAccount from './EditAccount';
 
-
 function AccountHeader() {
     //const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
-    const user = useSelector(state => state.auth.authData.result);
+    const user = useSelector((state) => state.auth.authData.result);
     //const [isLoading, setIsLoading] = useState(true);
     const [open, setOpen] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    //const favorites = useSelector(state => state.data.teams);
+    //const favorites = useSelector(state => state.teams.teams);
 
     //const loadingSelector = createLoadingSelector([actionType.TEAMSEARCH]);
     //const isFetching = useSelector((state) => loadingSelector(state));
@@ -33,37 +32,29 @@ function AccountHeader() {
     const logout = () => {
         dispatch({ type: actionType.LOGOUT });
 
-        navigate("/");
+        navigate('/');
 
         //setUser(null);
-    }
+    };
 
     useEffect(() => {
-        // TODO: need to fetch seasons for settings dropdown, 
+        // TODO: need to fetch seasons for settings dropdown,
         // but considering will need to dispatch for favorites, might wanna wait on that
         // also, only works when no reload between signin and clicking account page since redux state does not yet reset
-
         //dispatch(getFavoriteTeams());
         // const token = user.token;
-
         // if (token) {
         //     const decodedToken = decode(token);
-
         //     // need to test functionality
         //     if (decodedToken.exp * 1000 < new Date().getTime()) {
         //         dispatch({ type: actionType.LOGOUT });
-
         //         navigate("/");
-
         //         setUser(null);
         //     }
         // }
-
         // if (user != null) {
         //     setIsLoading(false);
         // }
-
-
     }, [user, dispatch, navigate]);
 
     const handleClose = () => {
@@ -71,18 +62,39 @@ function AccountHeader() {
     };
 
     return (
-        ( <Container>
+        <Container>
             <AccountContainer>
-                <Box sx={{ width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Box
+                    sx={{
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                    }}
+                >
                     {/* temporary hack to get flexbox layout */}
-                    <Button disabled sx={{ opacity: 0 }}><SettingsIcon /></Button>
-                    <Avatar sx={{ width: 100, height: 100, marginTop: -5 }} alt="default" src={user.cover_pic}>{user.username.charAt(0)}</Avatar>
+                    <Button disabled sx={{ opacity: 0 }}>
+                        <SettingsIcon />
+                    </Button>
+                    <Avatar
+                        sx={{ width: 100, height: 100, marginTop: -5 }}
+                        alt="default"
+                        src={user.cover_pic}
+                    >
+                        {user.username.charAt(0)}
+                    </Avatar>
                     {/* <AccountSettings /> */}
-                    <Button onClick={() => setOpen(true)}><SettingsIcon /></Button>
+                    <Button onClick={() => setOpen(true)}>
+                        <SettingsIcon />
+                    </Button>
                 </Box>
-                <Typography variant='h4'>{user.nickname}</Typography>
-                <Typography variant='h5'>@{user.username}</Typography>
-                {user.watching_since > 0 && <Typography variant='subtitle1'>Watching since season {user.watching_since}</Typography>}
+                <Typography variant="h4">{user.nickname}</Typography>
+                <Typography variant="h5">@{user.username}</Typography>
+                {user.watching_since > 0 && (
+                    <Typography variant="subtitle1">
+                        Watching since season {user.watching_since}
+                    </Typography>
+                )}
 
                 {/* {Array.isArray(favorites) && <ContentContainer>
                     <Subtitle>Favorite Teams</Subtitle>
@@ -100,13 +112,19 @@ function AccountHeader() {
                     </Carousel>
                 </ContentContainer>} */}
 
-                <Button variant='filled' onClick={logout}>
+                <Button variant="filled" onClick={logout}>
                     Logout
                 </Button>
             </AccountContainer>
 
-            {open && <EditAccount user={user} open={open} handleClose={handleClose} />}
-        </Container>)
+            {open && (
+                <EditAccount
+                    user={user}
+                    open={open}
+                    handleClose={handleClose}
+                />
+            )}
+        </Container>
     );
 }
 
@@ -123,7 +141,7 @@ const AccountContainer = styled(Paper)`
     width: 80%;
     min-height: fit-content;
     position: relative;
-    margin: 75px auto 0  auto;
+    margin: 75px auto 0 auto;
     background: white;
     border-radius: 10px;
     display: flex;

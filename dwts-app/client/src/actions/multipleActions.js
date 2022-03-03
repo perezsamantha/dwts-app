@@ -1,13 +1,12 @@
 import { fetchSeasons } from './seasons';
 import { fetchCelebs } from './celebs';
 import { fetchPros } from './pros';
-import { fetchTeams, findTeamById, searchTeams } from './teams';
-import { fetchDances, findDanceById, searchDances } from './dances';
+import { fetchTeams } from './teams';
+import { fetchDances } from './dances';
 import { fetchDancers } from './dancers';
 import { fetchScores } from './scores';
 import { fetchEpisodes } from './episodes';
 import { fetchJudges } from './judges';
-import { fetchUsers } from './fans';
 
 // export const getDataForTeams = (input) => (dispatch) => {
 //     dispatch(searchTeams(input)).then(() =>

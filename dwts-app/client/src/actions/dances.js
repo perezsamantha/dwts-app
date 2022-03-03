@@ -147,7 +147,10 @@ export const addDancePic = (id, image) => async (dispatch) => {
     try {
         const { data } = await api.addDancePic(id, image);
 
-        dispatch({ type: actionType.DANCEUPDATE_SUCCESS, payload: data });
+        dispatch({
+            type: actionType.DANCEUPDATE_SUCCESS,
+            payload: { dance: data },
+        });
     } catch (error) {
         dispatch({
             type: actionType.DANCEUPDATE_FAILURE,
@@ -165,7 +168,7 @@ export const likeDance = (id) => async (dispatch) => {
     try {
         const { data } = await api.likeDance(id, user?.token);
 
-        dispatch({ type: actionType.DANCELIKE_SUCCESS, payload: data });
+        dispatch({ type: actionType.DANCELIKE_SUCCESS, payload: data.likes });
     } catch (error) {
         dispatch({
             type: actionType.DANCELIKE_FAILURE,

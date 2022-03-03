@@ -34,57 +34,21 @@ import { createLoadingSelector } from '../../api/selectors';
 
 import * as actionType from '../../constants/actionTypes';
 const useStyles = makeStyles({
-    avi: {
-        width: '100px',
-        height: '100px',
-        margin: 'auto',
-    },
-    statsGrid: {
-        flexGrow: 1,
-    },
     progress: {
         margin: 'auto',
     },
-    back: {
-        float: 'left',
-        margin: '0',
-        position: 'relative',
-    },
-    slider: {
-        width: '20ch',
-        position: 'relative',
-    },
-    editor: {
-        width: '100%',
-        margin: '10px auto',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
     root: {
         flexGrow: 1,
-    },
-    icons: {
-        color: 'lightgrey',
-    },
-    button: {
-        margin: '0',
-        padding: '0',
-        maxWidth: '20px',
     },
 });
 
 function DanceCard() {
     const classes = useStyles();
     const navigate = useNavigate();
-    const user = JSON.parse(localStorage.getItem('profile'));
     const dispatch = useDispatch();
-    const dance = useSelector((state) => state.data.dance);
-    const loading2 = useSelector((state) => state.loading.DANCEFIND);
-    const teams = useSelector((state) => state.data.teams);
-    const pros = useSelector((state) => state.data.pros);
+    const user = JSON.parse(localStorage.getItem('profile'));
+    const dance = useSelector((state) => state.dances.dance);
     const { id } = useParams();
-    const likes = useSelector((state) => state.likes.dances);
 
     const ro = convertPlacement(dance.running_order);
 
@@ -116,9 +80,11 @@ function DanceCard() {
                 <CardAvatar src={'/defaultPic.jpeg'} />
                 <LikesContainer>
                     <Button onClick={() => dispatch(likeDance(id))}>
-                        <Likes user={user} likes={likes} />
+                        <Likes user={user} likes={dance.likes} />
                     </Button>
-                    <Typography variant="subtitle1">{likes.length}</Typography>
+                    <Typography variant="subtitle1">
+                        {dance.likes?.length}
+                    </Typography>
                 </LikesContainer>
             </Header>
 
@@ -179,11 +145,16 @@ function DanceCard() {
             )}
 
             {/* turn into shared picture grid component */}
+            <Typography variant="h5" mb={2}>
+                PICTURES
+            </Typography>
+
             <Grid
                 container
-                justify="center"
+                justifyContent="center"
                 className={classes.root}
                 spacing={2}
+                mb={2}
             >
                 {dance.pictures?.map((picture, index) => (
                     <Grid key={index} item>

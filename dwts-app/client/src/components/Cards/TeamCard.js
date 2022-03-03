@@ -56,16 +56,7 @@ function TeamCard(props) {
     const dispatch = useDispatch();
     //const history = useHistory();
 
-    const team = useSelector((state) => state.data.team);
-    // separate loadings?
-    const isFetching = useSelector(
-        (state) =>
-            state.loading.TEAMFIND ||
-            state.loading.TEAMUPDATE ||
-            state.loading.CELEBSEARCH ||
-            state.loading.PROSEARCH ||
-            state.loading.DANCESEARCH
-    );
+    const team = useSelector((state) => state.teams.team);
 
     // issue where on refresh because there's no loading state, data undefined
     // temp solution by adding 'team !== null'
@@ -80,13 +71,12 @@ function TeamCard(props) {
     ]);
     const loading = useSelector((state) => loadingSelector(state));
 
-    const pros = useSelector((state) => state.data.pros);
-    const celebs = useSelector((state) => state.data.celebs);
+    const pros = useSelector((state) => state.pros.pros);
+    const celebs = useSelector((state) => state.celebs.celebs);
     const { id } = useParams();
-    const likes = useSelector((state) => state.likes.teams);
-    const dances = useSelector((state) => state.data.dances);
-    const dancers = useSelector((state) => state.data.dancers);
-    const scores = useSelector((state) => state.data.scores);
+    const dances = useSelector((state) => state.dances.dances);
+    const dancers = useSelector((state) => state.dancers.dancers);
+    const scores = useSelector((state) => state.scores.scores);
 
     useEffect(() => {
         dispatch(findTeamById(id));
@@ -126,9 +116,11 @@ function TeamCard(props) {
                         disableRipple
                         onClick={() => dispatch(likeTeam(id))}
                     >
-                        <Likes user={user} likes={likes} />
+                        <Likes user={user} likes={team.likes} />
                     </Button>
-                    <Typography variant="subtitle1">{likes.length}</Typography>
+                    <Typography variant="subtitle1">
+                        {team.likes?.length}
+                    </Typography>
                 </LikesContainer>
             </Header>
 

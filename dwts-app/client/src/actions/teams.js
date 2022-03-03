@@ -175,7 +175,7 @@ export const likeTeam = (id) => async (dispatch) => {
     try {
         const { data } = await api.likeTeam(id, user?.token);
 
-        dispatch({ type: actionType.TEAMLIKE_SUCCESS, payload: data });
+        dispatch({ type: actionType.TEAMLIKE_SUCCESS, payload: data.likes });
     } catch (error) {
         dispatch({
             type: actionType.TEAMLIKE_FAILURE,

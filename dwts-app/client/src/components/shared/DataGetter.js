@@ -3,13 +3,13 @@ import { useSelector } from 'react-redux';
 import * as tableType from '../../constants/tableTypes';
 
 function DataGetter(props) {
-    const celebs = useSelector((state) => state.data.celebs);
-    const pros = useSelector((state) => state.data.pros);
-    const teams = useSelector((state) => state.data.teams);
-    const seasons = useSelector((state) => state.data.seasons);
-    const episodes = useSelector((state) => state.data.episodes);
-    const judges = useSelector((state) => state.data.judges);
-    const dances = useSelector((state) => state.data.dances);
+    const celebs = useSelector((state) => state.celebs.celebs);
+    const pros = useSelector((state) => state.pros.pros);
+    const teams = useSelector((state) => state.teams.teams);
+    const seasons = useSelector((state) => state.seasons.seasons);
+    const episodes = useSelector((state) => state.episodes.episodes);
+    const judges = useSelector((state) => state.judges.judges);
+    const dances = useSelector((state) => state.dances.dances);
     const type = props.type;
     const id = props.id;
 

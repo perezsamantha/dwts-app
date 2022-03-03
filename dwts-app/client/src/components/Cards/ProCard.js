@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Avatar, Button, Link, Typography } from '@mui/material';
-import CheckJWT from '../shared/logout';
 import { useNavigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { findProById, likePro } from '../../actions/pros';
@@ -39,17 +38,15 @@ const useStyles = makeStyles({
 });
 
 function ProCard() {
-    CheckJWT();
     const classes = useStyles();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem('profile'));
-    const pro = useSelector((state) => state.data.pro);
+    const pro = useSelector((state) => state.pros.pro);
     const { id } = useParams();
     //const loadingSelector = createLoadingSelector([actionType.PROSEARCH]);
     //const isFetching = useSelector((state) => loadingSelector(state));
     const loading = useSelector((state) => state.loading.PROFIND);
-    const likes = useSelector((state) => state.likes.pros);
 
     const birthday = convertDate(pro.birthday);
     const age = getAge(pro.birthday);
@@ -71,9 +68,11 @@ function ProCard() {
                 />
                 <LikesContainer>
                     <Button disableRipple onClick={() => dispatch(likePro(id))}>
-                        <Likes user={user} likes={likes} />
+                        <Likes user={user} likes={pro.likes} />
                     </Button>
-                    <Typography variant="subtitle1">{likes.length}</Typography>
+                    <Typography variant="subtitle1">
+                        {pro.likes?.length}
+                    </Typography>
                 </LikesContainer>
             </Header>
 

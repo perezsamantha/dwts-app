@@ -46,8 +46,8 @@ export const convertPlacement = (i) => {
 export const Likes = (props) => {
     const { user, likes } = props;
 
-    if (likes.length > 0) {
-        return likes.find((like) => like.user_id === user?.result?.id) ? (
+    if (likes?.length > 0) {
+        return likes.find((like) => like === user?.result?.id) ? (
             <>
                 <FavoriteIcon />
             </>

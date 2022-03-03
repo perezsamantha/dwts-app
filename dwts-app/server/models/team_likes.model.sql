@@ -1,9 +1,8 @@
 
 CREATE TABLE IF NOT EXISTS team_likes(
-    id SERIAL NOT NULL,
     team_id INT,
     user_id INT,
-    PRIMARY KEY(id),
+    UNIQUE(team_id, user_id),
     CONSTRAINT fk_team
         FOREIGN KEY(team_id)
             REFERENCES teams(id)
@@ -12,4 +11,4 @@ CREATE TABLE IF NOT EXISTS team_likes(
         FOREIGN KEY(user_id)
             REFERENCES users(id)
             ON DELETE CASCADE
-)
+);

@@ -38,10 +38,12 @@ export const addDance = async (req, res) => {
     }
 };
 
-export const fetchDances = async (req, res) => {
+export const fetchAllDances = async (req, res) => {
     try {
-        const dances = await pool.query('SELECT * FROM dances');
-
+        //const dances = await pool.query('SELECT * FROM dances');
+        const dances = await pool.query(
+            "SELECT d.*, COALESCE(ARRAY_AGG(user_id) filter (where user_id is not null), '{}') likes FROM dances d LEFT JOIN dance_likes l ON d.id = l.dance_id GROUP BY d.id"
+        );
         res.status(200).json(dances.rows);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -52,9 +54,14 @@ export const findDanceById = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const dance = await pool.query('SELECT * FROM dances WHERE id = $1', [
-            id,
-        ]);
+        // const dance = await pool.query('SELECT * FROM dances WHERE id = $1', [
+        //     id,
+        // ]);
+
+        const dance = await pool.query(
+            "SELECT d.*, COALESCE(ARRAY_AGG(user_id) filter (where user_id is not null), '{}') likes FROM dances d LEFT JOIN dance_likes l ON d.id = l.dance_id WHERE d.id = $1 GROUP BY d.id",
+            [id]
+        );
 
         res.status(200).json(dance.rows[0]);
     } catch (error) {
@@ -70,10 +77,19 @@ export const searchDances = async (req, res) => {
         // returns all if empty string
         // temp solution to help return dances where song or artist is null
         if (search === '') {
-            dances = await pool.query('SELECT * FROM dances');
-        } else {
+            //dances = await pool.query('SELECT * FROM dances');
+
             dances = await pool.query(
-                "SELECT * FROM dances WHERE song_title || ' ' || song_artist ILIKE $1",
+                "SELECT d.*, COALESCE(ARRAY_AGG(user_id) filter (where user_id is not null), '{}') likes FROM dances d LEFT JOIN dance_likes l ON d.id = l.dance_id GROUP BY d.id"
+            );
+        } else {
+            // dances = await pool.query(
+            //     "SELECT * FROM dances WHERE song_title || ' ' || song_artist ILIKE $1",
+            //     [`%${search}%`]
+            // );
+
+            dances = await pool.query(
+                "SELECT d.*, COALESCE(ARRAY_AGG(user_id) filter (where user_id is not null), '{}') likes FROM dances d LEFT JOIN dance_likes l ON d.id = l.dance_id WHERE song_title || ' ' || song_artist ILIKE $1 GROUP BY d.id",
                 [`%${search}%`]
             );
         }
@@ -103,8 +119,8 @@ export const updateDance = async (req, res) => {
             extra,
         } = req.body;
 
-        const result = await pool.query(
-            'UPDATE dances SET style = $1, episode_id = $2, theme = $3, running_order = $4, song_title = $5, song_artist = $6, link = $7, extra = $8 WHERE id = $9 RETURNING *',
+        await pool.query(
+            'UPDATE dances SET style = $1, episode_id = $2, theme = $3, running_order = $4, song_title = $5, song_artist = $6, link = $7, extra = $8 WHERE id = $9',
             [
                 style,
                 episode_id,
@@ -116,6 +132,11 @@ export const updateDance = async (req, res) => {
                 extra,
                 id,
             ]
+        );
+
+        const result = await pool.query(
+            "SELECT d.*, COALESCE(ARRAY_AGG(user_id) filter (where user_id is not null), '{}') likes FROM dances d LEFT JOIN dance_likes l ON d.id = l.dance_id WHERE d.id = $1 GROUP BY d.id",
+            [id]
         );
 
         res.status(200).json(result.rows[0]);
@@ -177,6 +198,8 @@ export const deleteDance = async (req, res) => {
 };
 
 export const addPic = async (req, res) => {
+    const { id } = req.params;
+
     const storage = new Storage({
         projectId: process.env.GCLOUD_PROJECT_ID,
         keyFilename: process.env.GCLOUD_APPLICATION_CREDENTIALS,
@@ -203,9 +226,14 @@ export const addPic = async (req, res) => {
                 bucket.name
             }/o/${encodeURI(blob.name)}?alt=media`;
 
-            const result = await pool.query(
-                'UPDATE dances SET pictures = array_append(pictures, $1) WHERE id = $2 RETURNING *',
+            await pool.query(
+                'UPDATE dances SET pictures = array_append(pictures, $1) WHERE id = $2',
                 [publicUrl, req.params.id]
+            );
+
+            const result = await pool.query(
+                "SELECT d.*, COALESCE(ARRAY_AGG(user_id) filter (where user_id is not null), '{}') likes FROM dances d LEFT JOIN dance_likes l ON d.id = l.dance_id WHERE d.id = $1 GROUP BY d.id",
+                [id]
             );
 
             res.status(200).json(result.rows[0]);
@@ -225,36 +253,30 @@ export const likeDance = async (req, res, next) => {
             return res.status(401).json({ message: 'Unauthenticated' });
         }
 
-        // const dance = await Dance.findById(id);
+        const query = await pool.query(
+            'select exists(SELECT 1 FROM dance_likes WHERE dance_id = $1 AND user_id = $2)',
+            [id, req.userId]
+        );
+        let result;
 
-        // const index = dance.likes.findIndex((id) => id === String(req.userId));
-
-        // if (index === -1) {
-        //     dance.likes.push(req.userId);
-        // } else {
-        //     dance.likes = dance.likes.filter((id) => id !== String(req.userId));
-        // }
-
-        // const result = await Dance.findByIdAndUpdate(id, dance, { new: true });
-        // res.status(200).json(result);
-
-        // check if like is in table
-        if (
-            pool.query(
-                `exists(SELECT 1 FROM dance_likes WHERE id = ${id}, user_id = ${userId}`
-            )
-        ) {
+        if (query.rows[0].exists) {
             await pool.query(
-                `DELETE FROM dance_likes WHERE id = ${id}, user_id = ${userId}`
+                'DELETE FROM dance_likes WHERE dance_id = $1 AND user_id = $2',
+                [id, req.userId]
             );
-            // json message
         } else {
-            const result = await pool.query(
-                `INSERT INTO dances (id, user_id) VALUES($1, $2)`,
-                [id, userId]
+            await pool.query(
+                'INSERT INTO dance_likes (dance_id, user_id) VALUES($1, $2)',
+                [id, req.userId]
             );
-            // json message with resulting row ?? row[0]
         }
+
+        result = await pool.query(
+            "SELECT COALESCE(ARRAY_AGG(user_id) filter (where user_id is not null), '{}') likes FROM dance_likes WHERE dance_id = $1",
+            [id]
+        );
+
+        res.status(200).json(result.rows[0]);
     } catch (error) {
         res.status(500).json({ message: error });
     }
