@@ -14,6 +14,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
 import * as actionType from './constants/actionTypes';
 import decode from 'jwt-decode';
+import { Paper } from '@mui/material';
 
 function App(props) {
     const [toggleDark, setToggleDark] = useState(false);
@@ -89,29 +90,30 @@ function App(props) {
     //}
 
     //const location = useLocation();
-    const [user, setUser] = useState(
-        JSON.parse(localStorage.getItem('profile'))
-    );
+    // const [user, setUser] = useState(
+    //     JSON.parse(localStorage.getItem('profile'))
+    // );
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('profile'));
+        // causes issue because user is always null at signin/signup
         // if (user === null) {
         //     dispatch({ type: actionType.LOGOUT });
         //     navigate('/');
         //     setUser(null);
         // }
-        // const token = user?.token;
-        // if (token) {
-        //     const decodedToken = decode(token);
-        //     // need to test functionality
-        //     if (decodedToken.exp * 1000 < new Date().getTime()) {
-        //         dispatch({ type: actionType.LOGOUT });
-        //         navigate('/');
-        //         setUser(null);
-        //     }
-        // }
-    }, [user, dispatch, navigate]);
+        const token = user?.token;
+        if (token) {
+            const decodedToken = decode(token);
+            // need to test functionality
+            if (decodedToken.exp * 1000 < new Date().getTime()) {
+                dispatch({ type: actionType.LOGOUT });
+                navigate('/');
+            }
+        }
+    }, [dispatch, navigate]);
 
     return (
         <ThemeProvider theme={muiTheme}>
@@ -165,6 +167,8 @@ function App(props) {
     );
 }
 
-const Container = styled.div``;
+const Container = styled(Paper)`
+    height: 100vh;
+`;
 
 export default App;

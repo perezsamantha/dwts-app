@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 
 import auth from './auth';
-import fans from './fans';
+//import fans from './fans';
 import loading from './loading';
-import data from './data';
-import likes from './likes';
+import errors from './errors';
+//import data from './data';
 
 import celebs from './celebs';
 import pros from './pros';
@@ -19,8 +19,8 @@ import users from './users';
 
 export const reducers = combineReducers({
     auth,
-    fans,
     loading,
+    errors,
     celebs,
     pros,
     seasons,

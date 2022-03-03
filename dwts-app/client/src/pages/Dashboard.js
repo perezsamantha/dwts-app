@@ -10,7 +10,7 @@ function Dashboard(props) {
 
     const handleMode = () => {
         setToggleDark(!toggleDark);
-    }
+    };
 
     return (
         <div>
@@ -18,7 +18,7 @@ function Dashboard(props) {
             <h2>Home Page</h2>
             <BottomNavBar />
         </div>
-    )
+    );
 }
 
 export default Dashboard;
