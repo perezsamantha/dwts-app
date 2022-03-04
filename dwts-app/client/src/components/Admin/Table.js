@@ -14,7 +14,7 @@ import {
     DataGridContainer,
     HeaderContainer,
 } from '../shared/shared';
-import { convertDate } from '../shared/functions';
+import { convertDate, convertHeight } from '../shared/functions';
 import AddDialog from './AddDialog';
 import EditDialog from './EditDialog';
 import DeleteDialog from './DeleteDialog';
@@ -301,9 +301,14 @@ function Table(props) {
                     field: 'birthday',
                     headerName: 'Birthday',
                     width: 100,
-                    valueGetter: dateGetter,
+                    valueGetter: (params) => convertDate(params.value),
                 },
-                { field: 'height', headerName: 'Height', width: 80 },
+                {
+                    field: 'height',
+                    headerName: 'Height',
+                    width: 80,
+                    valueGetter: (params) => convertHeight(params.value),
+                },
                 { field: 'gender', headerName: 'Gender', width: 80 },
                 { field: 'twitter', headerName: 'Twitter', width: 100 },
                 { field: 'instagram', headerName: 'Instagram', width: 100 },
@@ -388,7 +393,7 @@ function Table(props) {
                     field: 'date',
                     headerName: 'Date',
                     width: 100,
-                    valueGetter: dateGetter,
+                    valueGetter: (params) => convertDate(params.value),
                 },
                 {
                     field: 'actions',
@@ -533,7 +538,7 @@ function Table(props) {
                     field: 'birthday',
                     headerName: 'Birthday',
                     width: 100,
-                    valueGetter: dateGetter,
+                    valueGetter: (params) => convertDate(params.value),
                 },
                 {
                     field: 'actions',
@@ -726,10 +731,6 @@ function Table(props) {
 
         default:
             columns = [];
-    }
-
-    function dateGetter(params) {
-        return convertDate(params.value);
     }
 
     return (

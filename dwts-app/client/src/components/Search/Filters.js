@@ -8,18 +8,18 @@ import {
     DialogContentText,
     DialogTitle,
     FormControl,
-    FormControlLabel,
-    Radio,
-    RadioGroup,
-    Typography,
 } from '@mui/material';
+import ProFilters from './Filters/ProFilters';
 
-function Filters() {
+function Filters(props) {
     const [open, setOpen] = useState(false);
-    const [value, setValue] = useState('female');
-    const [value2, setValue2] = useState(false);
+    //const { filters, setFilters } = props;
+    const { finalFilters, setFinalFilters, type } = props;
+
+    const [filters, setFilters] = useState(finalFilters);
 
     const handleOpen = () => {
+        setFilters(finalFilters);
         setOpen(true);
     };
 
@@ -27,18 +27,47 @@ function Filters() {
         setOpen(false);
     };
 
-    const handleChange = (event) => {
-        setValue(event.target.value);
+    const handleSubmit = () => {
+        setFinalFilters(filters);
+        setOpen(false);
     };
 
-    const handleChange2 = (event) => {
-        setValue2(event.target.value);
+    const handleChange = (e) => {
+        setFilters({ ...filters, [e.target.name]: e.target.value });
+    };
+
+    const handleChangeFrom = (e) => {
+        let tempArray = filters[e.target.name];
+        tempArray[0] = e.target.value;
+        setFilters({ ...filters, [e.target.name]: tempArray });
+    };
+
+    const handleChangeTo = (e) => {
+        let tempArray = filters[e.target.name];
+        tempArray[1] = e.target.value;
+        setFilters({ ...filters, [e.target.name]: tempArray });
+    };
+
+    const FilterComponent = () => {
+        switch (type) {
+            case '/search/pros':
+                return (
+                    <ProFilters
+                        filters={filters}
+                        handleChange={handleChange}
+                        handleChangeFrom={handleChangeFrom}
+                        handleChangeTo={handleChangeTo}
+                    />
+                );
+            default:
+                return <></>;
+        }
     };
 
     return (
         <>
-            <Button>
-                <FilterListIcon color="inherit" onClick={handleOpen} />
+            <Button color="inherit" onClick={handleOpen}>
+                <FilterListIcon />
             </Button>
             <Dialog open={open} onClose={handleClose} fullWidth>
                 <DialogTitle>Testing</DialogTitle>
@@ -54,40 +83,16 @@ function Filters() {
                         for dances - by style (chips), season (slider), week,
                         score, running order?, has link, has pictures, theme
                     </DialogContentText>
+
                     <FormControl>
-                        <Typography>Gender</Typography>
-                        <RadioGroup value={value} onChange={handleChange} row>
-                            <FormControlLabel
-                                value="female"
-                                control={<Radio />}
-                                label="Female"
-                            />
-                            <FormControlLabel
-                                value="male"
-                                control={<Radio />}
-                                label="Male"
-                            />
-                        </RadioGroup>
-                        <Typography>Only show junior pros?</Typography>
-                        <RadioGroup value={value2} onChange={handleChange2} row>
-                            <FormControlLabel
-                                value={true}
-                                control={<Radio />}
-                                label="Yes"
-                            />
-                            <FormControlLabel
-                                value={false}
-                                control={<Radio />}
-                                label="No"
-                            />
-                        </RadioGroup>
+                        <FilterComponent />
                     </FormControl>
                 </DialogContent>
                 <DialogActions>
                     <Button variant="contained" onClick={handleClose}>
                         Cancel
                     </Button>
-                    <Button variant="contained" onClick={handleClose}>
+                    <Button variant="contained" onClick={handleSubmit}>
                         Apply
                     </Button>
                 </DialogActions>

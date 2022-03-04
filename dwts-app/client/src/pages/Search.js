@@ -22,10 +22,11 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import CheckIcon from '@mui/icons-material/Check';
 
-import { styles } from '../constants/dropdowns';
+import { heightsInInches, styles } from '../constants/dropdowns';
 import { makeStyles } from '@mui/styles';
 import { Page, SearchTextField } from '../components/shared/muiStyles';
 import Filters from '../components/Search/Filters';
+import { initialFilters } from '../components/Search/Filters/initialFilters';
 
 const useStyles = makeStyles({
     icon: {
@@ -77,10 +78,22 @@ function Search(props) {
     //console.log(lastSeason)
     const [seasonFilters, setSeasonFilters] = useState([1, lastSeason]);
 
-    const [filters, setFilters] = useState({
-        styles: [],
-        seasons: [1, lastSeason],
-    });
+    const [finalFilters, setFinalFilters] = useState(initialFilters(value));
+
+    // const filters = {
+    //     styles: [],
+    //     seasons: [1, lastSeason],
+    //     // pros
+    //     ages: [0, 100],
+    //     heights: [
+    //         heightsInInches[0],
+    //         heightsInInches[heightsInInches.length - 1],
+    //     ],
+    //     gender: 'female',
+    //     showJuniors: false,
+    // };
+
+    //const [applyFilters, setApplyFilters] = useState(false);
 
     localStorage.setItem('parentPath', window.location.pathname);
 
@@ -112,13 +125,13 @@ function Search(props) {
 
         if (index > -1) {
             setStyleFilters(styleFilters.filter((style, i) => i !== index));
-            setFilters({
-                ...filters,
-                styles: filters.styles.filter((style, i) => i !== index),
-            });
+            //setFilters({
+            //     ...filters,
+            //     styles: filters.styles.filter((style, i) => i !== index),
+            // });
         } else {
             setStyleFilters((styleFilters) => [...styleFilters, style]);
-            setFilters({ ...filters, styles: [...filters.styles, style] });
+            //setFilters({ ...filters, styles: [...filters.styles, style] });
         }
 
         //console.log(filters);
@@ -126,12 +139,34 @@ function Search(props) {
 
     const handleSeasonFilters = (e, newValue) => {
         setSeasonFilters(newValue);
-        setFilters({ ...filters, seasons: newValue });
+        //setFilters({ ...filters, seasons: newValue });
     };
 
     useEffect(() => {
         placeholderText(pathname);
-    }, [pathname]);
+        setFinalFilters(initialFilters(value));
+    }, [pathname, value]);
+
+    const SearchComponent = () => {
+        switch (value) {
+            case '/search/dances':
+                return (
+                    <Dances key={1} search={searchVal} filters={finalFilters} />
+                );
+            case '/search/teams':
+                return <Teams key={2} search={searchVal} />;
+            case '/search/pros':
+                return (
+                    <Pros key={3} search={searchVal} filters={finalFilters} />
+                );
+            case '/search/fans':
+                return <Fans key={4} search={searchVal} />;
+            default:
+                return <></>;
+        }
+    };
+
+    //console.log(finalFilters);
 
     return (
         <Page>
@@ -159,7 +194,11 @@ function Search(props) {
                         className={classes.filterIcon}
                         onClick={() => setShowFilters((prev) => !prev)}
                     /> */}
-                    <Filters />
+                    <Filters
+                        type={value}
+                        finalFilters={finalFilters}
+                        setFinalFilters={setFinalFilters}
+                    />
                 </SearchBoxContainer>
 
                 {showFilters && (
@@ -238,7 +277,6 @@ function Search(props) {
                         disableRipple
                         component={Link}
                         to="/search/dances"
-                        className={classes.tabs}
                         label="DANCES"
                         value="/search/dances"
                     />
@@ -246,7 +284,6 @@ function Search(props) {
                         disableRipple
                         component={Link}
                         to="/search/teams"
-                        className={classes.tabs}
                         label="TEAMS"
                         value="/search/teams"
                     />
@@ -254,7 +291,6 @@ function Search(props) {
                         disableRipple
                         component={Link}
                         to="/search/pros"
-                        className={classes.tabs}
                         label="PROS"
                         value="/search/pros"
                     />
@@ -270,14 +306,16 @@ function Search(props) {
             </SearchContainer>
 
             {/* change to switch case before return? */}
-            {value === '/search/dances' && (
+            <SearchComponent />
+
+            {/* {value === '/search/dances' && (
                 <Dances key={key} search={searchVal} filters={filters} />
             )}
             {value === '/search/teams' && (
                 <Teams key={key} search={searchVal} />
             )}
             {value === '/search/pros' && <Pros key={key} search={searchVal} />}
-            {value === '/search/fans' && <Fans key={key} search={searchVal} />}
+            {value === '/search/fans' && <Fans key={key} search={searchVal} />} */}
 
             <BottomNavBar />
         </Page>

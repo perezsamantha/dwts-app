@@ -1,31 +1,31 @@
 export const styles = [
-    "Argentine Tango",
-    "Tango",
-    "Samba",
-    "Salsa",
-    "Waltz",
-    "Viennese Waltz",
-    "Cha Cha",
-    "Charleston",
-    "Foxtrot",
-    "Paso Doble",
-    "Jazz",
-    "Contemporary",
-    "Freestyle",
-    "Jive",
-    "Rumba",
-    "Quickstep",
-    "Bollywood",
-    "Jitterbug",
-    "Mambo",
-    "Hip-Hop",
-    "Disco",
-    "Bolero",
-    "Flamenco",
-    "Lindy Hop",
-    "Fusion",
-    "Team"
-]
+    'Argentine Tango',
+    'Tango',
+    'Samba',
+    'Salsa',
+    'Waltz',
+    'Viennese Waltz',
+    'Cha Cha',
+    'Charleston',
+    'Foxtrot',
+    'Paso Doble',
+    'Jazz',
+    'Contemporary',
+    'Freestyle',
+    'Jive',
+    'Rumba',
+    'Quickstep',
+    'Bollywood',
+    'Jitterbug',
+    'Mambo',
+    'Hip-Hop',
+    'Disco',
+    'Bolero',
+    'Flamenco',
+    'Lindy Hop',
+    'Fusion',
+    'Team',
+];
 
 export const seasons = Array.from({ length: 30 }, (_, i) => i + 1);
 // juniors?
@@ -53,49 +53,29 @@ export const placements = [
     // "15th",
     // "16th",
     null,
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
-    "13",
-    "14",
-    "15",
-    "16",
-]
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
+    '13',
+    '14',
+    '15',
+    '16',
+];
 
-export const themes = [
-    "No theme",
-    "Disney",
-    "Switch-Up",
-    "Halloween",
-    "Trio"
-]
+export const themes = ['No theme', 'Disney', 'Switch-Up', 'Halloween', 'Trio'];
 
-export const guestDancers = [
+export const guestDancers = [];
 
-]
-
-export const scores = [
-    null,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10
-]
+export const scores = [null, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 export const runningOrders = [
     // "1st",
@@ -115,44 +95,43 @@ export const runningOrders = [
     // "15th",
     // "16th",
     null,
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
-    "13",
-    "14",
-    "15",
-    "16",
-]
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
+    '13',
+    '14',
+    '15',
+    '16',
+];
 
-export const hosts = [
+// 4'0 to 7'3
+// lower it if doing juniors by height during season ??
+export const heightsInInches = Array.from({ length: 40 }, (_, i) => i + 48);
 
-]
-export const judges = []
+export const agesInYears = Array.from({ length: 101 }, (_, i) => i);
 
-export const guestJudges = []
+export const hosts = [];
+export const judges = [];
+
+export const guestJudges = [];
 
 export const genders = [
-    null,
-    "Male",
-    "Female",
-    "Other",
-    // eventually be more inclusive
-]
+    //null,
+    'Male',
+    'Female',
+    //'Other',
+    // more inclusive?
+];
 
 export const scoreOrders = Array.from({ length: 5 }, (_, i) => i + 1);
 
-
-export const roles = [
-    'fan',
-    'pro',
-    'admin'
-]
+export const roles = ['fan', 'pro', 'admin'];

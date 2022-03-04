@@ -13,11 +13,13 @@ import {
     scores,
     scoreOrders,
     roles,
+    heightsInInches,
 } from '../../constants/dropdowns';
 import CoverPicUpload from '../shared/CoverPicUpload';
 import { PhotoContainer } from '../shared/shared';
 import { useSelector } from 'react-redux';
 import DataGetter from '../shared/DataGetter';
+import { convertHeight } from '../shared/functions';
 
 function DialogFields(props) {
     const formData = props.formData;
@@ -488,11 +490,18 @@ function DialogFields(props) {
                 <TextField
                     margin="dense"
                     name="height"
-                    label="Height (_'__)"
+                    label="Height"
                     type="text"
+                    select
                     value={formData.height || ''}
                     onChange={handleChange}
-                />
+                >
+                    {heightsInInches.map((height, index) => (
+                        <MenuItem key={index} value={height}>
+                            {convertHeight(height)}
+                        </MenuItem>
+                    ))}
+                </TextField>
             )}
 
             {Array.of(tableType.CELEB, tableType.PRO).includes(table) && (

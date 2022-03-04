@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchPros, searchPros } from '../../actions/pros';
+import { searchPros } from '../../actions/pros';
 import { CircularProgress, Grid } from '@mui/material';
 import ProsPreview from '../Previews/ProsPreview';
 import { createLoadingSelector } from '../../api/selectors';
@@ -10,6 +9,7 @@ import { createLoadingSelector } from '../../api/selectors';
 import * as actionType from '../../constants/actionTypes';
 import { Container, ContentContainer } from '../shared/muiStyles';
 import { makeStyles } from '@mui/styles';
+import { filterPros } from './Filters/filtered';
 
 const useStyles = makeStyles({
     root: {
@@ -21,19 +21,23 @@ const useStyles = makeStyles({
 });
 
 function Pros(props) {
+    const { search, filters } = props;
     const classes = useStyles();
     const dispatch = useDispatch();
     const pros = useSelector((state) => state.pros.pros);
 
-    //const loadingSelector = createLoadingSelector([actionType.PROSEARCH]);
-    //const isFetching = useSelector((state) => loadingSelector(state));
-    const loading = useSelector((state) => state.loading.PROSEARCH);
+    const loadingSelector = createLoadingSelector([actionType.PROSEARCH]);
+    const loading = useSelector((state) => loadingSelector(state));
 
     useEffect(() => {
-        const input = { search: props.search };
+        const input = { search: search };
         dispatch(searchPros(input));
-        //dispatch(fetchPros());
-    }, [dispatch, props]);
+    }, [dispatch, search]);
+
+    let arr = [];
+    if (!loading) {
+        arr = filterPros(pros, filters);
+    }
 
     return (
         <Container elevation={1}>
@@ -43,11 +47,11 @@ function Pros(props) {
                 <ContentContainer elevation={1}>
                     <Grid
                         container
-                        justify="flex-start"
+                        //justify="flex-start"
                         className={classes.root}
                         spacing={2}
                     >
-                        {pros.map((pro, index) => (
+                        {arr.map((pro, index) => (
                             <Grid key={index} item>
                                 <Link
                                     to={{ pathname: `/pros/${pro.id}` }}

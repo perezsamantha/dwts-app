@@ -10,7 +10,11 @@ import Individuals from './pages/Individuals';
 import Admin from './pages/Admin';
 import styled from 'styled-components';
 //import { AnimatePresence } from 'framer-motion';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import {
+    ThemeProvider,
+    createTheme,
+    responsiveFontSizes,
+} from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
 import * as actionType from './constants/actionTypes';
 import decode from 'jwt-decode';
@@ -19,7 +23,7 @@ import { Paper } from '@mui/material';
 function App(props) {
     const [toggleDark, setToggleDark] = useState(false);
 
-    const muiTheme = createTheme({
+    let muiTheme = createTheme({
         palette: {
             mode: toggleDark ? 'dark' : 'light',
             primary: {
@@ -114,6 +118,8 @@ function App(props) {
             }
         }
     }, [dispatch, navigate]);
+
+    muiTheme = responsiveFontSizes(muiTheme);
 
     return (
         <ThemeProvider theme={muiTheme}>
