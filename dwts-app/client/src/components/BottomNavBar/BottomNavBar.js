@@ -3,28 +3,23 @@ import React, { useState } from 'react';
 import HomeIcon from '@mui/icons-material/Home';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import SearchIcon from '@mui/icons-material/Search';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link } from 'react-router-dom';
-import CheckJWT from '../shared/logout';
 import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import styled from 'styled-components';
 
-const useStyles = makeStyles({});
-
 function BottomNavBar() {
-    //CheckJWT();
-    const classes = useStyles();
     //const pathname = window.location.pathname;
     //const [value, setValue] = useState(pathname.split("/")[1]);
     const pathname = localStorage.getItem('parentPath');
     const [value, setValue] = useState(pathname?.split('/')[1]);
 
     if (
-        value != 'dashboard' &&
-        value != 'favorites' &&
-        value != 'search' &&
-        value != 'account'
+        value !== 'dashboard' &&
+        value !== 'favorites' &&
+        value !== 'search' &&
+        value !== 'account'
     ) {
         setValue('home');
     }
@@ -60,6 +55,14 @@ function BottomNavBar() {
                     value="search"
                     icon={<SearchIcon />}
                 />
+                {/* <BottomNavigationAction
+                    disableRipple
+                    component={Link}
+                    to="/notifications"
+                    label="Search"
+                    value="search"
+                    icon={<NotificationsIcon />}
+                /> */}
                 <BottomNavigationAction
                     disableRipple
                     component={Link}

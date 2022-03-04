@@ -11,6 +11,8 @@ import ProFilters from './Filters/ProFilters';
 import TeamFilters from './Filters/TeamFilters';
 import DanceFilters from './Filters/DanceFilters';
 
+//TODO: clear filters button?
+
 function Filters(props) {
     const [open, setOpen] = useState(false);
     //const { filters, setFilters } = props;

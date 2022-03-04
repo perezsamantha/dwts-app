@@ -73,9 +73,7 @@ function AccountHeader() {
                     }}
                 >
                     {/* temporary hack to get flexbox layout */}
-                    <Button disabled sx={{ opacity: 0 }}>
-                        <SettingsIcon />
-                    </Button>
+                    <Button disabled sx={{ opacity: 0 }}></Button>
                     <Avatar
                         sx={{ width: 100, height: 100, marginTop: -5 }}
                         alt="default"
@@ -112,7 +110,11 @@ function AccountHeader() {
                     </Carousel>
                 </ContentContainer>} */}
 
-                <Button variant="filled" onClick={logout}>
+                <Button variant="filled" onClick={() => navigate('/admin')}>
+                    Admin Panel
+                </Button>
+
+                <Button variant="contained" onClick={logout}>
                     Logout
                 </Button>
             </AccountContainer>

@@ -15,7 +15,7 @@ import {
     createTheme,
     responsiveFontSizes,
 } from '@mui/material/styles';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as actionType from './constants/actionTypes';
 import decode from 'jwt-decode';
 import { Paper } from '@mui/material';
@@ -53,7 +53,7 @@ function App(props) {
                             margin: '10px',
                         },
                         margin: '0',
-                        //width: '50%',
+                        width: '50%',
                     },
                 },
             },
