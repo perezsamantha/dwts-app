@@ -1,4 +1,15 @@
-import styled from "styled-components";
+import styled from '@emotion/styled';
+import { TextField, Typography } from '@mui/material';
+
+export const FullTextField = styled(TextField)({
+    width: '100%',
+});
+
+export const HeaderText = styled(Typography)(({ theme }) => ({
+    color: 'white',
+    textShadow: `5px 5px 15px rgba(0, 0, 0, 0.4)`,
+    zIndex: 10,
+}));
 
 export const BoxContainer = styled.div`
     width: 100%;
@@ -26,7 +37,7 @@ export const MutedLink = styled.a`
 
 export const BoldLink = styled.a`
     font-size: 12px;
-    color: rgb(198,161,67);
+    color: rgb(198, 161, 67);
     font-weight: 500;
     text-decoration: none;
 `;
@@ -41,8 +52,12 @@ export const SubmitButton = styled.button`
     border-radius: 100px 100px 100px 100px;
     cursor: pointer;
     transition: all, 240ms ease-in-out;
-    background: rgb(236,220,141);
-background: radial-gradient(circle, rgba(236,220,141,1) 0%, rgba(208,174,87,1) 100%);
+    background: rgb(236, 220, 141);
+    background: radial-gradient(
+        circle,
+        rgba(236, 220, 141, 1) 0%,
+        rgba(208, 174, 87, 1) 100%
+    );
     margin: 1em 0;
 
     &:hover {

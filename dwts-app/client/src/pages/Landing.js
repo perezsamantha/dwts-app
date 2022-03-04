@@ -1,3 +1,4 @@
+import { Paper } from '@mui/material';
 import React from 'react';
 import styled from 'styled-components';
 import AccountBox from '../components/AccountBox/AccountBox';
@@ -6,9 +7,9 @@ import AccountBox from '../components/AccountBox/AccountBox';
 
 function Landing() {
     return (
-        <LandingContainer>
+        <Paper>
             <AccountBox />
-        </LandingContainer>
+        </Paper>
     );
 }
 

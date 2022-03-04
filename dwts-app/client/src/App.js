@@ -18,10 +18,52 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionType from './constants/actionTypes';
 import decode from 'jwt-decode';
-import { Paper } from '@mui/material';
+import { Paper, useMediaQuery } from '@mui/material';
 
-function App(props) {
-    const [toggleDark, setToggleDark] = useState(false);
+function App() {
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark');
+    const [toggleDark, setToggleDark] = useState(
+        localStorage.getItem('theme')
+            ? localStorage.getItem('theme') === 'dark'
+            : prefersDarkMode
+            ? true
+            : false
+    );
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        // setToggleDark(
+        //     localStorage.getItem('theme')
+        //         ? localStorage.getItem('theme') === 'dark'
+        //         : prefersDarkMode
+        //         ? true
+        //         : false
+        // );
+        const user = JSON.parse(localStorage.getItem('profile'));
+
+        if (user === null) {
+            dispatch({ type: actionType.LOGOUT });
+            navigate('/');
+        }
+
+        const token = user?.token;
+
+        if (token) {
+            const decodedToken = decode(token);
+            // need to test functionality
+            if (decodedToken.exp * 1000 < new Date().getTime()) {
+                dispatch({ type: actionType.LOGOUT });
+                navigate('/');
+            }
+        }
+    }, [dispatch, navigate, prefersDarkMode]);
+
+    const handleDarkMode = (toggleDark) => {
+        setToggleDark(toggleDark);
+        localStorage.setItem('theme', toggleDark ? 'dark' : 'light');
+    };
 
     let muiTheme = createTheme({
         palette: {
@@ -87,37 +129,6 @@ function App(props) {
             },
         },
     });
-    //const [token, setToken] = useState();
-
-    //if(!token) {
-    //return <Login setToken={setToken} />
-    //}
-
-    //const location = useLocation();
-    // const [user, setUser] = useState(
-    //     JSON.parse(localStorage.getItem('profile'))
-    // );
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('profile'));
-        // causes issue because user is always null at signin/signup
-        // if (user === null) {
-        //     dispatch({ type: actionType.LOGOUT });
-        //     navigate('/');
-        //     setUser(null);
-        // }
-        const token = user?.token;
-        if (token) {
-            const decodedToken = decode(token);
-            // need to test functionality
-            if (decodedToken.exp * 1000 < new Date().getTime()) {
-                dispatch({ type: actionType.LOGOUT });
-                navigate('/');
-            }
-        }
-    }, [dispatch, navigate]);
 
     muiTheme = responsiveFontSizes(muiTheme);
 
@@ -132,7 +143,7 @@ function App(props) {
                         element={
                             <Dashboard
                                 toggleDark={toggleDark}
-                                setToggleDark={setToggleDark}
+                                handleDarkMode={handleDarkMode}
                             />
                         }
                     />

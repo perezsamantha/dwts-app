@@ -14,14 +14,13 @@ import { signIn } from '../../actions/auth';
 
 import {
     BoxContainer,
-    FormContainer,
     MutedLink,
     BoldLink,
     SubmitButton,
+    FullTextField,
 } from './common';
 import { AccountContext } from './AccountContext';
 import { IconButton, InputAdornment } from '@mui/material';
-import { TextField } from '@mui/material';
 
 const initialState = { username: '', password: '' };
 
@@ -67,51 +66,48 @@ function Signin(props) {
 
     return (
         <BoxContainer>
-            <FormContainer onSubmit={handleSubmit}>
-                <TextField
-                    required
-                    id="username"
-                    name="username"
-                    label="username"
-                    type="text"
-                    onChange={handleChange}
-                    margin="dense"
-                    //InputProps={{
-                    //startAdornment: '@'
-                    //}}
-                />
-                <TextField
-                    required
-                    id="pass"
-                    name="password"
-                    label="password"
-                    type={showPass ? 'text' : 'password'}
-                    onChange={handleChange}
-                    handleShowPass={handleShowPass}
-                    margin="dense"
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton onClick={handleShowPass}>
-                                    {showPass ? (
-                                        <Visibility />
-                                    ) : (
-                                        <VisibilityOff />
-                                    )}
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                />
-                <MutedLink href="#">Forgot your password?</MutedLink>
-                <SubmitButton type="submit">Sign In</SubmitButton>
-                <MutedLink href="#">
-                    Don't have an account?{' '}
-                    <BoldLink href="#" onClick={switchToSignup}>
-                        Sign up.
-                    </BoldLink>
-                </MutedLink>
-            </FormContainer>
+            <FullTextField
+                required
+                id="username"
+                name="username"
+                label="username"
+                type="text"
+                onChange={handleChange}
+                margin="dense"
+                //InputProps={{
+                //startAdornment: '@'
+                //}}
+            />
+            <FullTextField
+                required
+                id="pass"
+                name="password"
+                label="password"
+                type={showPass ? 'text' : 'password'}
+                onChange={handleChange}
+                handleShowPass={handleShowPass}
+                margin="dense"
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <IconButton onClick={handleShowPass}>
+                                {showPass ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                        </InputAdornment>
+                    ),
+                }}
+            />
+
+            <MutedLink href="#">Forgot your password?</MutedLink>
+            <SubmitButton type="submit" onClick={handleSubmit}>
+                Sign In
+            </SubmitButton>
+            <MutedLink href="#">
+                Don't have an account?{' '}
+                <BoldLink href="#" onClick={switchToSignup}>
+                    Sign up.
+                </BoldLink>
+            </MutedLink>
         </BoxContainer>
         /* keep for when implementing google oauth
         <form autoComplete="off" onSubmit={handleSubmit}>

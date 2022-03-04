@@ -45,7 +45,6 @@ const useStyles = makeStyles({
 });
 
 function TeamCard(props) {
-    //CheckJWT();
     const classes = useStyles();
     const navigate = useNavigate();
 

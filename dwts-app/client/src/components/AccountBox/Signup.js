@@ -18,6 +18,7 @@ import {
     MutedLink,
     BoldLink,
     SubmitButton,
+    FullTextField,
 } from './common';
 import { AccountContext } from './AccountContext';
 import { IconButton, InputAdornment, TextField } from '@mui/material';
@@ -72,7 +73,7 @@ function Signup() {
     return (
         <BoxContainer>
             <FormContainer onSubmit={handleSubmit}>
-                <TextField
+                <FullTextField
                     required
                     id="username"
                     name="username"
@@ -81,7 +82,7 @@ function Signup() {
                     onChange={handleChange}
                     margin="dense"
                 />
-                <TextField
+                <FullTextField
                     required
                     id="email"
                     name="email"
@@ -90,7 +91,7 @@ function Signup() {
                     onChange={handleChange}
                     margin="dense"
                 />
-                <TextField
+                <FullTextField
                     required
                     id="pass"
                     name="password"
@@ -113,7 +114,7 @@ function Signup() {
                         ),
                     }}
                 />
-                <TextField
+                <FullTextField
                     required
                     id="confirmPass"
                     name="confirm_password"

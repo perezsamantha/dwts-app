@@ -1,220 +1,169 @@
 import React, { useState } from 'react';
 
-import styled from 'styled-components';
 import Signin from './Signin';
 import Signup from './Signup';
 
 import { AccountContext } from './AccountContext';
 
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
+import { Paper, Typography } from '@mui/material';
+import styled from '@emotion/styled';
+import { HeaderText } from './common';
+
+// const backdropVariants = {
+//     expanded: {
+//         width: '320%',
+//         height: '280vh',
+//         borderRadius: '20%',
+//         transform: 'rotate(60deg)',
+//     },
+//     collapsed: {
+//         width: 200,
+//         height: 200,
+//         borderRadius: '50%',
+//         transform: 'rotate(60deg)',
+//     },
+// };
 
 const backdropVariants = {
     expanded: {
-        width: "260%",
-        height: "220vh",
-        borderRadius: "20%",
-        transform: "rotate(60deg)"
+        scale: 10,
     },
     collapsed: {
-        width: "650px",
-        height: "550px",
-        borderRadius: "50%",
-        transform: "rotate(60deg)"
-    }
-}
+        scale: 1,
+    },
+};
 
 const expandingTransition = {
-    type: "spring",
+    type: 'spring',
     duration: 2.5,
     stiffness: 50,
-}
+};
 
 const AccountBox = (props) => {
     const [isExpanded, setExpanded] = useState(false);
-    const [active, setActive] = useState("signin");
+    const [active, setActive] = useState('signin');
 
     const playExpandingAnimation = () => {
         setExpanded(true);
         setTimeout(() => {
             setExpanded(false);
         }, expandingTransition.duration * 1000 - 1500);
-    }
+    };
 
     const switchToSignup = () => {
         playExpandingAnimation();
         setTimeout(() => {
-            setActive("signup");
-        }, 400)
-    }
+            setActive('signup');
+        }, 400);
+    };
 
     const switchToSignin = () => {
         playExpandingAnimation();
         setTimeout(() => {
-            setActive("signin");
-        }, 400)
-    }
+            setActive('signin');
+        }, 400);
+    };
 
     const contextValue = { switchToSignup, switchToSignin };
 
     return (
         <AccountContext.Provider value={contextValue}>
-            <NewBox>
+            <Container>
                 <NewTop>
-                    <NewBack
+                    {/* <NewBack
                         initial={false}
-                        animate={isExpanded ? "expanded" : "collapsed"}
+                        animate={isExpanded ? 'expanded' : 'collapsed'}
+                        variants={backdropVariants}
+                        transition={expandingTransition}
+                    /> */}
+                    <NewBack
+                        //initial={false}
+                        animate={isExpanded ? 'expanded' : 'collapsed'}
                         variants={backdropVariants}
                         transition={expandingTransition}
                     />
-                    {active === "signin" && <HeaderContainer>
-                        <HeaderText>Welcome</HeaderText>
-                        <HeaderText>Back</HeaderText>
-                        <SmallText>Please sign in to continue.</SmallText>
-                    </HeaderContainer>}
-                    {active === "signup" && <HeaderContainer>
-                        <HeaderText>Create</HeaderText>
-                        <HeaderText>Account</HeaderText>
-                        <SmallText>Please sign up to continue.</SmallText>
-                    </HeaderContainer>}
+                    {active === 'signin' && (
+                        <>
+                            <HeaderText variant="h4">Welcome</HeaderText>
+                            <HeaderText variant="h4">Back</HeaderText>
+                            <HeaderText>Please sign in to continue</HeaderText>
+                        </>
+                    )}
+                    {active === 'signup' && (
+                        <>
+                            <HeaderText variant="h4">Create</HeaderText>
+                            <HeaderText variant="h4">Account</HeaderText>
+                            <HeaderText>Please sign up to continue</HeaderText>
+                        </>
+                    )}
                 </NewTop>
                 <InnerContainer>
-                    {active === "signin" && <Signin />}
-                    {active === "signup" && <Signup />}
+                    {active === 'signin' && <Signin />}
+                    {active === 'signup' && <Signup />}
                 </InnerContainer>
-            </NewBox>
-
-            {/* <BoxContainer>
-            <TopContainer>
-                <BackDrop 
-                    initial={false} 
-                    animate={isExpanded ? "expanded" : "collapsed"} 
-                    variants={backdropVariants}
-                    transition={expandingTransition}
-                />
-                {active ==="signin" && <HeaderContainer>
-                    <HeaderText>Welcome</HeaderText>
-                    <HeaderText>Back</HeaderText>
-                    <SmallText>Please sign in to continue.</SmallText>
-                </HeaderContainer>}
-                {active ==="signup" && <HeaderContainer>
-                    <HeaderText>Create</HeaderText>
-                    <HeaderText>Account</HeaderText>
-                    <SmallText>Please sign up to continue.</SmallText>
-                </HeaderContainer>}
-            </TopContainer>
-            <InnerContainer>
-                {active === "signin" && <Signin />}
-                {active === "signup" && <Signup />}
-            </InnerContainer>
-        </BoxContainer>*/}
+            </Container>
         </AccountContext.Provider>
-    )
-}
+    );
+};
 
-const NewBox = styled.div`
-    width: 100%;
-    height: 100vh;
+const Container = styled(Paper)`
     display: flex;
     flex-direction: column;
-    background-color: #fff;
-    position: relative;
-    overflow-x: hidden;
-    overflow-y: auto;
+    align-content: center;
+    //position: relative;
 `;
 
-
-// const BoxContainer = styled.div`
-//     width: 280px;
-//     min-height: 550px;
-//     display: flex;
-//     flex-direction: column;
-//     border-radius: 19px;
-//     background-color: #ffffff;
-//     box-shadow: 0 0 2px rgba(15, 15, 15, 0.28);
-//     position: relative;
-//     overflow: hidden;
-// `;
-
-const NewTop = styled.div`
-    width: 100%;
-    height: 30vh;
+const NewTop = styled(Paper)`
+    //width: 60%;
+    //height: 30vh;
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
-    padding: 0 1.8em;
-    padding-bottom: 5em;
+    padding: 5em 1.8em;
 `;
 
-// const TopContainer = styled.div`
-//     width: 100%;
-//     height: 150px;
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: flex-end;
-//     padding: 0 1.8em;
-//     padding-bottom: 5em;
-// `;
-
+// TODO: convert to star and possibly change from px
 const NewBack = styled(motion.div)`
-    width: 500px;
-    height: 400px;
+    width: 200px;
+    height: 200px;
     position: absolute;
-    display: flex;
-    flex-direction: column;
     border-radius: 50%;
     transform: rotate(50deg);
-    top: -325px;
-    left: -325px;
-    background: rgb(196,159,65);
-    background: linear-gradient(100deg, rgba(196,159,65,1) 0%, rgba(215,189,102,1) 70%, rgba(240,225,152,1) 100%);
+    background: rgb(236, 220, 141);
+    background: radial-gradient(
+        circle,
+        rgba(236, 220, 141, 1) 0%,
+        rgba(208, 174, 87, 1) 100%
+    );
     z-index: 5;
 `;
 
-// const BackDrop = styled(motion.div)`
-//     width: 160%;
-//     height: 550px;
+// const NewBack = styled(motion.div)`
+//     width: 500px;
+//     height: 400px;
 //     position: absolute;
 //     display: flex;
 //     flex-direction: column;
 //     border-radius: 50%;
-//     transform: rotate(60deg);
-//     top: -290px;
-//     left: -70px;
-//     background: rgb(196,159,65);
-//     background: linear-gradient(100deg, rgba(196,159,65,1) 0%, rgba(215,189,102,1) 70%, rgba(240,225,152,1) 100%);
+//     transform: rotate(50deg);
+//     top: -325px;
+//     left: -325px;
+//     background: rgb(196, 159, 65);
+//     background: linear-gradient(
+//         100deg,
+//         rgba(196, 159, 65, 1) 0%,
+//         rgba(215, 189, 102, 1) 70%,
+//         rgba(240, 225, 152, 1) 100%
+//     );
 //     z-index: 5;
 // `;
 
-const HeaderContainer = styled.div`
-    width: 100%;
+const InnerContainer = styled(Paper)`
     display: flex;
     flex-direction: column;
-`;
-
-const HeaderText = styled.h2`
-    font-size: 30px;
-    font-weight: 600;
-    line-height: 1.24;
-    color: #fff;
-    z-index: 10;
-    margin: 0;
-    text-shadow: 0px 1px 15px rgba(0, 0, 0, 0.3);
-`;
-
-const SmallText = styled.h5`
-    color: #fff;
-    font-weight: 500;
-    font-size: 11px;
-    z-index: 10;
-    margin: 0;
-    margin-top: 10px;
-    text-shadow: 0px 1px 15px rgba(0, 0, 0, 0.3);
-`;
-
-const InnerContainer = styled.div`
-    //width: 100%;
-    display: flex;
-    flex-direction: column;
+    //align-content: center;
     padding: 0 1.8em;
 `;
 

@@ -1,33 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 
-import { useDispatch } from 'react-redux';
-
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import List from '@mui/material/List';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import MailIcon from '@mui/icons-material/Mail';
+import {
+    AppBar,
+    Box,
+    CssBaseline,
+    Divider,
+    Drawer,
+    IconButton,
+    List,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    Switch,
+    Toolbar,
+    Typography,
+} from '@mui/material';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import PeopleIcon from '@mui/icons-material/People';
-import { ListItemButton, Switch } from '@mui/material';
+import LogoutIcon from '@mui/icons-material/Logout';
+
 import Table from './Table';
 import * as tableType from '../../constants/tableTypes';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+
+import * as actionType from '../../constants/actionTypes';
+import AdminLanding from './AdminLanding';
 
 const drawerWidth = 180;
 
 function AdminDashboard(props) {
-    const dispatch = useDispatch();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(() => {}, []);
 
@@ -38,10 +42,12 @@ function AdminDashboard(props) {
         setMobileOpen(!mobileOpen);
     };
 
-    const [table, setTable] = useState(null);
+    const [table, setTable] = useState(<AdminLanding />);
+    const [selectedIndex, setSelectedIndex] = useState(0);
 
-    const handleComponent = (c) => {
-        setTable(c);
+    const handleComponent = (component, index) => {
+        setSelectedIndex(index);
+        setTable(component);
     };
 
     const setToggleDark = props.setToggleDark;
@@ -51,36 +57,52 @@ function AdminDashboard(props) {
         setToggleDark(!toggleDark);
     };
 
+    const handleLogout = () => {
+        dispatch({ type: actionType.LOGOUT });
+        navigate('/');
+    };
+
     const drawer = (
-        <DrawerContainer>
+        <Box>
             <Divider />
             <List>
-                <ListItemButton>
-                    <ListItemIcon>
-                        <PeopleIcon />
-                    </ListItemIcon>
-                    <ListItemText>Dashboard</ListItemText>
-                </ListItemButton>
                 <ListItemButton
+                    selected={selectedIndex === 0}
+                    onClick={() => handleComponent(<AdminLanding key={0} />, 0)}
+                >
+                    <ListItemText>Admin Dashboard</ListItemText>
+                </ListItemButton>
+
+                <Divider />
+
+                <ListItemButton
+                    selected={selectedIndex === 1}
                     onClick={() =>
                         handleComponent(
-                            <Table key={1} type={tableType.CELEB} />
+                            <Table key={1} type={tableType.CELEB} />,
+                            1
                         )
                     }
                 >
                     <ListItemText>Celebs</ListItemText>
                 </ListItemButton>
                 <ListItemButton
+                    selected={selectedIndex === 2}
                     onClick={() =>
-                        handleComponent(<Table key={2} type={tableType.PRO} />)
+                        handleComponent(
+                            <Table key={2} type={tableType.PRO} />,
+                            2
+                        )
                     }
                 >
                     <ListItemText>Pros</ListItemText>
                 </ListItemButton>
                 <ListItemButton
+                    selected={selectedIndex === 3}
                     onClick={() =>
                         handleComponent(
-                            <Table key={3} type={tableType.SEASON} />
+                            <Table key={3} type={tableType.SEASON} />,
+                            3
                         )
                     }
                 >
@@ -88,25 +110,33 @@ function AdminDashboard(props) {
                 </ListItemButton>
                 {/* Episodes nested list? */}
                 <ListItemButton
+                    selected={selectedIndex === 4}
                     onClick={() =>
                         handleComponent(
-                            <Table key={4} type={tableType.EPISODE} />
+                            <Table key={4} type={tableType.EPISODE} />,
+                            4
                         )
                     }
                 >
                     <ListItemText>Episodes</ListItemText>
                 </ListItemButton>
                 <ListItemButton
+                    selected={selectedIndex === 5}
                     onClick={() =>
-                        handleComponent(<Table key={5} type={tableType.TEAM} />)
+                        handleComponent(
+                            <Table key={5} type={tableType.TEAM} />,
+                            5
+                        )
                     }
                 >
                     <ListItemText>Teams</ListItemText>
                 </ListItemButton>
                 <ListItemButton
+                    selected={selectedIndex === 6}
                     onClick={() =>
                         handleComponent(
-                            <Table key={6} type={tableType.DANCE} />
+                            <Table key={6} type={tableType.DANCE} />,
+                            6
                         )
                     }
                 >
@@ -114,36 +144,44 @@ function AdminDashboard(props) {
                 </ListItemButton>
                 {/* Dancers nested list? */}
                 <ListItemButton
+                    selected={selectedIndex === 7}
                     onClick={() =>
                         handleComponent(
-                            <Table key={7} type={tableType.JUDGE} />
+                            <Table key={7} type={tableType.JUDGE} />,
+                            7
                         )
                     }
                 >
                     <ListItemText>Judges</ListItemText>
                 </ListItemButton>
                 <ListItemButton
+                    selected={selectedIndex === 8}
                     onClick={() =>
                         handleComponent(
-                            <Table key={8} type={tableType.SCORE} />
+                            <Table key={8} type={tableType.SCORE} />,
+                            8
                         )
                     }
                 >
                     <ListItemText>Scores</ListItemText>
                 </ListItemButton>
                 <ListItemButton
+                    selected={selectedIndex === 9}
                     onClick={() =>
                         handleComponent(
-                            <Table key={9} type={tableType.DANCER} />
+                            <Table key={9} type={tableType.DANCER} />,
+                            9
                         )
                     }
                 >
                     <ListItemText>Dancers</ListItemText>
                 </ListItemButton>
                 <ListItemButton
+                    selected={selectedIndex === 10}
                     onClick={() =>
                         handleComponent(
-                            <Table key={10} type={tableType.USER} />
+                            <Table key={10} type={tableType.USER} />,
+                            10
                         )
                     }
                 >
@@ -154,31 +192,25 @@ function AdminDashboard(props) {
             <List>
                 <ListItemButton onClick={() => navigate('/dashboard')}>
                     <ListItemIcon>
-                        <InboxIcon />
+                        <DashboardIcon />
                     </ListItemIcon>
                     <ListItemText>Home</ListItemText>
                 </ListItemButton>
-                {['Home', 'Logout'].map((text, index) => (
-                    <ListItemButton key={text}>
-                        <ListItemIcon>
-                            {index % 2 === 0 ? (
-                                <InboxIcon />
-                            ) : (
-                                <MailIcon color="secondary" />
-                            )}
-                        </ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItemButton>
-                ))}
+                <ListItemButton onClick={handleLogout}>
+                    <ListItemIcon>
+                        <LogoutIcon />
+                    </ListItemIcon>
+                    <ListItemText>Logout</ListItemText>
+                </ListItemButton>
             </List>
-        </DrawerContainer>
+        </Box>
     );
 
     const container =
         window !== undefined ? () => window().document.body : undefined;
 
     return (
-        <Container>
+        <Box>
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
                 <AppBar
@@ -257,19 +289,8 @@ function AdminDashboard(props) {
                     {table}
                 </Box>
             </Box>
-        </Container>
+        </Box>
     );
 }
-
-const Container = styled.div`
-    //background-color: black;
-    display: flex;
-    flex-direction: column;
-`;
-
-const DrawerContainer = styled.div`
-    //background-color: lightgrey;
-    height: 100vh;
-`;
 
 export default AdminDashboard;

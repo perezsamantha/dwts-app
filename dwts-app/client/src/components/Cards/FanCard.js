@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Avatar, Button } from '@mui/material';
-import CheckJWT from '../shared/logout';
 import { useNavigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { findUserById } from '../../actions/fans';
@@ -28,7 +27,6 @@ const useStyles = makeStyles({
 });
 
 function FanCard() {
-    CheckJWT();
     const classes = useStyles();
     const navigate = useNavigate();
     const dispatch = useDispatch();

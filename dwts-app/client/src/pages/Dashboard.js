@@ -5,16 +5,14 @@ import BottomNavBar from '../components/BottomNavBar/BottomNavBar';
 function Dashboard(props) {
     localStorage.setItem('parentPath', window.location.pathname);
 
-    const setToggleDark = props.setToggleDark;
-    const toggleDark = props.toggleDark;
-
-    const handleMode = () => {
-        setToggleDark(!toggleDark);
-    };
+    const { toggleDark, handleDarkMode } = props;
 
     return (
         <div>
-            <Switch checked={toggleDark} onChange={handleMode} />
+            <Switch
+                checked={toggleDark}
+                onChange={() => handleDarkMode(!toggleDark)}
+            />
             <h2>Home Page</h2>
             <BottomNavBar />
         </div>
