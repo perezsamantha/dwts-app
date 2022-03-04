@@ -2,6 +2,7 @@ import React from 'react';
 import {
     Box,
     Chip,
+    FormControl,
     FormControlLabel,
     MenuItem,
     OutlinedInput,
@@ -12,11 +13,17 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { placements, seasons } from '../../../constants/dropdowns';
+import {
+    placements,
+    seasons,
+    styles,
+    themes,
+    weeks,
+} from '../../../constants/dropdowns';
 import { useSelector } from 'react-redux';
 
-function TeamFilters(props) {
-    const pros = useSelector((state) => state.pros.pros);
+function DanceFilters(props) {
+    //const pros = useSelector((state) => state.pros.pros);
     const { filters, handleChange, handleChangeFrom, handleChangeTo } = props;
 
     return (
@@ -38,26 +45,76 @@ function TeamFilters(props) {
                     control={<Radio />}
                     label="Season Ascending"
                 />
+                {/* <FormControlLabel
+                    value="scoreDesc"
+                    control={<Radio />}
+                    label="Score (High to Low)"
+                /> */}
+                {/* <FormControlLabel
+                    value="scoreAsc"
+                    control={<Radio />}
+                    label="Score (Low to High)"
+                /> */}
                 <FormControlLabel
-                    value="placement"
+                    value="likes"
                     control={<Radio />}
-                    label="placement"
+                    label="Most Liked"
                 />
-                {/* <FormControlLabel
-                    value="perfects"
-                    control={<Radio />}
-                    label="Perfect Scores"
-                /> */}
-                {/* <FormControlLabel
-                    value="avgScore"
-                    control={<Radio />}
-                    label="Average Score"
-                /> */}
             </RadioGroup>
             <Typography variant="h5" mb={1}>
                 Filter By
             </Typography>
-            <Typography>Pro(s)</Typography>
+            <Typography>Styles</Typography>
+            <Select
+                multiple
+                name="styles"
+                value={filters.styles}
+                onChange={handleChange}
+                input={<OutlinedInput />}
+                renderValue={(selected) => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                        {selected.map((value) => {
+                            return <Chip key={value} label={value} />;
+                        })}
+                    </Box>
+                )}
+            >
+                {styles.map((style, index) => {
+                    return (
+                        <MenuItem key={index} value={style}>
+                            {style}
+                        </MenuItem>
+                    );
+                })}
+            </Select>
+            <FormControl>
+                <Typography>Themes</Typography>
+                <Select
+                    multiple
+                    name="themes"
+                    value={filters.themes}
+                    onChange={handleChange}
+                    input={<OutlinedInput />}
+                    renderValue={(selected) => (
+                        <Box
+                            sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}
+                        >
+                            {selected.map((value) => {
+                                return <Chip key={value} label={value} />;
+                            })}
+                        </Box>
+                    )}
+                >
+                    {themes.map((theme, index) => {
+                        return (
+                            <MenuItem key={index} value={theme}>
+                                {theme}
+                            </MenuItem>
+                        );
+                    })}
+                </Select>
+            </FormControl>
+            {/* <Typography>Pro(s)</Typography>
             <Select
                 multiple
                 name="pros"
@@ -81,9 +138,10 @@ function TeamFilters(props) {
                         </MenuItem>
                     );
                 })}
-            </Select>
+            </Select> */}
+            {/* teams */}
 
-            <Typography>Only Show Teams w/ Pictures?</Typography>
+            <Typography>Only Show Dances w/ Pictures?</Typography>
             <RadioGroup
                 name="hasPictures"
                 value={filters.hasPictures}
@@ -101,6 +159,7 @@ function TeamFilters(props) {
                     label="No"
                 />
             </RadioGroup>
+
             <Typography>Seasons</Typography>
             <Stack direction="row">
                 <TextField
@@ -137,14 +196,52 @@ function TeamFilters(props) {
                     })}
                 </TextField>
             </Stack>
-            <Typography>Placements</Typography>
+
+            <Typography>Weeks</Typography>
+            <Stack direction="row">
+                <TextField
+                    select
+                    margin="dense"
+                    name="weeks"
+                    value={filters.weeks[0]}
+                    onChange={handleChangeFrom}
+                >
+                    {weeks.map((week, index) => {
+                        return (
+                            <MenuItem key={index} value={week}>
+                                {week}
+                            </MenuItem>
+                        );
+                    })}
+                </TextField>
+
+                <Typography alignSelf="center">to</Typography>
+
+                <TextField
+                    select
+                    margin="dense"
+                    name="weeks"
+                    value={filters.weeks[1]}
+                    onChange={handleChangeTo}
+                >
+                    {weeks.map((week, index) => {
+                        return (
+                            <MenuItem key={index} value={week}>
+                                {week}
+                            </MenuItem>
+                        );
+                    })}
+                </TextField>
+            </Stack>
+
+            <Typography>Running Order</Typography>
 
             <Stack direction="row">
                 <TextField
                     select
                     margin="dense"
-                    name="placements"
-                    value={filters.placements[0]}
+                    name="runningOrders"
+                    value={filters.runningOrders[0]}
                     onChange={handleChangeFrom}
                 >
                     {placements.map((placement, index) => {
@@ -161,8 +258,8 @@ function TeamFilters(props) {
                 <TextField
                     select
                     margin="dense"
-                    name="placements"
-                    value={filters.placements[1]}
+                    name="runningOrders"
+                    value={filters.runningOrders[1]}
                     onChange={handleChangeTo}
                 >
                     {placements.map((placement, index) => {
@@ -174,8 +271,26 @@ function TeamFilters(props) {
                     })}
                 </TextField>
             </Stack>
+            <Typography>Must Have Link?</Typography>
+            <RadioGroup
+                name="hasLink"
+                value={filters.hasLink}
+                onChange={handleChange}
+                row
+            >
+                <FormControlLabel
+                    value={true}
+                    control={<Radio />}
+                    label="Yes"
+                />
+                <FormControlLabel
+                    value={false}
+                    control={<Radio />}
+                    label="No"
+                />
+            </RadioGroup>
         </>
     );
 }
 
-export default TeamFilters;
+export default DanceFilters;

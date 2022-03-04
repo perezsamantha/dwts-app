@@ -5,12 +5,11 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    DialogContentText,
-    DialogTitle,
     FormControl,
 } from '@mui/material';
 import ProFilters from './Filters/ProFilters';
 import TeamFilters from './Filters/TeamFilters';
+import DanceFilters from './Filters/DanceFilters';
 
 function Filters(props) {
     const [open, setOpen] = useState(false);
@@ -51,6 +50,15 @@ function Filters(props) {
 
     const FilterComponent = () => {
         switch (type) {
+            case '/search/dances':
+                return (
+                    <DanceFilters
+                        filters={filters}
+                        handleChange={handleChange}
+                        handleChangeFrom={handleChangeFrom}
+                        handleChangeTo={handleChangeTo}
+                    />
+                );
             case '/search/teams':
                 return (
                     <TeamFilters
@@ -80,20 +88,7 @@ function Filters(props) {
                 <FilterListIcon />
             </Button>
             <Dialog open={open} onClose={handleClose} fullWidth>
-                <DialogTitle>Testing</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
-                        for pros - by age, height, gender, is_junior
-                    </DialogContentText>
-                    <DialogContentText>
-                        for teams - by season(?? maybe slider?), placement, has
-                        pictures?, pro,
-                    </DialogContentText>
-                    <DialogContentText>
-                        for dances - by style (chips), season (slider), week,
-                        score, running order?, has link, has pictures, theme
-                    </DialogContentText>
-
                     <FormControl>
                         <FilterComponent />
                     </FormControl>

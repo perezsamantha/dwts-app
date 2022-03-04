@@ -17,18 +17,15 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import CheckIcon from '@mui/icons-material/Check';
 
-import { heightsInInches, styles } from '../constants/dropdowns';
+import { styles } from '../constants/dropdowns';
 import { makeStyles } from '@mui/styles';
 import { Page, SearchTextField } from '../components/shared/muiStyles';
 import Filters from '../components/Search/Filters';
 import { initialFilters } from '../components/Search/Filters/initialFilters';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchPros } from '../actions/pros';
 
 const useStyles = makeStyles({
     icon: {
@@ -80,8 +77,6 @@ function Search(props) {
 
     const [finalFilters, setFinalFilters] = useState(initialFilters(value));
 
-    const dispatch = useDispatch();
-
     localStorage.setItem('parentPath', window.location.pathname);
 
     //const pros = useSelector((state) => state.pros.pros);
@@ -132,12 +127,12 @@ function Search(props) {
     };
 
     useEffect(() => {
-        //dispatch(fetchPros());
         placeholderText(pathname);
         setFinalFilters(initialFilters(value));
-    }, [pathname, value, dispatch]);
+    }, [pathname, value]);
 
     const SearchComponent = () => {
+        // TODO: recap of filters above component, maybe number of results too
         switch (value) {
             case '/search/dances':
                 return (
@@ -157,8 +152,6 @@ function Search(props) {
                 return <></>;
         }
     };
-
-    //console.log(finalFilters);
 
     return (
         <Page>

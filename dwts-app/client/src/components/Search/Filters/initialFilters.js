@@ -2,15 +2,29 @@ import {
     heightsInInches,
     placements,
     seasons,
+    weeks,
 } from '../../../constants/dropdowns';
 
 export const initialFilters = (type) => {
     switch (type) {
         case '/search/dances':
             return {
-                sortBy: 'firstName',
+                sortBy: 'seasonDesc',
                 styles: [],
-                seasons: [1, 30],
+                seasons: [seasons[0], seasons[seasons.length - 1]],
+                //teams: [],
+                //pros: [] will be more difficult
+                hasPictures: 'false',
+                weeks: [weeks[0], weeks[weeks.length - 1]],
+                // finale ? because week 1 is always premiere but finale week # differs
+                // score,
+                runningOrders: [
+                    placements[0],
+                    placements[placements.length - 1],
+                ], //convert to ro
+                themes: [],
+                hasLink: 'false',
+                //scores: []
             };
         case '/search/teams':
             return {

@@ -13,6 +13,7 @@ import { createLoadingSelector } from '../../api/selectors';
 import * as actionType from '../../constants/actionTypes';
 import { makeStyles } from '@mui/styles';
 import { Container, ContentContainer } from '../shared/muiStyles';
+import { filterDances } from './Filters/filtered';
 
 const useStyles = makeStyles({
     root: {
@@ -24,6 +25,7 @@ const useStyles = makeStyles({
 });
 
 function Dances(props) {
+    const { search, filters } = props;
     const classes = useStyles();
     const dispatch = useDispatch();
     const dances = useSelector((state) => state.dances.dances);
@@ -41,54 +43,43 @@ function Dances(props) {
     ]);
     const loading = useSelector((state) => loadingSelector(state));
 
-    const filters = {
-        style:
-            props.filters.styles.length !== 0
-                ? (style) => props.filters.styles.includes(style)
-                : [],
-        season: (season) =>
-            season >= props.filters.seasons[0] &&
-            season <= props.filters.seasons[1],
-    };
+    // const filters = {
+    //     style:
+    //         props.filters.styles.length !== 0
+    //             ? (style) => props.filters.styles.includes(style)
+    //             : [],
+    //     season: (season) =>
+    //         season >= props.filters.seasons[0] &&
+    //         season <= props.filters.seasons[1],
+    // };
 
     const arr = [];
 
     useEffect(() => {
-        const input = { search: props.search };
+        const input = { search: search };
         dispatch(searchDances(input));
-    }, [dispatch, props]);
-
-    const multiFilter = (array, filters) => {
-        const filterKeys = Object.keys(filters);
-        return array.filter((item) => {
-            return filterKeys.every((key) => {
-                if (!filters[key].length) {
-                    return true;
-                }
-                return filters[key](item[key]);
-            });
-        });
-    };
+    }, [dispatch, search]);
 
     let filteredDances = [];
 
-    if (Array.isArray(dances)) {
-        filteredDances = multiFilter(dances, filters);
-        //console.log(filteredDances);
-
-        const categorizeBySeason = filteredDances.reduce((acc, item) => {
-            if (!acc[item.season]) {
-                acc[item.season] = [];
-            }
-
-            acc[item.season].push(item);
-            return acc;
-        }, {});
-
-        for (let [season] of Object.entries(categorizeBySeason)) {
-            arr.push(season);
-        }
+    if (!loading) {
+        filteredDances = filterDances(dances, filters);
     }
+
+    // if (Array.isArray(dances)) {
+    //     const categorizeBySeason = filteredDances.reduce((acc, item) => {
+    //         if (!acc[item.season]) {
+    //             acc[item.season] = [];
+    //         }
+
+    //         acc[item.season].push(item);
+    //         return acc;
+    //     }, {});
+
+    //     for (let [season] of Object.entries(categorizeBySeason)) {
+    //         arr.push(season);
+    //     }
+    // }
 
     return loading ? (
         <CircularProgress className={classes.progress} />
@@ -99,7 +90,7 @@ function Dances(props) {
                 {/* <Subtitle>Season {item}</Subtitle> */}
                 {/* <Carousel responsive={responsive} partialVisible={true}> */}
                 {/* {filteredDances.filter(dance => Number(dance.season) === Number(item)) */}
-                {dances.map((dance, index) => (
+                {filteredDances.map((dance, index) => (
                     <Link
                         key={index}
                         to={{ pathname: `/dances/${dance.id}` }}
