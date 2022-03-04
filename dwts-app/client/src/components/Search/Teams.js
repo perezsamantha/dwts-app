@@ -15,6 +15,7 @@ import { createLoadingSelector } from '../../api/selectors';
 
 import * as actionType from '../../constants/actionTypes';
 import { makeStyles } from '@mui/styles';
+import { filterTeams } from './Filters/filtered';
 
 const useStyles = makeStyles({
     root: {
@@ -26,6 +27,7 @@ const useStyles = makeStyles({
 });
 
 function Teams(props) {
+    const { search, filters } = props;
     const classes = useStyles();
 
     // const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -38,15 +40,6 @@ function Teams(props) {
     //const input = { search: props.search };
 
     const teams = useSelector((state) => state.teams.teams);
-    //const loading = useSelector(state => state.teams.loading);
-
-    const loading2 = useSelector(
-        (state) =>
-            state.loading.TEAMSEARCH ||
-            state.loading.CELEBSEARCH ||
-            state.loading.PROSEARCH ||
-            state.loading.SEASONSEARCH
-    );
 
     const loadingSelector = createLoadingSelector([
         actionType.TEAMSEARCH,
@@ -59,12 +52,16 @@ function Teams(props) {
     let arr = [];
 
     useEffect(() => {
-        const input = { search: props.search };
+        const input = { search: search };
         dispatch(searchTeams(input));
-    }, [dispatch, props]);
+    }, [dispatch, search]);
+
+    let filteredTeams = [];
 
     if (!loading) {
-        const categorizeBySeason = teams.reduce((acc, item) => {
+        filteredTeams = filterTeams(teams, filters);
+
+        const categorizeBySeason = filteredTeams.reduce((acc, item) => {
             if (!acc[item.season_id]) {
                 acc[item.season_id] = [];
             }
@@ -96,7 +93,7 @@ function Teams(props) {
                                 responsive={responsive}
                                 partialVisible={true}
                             >
-                                {teams
+                                {filteredTeams
                                     .filter(
                                         (team) =>
                                             Number(team.season_id) ===

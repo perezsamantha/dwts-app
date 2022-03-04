@@ -10,6 +10,7 @@ import {
     FormControl,
 } from '@mui/material';
 import ProFilters from './Filters/ProFilters';
+import TeamFilters from './Filters/TeamFilters';
 
 function Filters(props) {
     const [open, setOpen] = useState(false);
@@ -50,6 +51,15 @@ function Filters(props) {
 
     const FilterComponent = () => {
         switch (type) {
+            case '/search/teams':
+                return (
+                    <TeamFilters
+                        filters={filters}
+                        handleChange={handleChange}
+                        handleChangeFrom={handleChangeFrom}
+                        handleChangeTo={handleChangeTo}
+                    />
+                );
             case '/search/pros':
                 return (
                     <ProFilters

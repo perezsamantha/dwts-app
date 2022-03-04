@@ -34,9 +34,9 @@ function Pros(props) {
         dispatch(searchPros(input));
     }, [dispatch, search]);
 
-    let arr = [];
+    let filteredPros = [];
     if (!loading) {
-        arr = filterPros(pros, filters);
+        filteredPros = filterPros(pros, filters);
     }
 
     return (
@@ -51,7 +51,7 @@ function Pros(props) {
                         className={classes.root}
                         spacing={2}
                     >
-                        {arr.map((pro, index) => (
+                        {filteredPros.map((pro, index) => (
                             <Grid key={index} item>
                                 <Link
                                     to={{ pathname: `/pros/${pro.id}` }}

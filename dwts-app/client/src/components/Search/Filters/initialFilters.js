@@ -1,4 +1,8 @@
-import { heightsInInches } from '../../../constants/dropdowns';
+import {
+    heightsInInches,
+    placements,
+    seasons,
+} from '../../../constants/dropdowns';
 
 export const initialFilters = (type) => {
     switch (type) {
@@ -10,7 +14,17 @@ export const initialFilters = (type) => {
             };
         case '/search/teams':
             return {
-                sortBy: 'firstName',
+                sortBy: 'seasonDesc',
+                seasons: [seasons[0], seasons[seasons.length - 1]],
+                placements: [placements[0], placements[placements.length - 1]],
+                hasPictures: 'false',
+                pros: [],
+                // minimumDances: 0,
+                // minimumTens: 0,
+                // minimumPerfects: 0,
+                // averageScore: []
+                // celebAge ?
+                // celebHeight
             };
         case '/search/pros':
             return {
@@ -22,6 +36,7 @@ export const initialFilters = (type) => {
                 ],
                 gender: ['Male', 'Female'],
                 showJuniors: false,
+                // hasPictures
             };
         default:
             return {};

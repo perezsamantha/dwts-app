@@ -27,6 +27,8 @@ import { makeStyles } from '@mui/styles';
 import { Page, SearchTextField } from '../components/shared/muiStyles';
 import Filters from '../components/Search/Filters';
 import { initialFilters } from '../components/Search/Filters/initialFilters';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPros } from '../actions/pros';
 
 const useStyles = makeStyles({
     icon: {
@@ -73,29 +75,16 @@ function Search(props) {
     const [showSeasonFilters, setShowSeasonFilters] = useState(false);
 
     const [styleFilters, setStyleFilters] = useState([]);
-    //const [lastSeason] = useState(seasons.pop());
     const lastSeason = 30;
-    //console.log(lastSeason)
     const [seasonFilters, setSeasonFilters] = useState([1, lastSeason]);
 
     const [finalFilters, setFinalFilters] = useState(initialFilters(value));
 
-    // const filters = {
-    //     styles: [],
-    //     seasons: [1, lastSeason],
-    //     // pros
-    //     ages: [0, 100],
-    //     heights: [
-    //         heightsInInches[0],
-    //         heightsInInches[heightsInInches.length - 1],
-    //     ],
-    //     gender: 'female',
-    //     showJuniors: false,
-    // };
-
-    //const [applyFilters, setApplyFilters] = useState(false);
+    const dispatch = useDispatch();
 
     localStorage.setItem('parentPath', window.location.pathname);
+
+    //const pros = useSelector((state) => state.pros.pros);
 
     const placeholderText = (value) => {
         if (value === '/search/dances') {
@@ -143,9 +132,10 @@ function Search(props) {
     };
 
     useEffect(() => {
+        //dispatch(fetchPros());
         placeholderText(pathname);
         setFinalFilters(initialFilters(value));
-    }, [pathname, value]);
+    }, [pathname, value, dispatch]);
 
     const SearchComponent = () => {
         switch (value) {
@@ -154,7 +144,9 @@ function Search(props) {
                     <Dances key={1} search={searchVal} filters={finalFilters} />
                 );
             case '/search/teams':
-                return <Teams key={2} search={searchVal} />;
+                return (
+                    <Teams key={2} search={searchVal} filters={finalFilters} />
+                );
             case '/search/pros':
                 return (
                     <Pros key={3} search={searchVal} filters={finalFilters} />
