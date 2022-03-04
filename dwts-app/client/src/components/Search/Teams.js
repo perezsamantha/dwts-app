@@ -29,15 +29,7 @@ const useStyles = makeStyles({
 function Teams(props) {
     const { search, filters } = props;
     const classes = useStyles();
-
-    // const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
-    // const [currentTeam, setCurrentTeam] = useState(null);
-    // const [show, setShow] = useState(false);
-    //const [loading, setLoading] = useState(true);
-
     const dispatch = useDispatch();
-    // const history = useHistory();
-    //const input = { search: props.search };
 
     const teams = useSelector((state) => state.teams.teams);
 
@@ -75,7 +67,9 @@ function Teams(props) {
         }
 
         // reverses array, to start with newst season working backwards
-        arr.reverse();
+        if (filters.sortBy === 'seasonDesc') {
+            arr.reverse();
+        }
     }
 
     return (

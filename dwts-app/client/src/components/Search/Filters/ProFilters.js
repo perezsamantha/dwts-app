@@ -48,6 +48,21 @@ function ProFilters(props) {
                     control={<Radio />}
                     label="Height"
                 />
+                <FormControlLabel
+                    value="avgPlacement"
+                    control={<Radio />}
+                    label="Average Placement"
+                />
+                <FormControlLabel
+                    value="numPerfects"
+                    control={<Radio />}
+                    label="Perfect Scores"
+                />
+                <FormControlLabel
+                    value="numWins"
+                    control={<Radio />}
+                    label="Wins"
+                />
             </RadioGroup>
             <Typography variant="h5" mb={1}>
                 Filter By

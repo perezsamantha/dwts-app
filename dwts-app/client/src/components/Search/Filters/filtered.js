@@ -5,7 +5,7 @@ import { getAge } from '../../shared/functions';
 export const filterDances = (dances, filters) => {
     // console.log(filters);
     const filterKeys = Object.keys(filters);
-    const arr = dances.filter((dance) => {
+    const filtered = dances.filter((dance) => {
         return filterKeys.every((key) => {
             switch (key) {
                 // case 'seasons':
@@ -59,9 +59,22 @@ export const filterDances = (dances, filters) => {
         });
     });
 
-    // console.log(arr);
-
-    return arr;
+    filtered.sort((a, b) => {
+        switch (filters.sortBy) {
+            case 'likes': // high to low
+                if (a.likes.length > b.likes.length) {
+                    return -1;
+                } else if (a.likes.length < b.likes.length) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            default:
+                return 0;
+        }
+    });
+    console.log(filtered);
+    return filtered;
 };
 
 export const filterTeams = (teams, filters) => {
@@ -104,7 +117,7 @@ export const filterTeams = (teams, filters) => {
 
 export const filterPros = (pros, filters) => {
     const filterKeys = Object.keys(filters);
-    const arr = pros.filter((pro) => {
+    const filtered = pros.filter((pro) => {
         return filterKeys.every((key) => {
             switch (key) {
                 case 'gender':
@@ -134,5 +147,46 @@ export const filterPros = (pros, filters) => {
         });
     });
 
-    return arr;
+    filtered.sort((a, b) => {
+        switch (filters.sortBy) {
+            case 'firstName':
+                return 1;
+            case 'lastName':
+                let nameA = a.last_name.toUpperCase();
+                let nameB = b.last_name.toUpperCase();
+                if (nameA < nameB) {
+                    return -1;
+                } else if (nameA > nameB) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            case 'age': //youngest to oldest
+                let ageA = getAge(a.birthday);
+                let ageB = getAge(b.birthday);
+                if (ageA < ageB) {
+                    return -1;
+                } else if (ageA > ageB) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            case 'height': //shortest to tallest
+                if (a.height < b.height) {
+                    return -1;
+                } else if (a.height > b.height) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            // case 'avgPlacement':
+            // case 'numPerfects':
+            // case 'wins':
+            default:
+                return 0;
+        }
+    });
+    //console.log(filtered);
+
+    return filtered;
 };
