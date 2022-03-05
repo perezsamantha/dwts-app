@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-//import './App.css';
 import Dashboard from './pages/Dashboard';
 import Favorites from './pages/Favorites';
 import Search from './pages/Search';
@@ -20,6 +19,7 @@ import * as actionType from './constants/actionTypes';
 import * as searchType from './constants/searchTypes';
 import decode from 'jwt-decode';
 import { Paper, useMediaQuery } from '@mui/material';
+import NotFound from './pages/NotFound';
 
 function App() {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark');
@@ -216,7 +216,7 @@ function App() {
                             path="dances/:id/*"
                             element={<Individuals />}
                         />
-                        <Route path="*" element={<div>Not found</div>} />
+                        <Route path="*" element={<NotFound />} />
                     </Route>
                 </Routes>
             </Container>

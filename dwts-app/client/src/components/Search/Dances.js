@@ -88,24 +88,21 @@ function Dances(props) {
             {/* {arr.map((item, index) => (  */}
             <ContentContainer>
                 {/* <Subtitle>Season {item}</Subtitle> */}
-                {/* <Carousel responsive={responsive} partialVisible={true}> */}
                 {/* {filteredDances.filter(dance => Number(dance.season) === Number(item)) */}
                 {filteredDances.map((dance, index) => (
-                    <>
-                        <Link
-                            key={index}
-                            to={{ pathname: `/dances/${dance.id}` }}
-                            style={{
-                                textDecoration: 'inherit',
-                                color: 'inherit',
-                            }}
-                        >
-                            <DancesPreview dance={dance} />
-                        </Link>
+                    <Link
+                        key={index}
+                        to={{ pathname: `/dances/${dance.id}` }}
+                        style={{
+                            textDecoration: 'inherit',
+                            color: 'inherit',
+                        }}
+                    >
+                        <DancesPreview dance={dance} />
+                        {/* move divider outside of link? if so, need to wrap in div with key */}
                         <Divider />
-                    </>
+                    </Link>
                 ))}
-                {/* </Carousel> */}
             </ContentContainer>
             {/* } */}
         </Container>
