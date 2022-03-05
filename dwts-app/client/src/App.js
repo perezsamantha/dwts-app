@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Dashboard from './pages/Dashboard';
-import Favorites from './pages/Favorites';
 import Search from './pages/Search';
 import Account from './pages/Account';
 import Landing from './pages/Landing';
@@ -18,8 +17,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as actionType from './constants/actionTypes';
 import * as searchType from './constants/searchTypes';
 import decode from 'jwt-decode';
-import { Paper, useMediaQuery } from '@mui/material';
+import { Box, Container, Paper, useMediaQuery } from '@mui/material';
 import NotFound from './pages/NotFound';
+import Overview from './pages/Overview';
 
 function App() {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark');
@@ -152,7 +152,7 @@ function App() {
 
     return (
         <ThemeProvider theme={muiTheme}>
-            <Container>
+            <AppContainer>
                 <Routes>
                     <Route exact path="/">
                         <Route path="" element={<Landing />} />
@@ -165,7 +165,7 @@ function App() {
                                 />
                             }
                         />
-                        <Route path="favorites" element={<Favorites />} />
+                        <Route path="overview" element={<Overview />} />
                         <Route exact path="search">
                             <Route
                                 path=""
@@ -219,12 +219,12 @@ function App() {
                         <Route path="*" element={<NotFound />} />
                     </Route>
                 </Routes>
-            </Container>
+            </AppContainer>
         </ThemeProvider>
     );
 }
 
-const Container = styled(Paper)`
+const AppContainer = styled(Paper)`
     height: 100vh;
 `;
 

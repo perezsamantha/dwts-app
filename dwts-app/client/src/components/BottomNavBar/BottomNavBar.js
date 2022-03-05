@@ -19,7 +19,7 @@ function BottomNavBar() {
 
     if (
         value !== 'dashboard' &&
-        value !== 'favorites' &&
+        value !== 'overview' &&
         value !== 'search' &&
         value !== 'account'
     ) {
@@ -44,9 +44,9 @@ function BottomNavBar() {
                 <BottomNavigationAction
                     disableRipple
                     component={Link}
-                    to="/favorites"
-                    //label="Favorites"
-                    value="favorites"
+                    to="/overview"
+                    //label="Overview"
+                    value="overview"
                     icon={<LeaderboardIcon />}
                 />
                 <BottomNavigationAction
