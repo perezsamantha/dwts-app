@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { searchDances } from '../../actions/dances';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Divider } from '@mui/material';
 
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
@@ -91,16 +91,19 @@ function Dances(props) {
                 {/* <Carousel responsive={responsive} partialVisible={true}> */}
                 {/* {filteredDances.filter(dance => Number(dance.season) === Number(item)) */}
                 {filteredDances.map((dance, index) => (
-                    <Link
-                        key={index}
-                        to={{ pathname: `/dances/${dance.id}` }}
-                        style={{
-                            textDecoration: 'inherit',
-                            color: 'inherit',
-                        }}
-                    >
-                        <DancesPreview dance={dance} />
-                    </Link>
+                    <>
+                        <Link
+                            key={index}
+                            to={{ pathname: `/dances/${dance.id}` }}
+                            style={{
+                                textDecoration: 'inherit',
+                                color: 'inherit',
+                            }}
+                        >
+                            <DancesPreview dance={dance} />
+                        </Link>
+                        <Divider />
+                    </>
                 ))}
                 {/* </Carousel> */}
             </ContentContainer>

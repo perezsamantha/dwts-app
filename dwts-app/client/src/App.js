@@ -15,7 +15,7 @@ import {
     createTheme,
     responsiveFontSizes,
 } from '@mui/material/styles';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import * as actionType from './constants/actionTypes';
 import decode from 'jwt-decode';
 import { Paper, useMediaQuery } from '@mui/material';
@@ -34,13 +34,13 @@ function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        // setToggleDark(
-        //     localStorage.getItem('theme')
-        //         ? localStorage.getItem('theme') === 'dark'
-        //         : prefersDarkMode
-        //         ? true
-        //         : false
-        // );
+        setToggleDark(
+            localStorage.getItem('theme')
+                ? localStorage.getItem('theme') === 'dark'
+                : prefersDarkMode
+                ? true
+                : false
+        );
         const user = JSON.parse(localStorage.getItem('profile'));
 
         if (user === null) {
@@ -65,19 +65,9 @@ function App() {
         localStorage.setItem('theme', toggleDark ? 'dark' : 'light');
     };
 
-    let muiTheme = createTheme({
+    let baseTheme = createTheme({
         palette: {
             mode: toggleDark ? 'dark' : 'light',
-            primary: {
-                main: '#f5dc6c',
-            },
-            secondary: {
-                main: '#6cf5c3',
-            },
-            // text: {
-            //   primary: '',
-            //   secondary: ''
-            // }
         },
         typography: {
             fontFamily: [
@@ -107,34 +97,52 @@ function App() {
                     },
                 },
             },
-            // MuiDrawer: {
-            //   styleOverrides: {
-            //     paper: {
-            //       boxShadow: toggleDark ? '1px 1px 1px dimgrey' : "1px 65px 5px gainsboro",
-            //       //backgroundColor: toggleDark ? 'rgb(39, 39, 39)' : 'rgba(241, 220, 125, 0.2)',
-            //     }
-            //   }
-            // }
             MuiButton: {
                 defaultProps: {
                     disableRipple: true,
                 },
+            },
+            MuiDivider: {
                 styleOverrides: {
                     root: {
-                        // '&:hover': {
-                        //     backgroundColor: 'inherit',
-                        // },
+                        margin: 'auto',
+                        width: '95%',
                     },
                 },
             },
         },
     });
 
-    muiTheme = responsiveFontSizes(muiTheme);
+    // #f5dc6c
+
+    let lightTheme = createTheme({
+        ...baseTheme,
+        palette: {
+            mode: 'light',
+            primary: {
+                light: '#fff1b5',
+                main: '#FAE27A',
+                dark: '#DDBE35',
+            },
+        },
+    });
+
+    let darkTheme = createTheme({
+        ...baseTheme,
+        palette: {
+            mode: 'dark',
+            primary: {
+                light: '#fff1b5',
+                main: '#FCE689',
+                dark: '#F6DD6E',
+            },
+        },
+    });
+
+    const muiTheme = responsiveFontSizes(toggleDark ? darkTheme : lightTheme);
 
     return (
         <ThemeProvider theme={muiTheme}>
-            {/* <BrowserRouter> */}
             <Container>
                 <Routes>
                     <Route exact path="/" element={<Landing />} />
@@ -179,7 +187,6 @@ function App() {
                     <Route path="*" element={<div>Not found</div>} />
                 </Routes>
             </Container>
-            {/* </BrowserRouter> */}
         </ThemeProvider>
     );
 }

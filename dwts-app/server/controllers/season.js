@@ -40,7 +40,9 @@ export const addSeason = async (req, res) => {
 
 export const fetchAllSeasons = async (req, res) => {
     try {
-        const seasons = await pool.query('SELECT * FROM seasons');
+        const seasons = await pool.query(
+            'SELECT * FROM seasons ORDER BY id DESC'
+        );
 
         res.status(200).json(seasons.rows);
     } catch (error) {

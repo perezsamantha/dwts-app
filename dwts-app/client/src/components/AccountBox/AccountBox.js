@@ -6,7 +6,7 @@ import Signup from './Signup';
 import { AccountContext } from './AccountContext';
 
 import { motion } from 'framer-motion';
-import { Paper, Typography } from '@mui/material';
+import { Paper } from '@mui/material';
 import styled from '@emotion/styled';
 import { HeaderText } from './common';
 

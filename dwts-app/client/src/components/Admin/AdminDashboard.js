@@ -50,13 +50,6 @@ function AdminDashboard(props) {
         setTable(component);
     };
 
-    const setToggleDark = props.setToggleDark;
-    const toggleDark = props.toggleDark;
-
-    const handleMode = () => {
-        setToggleDark(!toggleDark);
-    };
-
     const handleLogout = () => {
         dispatch({ type: actionType.LOGOUT });
         navigate('/');
@@ -233,7 +226,6 @@ function AdminDashboard(props) {
                         <Typography variant="h6" noWrap component="div">
                             Statistics & Tables
                         </Typography>
-                        <Switch checked={toggleDark} onChange={handleMode} />
                     </Toolbar>
                 </AppBar>
                 <Box

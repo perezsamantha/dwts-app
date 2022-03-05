@@ -5,6 +5,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import SearchIcon from '@mui/icons-material/Search';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import { Link } from 'react-router-dom';
 import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material';
 import styled from 'styled-components';
@@ -35,7 +37,7 @@ function BottomNavBar() {
                     disableRipple
                     component={Link}
                     to="/dashboard"
-                    label="Home"
+                    //label="Home"
                     value="dashboard"
                     icon={<HomeIcon />}
                 />
@@ -43,15 +45,15 @@ function BottomNavBar() {
                     disableRipple
                     component={Link}
                     to="/favorites"
-                    label="Favorites"
+                    //label="Favorites"
                     value="favorites"
-                    icon={<FavoriteIcon />}
+                    icon={<LeaderboardIcon />}
                 />
                 <BottomNavigationAction
                     disableRipple
                     component={Link}
                     to="/search/dances"
-                    label="Search"
+                    //label="Search"
                     value="search"
                     icon={<SearchIcon />}
                 />
@@ -59,7 +61,7 @@ function BottomNavBar() {
                     disableRipple
                     component={Link}
                     to="/notifications"
-                    label="Search"
+                    //label="Search"
                     value="search"
                     icon={<NotificationsIcon />}
                 /> */}
@@ -67,9 +69,9 @@ function BottomNavBar() {
                     disableRipple
                     component={Link}
                     to="/account"
-                    label="Account"
+                    //label="Account"
                     value="account"
-                    icon={<AccountCircleIcon />}
+                    icon={<AccountBoxIcon />}
                 />
             </BottomNavigation>
         </NavBarContainer>

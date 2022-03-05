@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Preview } from '../shared/shared.js';
+import { DancePreview, Preview } from '../shared/shared.js';
 
 import { Typography } from '@mui/material';
 import DataGetter from '../shared/DataGetter';
@@ -10,7 +10,7 @@ function DancesPreview(props) {
     useEffect(() => {}, []);
 
     return (
-        <Preview>
+        <DancePreview>
             {/* <PreviewPhoto src={dance.cover_pic ? dance.cover_pic : "/defaultPic.jpeg"} /> */}
 
             {/* <Typography variant='h2'>Testing</Typography> */}
@@ -18,7 +18,7 @@ function DancesPreview(props) {
                 <DataGetter id={dance.episode_id} type={'Episode'} />{' '}
                 {dance.style} &bull; {dance.song_title} - {dance.song_artist}
             </Typography>
-        </Preview>
+        </DancePreview>
     );
 }
 

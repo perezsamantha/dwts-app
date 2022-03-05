@@ -64,6 +64,11 @@ export const Preview = styled.div`
     width: 100%;
 `;
 
+export const DancePreview = styled.div`
+    width: 100%;
+    margin: 1rem;
+`;
+
 export const PreviewPhoto = styled.img`
     width: 125px;
     height: 125px;
