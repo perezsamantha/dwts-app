@@ -26,6 +26,7 @@ import { makeStyles } from '@mui/styles';
 import { Page, SearchTextField } from '../components/shared/muiStyles';
 import Filters from '../components/Search/Filters';
 import { initialFilters } from '../components/Search/Filters/initialFilters';
+import * as searchType from '../constants/searchTypes';
 
 const useStyles = makeStyles({
     icon: {
@@ -62,8 +63,7 @@ function Search(props) {
     // TODO: move filters to new component !!!!!!!!!
 
     const classes = useStyles();
-    const pathname = window.location.pathname;
-    const [value, setValue] = useState(pathname);
+    const [type, setType] = useState(props.type);
     const [searchVal, setSearchVal] = useState('');
     const [key, setKey] = useState(1);
     const [placeholder, setPlaceholder] = useState('');
@@ -75,27 +75,31 @@ function Search(props) {
     const lastSeason = 30;
     const [seasonFilters, setSeasonFilters] = useState([1, lastSeason]);
 
-    const [finalFilters, setFinalFilters] = useState(initialFilters(value));
+    const [finalFilters, setFinalFilters] = useState(initialFilters(type));
 
     localStorage.setItem('parentPath', window.location.pathname);
 
-    //const pros = useSelector((state) => state.pros.pros);
-
-    const placeholderText = (value) => {
-        if (value === '/search/dances') {
-            setPlaceholder('Song title, song artist');
-        } else if (value === '/search/teams') {
-            setPlaceholder('Celebrity, professional');
-        } else if (value === '/search/pros') {
-            setPlaceholder('First name, last name');
-        } else if (value === '/search/fans') {
-            setPlaceholder('Username, nickname');
+    const placeholderText = (type) => {
+        switch (type) {
+            case searchType.DANCES:
+                setPlaceholder('Song title, song artist');
+                break;
+            case searchType.TEAMS:
+                setPlaceholder('Celebrity, professional');
+                break;
+            case searchType.PROS:
+                setPlaceholder('First name, last name');
+                break;
+            case searchType.FANS:
+                setPlaceholder('Username, nickname');
+                break;
+            default:
         }
     };
 
-    const handleChange = (e, newValue) => {
-        setValue(newValue);
-        placeholderText(newValue);
+    const handleChange = (e, newType) => {
+        setType(newType);
+        placeholderText(newType);
     };
 
     const searchChange = (e) => {
@@ -127,26 +131,27 @@ function Search(props) {
     };
 
     useEffect(() => {
-        placeholderText(pathname);
-        setFinalFilters(initialFilters(value));
-    }, [pathname, value]);
+        setType(type);
+        placeholderText(type);
+        setFinalFilters(initialFilters(type));
+    }, [type]);
 
     const SearchComponent = () => {
         // TODO: recap of filters above component, maybe number of results too
-        switch (value) {
-            case '/search/dances':
+        switch (type) {
+            case searchType.DANCES:
                 return (
                     <Dances key={1} search={searchVal} filters={finalFilters} />
                 );
-            case '/search/teams':
+            case searchType.TEAMS:
                 return (
                     <Teams key={2} search={searchVal} filters={finalFilters} />
                 );
-            case '/search/pros':
+            case searchType.PROS:
                 return (
                     <Pros key={3} search={searchVal} filters={finalFilters} />
                 );
-            case '/search/fans':
+            case searchType.FANS:
                 return <Fans key={4} search={searchVal} />;
             default:
                 return <></>;
@@ -180,7 +185,7 @@ function Search(props) {
                         onClick={() => setShowFilters((prev) => !prev)}
                     /> */}
                     <Filters
-                        type={value}
+                        type={type}
                         finalFilters={finalFilters}
                         setFinalFilters={setFinalFilters}
                     />
@@ -257,27 +262,27 @@ function Search(props) {
                     </FilterContainer>
                 )}
 
-                <Tabs value={value} onChange={handleChange} centered>
+                <Tabs value={type} onChange={handleChange} centered>
                     <Tab
                         disableRipple
                         component={Link}
                         to="/search/dances"
                         label="DANCES"
-                        value="/search/dances"
+                        value={searchType.DANCES}
                     />
                     <Tab
                         disableRipple
                         component={Link}
                         to="/search/teams"
                         label="TEAMS"
-                        value="/search/teams"
+                        value={searchType.TEAMS}
                     />
                     <Tab
                         disableRipple
                         component={Link}
                         to="/search/pros"
                         label="PROS"
-                        value="/search/pros"
+                        value={searchType.PROS}
                     />
                     <Tab
                         disableRipple
@@ -285,22 +290,12 @@ function Search(props) {
                         to="/search/fans"
                         className={classes.tabs}
                         label="FANS"
-                        value="/search/fans"
+                        value={searchType.FANS}
                     />
                 </Tabs>
             </SearchContainer>
 
-            {/* change to switch case before return? */}
             <SearchComponent />
-
-            {/* {value === '/search/dances' && (
-                <Dances key={key} search={searchVal} filters={filters} />
-            )}
-            {value === '/search/teams' && (
-                <Teams key={key} search={searchVal} />
-            )}
-            {value === '/search/pros' && <Pros key={key} search={searchVal} />}
-            {value === '/search/fans' && <Fans key={key} search={searchVal} />} */}
 
             <BottomNavBar />
         </Page>

@@ -10,6 +10,7 @@ import {
 import ProFilters from './Filters/ProFilters';
 import TeamFilters from './Filters/TeamFilters';
 import DanceFilters from './Filters/DanceFilters';
+import * as searchType from '../../constants/searchTypes';
 
 //TODO: clear filters button?
 
@@ -52,7 +53,7 @@ function Filters(props) {
 
     const FilterComponent = () => {
         switch (type) {
-            case '/search/dances':
+            case searchType.DANCES:
                 return (
                     <DanceFilters
                         filters={filters}
@@ -61,7 +62,7 @@ function Filters(props) {
                         handleChangeTo={handleChangeTo}
                     />
                 );
-            case '/search/teams':
+            case searchType.TEAMS:
                 return (
                     <TeamFilters
                         filters={filters}
@@ -70,7 +71,7 @@ function Filters(props) {
                         handleChangeTo={handleChangeTo}
                     />
                 );
-            case '/search/pros':
+            case searchType.PROS:
                 return (
                     <ProFilters
                         filters={filters}

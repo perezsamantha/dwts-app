@@ -5,7 +5,7 @@ import Favorites from './pages/Favorites';
 import Search from './pages/Search';
 import Account from './pages/Account';
 import Landing from './pages/Landing';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes, useNavigate } from 'react-router-dom';
 import Individuals from './pages/Individuals';
 import Admin from './pages/Admin';
 import styled from 'styled-components';
@@ -15,8 +15,9 @@ import {
     createTheme,
     responsiveFontSizes,
 } from '@mui/material/styles';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as actionType from './constants/actionTypes';
+import * as searchType from './constants/searchTypes';
 import decode from 'jwt-decode';
 import { Paper, useMediaQuery } from '@mui/material';
 
@@ -59,6 +60,14 @@ function App() {
             }
         }
     }, [dispatch, navigate, prefersDarkMode]);
+
+    const PrivateRoute = () => {
+        const role = useSelector(
+            (state) => state.auth?.authData?.result?.user_role
+        );
+
+        return role === 'admin' ? <Outlet /> : <Navigate to="/" />;
+    };
 
     const handleDarkMode = (toggleDark) => {
         setToggleDark(toggleDark);
@@ -145,46 +154,70 @@ function App() {
         <ThemeProvider theme={muiTheme}>
             <Container>
                 <Routes>
-                    <Route exact path="/" element={<Landing />} />
-                    <Route
-                        path="/dashboard"
-                        element={
-                            <Dashboard
-                                toggleDark={toggleDark}
-                                handleDarkMode={handleDarkMode}
+                    <Route exact path="/">
+                        <Route path="" element={<Landing />} />
+                        <Route
+                            path="dashboard"
+                            element={
+                                <Dashboard
+                                    toggleDark={toggleDark}
+                                    handleDarkMode={handleDarkMode}
+                                />
+                            }
+                        />
+                        <Route path="favorites" element={<Favorites />} />
+                        <Route exact path="search">
+                            <Route
+                                path=""
+                                element={
+                                    <Navigate to="/search/dances" replace />
+                                }
                             />
-                        }
-                    />
-                    <Route path="/favorites" element={<Favorites />} />
-                    <Route path="/search/dances" element={<Search />} />
-                    <Route path="/search/teams" element={<Search />} />
-                    <Route path="/search/pros" element={<Search />} />
-                    <Route path="/search/fans" element={<Search />} />
-                    <Route path="/account" element={<Account />} />
-                    <Route
-                        path="/admin"
-                        element={
-                            <Admin
-                                toggleDark={toggleDark}
-                                setToggleDark={setToggleDark}
+                            <Route
+                                path="dances"
+                                element={<Search type={searchType.DANCES} />}
                             />
-                        }
-                    />
-                    {/* eventually move function to account */}
-                    <Route
-                        exact
-                        path="/teams/:id/*"
-                        element={<Individuals />}
-                    />
-                    <Route exact path="/pros/:id/*" element={<Individuals />} />
-                    <Route exact path="/fans/:id/*" element={<Individuals />} />
-                    <Route
-                        exact
-                        path="/dances/:id/*"
-                        element={<Individuals />}
-                    />
-                    {/* <Redirect from="/search" to="/search/dances" /> */}
-                    <Route path="*" element={<div>Not found</div>} />
+                            <Route
+                                path="teams"
+                                element={<Search type={searchType.TEAMS} />}
+                            />
+                            <Route
+                                exact
+                                path="pros"
+                                element={<Search type={searchType.PROS} />}
+                            />
+                            <Route
+                                path="fans"
+                                element={<Search type={searchType.FANS} />}
+                            />
+                        </Route>
+                        <Route path="account" element={<Account />} />
+                        <Route path="admin" element={<PrivateRoute />}>
+                            <Route path="" element={<Admin />} />
+                        </Route>
+                        {/* eventually move function to account */}
+                        <Route
+                            exact
+                            path="teams/:id/*"
+                            element={<Individuals />}
+                        />
+                        <Route
+                            exact
+                            path="pros/:id/*"
+                            element={<Individuals />}
+                        />
+                        <Route
+                            exact
+                            path="fans/:id/*"
+                            element={<Individuals />}
+                        />
+                        <Route
+                            exact
+                            path="dances/:id/*"
+                            element={<Individuals />}
+                        />
+                        <Route path="*" element={<div>Not found</div>} />
+                    </Route>
                 </Routes>
             </Container>
         </ThemeProvider>

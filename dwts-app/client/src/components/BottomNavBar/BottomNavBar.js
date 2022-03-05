@@ -52,7 +52,7 @@ function BottomNavBar() {
                 <BottomNavigationAction
                     disableRipple
                     component={Link}
-                    to="/search/dances"
+                    to="/search"
                     //label="Search"
                     value="search"
                     icon={<SearchIcon />}

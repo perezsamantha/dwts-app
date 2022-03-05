@@ -5,9 +5,11 @@ import {
     weeks,
 } from '../../../constants/dropdowns';
 
+import * as searchType from '../../../constants/searchTypes';
+
 export const initialFilters = (type) => {
     switch (type) {
-        case '/search/dances':
+        case searchType.DANCES:
             return {
                 sortBy: 'seasonDesc',
                 styles: [],
@@ -26,7 +28,7 @@ export const initialFilters = (type) => {
                 hasLink: 'false',
                 //scores: []
             };
-        case '/search/teams':
+        case searchType.TEAMS:
             return {
                 sortBy: 'seasonDesc',
                 seasons: [seasons[0], seasons[seasons.length - 1]],
@@ -40,7 +42,7 @@ export const initialFilters = (type) => {
                 // celebAge ?
                 // celebHeight
             };
-        case '/search/pros':
+        case searchType.PROS:
             return {
                 sortBy: 'firstName',
                 age: [0, 100],
