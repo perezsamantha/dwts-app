@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 
 import HomeIcon from '@mui/icons-material/Home';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import SearchIcon from '@mui/icons-material/Search';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+//import NotificationsIcon from '@mui/icons-material/Notifications';
+//import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import { Link } from 'react-router-dom';

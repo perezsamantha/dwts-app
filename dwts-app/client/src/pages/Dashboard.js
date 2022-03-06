@@ -1,8 +1,8 @@
-import { Box, Switch, Typography } from '@mui/material';
+import { Switch, Typography } from '@mui/material';
 import React from 'react';
 import BottomNavBar from '../components/BottomNavBar/BottomNavBar';
 import Birthdays from '../components/Dashboard/Birthdays/Birthdays';
-import styled from '@emotion/styled';
+import { MainContainer, Page } from '../components/shared/muiStyles';
 
 function Dashboard(props) {
     localStorage.setItem('parentPath', window.location.pathname);
@@ -10,23 +10,18 @@ function Dashboard(props) {
     const { toggleDark, handleDarkMode } = props;
 
     return (
-        <Box>
-            <ContentContainer>
+        <Page>
+            <MainContainer>
                 <Switch
                     checked={toggleDark}
                     onChange={() => handleDarkMode(!toggleDark)}
                 />
                 <Typography variant="h4">Home Page</Typography>
                 <Birthdays />
-            </ContentContainer>
+            </MainContainer>
             <BottomNavBar />
-        </Box>
+        </Page>
     );
 }
-
-const ContentContainer = styled(Box)`
-    padding: 1rem;
-    padding-bottom: 70px;
-`;
 
 export default Dashboard;

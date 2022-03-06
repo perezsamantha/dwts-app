@@ -97,6 +97,7 @@ export const fetchUsers = async (req, res) => {
     }
 };
 
+// TODO: find by username in addition?
 export const findUserById = async (req, res) => {
     const { id } = req.params;
 
@@ -111,12 +112,14 @@ export const findUserById = async (req, res) => {
     }
 };
 
+// TODO: remove is null if you end up requiring nicknames
 export const searchUsers = async (req, res) => {
     const { search } = req.body;
 
     try {
         const users = await pool.query(
-            `SELECT * FROM users WHERE username || ' ' || nickname ILIKE '%${search}%'`
+            `SELECT * FROM users WHERE username || ' ' || nickname ILIKE $1 OR nickname IS NULL ORDER BY username`,
+            [`%${search}%`]
         );
 
         res.status(200).json(users.rows);

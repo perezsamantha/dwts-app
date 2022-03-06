@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 import React from 'react';
-import { Preview, PreviewPhoto } from '../shared/shared';
+import { Preview, PreviewPhoto } from '../shared/regStyles';
 
 function ProsPreview(props) {
     const pro = props.pro;

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Avatar, Box } from '@mui/material';
 import * as actionType from '../../constants/actionTypes';
 import decode from 'jwt-decode';
-import AccountSettings from './AccountSettings';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { getFavoriteTeams } from '../../actions/teams';
@@ -33,29 +32,12 @@ function AccountHeader() {
         dispatch({ type: actionType.LOGOUT });
 
         navigate('/');
-
-        //setUser(null);
     };
 
     useEffect(() => {
         // TODO: need to fetch seasons for settings dropdown,
         // but considering will need to dispatch for favorites, might wanna wait on that
-        // also, only works when no reload between signin and clicking account page since redux state does not yet reset
-        //dispatch(getFavoriteTeams());
-        // const token = user.token;
-        // if (token) {
-        //     const decodedToken = decode(token);
-        //     // need to test functionality
-        //     if (decodedToken.exp * 1000 < new Date().getTime()) {
-        //         dispatch({ type: actionType.LOGOUT });
-        //         navigate("/");
-        //         setUser(null);
-        //     }
-        // }
-        // if (user != null) {
-        //     setIsLoading(false);
-        // }
-    }, [user, dispatch, navigate]);
+    }, []);
 
     const handleClose = () => {
         setOpen(false);
@@ -136,7 +118,6 @@ const Container = styled(Paper)`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 70px;
 `;
 
 const AccountContainer = styled(Paper)`

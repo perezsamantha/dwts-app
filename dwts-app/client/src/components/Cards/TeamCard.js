@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Button, Grid, Paper, Typography } from '@mui/material';
+import { Button, Grid, Paper, Stack, Typography } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 import { CircularProgress } from '@mui/material';
@@ -7,27 +7,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { findTeamById } from '../../actions/teams';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 
-import { addTeamPic, likeTeam } from '../../actions/teams';
+import { likeTeam } from '../../actions/teams';
 
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
 
 import {
-    CardContainer,
     CardAvatar,
-    Header,
     LikesContainer,
     Picture,
     SocialsRow,
-} from '../shared/shared.js';
+} from '../shared/regStyles.js';
 import { makeStyles } from '@mui/styles';
 import ExtraPicUpload from '../shared/ExtraPicUpload';
 import * as tableType from '../../constants/tableTypes';
 import {
     convertPlacement,
     getDancesByTeam,
-    getFullTeamName,
     getNumberOfTens,
     Likes,
 } from '../shared/functions';
@@ -37,6 +34,7 @@ import SocialsLink from '../shared/SocialsLink';
 import { createLoadingSelector } from '../../api/selectors';
 
 import * as actionType from '../../constants/actionTypes';
+import { CardContainer } from '../shared/muiStyles';
 
 const useStyles = makeStyles({
     root: {
@@ -47,13 +45,9 @@ const useStyles = makeStyles({
 function TeamCard(props) {
     const classes = useStyles();
     const navigate = useNavigate();
-
-    //const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
-    //const [team, setTeam] = useState(null);
     const user = JSON.parse(localStorage.getItem('profile'));
 
     const dispatch = useDispatch();
-    //const history = useHistory();
 
     const team = useSelector((state) => state.teams.team);
 
@@ -87,9 +81,7 @@ function TeamCard(props) {
     //const fullTeamName = getFullTeamName({ celeb: celeb, pro: pro });
 
     let dancesByTeam = [];
-    let celeb,
-        pro,
-        fullTeamName = '';
+    let celeb, pro;
     let numTens = 0;
     if (!loading) {
         pro = pros.find((pro) => pro.id === team.pro_id);
@@ -102,8 +94,8 @@ function TeamCard(props) {
     return loading || Object.keys(team).length === 0 ? (
         <CircularProgress className={classes.progress} />
     ) : (
-        <CardContainer elevation={0}>
-            <Header>
+        <CardContainer>
+            <Stack direction="row">
                 <Button onClick={() => navigate(-1)}>
                     <ArrowBackIosIcon />
                 </Button>
@@ -121,7 +113,7 @@ function TeamCard(props) {
                         {team.likes?.length}
                     </Typography>
                 </LikesContainer>
-            </Header>
+            </Stack>
 
             <Typography variant="h4" gutterBottom>
                 <DataGetter id={team.id} type={tableType.TEAM} />

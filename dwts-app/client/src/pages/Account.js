@@ -1,16 +1,19 @@
 import React from 'react';
 import BottomNavBar from '../components/BottomNavBar/BottomNavBar';
 import AccountHeader from '../components/Account/AccountHeader';
+import { MainContainer, Page } from '../components/shared/muiStyles';
 
 function Account() {
     localStorage.setItem('parentPath', window.location.pathname);
-    
-    return(
-        <div>
-            <AccountHeader />
+
+    return (
+        <Page>
+            <MainContainer>
+                <AccountHeader />
+            </MainContainer>
             <BottomNavBar />
-        </div>
-    )
+        </Page>
+    );
 }
 
 export default Account;

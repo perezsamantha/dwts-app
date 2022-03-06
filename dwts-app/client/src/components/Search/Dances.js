@@ -4,15 +4,13 @@ import { Link } from 'react-router-dom';
 import { searchDances } from '../../actions/dances';
 import { CircularProgress, Divider } from '@mui/material';
 
-import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import DancesPreview from '../Previews/DancesPreview';
-import responsive from '../shared/responsive';
 import { createLoadingSelector } from '../../api/selectors';
 
 import * as actionType from '../../constants/actionTypes';
 import { makeStyles } from '@mui/styles';
-import { Container, ContentContainer } from '../shared/muiStyles';
+import { ResultsContainer } from '../shared/muiStyles';
 import { filterDances } from './Filters/filtered';
 
 const useStyles = makeStyles({
@@ -43,18 +41,6 @@ function Dances(props) {
     ]);
     const loading = useSelector((state) => loadingSelector(state));
 
-    // const filters = {
-    //     style:
-    //         props.filters.styles.length !== 0
-    //             ? (style) => props.filters.styles.includes(style)
-    //             : [],
-    //     season: (season) =>
-    //         season >= props.filters.seasons[0] &&
-    //         season <= props.filters.seasons[1],
-    // };
-
-    const arr = [];
-
     useEffect(() => {
         const input = { search: search };
         dispatch(searchDances(input));
@@ -66,46 +52,25 @@ function Dances(props) {
         filteredDances = filterDances(dances, filters);
     }
 
-    // if (Array.isArray(dances)) {
-    //     const categorizeBySeason = filteredDances.reduce((acc, item) => {
-    //         if (!acc[item.season]) {
-    //             acc[item.season] = [];
-    //         }
-
-    //         acc[item.season].push(item);
-    //         return acc;
-    //     }, {});
-
-    //     for (let [season] of Object.entries(categorizeBySeason)) {
-    //         arr.push(season);
-    //     }
-    // }
-
     return loading ? (
         <CircularProgress className={classes.progress} />
     ) : (
-        <Container>
-            {/* {arr.map((item, index) => (  */}
-            <ContentContainer>
-                {/* <Subtitle>Season {item}</Subtitle> */}
-                {/* {filteredDances.filter(dance => Number(dance.season) === Number(item)) */}
-                {filteredDances.map((dance, index) => (
-                    <Link
-                        key={index}
-                        to={{ pathname: `/dances/${dance.id}` }}
-                        style={{
-                            textDecoration: 'inherit',
-                            color: 'inherit',
-                        }}
-                    >
-                        <DancesPreview dance={dance} />
-                        {/* move divider outside of link? if so, need to wrap in div with key */}
-                        <Divider />
-                    </Link>
-                ))}
-            </ContentContainer>
-            {/* } */}
-        </Container>
+        <ResultsContainer>
+            {filteredDances.map((dance, index) => (
+                <Link
+                    key={index}
+                    to={{ pathname: `/dances/${dance.id}` }}
+                    style={{
+                        textDecoration: 'inherit',
+                        color: 'inherit',
+                    }}
+                >
+                    <DancesPreview dance={dance} />
+                    {/* move divider outside of link? if so, need to wrap in div with key */}
+                    <Divider />
+                </Link>
+            ))}
+        </ResultsContainer>
     );
 }
 

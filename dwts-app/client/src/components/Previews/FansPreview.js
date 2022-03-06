@@ -1,60 +1,27 @@
 import React from 'react';
-import styled from 'styled-components';
 
-import { Avatar } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-
-const useStyles = makeStyles({
-    avi: {
-        width: '40px',
-        height: '40px',
-        position: 'relative',
-        margin: 'auto 0 auto 8px',
-    },
-});
+import { Avatar, Paper, Stack, Typography } from '@mui/material';
 
 function FansPreview(props) {
-    const classes = useStyles();
-    // eventually need to bring in src file for avi
+    const { fan } = props;
 
     return (
-        <Container>
-            <Avatar className={classes.avi} alt="default" />
-            <InnerContainer>
-                <Nickname>Nickname</Nickname>
-                <Username>@{props.username}</Username>
-            </InnerContainer>
-        </Container>
+        <Paper elevation={3} sx={{ padding: '0.5rem 1rem' }}>
+            <Stack direction="row" alignItems="center" my={1}>
+                <Avatar
+                    src={fan.cover_pic}
+                    sx={{ width: 50, height: 50, marginRight: 1 }}
+                />
+                {/* TODO: make same size ? */}
+                <Stack>
+                    <Typography variant="subtitle1">
+                        {fan.nickname || '.'}
+                    </Typography>
+                    <Typography>@{fan.username}</Typography>
+                </Stack>
+            </Stack>
+        </Paper>
     );
 }
-
-const Container = styled.div`
-    width: 75%;
-    height: 75px;
-    margin: 5px auto;
-    display: flex;
-    flex-direction: row;
-    border-bottom: 1px solid white;
-`;
-
-const InnerContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin: auto 10px;
-`;
-
-const Nickname = styled.h3`
-    font-size: 20px;
-    font-weight: 500;
-    color: #fff;
-    margin: 0;
-`;
-
-const Username = styled.h4`
-    font-size: 15px;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.7);
-    margin: 0;
-`;
 
 export default FansPreview;

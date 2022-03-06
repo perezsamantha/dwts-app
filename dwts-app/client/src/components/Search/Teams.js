@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchTeams, searchTeams } from '../../actions/teams';
-import { CircularProgress, Paper, Typography } from '@mui/material';
+import { searchTeams } from '../../actions/teams';
+import { CircularProgress, Typography } from '@mui/material';
 import TeamsPreview from '../Previews/TeamsPreview';
 
 import Carousel from 'react-multi-carousel';
@@ -16,6 +16,7 @@ import { createLoadingSelector } from '../../api/selectors';
 import * as actionType from '../../constants/actionTypes';
 import { makeStyles } from '@mui/styles';
 import { filterTeams } from './Filters/filtered';
+import { ResultsContainer } from '../shared/muiStyles';
 
 const useStyles = makeStyles({
     root: {
@@ -72,65 +73,45 @@ function Teams(props) {
         }
     }
 
-    return (
-        <Container>
-            {loading ? (
-                <CircularProgress className={classes.progress} />
-            ) : (
-                <div>
-                    {arr.map((item, index) => (
-                        <ContentContainer key={index}>
-                            <Typography variant="h5" my={1}>
-                                Season {item}
-                            </Typography>
-                            <Carousel
-                                responsive={responsive}
-                                partialVisible={true}
-                            >
-                                {filteredTeams
-                                    .filter(
-                                        (team) =>
-                                            Number(team.season_id) ===
-                                            Number(item)
-                                    )
-                                    .map((team, index) => (
-                                        <Link
-                                            key={index}
-                                            to={{
-                                                pathname: `/teams/${team.id}`,
-                                            }}
-                                            style={{
-                                                textDecoration: 'inherit',
-                                                color: 'inherit',
-                                            }}
-                                        >
-                                            <TeamsPreview
-                                                key={index}
-                                                team={team}
-                                            />
-                                        </Link>
-                                    ))}
-                            </Carousel>
-                        </ContentContainer>
-                    ))}
-                </div>
-            )}
-        </Container>
+    return loading ? (
+        <CircularProgress className={classes.progress} />
+    ) : (
+        <ResultsContainer>
+            {arr.map((item, index) => (
+                <ContentContainer key={index}>
+                    <Typography variant="h5" my={1}>
+                        Season {item}
+                    </Typography>
+                    <Carousel responsive={responsive} partialVisible={true}>
+                        {filteredTeams
+                            .filter(
+                                (team) =>
+                                    Number(team.season_id) === Number(item)
+                            )
+                            .map((team, index) => (
+                                <Link
+                                    key={index}
+                                    to={{
+                                        pathname: `/teams/${team.id}`,
+                                    }}
+                                    style={{
+                                        textDecoration: 'inherit',
+                                        color: 'inherit',
+                                    }}
+                                >
+                                    <TeamsPreview key={index} team={team} />
+                                </Link>
+                            ))}
+                    </Carousel>
+                </ContentContainer>
+            ))}
+        </ResultsContainer>
     );
 }
 
-const Container = styled.div`
-    width: 100%;
-    min-height: 300px;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    padding-bottom: 70px;
-`;
-
 const ContentContainer = styled.div`
-    width: 85%;
-    margin: 15px auto;
+    width: 100%;
+    //margin: 15px auto;
 `;
 
 export default Teams;

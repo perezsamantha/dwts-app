@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import React, { useEffect } from 'react';
 import FansPreview from '../Previews/FansPreview';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { searchUsers } from '../../actions/fans';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
+import { createLoadingSelector } from '../../api/selectors';
+
+import * as actionType from '../../constants/actionTypes';
+import { ResultsContainer } from '../shared/muiStyles';
 
 const useStyles = makeStyles({
     root: {
@@ -20,56 +23,40 @@ const useStyles = makeStyles({
 });
 
 function Fans(props) {
+    const { search } = props;
     const classes = useStyles();
     const dispatch = useDispatch();
 
-    const fans = useSelector((state) => state.fans.fans);
-    const loading = useSelector((state) => state.fans.loading);
+    const fans = useSelector((state) => state.users.users);
+    const loadingSelector = createLoadingSelector([actionType.USERSEARCH]);
+    const loading = useSelector((state) => loadingSelector(state));
 
     useEffect(() => {
-        const input = { search: props.search };
+        const input = { search: search };
         dispatch(searchUsers(input));
-    }, [dispatch, props]);
+    }, [dispatch, search]);
 
     return loading || !Array.isArray(fans) ? (
         <CircularProgress className={classes.progress} />
     ) : (
-        <Container>
-            <Spacer />
-            {fans.map((fan, index) => (
-                <InnerContainer>
-                    <Link
-                        key={index}
-                        to={{ pathname: `/fans/${fan._id}` }}
-                        style={{ textDecoration: 'none' }}
-                    >
-                        <FansPreview username={fan.username} />
-                    </Link>
-                </InnerContainer>
-            ))}
-        </Container>
+        <ResultsContainer>
+            <Grid container justifyContent="center" spacing={2}>
+                {fans.map((fan, index) => (
+                    <Grid item key={index}>
+                        <Link
+                            to={{ pathname: `/fans/${fan.id}` }}
+                            style={{
+                                textDecoration: 'inherit',
+                                color: 'inherit',
+                            }}
+                        >
+                            <FansPreview fan={fan} />
+                        </Link>
+                    </Grid>
+                ))}
+            </Grid>
+        </ResultsContainer>
     );
 }
-
-const Container = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    align-items: center;
-    padding-bottom: 70px;
-`;
-
-const Spacer = styled.div`
-    margin: 10px;
-`;
-
-const InnerContainer = styled.div`
-    //display: flex;
-    //flex-direction: column;
-    //margin: 0;
-    //padding: 0;
-    width: 100%;
-`;
 
 export default Fans;

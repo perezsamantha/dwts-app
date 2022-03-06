@@ -7,7 +7,7 @@ import ProsPreview from '../Previews/ProsPreview';
 import { createLoadingSelector } from '../../api/selectors';
 
 import * as actionType from '../../constants/actionTypes';
-import { Container, ContentContainer } from '../shared/muiStyles';
+import { ResultsContainer } from '../shared/muiStyles';
 import { makeStyles } from '@mui/styles';
 import { filterPros } from './Filters/filtered';
 
@@ -39,35 +39,31 @@ function Pros(props) {
         filteredPros = filterPros(pros, filters);
     }
 
-    return (
-        <Container elevation={1}>
-            {loading ? (
-                <CircularProgress className={classes.progress} />
-            ) : (
-                <ContentContainer elevation={1}>
-                    <Grid
-                        container
-                        //justify="flex-start"
-                        className={classes.root}
-                        spacing={2}
-                    >
-                        {filteredPros.map((pro, index) => (
-                            <Grid key={index} item>
-                                <Link
-                                    to={{ pathname: `/pros/${pro.id}` }}
-                                    style={{
-                                        textDecoration: 'inherit',
-                                        color: 'inherit',
-                                    }}
-                                >
-                                    <ProsPreview pro={pro} />
-                                </Link>
-                            </Grid>
-                        ))}
+    return loading ? (
+        <CircularProgress className={classes.progress} />
+    ) : (
+        <ResultsContainer>
+            <Grid
+                container
+                //justify="flex-start"
+                className={classes.root}
+                spacing={2}
+            >
+                {filteredPros.map((pro, index) => (
+                    <Grid key={index} item>
+                        <Link
+                            to={{ pathname: `/pros/${pro.id}` }}
+                            style={{
+                                textDecoration: 'inherit',
+                                color: 'inherit',
+                            }}
+                        >
+                            <ProsPreview pro={pro} />
+                        </Link>
                     </Grid>
-                </ContentContainer>
-            )}
-        </Container>
+                ))}
+            </Grid>
+        </ResultsContainer>
     );
 }
 

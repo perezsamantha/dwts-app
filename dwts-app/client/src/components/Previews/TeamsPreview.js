@@ -2,7 +2,7 @@ import { Typography } from '@mui/material';
 import React from 'react';
 import DataGetter from '../shared/DataGetter.js';
 import { convertPlacement } from '../shared/functions.js';
-import { Preview, PreviewPhoto } from '../shared/shared.js';
+import { Preview, PreviewPhoto } from '../shared/regStyles.js';
 
 function TeamsPreview(props) {
     const team = props.team;

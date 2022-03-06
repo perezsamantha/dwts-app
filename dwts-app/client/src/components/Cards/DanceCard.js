@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { Avatar, Button, Grid, Paper, Typography } from '@mui/material';
+import { Button, Grid, Paper, Stack, Typography } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 import { CircularProgress } from '@mui/material';
@@ -9,20 +8,10 @@ import { findDanceById } from '../../actions/dances';
 import { fetchTeams } from '../../actions/teams';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 
-import AvatarEditor from 'react-avatar-editor';
-import { Slider } from '@mui/material';
-import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
-import { addDancePic, likeDance } from '../../actions/dances';
+import { likeDance } from '../../actions/dances';
 import * as tableType from '../../constants/tableTypes';
 
-import {
-    Container,
-    CardContainer,
-    Picture,
-    Header,
-    LikesContainer,
-    CardAvatar,
-} from '../shared/shared.js';
+import { Picture, LikesContainer, CardAvatar } from '../shared/regStyles.js';
 
 import TeamsPreview from '../Previews/TeamsPreview';
 import { makeStyles } from '@mui/styles';
@@ -33,6 +22,7 @@ import DataGetter from '../shared/DataGetter';
 import { createLoadingSelector } from '../../api/selectors';
 
 import * as actionType from '../../constants/actionTypes';
+import { CardContainer } from '../shared/muiStyles';
 const useStyles = makeStyles({
     progress: {
         margin: 'auto',
@@ -72,8 +62,8 @@ function DanceCard() {
     return loading || Object.keys(dance).length === 0 ? (
         <CircularProgress className={classes.progress} />
     ) : (
-        <CardContainer elevation={0}>
-            <Header>
+        <CardContainer>
+            <Stack direction="row">
                 <Button onClick={() => navigate(-1)}>
                     <ArrowBackIosIcon />
                 </Button>
@@ -86,7 +76,7 @@ function DanceCard() {
                         {dance.likes?.length}
                     </Typography>
                 </LikesContainer>
-            </Header>
+            </Stack>
 
             {/* <Grid container justify="center" className={classes.root} spacing={2}>
                         {dance.teams.map((id, index) => (

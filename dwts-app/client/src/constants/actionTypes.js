@@ -73,6 +73,7 @@ export const TEAMFIND_SUCCESS = 'TEAMFIND_SUCCESS';
 export const TEAMFIND_FAILURE = 'TEAMFIND_FAILURE';
 
 export const PROSEARCH = 'PROSEARCH';
+export const PROFIND = 'PROFIND';
 export const PROADD = 'PROADD';
 export const PROUPDATE = 'PROUPDATE';
 export const PRODELETE = 'PRODELETE';
@@ -230,6 +231,7 @@ export const DANCERFIND_SUCCESS = 'DANCERFIND_SUCCESS';
 export const DANCERFIND_FAILURE = 'DANCERFIND_FAILURE';
 
 export const USERSEARCH = 'USERSEARCH';
+export const USERFIND = 'USERFIND';
 export const USERADD = 'USERADD';
 export const USERUPDATE = 'USERUPDATE';
 export const USERDELETE = 'USERDELETE';

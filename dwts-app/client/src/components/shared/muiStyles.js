@@ -1,6 +1,6 @@
 //import styled from 'styled-components';
 import styled from '@emotion/styled';
-import { Chip, Paper, TextField } from '@mui/material';
+import { Box, Chip, TextField } from '@mui/material';
 
 export const ChipsWrapper = styled.div`
     display: flex;
@@ -11,28 +11,28 @@ export const IndividualChip = styled(Chip)`
     margin-right: 2px;
 `;
 
-export const Page = styled(Paper)`
-    width: 100%;
-    min-height: 100vh;
+export const Page = styled(Box)(() => ({
+    paddingBottom: 60,
+}));
+
+//main page container
+
+export const MainContainer = styled(Box)`
+    //height: 100vh;
+    padding: 1rem;
+    /* display: flex;
+    flex-direction: column;
+    align-items: center; */
+    //padding-bottom: 70px;
+`;
+
+// search results
+
+export const ResultsContainer = styled(Box)`
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-`;
-
-// search
-
-export const Container = styled(Paper)`
-    width: 100%;
-    //min-height: 300px;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    padding-bottom: 70px;
-`;
-
-export const ContentContainer = styled(Paper)`
-    width: 90%;
-    margin: 15px auto;
 `;
 
 export const SearchTextField = styled(TextField)(({ theme }) => ({
@@ -51,3 +51,15 @@ export const SearchTextField = styled(TextField)(({ theme }) => ({
         },
     },
 }));
+
+// cards
+
+export const CardContainer = styled(Box)`
+    //width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    //overflow-y: auto;
+    //overflow-x: auto;
+    text-align: center;
+`;

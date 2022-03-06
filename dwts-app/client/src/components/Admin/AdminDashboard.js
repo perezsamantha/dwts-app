@@ -11,7 +11,6 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
-    Switch,
     Toolbar,
     Typography,
 } from '@mui/material';

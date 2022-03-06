@@ -20,7 +20,6 @@ import {
     themes,
     weeks,
 } from '../../../constants/dropdowns';
-import { useSelector } from 'react-redux';
 
 function DanceFilters(props) {
     //const pros = useSelector((state) => state.pros.pros);

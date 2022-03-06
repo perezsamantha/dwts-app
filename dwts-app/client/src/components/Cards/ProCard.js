@@ -1,20 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { Avatar, Button, Link, Typography } from '@mui/material';
+import React, { useEffect } from 'react';
+import { Button, Stack, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { findProById, likePro } from '../../actions/pros';
 
 import {
-    Container,
-    TeamName,
-    CardContainer,
     CardAvatar,
-    Header,
     LikesContainer,
     SocialsRow,
     Picture,
-} from '../shared/shared.js';
+} from '../shared/regStyles.js';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 import { createLoadingSelector } from '../../api/selectors';
@@ -30,6 +25,7 @@ import ExtraPicUpload from '../shared/ExtraPicUpload';
 import * as tableType from '../../constants/tableTypes';
 import { makeStyles } from '@mui/styles';
 import SocialsLink from '../shared/SocialsLink';
+import { CardContainer } from '../shared/muiStyles';
 
 const useStyles = makeStyles({
     root: {
@@ -44,9 +40,9 @@ function ProCard() {
     const user = JSON.parse(localStorage.getItem('profile'));
     const pro = useSelector((state) => state.pros.pro);
     const { id } = useParams();
-    //const loadingSelector = createLoadingSelector([actionType.PROSEARCH]);
-    //const isFetching = useSelector((state) => loadingSelector(state));
-    const loading = useSelector((state) => state.loading.PROFIND);
+
+    const loadingSelector = createLoadingSelector([actionType.PROFIND]);
+    const loading = useSelector((state) => loadingSelector(state));
 
     const birthday = convertDate(pro.birthday);
     const age = getAge(pro.birthday);
@@ -58,8 +54,8 @@ function ProCard() {
     return loading ? (
         <div>insert loading bar</div>
     ) : (
-        <CardContainer elevation={0}>
-            <Header>
+        <CardContainer>
+            <Stack direction="row">
                 <Button onClick={() => navigate(-1)}>
                     <ArrowBackIosIcon />
                 </Button>
@@ -74,7 +70,7 @@ function ProCard() {
                         {pro.likes?.length}
                     </Typography>
                 </LikesContainer>
-            </Header>
+            </Stack>
 
             <Typography variant="h4" gutterBottom>
                 {pro.first_name} {pro?.last_name}

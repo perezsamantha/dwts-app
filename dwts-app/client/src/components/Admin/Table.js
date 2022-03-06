@@ -13,7 +13,7 @@ import {
     TableContainer,
     DataGridContainer,
     HeaderContainer,
-} from '../shared/shared';
+} from '../shared/regStyles';
 import { convertDate, convertHeight } from '../shared/functions';
 import AddDialog from './AddDialog';
 import EditDialog from './EditDialog';

@@ -21,7 +21,7 @@ import {
     FullTextField,
 } from './common';
 import { AccountContext } from './AccountContext';
-import { IconButton, InputAdornment, TextField } from '@mui/material';
+import { IconButton, InputAdornment } from '@mui/material';
 
 const initialState = {
     username: '',

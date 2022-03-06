@@ -12,9 +12,9 @@ body {
     caret-color: rgb(216, 208, 101);
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
     width: 0px;
-}
+} */
 
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

@@ -16,7 +16,7 @@ import {
     heightsInInches,
 } from '../../constants/dropdowns';
 import CoverPicUpload from '../shared/CoverPicUpload';
-import { PhotoContainer } from '../shared/shared';
+import { PhotoContainer } from '../shared/regStyles';
 import { useSelector } from 'react-redux';
 import DataGetter from '../shared/DataGetter';
 import { convertHeight } from '../shared/functions';

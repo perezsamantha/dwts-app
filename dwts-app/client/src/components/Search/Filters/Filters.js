@@ -7,10 +7,10 @@ import {
     DialogContent,
     FormControl,
 } from '@mui/material';
-import ProFilters from './Filters/ProFilters';
-import TeamFilters from './Filters/TeamFilters';
-import DanceFilters from './Filters/DanceFilters';
-import * as searchType from '../../constants/searchTypes';
+import ProFilters from './ProFilters';
+import TeamFilters from './TeamFilters';
+import DanceFilters from './DanceFilters';
+import * as searchType from '../../../constants/searchTypes';
 
 //TODO: clear filters button?
 

@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as actionType from './constants/actionTypes';
 import * as searchType from './constants/searchTypes';
 import decode from 'jwt-decode';
-import { Box, Container, Paper, useMediaQuery } from '@mui/material';
+import { CssBaseline, Paper, useMediaQuery } from '@mui/material';
 import NotFound from './pages/NotFound';
 import Overview from './pages/Overview';
 
@@ -87,6 +87,23 @@ function App() {
             ].join(','),
         },
         components: {
+            MuiCssBaseline: {
+                styleOverrides: {
+                    body: {
+                        scrollbarColor: 'transparent lightgrey',
+                        '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
+                            backgroundColor: 'transparent',
+                            width: 5,
+                            height: 8,
+                        },
+                        '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb':
+                            {
+                                borderRadius: 10,
+                                backgroundColor: 'lightgrey',
+                            },
+                    },
+                },
+            },
             MuiTextField: {
                 styleOverrides: {
                     root: {
@@ -152,6 +169,7 @@ function App() {
 
     return (
         <ThemeProvider theme={muiTheme}>
+            <CssBaseline />
             <AppContainer>
                 <Routes>
                     <Route exact path="/">
@@ -225,7 +243,7 @@ function App() {
 }
 
 const AppContainer = styled(Paper)`
-    height: 100vh;
+    min-height: 100vh;
 `;
 
 export default App;
