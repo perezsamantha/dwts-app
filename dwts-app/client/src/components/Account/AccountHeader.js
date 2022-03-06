@@ -14,6 +14,7 @@ import { createLoadingSelector } from '../../api/selectors';
 import { Button, Paper, Typography } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import EditAccount from './EditAccount';
+import Favorites from '../Favorites/Favorites';
 
 function AccountHeader() {
     //const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -63,7 +64,6 @@ function AccountHeader() {
                     >
                         {user.username.charAt(0)}
                     </Avatar>
-                    {/* <AccountSettings /> */}
                     <Button onClick={() => setOpen(true)}>
                         <SettingsIcon />
                     </Button>
@@ -76,25 +76,13 @@ function AccountHeader() {
                     </Typography>
                 )}
 
-                {/* {Array.isArray(favorites) && <ContentContainer>
-                    <Subtitle>Favorite Teams</Subtitle>
-                    <Carousel
-                        responsive={responsive}
-                        partialVisible={true}
-                    >
-                        {favorites.map((team, index) => (
-
-                                <Link key={index} to={{ pathname: `/teams/${team._id}` }} style={{ textDecoration: "none" }} >
-                                    <TeamsPreview team={team} />
-                                    
-                                </Link>
-                            ))}
-                    </Carousel>
-                </ContentContainer>} */}
-
                 <Button variant="filled" onClick={() => navigate('/admin')}>
                     Admin Panel
                 </Button>
+
+                <Typography>Favorite Pros</Typography>
+
+                <Favorites />
 
                 <Button variant="contained" onClick={logout}>
                     Logout

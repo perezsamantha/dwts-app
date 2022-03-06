@@ -20,6 +20,7 @@ import decode from 'jwt-decode';
 import { CssBaseline, Paper, useMediaQuery } from '@mui/material';
 import NotFound from './pages/NotFound';
 import Overview from './pages/Overview';
+import 'swiper/css/bundle';
 
 function App() {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark');
@@ -90,16 +91,16 @@ function App() {
             MuiCssBaseline: {
                 styleOverrides: {
                     body: {
-                        scrollbarColor: 'transparent lightgrey',
+                        scrollbarColor: 'transparent darkgrey',
                         '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
                             backgroundColor: 'transparent',
                             width: 5,
-                            height: 8,
+                            height: 6,
                         },
                         '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb':
                             {
                                 borderRadius: 10,
-                                backgroundColor: 'lightgrey',
+                                backgroundColor: 'darkgrey',
                             },
                     },
                 },
@@ -121,6 +122,11 @@ function App() {
                         height: 4,
                         borderRadius: 1,
                     },
+                },
+            },
+            MuiButtonBase: {
+                defaultProps: {
+                    disableRipple: true,
                 },
             },
             MuiButton: {

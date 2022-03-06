@@ -16,6 +16,16 @@ body {
     width: 0px;
 } */
 
+.swiper {
+    width: 95%;
+    height: 100%;
+    margin: 20px;
+}
+
+.swiper-slide {
+    padding: 0.5rem 0;
+}
+
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
         monospace;

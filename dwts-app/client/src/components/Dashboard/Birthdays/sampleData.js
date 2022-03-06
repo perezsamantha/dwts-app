@@ -11,7 +11,7 @@ export const pros = [
     },
     {
         first_name: 'Aria',
-        last_name: 'Montgomery',
+        last_name: null,
         birthday: '2014-03-05T05:00:00.000Z',
     },
     {
