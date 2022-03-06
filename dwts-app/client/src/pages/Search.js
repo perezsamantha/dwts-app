@@ -10,7 +10,6 @@ import Pros from '../components/Search/Pros';
 import { InputAdornment, Tab, Tabs, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
-import { makeStyles } from '@mui/styles';
 import {
     MainContainer,
     Page,
@@ -20,41 +19,7 @@ import Filters from '../components/Search/Filters/Filters';
 import { initialFilters } from '../components/Search/Filters/initialFilters';
 import * as searchType from '../constants/searchTypes';
 
-const useStyles = makeStyles({
-    icon: {
-        width: '10%',
-        margin: 'auto',
-    },
-    filterIcon: {
-        width: '10%',
-        margin: 'auto',
-        cursor: 'pointer',
-    },
-    chip: {
-        backgroundColor: 'white',
-        margin: '2px',
-        '&:active, &:hover': {
-            backgroundColor: 'rgb(243,229,171)',
-        },
-        '&:focus': {
-            backgroundColor: 'white',
-        },
-    },
-    selectedChip: {
-        backgroundColor: 'rgb(243,229,171)',
-        '&:focus, &:hover': {
-            backgroundColor: 'rgb(243,229,171)',
-        },
-    },
-    arrowIcon: {
-        margin: 'auto 0',
-    },
-});
-
 function Search(props) {
-    // TODO: move filters to new component !!!!!!!!!
-
-    const classes = useStyles();
     const [type, setType] = useState(props.type);
     const [searchVal, setSearchVal] = useState('');
     const [key, setKey] = useState(1);
@@ -176,7 +141,6 @@ function Search(props) {
                             disableRipple
                             component={Link}
                             to="/search/fans"
-                            className={classes.tabs}
                             label="FANS"
                             value={searchType.FANS}
                         />

@@ -22,6 +22,7 @@ import { updateDance } from '../../actions/dances';
 import { updateScore } from '../../actions/scores';
 import { updateDancer } from '../../actions/dancers';
 import { setUserPic, updateUser } from '../../actions/fans';
+import Progress from '../shared/Progress';
 
 function EditDialog(props) {
     const [open, setOpen] = useState(props.open);
@@ -151,7 +152,7 @@ function EditDialog(props) {
     };
 
     return loading ? (
-        <div>loading bar (move)</div>
+        <Progress />
     ) : (
         <div>
             <LocalizationProvider dateAdapter={DateAdapter}>

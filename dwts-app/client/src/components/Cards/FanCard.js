@@ -13,6 +13,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import { CardContainer } from '../shared/muiStyles';
+import Progress from '../shared/Progress';
 
 function FanCard() {
     const navigate = useNavigate();
@@ -27,7 +28,7 @@ function FanCard() {
     }, [dispatch, id]);
 
     return loading ? (
-        <div>insert loading bar</div>
+        <Progress />
     ) : (
         <CardContainer>
             <Stack direction="row">

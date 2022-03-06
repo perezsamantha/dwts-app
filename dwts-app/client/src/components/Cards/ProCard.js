@@ -23,18 +23,11 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import ExtraPicUpload from '../shared/ExtraPicUpload';
 import * as tableType from '../../constants/tableTypes';
-import { makeStyles } from '@mui/styles';
 import SocialsLink from '../shared/SocialsLink';
 import { CardContainer } from '../shared/muiStyles';
-
-const useStyles = makeStyles({
-    root: {
-        flexGrow: 1,
-    },
-});
+import Progress from '../shared/Progress';
 
 function ProCard() {
-    const classes = useStyles();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem('profile'));
@@ -52,7 +45,7 @@ function ProCard() {
     }, [dispatch, id]);
 
     return loading ? (
-        <div>insert loading bar</div>
+        <Progress />
     ) : (
         <CardContainer>
             <Stack direction="row">
@@ -88,12 +81,7 @@ function ProCard() {
             <Typography variant="h6" my={2}>
                 SOCIALS
             </Typography>
-            <Grid
-                container
-                justifyContent="center"
-                className={classes.root}
-                spacing={2}
-            >
+            <Grid container justifyContent="center" spacing={2}>
                 {pro?.instagram && (
                     <Grid item>
                         <InstagramIcon />
@@ -133,13 +121,7 @@ function ProCard() {
                 PICTURES
             </Typography>
 
-            <Grid
-                container
-                justifyContent="center"
-                className={classes.root}
-                spacing={2}
-                mb={2}
-            >
+            <Grid container justifyContent="center" spacing={2} mb={2}>
                 {pro?.pictures?.map((picture, index) => (
                     <Grid key={index} item>
                         <Paper elevation={0}>

@@ -3,28 +3,16 @@ import FansPreview from '../Previews/FansPreview';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { searchUsers } from '../../actions/fans';
-import { CircularProgress, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { makeStyles } from '@mui/styles';
 import { createLoadingSelector } from '../../api/selectors';
 
 import * as actionType from '../../constants/actionTypes';
 import { ResultsContainer } from '../shared/muiStyles';
-
-const useStyles = makeStyles({
-    root: {
-        flexGrow: 1,
-    },
-    progress: {
-        position: 'absolute',
-        left: '50%',
-        top: '50%',
-    },
-});
+import Progress from '../shared/Progress';
 
 function Fans(props) {
     const { search } = props;
-    const classes = useStyles();
     const dispatch = useDispatch();
 
     const fans = useSelector((state) => state.users.users);
@@ -37,7 +25,7 @@ function Fans(props) {
     }, [dispatch, search]);
 
     return loading || !Array.isArray(fans) ? (
-        <CircularProgress className={classes.progress} />
+        <Progress />
     ) : (
         <ResultsContainer>
             <Grid container justifyContent="center" spacing={2}>

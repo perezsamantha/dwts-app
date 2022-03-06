@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Button, Grid, Paper, Stack, Typography } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
-import { CircularProgress } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { findDanceById } from '../../actions/dances';
 import { fetchTeams } from '../../actions/teams';
@@ -14,7 +13,6 @@ import * as tableType from '../../constants/tableTypes';
 import { Picture, LikesContainer, CardAvatar } from '../shared/regStyles.js';
 
 import TeamsPreview from '../Previews/TeamsPreview';
-import { makeStyles } from '@mui/styles';
 import { convertPlacement, Likes } from '../shared/functions';
 import ExtraPicUpload from '../shared/ExtraPicUpload';
 import DataGetter from '../shared/DataGetter';
@@ -23,17 +21,9 @@ import { createLoadingSelector } from '../../api/selectors';
 
 import * as actionType from '../../constants/actionTypes';
 import { CardContainer } from '../shared/muiStyles';
-const useStyles = makeStyles({
-    progress: {
-        margin: 'auto',
-    },
-    root: {
-        flexGrow: 1,
-    },
-});
+import Progress from '../shared/Progress';
 
 function DanceCard() {
-    const classes = useStyles();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem('profile'));
@@ -60,7 +50,7 @@ function DanceCard() {
     }, [dispatch, id]);
 
     return loading || Object.keys(dance).length === 0 ? (
-        <CircularProgress className={classes.progress} />
+        <Progress />
     ) : (
         <CardContainer>
             <Stack direction="row">
@@ -139,13 +129,7 @@ function DanceCard() {
                 PICTURES
             </Typography>
 
-            <Grid
-                container
-                justifyContent="center"
-                className={classes.root}
-                spacing={2}
-                mb={2}
-            >
+            <Grid container justifyContent="center" spacing={2} mb={2}>
                 {dance.pictures?.map((picture, index) => (
                     <Grid key={index} item>
                         <Paper elevation={0}>

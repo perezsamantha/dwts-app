@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Button, Grid, Paper, Stack, Typography } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
-import { CircularProgress } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { findTeamById } from '../../actions/teams';
 import { useParams, useNavigate, Link } from 'react-router-dom';
@@ -19,7 +18,6 @@ import {
     Picture,
     SocialsRow,
 } from '../shared/regStyles.js';
-import { makeStyles } from '@mui/styles';
 import ExtraPicUpload from '../shared/ExtraPicUpload';
 import * as tableType from '../../constants/tableTypes';
 import {
@@ -35,15 +33,9 @@ import { createLoadingSelector } from '../../api/selectors';
 
 import * as actionType from '../../constants/actionTypes';
 import { CardContainer } from '../shared/muiStyles';
-
-const useStyles = makeStyles({
-    root: {
-        flexGrow: 1,
-    },
-});
+import Progress from '../shared/Progress';
 
 function TeamCard(props) {
-    const classes = useStyles();
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('profile'));
 
@@ -92,7 +84,7 @@ function TeamCard(props) {
         numTens = getNumberOfTens(dancesByTeam, scores);
     }
     return loading || Object.keys(team).length === 0 ? (
-        <CircularProgress className={classes.progress} />
+        <Progress />
     ) : (
         <CardContainer>
             <Stack direction="row">
@@ -129,13 +121,7 @@ function TeamCard(props) {
                 <Typography variant="h6">#team{team.team_name}</Typography>
             )}
 
-            <Grid
-                container
-                justifyContent="center"
-                className={classes.root}
-                spacing={2}
-                my={1}
-            >
+            <Grid container justifyContent="center" spacing={2} my={1}>
                 <Grid item>
                     <Typography variant="subtitle1">DANCES</Typography>
                     <Typography variant="subtitle1">
@@ -173,15 +159,9 @@ function TeamCard(props) {
             <Typography variant="h5" mb={2}>
                 SOCIALS
             </Typography>
-            <Grid
-                container
-                justifyContent="center"
-                className={classes.root}
-                spacing={2}
-                mb={2}
-            >
+            <Grid container justifyContent="center" spacing={2} mb={2}>
                 <Grid item>
-                    <InstagramIcon className={classes.icons} />
+                    <InstagramIcon />
                     <SocialsRow>
                         {celeb?.instagram && (
                             <SocialsLink
@@ -198,7 +178,7 @@ function TeamCard(props) {
                     </SocialsRow>
                 </Grid>
                 <Grid item>
-                    <TwitterIcon className={classes.icons} />
+                    <TwitterIcon />
                     <SocialsRow>
                         {celeb?.twitter && (
                             <SocialsLink
@@ -215,7 +195,7 @@ function TeamCard(props) {
                     </SocialsRow>
                 </Grid>
                 <Grid item>
-                    <FacebookIcon className={classes.icons} />
+                    <FacebookIcon />
                     <SocialsRow>
                         {celeb?.tiktok && (
                             <SocialsLink
@@ -237,13 +217,7 @@ function TeamCard(props) {
                 PICTURES
             </Typography>
 
-            <Grid
-                container
-                justifyContent="center"
-                className={classes.root}
-                spacing={2}
-                mb={2}
-            >
+            <Grid container justifyContent="center" spacing={2} mb={2}>
                 {team?.pictures?.map((picture, index) => (
                     <Grid key={index} item>
                         <Paper elevation={0}>

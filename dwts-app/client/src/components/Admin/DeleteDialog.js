@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import * as tableType from '../../constants/tableTypes';
 import DataGetter from '../shared/DataGetter';
+import Progress from '../shared/Progress';
 
 function DeleteDialog(props) {
     const item = props.item;
@@ -37,10 +38,6 @@ function DeleteDialog(props) {
             case tableType.TEAM:
                 return <DataGetter id={item.id} type={tableType.TEAM} />;
             case tableType.SEASON:
-                const seasonNum = (
-                    <DataGetter id={item.id} type={tableType.SEASON} />
-                );
-                console.log(seasonNum);
                 return (
                     <>
                         Season{' '}
@@ -64,7 +61,7 @@ function DeleteDialog(props) {
     };
 
     return loading ? (
-        <div>loading bar (move)</div>
+        <Progress />
     ) : (
         <Dialog open={open} onClose={props.handleClose}>
             <DialogTitle>{'Confirm Deletion'}</DialogTitle>

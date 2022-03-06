@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { searchTeams } from '../../actions/teams';
-import { CircularProgress, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import TeamsPreview from '../Previews/TeamsPreview';
 
 import Carousel from 'react-multi-carousel';
@@ -14,22 +14,12 @@ import responsive from '../shared/responsive';
 import { createLoadingSelector } from '../../api/selectors';
 
 import * as actionType from '../../constants/actionTypes';
-import { makeStyles } from '@mui/styles';
 import { filterTeams } from './Filters/filtered';
 import { ResultsContainer } from '../shared/muiStyles';
-
-const useStyles = makeStyles({
-    root: {
-        flexGrow: 1,
-    },
-    progress: {
-        margin: 'auto',
-    },
-});
+import Progress from '../shared/Progress';
 
 function Teams(props) {
     const { search, filters } = props;
-    const classes = useStyles();
     const dispatch = useDispatch();
 
     const teams = useSelector((state) => state.teams.teams);
@@ -74,7 +64,7 @@ function Teams(props) {
     }
 
     return loading ? (
-        <CircularProgress className={classes.progress} />
+        <Progress />
     ) : (
         <ResultsContainer>
             {arr.map((item, index) => (
