@@ -8,7 +8,7 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import { Link } from 'react-router-dom';
 import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 function BottomNavBar() {
     //const pathname = window.location.pathname;
@@ -81,6 +81,7 @@ const NavBarContainer = styled(Paper)`
     bottom: 0;
     position: fixed;
     width: 100%;
+    z-index: 10;
 `;
 
 export default BottomNavBar;

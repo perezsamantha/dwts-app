@@ -16,14 +16,30 @@ body {
     width: 0px;
 } */
 
-.swiper {
-    width: 95%;
-    height: 100%;
-    margin: 20px;
-}
+/* .swiper {
+    
+} */
 
 .swiper-slide {
     padding: 0.5rem 0;
+}
+.mySwiper .swiper-button-prev,
+.mySwiper .swiper-button-next {
+    /* margin-top: -22px !important; */
+    position: absolute;
+    z-index: 10;
+    width: 3rem;
+    height: 3rem;
+    padding: 3rem 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    /* background-position: center; */
+    background-color: rgba(0, 0, 0, 0.2);
+    /* background-repeat: no-repeat; */
+    top: 30%;
+}
+.mySwiper .swiper-button-prev.swiper-button-disabled,
+.mySwiper .swiper-button-next.swiper-button-disabled {
+    opacity: 0;
 }
 
 code {

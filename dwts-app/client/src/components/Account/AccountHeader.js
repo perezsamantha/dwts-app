@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Avatar, Box } from '@mui/material';
+import { Avatar, Box, Divider } from '@mui/material';
 import * as actionType from '../../constants/actionTypes';
-import decode from 'jwt-decode';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { getFavoriteTeams } from '../../actions/teams';
-import TeamsPreview from '../Previews/TeamsPreview';
-import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import responsive from '../shared/responsive';
 import { createLoadingSelector } from '../../api/selectors';
 import { Button, Paper, Typography } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import EditAccount from './EditAccount';
 import Favorites from '../Favorites/Favorites';
+import { celebs, fans, pros } from '../Dashboard/Birthdays/sampleData';
+import * as searchType from '../../constants/searchTypes';
 
 function AccountHeader() {
     //const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -46,7 +43,7 @@ function AccountHeader() {
 
     return (
         <Container>
-            <AccountContainer>
+            <AccountContainer elevation={4}>
                 <Box
                     sx={{
                         width: '100%',
@@ -58,7 +55,7 @@ function AccountHeader() {
                     {/* temporary hack to get flexbox layout */}
                     <Button disabled sx={{ opacity: 0 }}></Button>
                     <Avatar
-                        sx={{ width: 100, height: 100, marginTop: -5 }}
+                        sx={{ width: 100, height: 100, marginTop: -8 }}
                         alt="default"
                         src={user.cover_pic}
                     >
@@ -79,14 +76,31 @@ function AccountHeader() {
                 <Button variant="filled" onClick={() => navigate('/admin')}>
                     Admin Panel
                 </Button>
-
-                <Typography>Favorite Pros</Typography>
-
-                <Favorites />
-
                 <Button variant="contained" onClick={logout}>
                     Logout
                 </Button>
+                <Divider />
+
+                <Box sx={{ width: '100%' }}>
+                    <Typography my={1} variant="h4">
+                        Favorites
+                    </Typography>
+
+                    <Typography mt={2} variant="h5">
+                        Pros
+                    </Typography>
+                    <Favorites arr={pros} type={searchType.PROS} />
+
+                    <Typography mt={2} variant="h5">
+                        Teams
+                    </Typography>
+                    <Favorites arr={celebs} type={searchType.TEAMS} />
+
+                    <Typography mt={2} variant="h5">
+                        Dances
+                    </Typography>
+                    <Favorites arr={fans} type={searchType.DANCES} />
+                </Box>
             </AccountContainer>
 
             {open && (
@@ -100,25 +114,23 @@ function AccountHeader() {
     );
 }
 
-const Container = styled(Paper)`
-    width: 100%;
+const Container = styled(Box)`
+    /* width: 100%;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; */
 `;
 
 const AccountContainer = styled(Paper)`
-    width: 80%;
-    min-height: fit-content;
-    position: relative;
-    margin: 75px auto 0 auto;
-    background: white;
-    border-radius: 10px;
+    width: 90%;
+    margin: 4rem auto 0 auto;
+    //border-radius: 50%;
     display: flex;
     flex-direction: column;
     //box-shadow: 0px 0px 5px rgba(250, 250, 250, 0.1);
     align-items: center;
+    padding: 1rem;
 `;
 
 export default AccountHeader;
