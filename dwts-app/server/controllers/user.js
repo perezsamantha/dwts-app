@@ -6,6 +6,10 @@ import UUID from 'uuid-v4';
 import pool from '../api/pool.js';
 import ac from '../roles.js';
 
+import { sendEmail } from '../email/sendEmail.js';
+import { messages } from '../email/messages.js';
+import { verify } from '../email/emailTemplate.js';
+
 export const signUp = async (req, res) => {
     try {
         const {
@@ -21,6 +25,8 @@ export const signUp = async (req, res) => {
             instagram,
             user_role,
         } = req.body;
+
+        // return message if email and/or username already exists in database
 
         if (password != confirm_password)
             return res.status(400).json({ message: 'Passwords do not match.' });
@@ -40,13 +46,17 @@ export const signUp = async (req, res) => {
             ]
         );
 
-        const token = jwt.sign(
-            { username: result.rows[0].username, id: result.rows[0].id },
-            process.env.SECRET_STRING,
-            { expiresIn: '1h' }
-        );
+        // need a bypass for admins to register users ?
+        sendEmail(email, verify(result.rows[0].id));
 
-        res.status(200).json({ result: result.rows[0], token });
+        // const token = jwt.sign(
+        //     { username: result.rows[0].username, id: result.rows[0].id },
+        //     process.env.SECRET_STRING,
+        //     { expiresIn: '1h' }
+        // );
+
+        // res.status(200).json({ result: result.rows[0], token });
+        res.status(200).json({ message: messages.verify });
     } catch (error) {
         res.status(500).json({ message: error });
     }
@@ -72,16 +82,86 @@ export const signIn = async (req, res) => {
         if (!isPasswordCorrect)
             return res.status(400).json({ message: 'Incorrect password.' });
 
+        if (existing_user.rows[0].email_verified) {
+            const token = jwt.sign(
+                {
+                    username: existing_user.rows[0].username,
+                    id: existing_user.rows[0].id,
+                },
+                process.env.SECRET_STRING,
+                { expiresIn: '1h' }
+            );
+
+            res.status(200).json({ result: existing_user.rows[0], token });
+        } else {
+            res.status(200).json({ message: messages.notVerified });
+        }
+
+        // const token = jwt.sign(
+        //     {
+        //         username: existing_user.rows[0].username,
+        //         id: existing_user.rows[0].id,
+        //     },
+        //     process.env.SECRET_STRING,
+        //     { expiresIn: '1h' }
+        // );
+
+        // res.status(200).json({ result: existing_user.rows[0], token });
+    } catch (error) {
+        res.status(500).json({ message: error });
+    }
+};
+
+export const verifyEmail = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const user = await pool.query('SELECT * FROM users WHERE id = $1', [
+            id,
+        ]);
+
+        if (user.rows.length === 0)
+            return res.status(404).json({ message: 'User does not exist.' });
+
+        if (user.rows[0].email_verified === true) {
+            // email already verified
+            const token = jwt.sign(
+                {
+                    username: user.rows[0].username,
+                    id: user.rows[0].id,
+                },
+                process.env.SECRET_STRING,
+                { expiresIn: '1h' }
+            );
+
+            res.status(200).json({
+                result: user.rows[0],
+                token,
+                message: messages.alreadyVerified,
+            });
+
+            return;
+        }
+
+        const result = await pool.query(
+            'UPDATE users SET email_verified = $1 WHERE id = $2 RETURNING *',
+            [true, id]
+        );
+
         const token = jwt.sign(
             {
-                username: existing_user.rows[0].username,
-                id: existing_user.rows[0].id,
+                username: result.rows[0].username,
+                id: result.rows[0].id,
             },
             process.env.SECRET_STRING,
             { expiresIn: '1h' }
         );
 
-        res.status(200).json({ result: existing_user.rows[0], token });
+        res.status(200).json({
+            result: result.rows[0],
+            token,
+            message: messages.verified,
+        });
     } catch (error) {
         res.status(500).json({ message: error });
     }

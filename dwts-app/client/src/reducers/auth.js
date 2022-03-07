@@ -12,6 +12,13 @@ const authReducer = (state = initialState, action) => {
             );
 
             return { ...state, authData: action.data };
+        case actionType.AUTHVERIFY_SUCCESS:
+            // localStorage.setItem(
+            //     'profile',
+            //     JSON.stringify({ ...action?.data })
+            // );
+
+            return { ...state, authData: action.payload };
         case actionType.AUTHUPDATE_SUCCESS:
             localStorage.setItem(
                 'profile',

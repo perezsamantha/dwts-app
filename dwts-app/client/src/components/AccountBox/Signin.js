@@ -8,7 +8,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { signIn } from '../../actions/auth';
 
@@ -20,7 +20,7 @@ import {
     FullTextField,
 } from './common';
 import { AccountContext } from './AccountContext';
-import { IconButton, InputAdornment } from '@mui/material';
+import { Typography, IconButton, InputAdornment } from '@mui/material';
 
 const initialState = { username: '', password: '' };
 
@@ -31,6 +31,8 @@ function Signin(props) {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const message = useSelector((state) => state.auth?.authData?.message);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -97,6 +99,8 @@ function Signin(props) {
                     ),
                 }}
             />
+
+            {message && <Typography>{message}</Typography>}
 
             <MutedLink href="#">Forgot your password?</MutedLink>
             <SubmitButton type="submit" onClick={handleSubmit}>

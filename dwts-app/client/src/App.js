@@ -21,6 +21,8 @@ import { CssBaseline, Paper, useMediaQuery } from '@mui/material';
 import NotFound from './pages/NotFound';
 import Overview from './pages/Overview';
 import 'swiper/css/bundle';
+import ForgotPassword from './pages/Landing/ForgotPassword';
+import Verification from './pages/Landing/Verification';
 
 function App() {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark');
@@ -43,6 +45,11 @@ function App() {
                 ? true
                 : false
         );
+
+        if (window.location.pathname.split('/')[1] === 'verify') {
+            return;
+        }
+
         const user = JSON.parse(localStorage.getItem('profile'));
 
         if (user === null) {
@@ -180,6 +187,12 @@ function App() {
                 <Routes>
                     <Route exact path="/">
                         <Route path="" element={<Landing />} />
+                        {/* following 2 need to bypass jwt check */}
+                        <Route
+                            path="forgot-password"
+                            element={<ForgotPassword />}
+                        />
+                        <Route path="verify/:id" element={<Verification />} />
                         <Route
                             path="dashboard"
                             element={

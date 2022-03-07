@@ -3,16 +3,18 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 dotenv.config();
-
 const app = express();
-const port = process.env.PORT || 5000;
 
-app.use(cors());
+import { PORT, CLIENT_ORIGIN } from './config.js';
+
+app.use(
+    cors({
+        origin: CLIENT_ORIGIN,
+    })
+);
 app.use(express.json());
 
-
 //app.use('/uploads', express.static('uploads'));
-
 import usersRouter from './routes/users.js';
 //import fansRouter from './routes/fans.js';
 import teamsRouter from './routes/teams.js';
@@ -37,7 +39,6 @@ app.use('/episodes', episodesRouter);
 app.use('/scores', scoresRouter);
 app.use('/dancers', dancersRouter);
 
-app.listen(port, () => {
-    console.log(`Server is running on port: ${port}`);
+app.listen(PORT, () => {
+    console.log(`Server is running on port: ${PORT}`);
 });
-

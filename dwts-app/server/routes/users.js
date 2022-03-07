@@ -1,7 +1,17 @@
-
 import express from 'express';
 
-import { grantAccess, deleteUser, fetchUsers, findUserById, searchUsers, setUserPic, signIn, signUp, updateUser } from '../controllers/user.js';
+import {
+    grantAccess,
+    deleteUser,
+    fetchUsers,
+    findUserById,
+    searchUsers,
+    setUserPic,
+    signIn,
+    signUp,
+    updateUser,
+    verifyEmail,
+} from '../controllers/user.js';
 
 import uploadCoverPicture from '../middleware/uploadCoverPicture.js';
 
@@ -17,8 +27,8 @@ router.post('/search', searchUsers);
 router.patch('/update/:id', updateUser);
 router.patch('/setPic/:id', uploadCoverPicture, setUserPic);
 router.delete('/delete/:id', deleteUser);
+router.get('/verify/:id', verifyEmail);
 
 //router.get('/:id', auth, grantAccess("readAny", "profile"), findFanById);
-
 
 export default router;

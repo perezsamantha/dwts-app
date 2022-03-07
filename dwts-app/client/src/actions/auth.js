@@ -8,6 +8,10 @@ export const signIn = (formData, navigate) => async (dispatch) => {
 
         dispatch({ type: actionType.AUTH, data });
 
+        if (data.message) {
+            return;
+        }
+
         navigate('/dashboard');
     } catch (error) {
         console.log(error);
@@ -20,9 +24,29 @@ export const signUp = (formData, navigate) => async (dispatch) => {
 
         dispatch({ type: actionType.AUTH, data });
 
-        navigate('/dashboard');
+        //navigate('/dashboard');
     } catch (error) {
         console.log(error);
+    }
+};
+
+export const verifyUser = (id, navigate) => async (dispatch) => {
+    dispatch({ type: actionType.AUTHVERIFY_REQUEST });
+
+    try {
+        const { data } = await api.verifyUser(id);
+
+        dispatch({ type: actionType.AUTHVERIFY_SUCCESS, payload: data });
+
+        setTimeout(function () {
+            navigate('/dashboard');
+        }, 5000); // 5 seconds
+    } catch (error) {
+        dispatch({
+            type: actionType.AUTHVERIFY_FAILURE,
+            payload: error,
+            error: true,
+        });
     }
 };
 
