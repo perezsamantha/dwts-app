@@ -6,17 +6,13 @@ import { searchTeams } from '../../actions/teams';
 import { Typography } from '@mui/material';
 import TeamsPreview from '../Previews/TeamsPreview';
 
-import Carousel from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
-
-import responsive from '../shared/responsive';
-
 import { createLoadingSelector } from '../../api/selectors';
 
 import * as actionType from '../../constants/actionTypes';
 import { filterTeams } from './Filters/filtered';
 import { ResultsContainer } from '../shared/muiStyles';
 import Progress from '../shared/Progress';
+import TeamsSlider from './TeamsSlider';
 
 function Teams(props) {
     const { search, filters } = props;
@@ -43,6 +39,17 @@ function Teams(props) {
 
     if (!loading) {
         filteredTeams = filterTeams(teams, filters);
+
+        // sorts by placement first, should this be after ??
+        filteredTeams.sort((a, b) => {
+            if (a.placement < b.placement) {
+                return -1;
+            } else if (a.placement > b.placement) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
 
         const categorizeBySeason = filteredTeams.reduce((acc, item) => {
             if (!acc[item.season_id]) {
@@ -72,7 +79,8 @@ function Teams(props) {
                     <Typography variant="h5" my={1}>
                         Season {item}
                     </Typography>
-                    <Carousel responsive={responsive} partialVisible={true}>
+                    <TeamsSlider filteredTeams={filteredTeams} item={item} />
+                    {/* <Carousel responsive={responsive} partialVisible={true}>
                         {filteredTeams
                             .filter(
                                 (team) =>
@@ -92,7 +100,7 @@ function Teams(props) {
                                     <TeamsPreview key={index} team={team} />
                                 </Link>
                             ))}
-                    </Carousel>
+                    </Carousel> */}
                 </ContentContainer>
             ))}
         </ResultsContainer>

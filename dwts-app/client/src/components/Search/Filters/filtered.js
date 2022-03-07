@@ -73,7 +73,7 @@ export const filterDances = (dances, filters) => {
                 return 0;
         }
     });
-    console.log(filtered);
+    //console.log(filtered);
     return filtered;
 };
 

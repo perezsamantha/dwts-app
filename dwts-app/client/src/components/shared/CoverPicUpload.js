@@ -5,16 +5,15 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import { Slider } from '@mui/material';
 
 function CoverPicUpload(props) {
-    //const [fileData, setFileData] = useState(props.fileData);
     const [scaleValue, setScaleValue] = useState(10);
+    const { fileData, setFileData, setEditor } = props;
 
     useEffect(() => {
         setScaleValue(1);
-        props.setFileData(null);
-    }, [props]);
+    }, []);
 
     const handleFile = (e) => {
-        props.setFileData(e.target.files[0]);
+        setFileData(e.target.files[0]);
     };
 
     const handleScale = (e, newValue) => {
@@ -22,10 +21,8 @@ function CoverPicUpload(props) {
         setScaleValue(newValue);
     };
 
-    //const [editor, setEditor] = useState(props.editor);
-
     const setEditorRef = (editor) => {
-        props.setEditor(editor);
+        setEditor(editor);
     };
 
     return (
@@ -40,10 +37,10 @@ function CoverPicUpload(props) {
                 <AddAPhotoIcon />
             </Label>
             <FileInput>
-                {props.fileData != null && (
+                {fileData != null && (
                     <UploadContainer>
                         <AvatarEditor
-                            image={props.fileData}
+                            image={fileData}
                             width={200}
                             height={200}
                             borderRadius={100}

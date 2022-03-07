@@ -109,9 +109,9 @@ function Table(props) {
             case tableType.SEASON:
                 return state.loading.SEASONSEARCH;
             case tableType.EPISODE:
-                return state.loading.EPISODEITEMS;
+                return state.loading.EPISODESEARCH;
             case tableType.TEAM:
-                return state.loading.TEAMITEMS;
+                return state.loading.TEAMSEARCH;
             case tableType.DANCE:
                 return state.loading.DANCESEARCH;
             case tableType.JUDGE:

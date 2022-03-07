@@ -1,8 +1,7 @@
-import { Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import React from 'react';
 import DataGetter from '../shared/DataGetter.js';
 import { convertPlacement } from '../shared/functions.js';
-import { Preview, PreviewPhoto } from '../shared/regStyles.js';
 
 function TeamsPreview(props) {
     const team = props.team;
@@ -13,17 +12,19 @@ function TeamsPreview(props) {
     // only show season if organized by season?
 
     return (
-        <Preview>
-            <PreviewPhoto
+        <Stack>
+            <Box
+                component="img"
+                sx={{ height: '100%', width: '100%', borderRadius: 2 }}
                 src={team.cover_pic ? team.cover_pic : '/defaultPic.jpeg'}
             />
-            <Typography variant="h6">
+            <Typography variant="subtitle1" noWrap>
                 <DataGetter id={team.id} type={'Team'} />
             </Typography>
-            <Typography variant="caption">
+            <Typography variant="caption" noWrap>
                 Season {team.season_id} &#8226; {placement} Place
             </Typography>
-        </Preview>
+        </Stack>
     );
 }
 

@@ -1,30 +1,15 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { Navigation, Pagination } from 'swiper';
+import { Navigation } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Box } from '@mui/material';
-import ProPreview from './ProPreview';
-import * as searchType from '../../constants/searchTypes';
-import TeamPreview from './TeamPreview';
-import DancePreview from './DancePreview';
+import { Link } from 'react-router-dom';
+import TeamsPreview from '../Previews/TeamsPreview';
 
-function Favorites(props) {
-    const { arr, type } = props;
-
-    const component = (item) => {
-        switch (type) {
-            case searchType.PROS:
-                return <ProPreview pro={item} />;
-            case searchType.TEAMS:
-                return <TeamPreview team={item} />;
-            case searchType.DANCES:
-                return <DancePreview dance={item} />;
-            default:
-                return <></>;
-        }
-    };
+function TeamsSlider(props) {
+    const { filteredTeams, item } = props;
 
     return (
         // <Box my={2}>
@@ -40,7 +25,7 @@ function Favorites(props) {
                     slidesPerView: 2.5,
                     spaceBetween: 10,
                 },
-                350: {
+                450: {
                     slidesPerView: 3,
                     spaceBetween: 10,
                 },
@@ -61,16 +46,30 @@ function Favorites(props) {
                     spaceBetween: 15,
                 },
             }}
-            // modules={[Pagination]}
             modules={[Navigation]}
             className="mySwiper"
         >
-            {arr.map((item, index) => (
-                <SwiperSlide key={index}>{component(item)}</SwiperSlide>
-            ))}
+            {filteredTeams
+                .filter((team) => Number(team.season_id) === Number(item))
+                .map((team, index) => (
+                    <SwiperSlide key={index}>
+                        <Link
+                            key={index}
+                            to={{
+                                pathname: `/teams/${team.id}`,
+                            }}
+                            style={{
+                                textDecoration: 'inherit',
+                                color: 'inherit',
+                            }}
+                        >
+                            <TeamsPreview key={index} team={team} />
+                        </Link>
+                    </SwiperSlide>
+                ))}
         </Swiper>
         // </Box>
     );
 }
 
-export default Favorites;
+export default TeamsSlider;
