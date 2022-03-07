@@ -14,3 +14,5 @@ CREATE TABLE IF NOT EXISTS celebs(
     PRIMARY KEY(id),
     UNIQUE (first_name, last_name)
 );
+
+-- profession / known for ??
