@@ -18,6 +18,7 @@ import {
     BsArrowRight,
 } from 'react-icons/bs';
 import { MdOutlineQueueMusic } from 'react-icons/md';
+import { CardContainer } from '../sharedStyles';
 
 function DanceWrapper() {
     const [score, setScore] = useState(0);
@@ -37,9 +38,9 @@ function DanceWrapper() {
     };
 
     return (
-        <Container elevation={3}>
+        <CardContainer elevation={3}>
             <Typography variant="h5">Today's Daily Dance</Typography>
-            <Divider sx={{ marginTop: 1, marginBottom: 1, width: '100%' }} />
+            <Divider />
 
             <Stack direction="row" spacing={1} alignItems="center">
                 <BsStars />
@@ -113,7 +114,7 @@ function DanceWrapper() {
                     </Button>
                 </>
             )}
-        </Container>
+        </CardContainer>
     );
 }
 
@@ -124,12 +125,6 @@ const StyledRating = styled(Rating)(({ theme }) => ({
     '& .MuiRating-iconHover': {
         color: theme.palette.primary.main,
     },
-}));
-
-const Container = styled(Paper)(({ theme }) => ({
-    //width: '100%',
-    padding: 15,
-    borderRadius: 15,
 }));
 
 export default DanceWrapper;

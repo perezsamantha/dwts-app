@@ -112,6 +112,14 @@ function App() {
                     },
                 },
             },
+            MuiPaper: {
+                styleOverrides: {
+                    root: {
+                        //padding: 15,
+                        borderRadius: 15,
+                    },
+                },
+            },
             MuiTextField: {
                 styleOverrides: {
                     root: {
@@ -140,12 +148,19 @@ function App() {
                 defaultProps: {
                     disableRipple: true,
                 },
+                styleOverrides: {
+                    root: {
+                        borderRadius: 20,
+                    },
+                },
             },
             MuiDivider: {
                 styleOverrides: {
                     root: {
-                        margin: 'auto',
-                        width: '95%',
+                        //margin: 'auto',
+                        //width: '95%',
+                        marginTop: 10,
+                        marginBottom: 10,
                     },
                 },
             },

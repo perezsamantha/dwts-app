@@ -4,6 +4,7 @@ import BottomNavBar from '../components/BottomNavBar/BottomNavBar';
 import Birthdays from '../components/Dashboard/Birthdays/Birthdays';
 import DailyDances from '../components/Dashboard/DailyDances/DailyDances';
 import Introduction from '../components/Dashboard/Intro/Introduction';
+import Throwbacks from '../components/Dashboard/Throwbacks/Throwbacks';
 import { MainContainer, Page } from '../components/shared/muiStyles';
 
 function Dashboard(props) {
@@ -18,13 +19,15 @@ function Dashboard(props) {
                     checked={toggleDark}
                     onChange={() => handleDarkMode(!toggleDark)}
                 />
-                <Typography variant="h4">Home Page</Typography>
+                <Typography variant="h3">Welcome</Typography>
 
                 <Introduction />
 
                 <Birthdays />
 
                 <DailyDances />
+
+                <Throwbacks />
             </MainContainer>
             <BottomNavBar />
         </Page>
