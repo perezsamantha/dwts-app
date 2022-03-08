@@ -5,16 +5,11 @@ import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material';
 import styled from '@emotion/styled';
 
 import { FiSearch, FiBarChart2 } from 'react-icons/fi';
-
 import { AiOutlineUser } from 'react-icons/ai';
-
 import { IoMdNotificationsOutline } from 'react-icons/io';
-
 import { BsStars } from 'react-icons/bs';
 
 function BottomNavBar() {
-    //const pathname = window.location.pathname;
-    //const [value, setValue] = useState(pathname.split("/")[1]);
     const pathname = localStorage.getItem('parentPath');
     const [value, setValue] = useState(pathname?.split('/')[1]);
 
@@ -38,21 +33,18 @@ function BottomNavBar() {
                 <BottomNavigationAction
                     component={Link}
                     to="/dashboard"
-                    //label="Home"
                     value="dashboard"
                     icon={<CustomHomeIcon />}
                 />
                 <BottomNavigationAction
                     component={Link}
                     to="/overview"
-                    //label="Overview"
                     value="overview"
                     icon={<CustomOverviewIcon />}
                 />
                 <BottomNavigationAction
                     component={Link}
                     to="/search/dances"
-                    //label="Search"
                     value="search"
                     icon={
                         <CustomSearch>
@@ -63,14 +55,12 @@ function BottomNavBar() {
                 <BottomNavigationAction
                     component={Link}
                     to="/notifications"
-                    //label="Search"
                     value="notifications"
                     icon={<CustonNotificationsIcon />}
                 />
                 <BottomNavigationAction
                     component={Link}
                     to="/account"
-                    //label="Account"
                     value="account"
                     icon={<CustomAccountIcon />}
                 />
