@@ -168,12 +168,37 @@ function AdminDashboard(props) {
                 >
                     <ListItemText>Dancers</ListItemText>
                 </ListItemButton>
+
                 <ListItemButton
                     selected={selectedIndex === 10}
                     onClick={() =>
                         handleComponent(
-                            <Table key={10} type={tableType.USER} />,
+                            <Table key={10} type={tableType.TOUR} />,
                             10
+                        )
+                    }
+                >
+                    <ListItemText>Tours</ListItemText>
+                </ListItemButton>
+
+                <ListItemButton
+                    selected={selectedIndex === 11}
+                    onClick={() =>
+                        handleComponent(
+                            <Table key={11} type={tableType.TOURCAST} />,
+                            11
+                        )
+                    }
+                >
+                    <ListItemText>Tour Cast</ListItemText>
+                </ListItemButton>
+
+                <ListItemButton
+                    selected={selectedIndex === 12}
+                    onClick={() =>
+                        handleComponent(
+                            <Table key={12} type={tableType.USER} />,
+                            12
                         )
                     }
                 >

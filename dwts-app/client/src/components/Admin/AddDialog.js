@@ -22,6 +22,7 @@ import { addEpisode } from '../../actions/episodes';
 import { addDance } from '../../actions/dances';
 import { addScore } from '../../actions/scores';
 import { addDancer } from '../../actions/dancers';
+import { addTour, addTourCast } from '../../actions/tours';
 import { addUser } from '../../actions/fans';
 
 function AddDialog(props) {
@@ -104,6 +105,24 @@ function AddDialog(props) {
                     is_background: false,
                     extra: null,
                 };
+            case tableType.TOUR:
+                return {
+                    cover_pic: null,
+                    name: null,
+                    season_id: null,
+                    first_show: new Date().toISOString(),
+                    last_show: new Date().toISOString(),
+                    num_shows: null,
+                    extra: null,
+                };
+            case tableType.TOURCAST:
+                return {
+                    tour_id: null,
+                    pro_id: null,
+                    celeb_id: null,
+                    is_swing: false,
+                    extra: null,
+                };
             case tableType.USER:
                 return {
                     cover_pic: null,
@@ -171,6 +190,12 @@ function AddDialog(props) {
             case tableType.DANCER:
                 dispatch(addDancer(formData));
                 break;
+            case tableType.TOUR:
+                dispatch(addTour(formData));
+                break;
+            case tableType.TOURCAST:
+                dispatch(addTourCast(formData));
+                break;
             case tableType.USER:
                 dispatch(addUser(formData));
                 break;
@@ -188,7 +213,7 @@ function AddDialog(props) {
     return (
         <div>
             <LocalizationProvider dateAdapter={DateAdapter}>
-                <Button variant="contained" disableRipple onClick={handleOpen}>
+                <Button variant="contained" onClick={handleOpen}>
                     Add {table}
                 </Button>
                 <Dialog
@@ -201,6 +226,7 @@ function AddDialog(props) {
                     <DialogContent>
                         <DialogFields
                             formData={formData}
+                            setFormData={setFormData}
                             table={table}
                             handleChange={handleChange}
                             handleBirthday={handleBirthday}

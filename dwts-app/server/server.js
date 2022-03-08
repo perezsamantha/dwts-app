@@ -26,6 +26,8 @@ import judgesRouter from './routes/judges.js';
 import episodesRouter from './routes/episodes.js';
 import scoresRouter from './routes/scores.js';
 import dancersRouter from './routes/dancers.js';
+import toursRouter from './routes/tours.js';
+import tourCastRouter from './routes/tourCast.js';
 
 app.use('/users', usersRouter);
 //app.use('/fans', fansRouter);
@@ -38,6 +40,8 @@ app.use('/judges', judgesRouter);
 app.use('/episodes', episodesRouter);
 app.use('/scores', scoresRouter);
 app.use('/dancers', dancersRouter);
+app.use('/tours', toursRouter);
+app.use('/tour_cast', tourCastRouter);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`);

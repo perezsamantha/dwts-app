@@ -110,3 +110,18 @@ export const updateDancer = (id, dancer) =>
 export const findDancerById = (id) => API.get(`/dancers/${id}`);
 export const fetchDancers = () => API.get('/dancers/');
 export const deleteDancer = (id) => API.delete(`/dancers/delete/${id}`);
+
+export const addTour = (tour) => API.post('/tours/add', tour);
+export const updateTour = (id, tour) => API.patch(`/tours/update/${id}`, tour);
+export const setTourPic = (id, image) =>
+    API.patch(`/tours/setPic/${id}`, image);
+export const findTourById = (id) => API.get(`/tours/${id}`);
+export const fetchTours = () => API.get('/tours/');
+export const deleteTour = (id) => API.delete(`/tours/delete/${id}`);
+
+export const addTourCast = (cast) => API.post('/tour_cast/add', cast);
+export const updateTourCast = (id, cast) =>
+    API.patch(`/tour_cast/update/${id}`, cast);
+export const findTourCastById = (id) => API.get(`/tour_cast/${id}`);
+export const fetchTourCast = () => API.get('/tour_cast/');
+export const deleteTourCast = (id) => API.delete(`/tour_cast/delete/${id}`);

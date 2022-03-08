@@ -41,6 +41,14 @@ import {
     fetchDancers,
     findDancerById,
 } from '../../actions/dancers';
+import {
+    deleteTour,
+    deleteTourCast,
+    fetchTours,
+    fetchTourCast,
+    findTourById,
+    findTourCastById,
+} from '../../actions/tours';
 import { deleteUser, fetchUsers, findUserById } from '../../actions/fans';
 import DataGetter from '../shared/DataGetter';
 
@@ -68,6 +76,10 @@ function Table(props) {
                 return state.scores.scores;
             case tableType.DANCER:
                 return state.dancers.dancers;
+            case tableType.TOUR:
+                return state.tours.tours;
+            case tableType.TOURCAST:
+                return state.tours.tourCast;
             case tableType.USER:
                 return state.users.users;
             default:
@@ -94,6 +106,10 @@ function Table(props) {
                 return state.scores.score;
             case tableType.DANCER:
                 return state.dancers.dancer;
+            case tableType.TOUR:
+                return state.tours.tour;
+            case tableType.TOURCAST:
+                return state.tours.castMember;
             case tableType.USER:
                 return state.users.user;
             default:
@@ -120,6 +136,10 @@ function Table(props) {
                 return state.loading.SCORESEARCH;
             case tableType.DANCER:
                 return state.loading.DANCERSEARCH;
+            case tableType.TOUR:
+                return state.loading.TOURSEARCH;
+            case tableType.TOURCAST:
+                return state.loading.TOURCASTSEARCH;
             case tableType.USER:
                 return state.loading.USERSEARCH;
             default:
@@ -155,6 +175,12 @@ function Table(props) {
             case tableType.DANCER:
                 dispatch(fetchDancers());
                 break;
+            case tableType.TOUR:
+                dispatch(fetchTours());
+                break;
+            case tableType.TOURCAST:
+                dispatch(fetchTourCast());
+                break;
             case tableType.USER:
                 dispatch(fetchUsers());
                 break;
@@ -172,7 +198,7 @@ function Table(props) {
         setOpen({ edit: false, delete: false, id: null });
     };
 
-    const handleEdit = async (id) => {
+    const handleEdit = (id) => {
         switch (table) {
             case tableType.CELEB:
                 dispatch(findCelebById(id));
@@ -200,6 +226,12 @@ function Table(props) {
                 break;
             case tableType.DANCER:
                 dispatch(findDancerById(id));
+                break;
+            case tableType.TOUR:
+                dispatch(findTourById(id));
+                break;
+            case tableType.TOURCAST:
+                dispatch(findTourCastById(id));
                 break;
             case tableType.USER:
                 dispatch(findUserById(id));
@@ -238,6 +270,12 @@ function Table(props) {
             case tableType.DANCER:
                 dispatch(findDancerById(id));
                 break;
+            case tableType.TOUR:
+                dispatch(findTourById(id));
+                break;
+            case tableType.TOURCAST:
+                dispatch(findTourCastById(id));
+                break;
             case tableType.USER:
                 dispatch(findUserById(id));
                 break;
@@ -274,6 +312,12 @@ function Table(props) {
                 break;
             case tableType.DANCER:
                 dispatch(deleteDancer(open.id));
+                break;
+            case tableType.TOUR:
+                dispatch(deleteTour(open.id));
+                break;
+            case tableType.TOURCAST:
+                dispatch(deleteTourCast(open.id));
                 break;
             case tableType.USER:
                 dispatch(deleteUser(open.id));
@@ -652,8 +696,115 @@ function Table(props) {
                     field: 'is_background',
                     headerName: 'Background?',
                     width: 100,
+                    renderCell: (params) => (params.value ? 'Yes' : 'No'),
                 },
                 { field: 'extra', headerName: 'Extra', width: 150 },
+                {
+                    field: 'actions',
+                    //headerName: 'Actions',
+                    type: 'actions',
+                    width: 50,
+                    getActions: (params) => [
+                        <GridActionsCellItem
+                            icon={<EditIcon />}
+                            label="Edit"
+                            onClick={() => handleEdit(params.id)}
+                            showInMenu
+                        />,
+                        <GridActionsCellItem
+                            icon={<DeleteIcon />}
+                            label="Delete"
+                            onClick={() => handleDelete(params.id)}
+                            showInMenu
+                        />,
+                    ],
+                },
+            ];
+            break;
+
+        case tableType.TOUR:
+            columns = [
+                { field: 'id', headerName: 'ID', width: 40 },
+                {
+                    field: 'cover_pic',
+                    headerName: 'Pic',
+                    width: 60,
+                    renderCell: (params) => <Avatar src={params.value} />,
+                },
+                { field: 'name', headerName: 'Name', width: 200 },
+                { field: 'season_id', headerName: 'Season', width: 100 },
+                {
+                    field: 'first_show',
+                    headerName: 'First Show',
+                    width: 100,
+                    valueGetter: (params) => convertDate(params.value),
+                },
+                {
+                    field: 'last_show',
+                    headerName: 'Last Show',
+                    width: 100,
+                    valueGetter: (params) => convertDate(params.value),
+                },
+                { field: 'num_shows', headerName: '# Shows', width: 90 },
+                { field: 'extra', headerName: 'Extra', width: 100 },
+                {
+                    field: 'actions',
+                    //headerName: 'Actions',
+                    type: 'actions',
+                    width: 50,
+                    getActions: (params) => [
+                        <GridActionsCellItem
+                            icon={<EditIcon />}
+                            label="Edit"
+                            onClick={() => handleEdit(params.id)}
+                            showInMenu
+                        />,
+                        <GridActionsCellItem
+                            icon={<DeleteIcon />}
+                            label="Delete"
+                            onClick={() => handleDelete(params.id)}
+                            showInMenu
+                        />,
+                    ],
+                },
+            ];
+            break;
+
+        case tableType.TOURCAST:
+            columns = [
+                { field: 'id', headerName: 'ID', width: 40 },
+                {
+                    field: 'tour_id',
+                    headerName: 'Tour',
+                    width: 250,
+                    renderCell: (params) => (
+                        <DataGetter id={params.value} type={tableType.TOUR} />
+                    ),
+                },
+                { field: 'season_id', headerName: 'Season', width: 100 },
+                {
+                    field: 'pro_id',
+                    headerName: 'Pro',
+                    width: 150,
+                    renderCell: (params) => (
+                        <DataGetter id={params.value} type={tableType.PRO} />
+                    ),
+                },
+                {
+                    field: 'celeb_id',
+                    headerName: 'Celeb',
+                    width: 150,
+                    renderCell: (params) => (
+                        <DataGetter id={params.value} type={tableType.CELEB} />
+                    ),
+                },
+                {
+                    field: 'is_swing',
+                    headerName: 'Swing?',
+                    width: 75,
+                    renderCell: (params) => (params.value ? 'Yes' : 'No'),
+                },
+                { field: 'extra', headerName: 'Extra', width: 100 },
                 {
                     field: 'actions',
                     //headerName: 'Actions',

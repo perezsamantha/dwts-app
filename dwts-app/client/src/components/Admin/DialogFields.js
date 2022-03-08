@@ -22,11 +22,14 @@ import DataGetter from '../shared/DataGetter';
 import { convertHeight } from '../shared/functions';
 
 function DialogFields(props) {
-    const formData = props.formData;
-    const table = props.table;
-    const handleChange = props.handleChange;
-    const handleBirthday = props.handleBirthday;
-    const handleDate = props.handleDate;
+    const {
+        formData,
+        setFormData,
+        table,
+        handleChange,
+        handleBirthday,
+        handleDate,
+    } = props;
     const celebs = useSelector((state) => state.celebs.celebs);
     const pros = useSelector((state) => state.pros.pros);
     const seasons = useSelector((state) => state.seasons.seasons);
@@ -34,6 +37,7 @@ function DialogFields(props) {
     const judges = useSelector((state) => state.judges.judges);
     const dances = useSelector((state) => state.dances.dances);
     const teams = useSelector((state) => state.teams.teams);
+    const tours = useSelector((state) => state.tours.tours);
 
     useEffect(() => {}, []);
 
@@ -44,6 +48,7 @@ function DialogFields(props) {
                 tableType.PRO,
                 tableType.SEASON,
                 tableType.TEAM,
+                tableType.TOUR,
                 tableType.USER,
                 tableType.AUTH
             ).includes(table) &&
@@ -105,9 +110,20 @@ function DialogFields(props) {
                 <TextField
                     margin="dense"
                     name="id"
-                    label="ID"
+                    label="Number"
                     type="text"
                     value={formData.id || ''}
+                    onChange={handleChange}
+                />
+            )}
+
+            {Array.of(tableType.TOUR).includes(table) && (
+                <TextField
+                    margin="dense"
+                    name="name"
+                    label="Name"
+                    type="text"
+                    value={formData.name || ''}
                     onChange={handleChange}
                 />
             )}
@@ -158,7 +174,34 @@ function DialogFields(props) {
                 </TextField>
             )}
 
-            {Array.of(tableType.TEAM, tableType.DANCER).includes(table) && (
+            {Array.of(tableType.TOURCAST).includes(table) && (
+                <TextField
+                    margin="dense"
+                    name="tour_id"
+                    label="Tour"
+                    type="text"
+                    select
+                    value={formData.tour_id || ''}
+                    onChange={handleChange}
+                >
+                    {tours.map((tour, index) => {
+                        return (
+                            <MenuItem key={index} value={tour.id}>
+                                <DataGetter
+                                    id={tour.id}
+                                    type={tableType.TOUR}
+                                />
+                            </MenuItem>
+                        );
+                    })}
+                </TextField>
+            )}
+
+            {Array.of(
+                tableType.TEAM,
+                tableType.DANCER,
+                tableType.TOURCAST
+            ).includes(table) && (
                 <TextField
                     margin="dense"
                     name="celeb_id"
@@ -181,7 +224,11 @@ function DialogFields(props) {
                 </TextField>
             )}
 
-            {Array.of(tableType.TEAM, tableType.DANCER).includes(table) && (
+            {Array.of(
+                tableType.TEAM,
+                tableType.DANCER,
+                tableType.TOURCAST
+            ).includes(table) && (
                 <TextField
                     margin="dense"
                     name="pro_id"
@@ -221,7 +268,11 @@ function DialogFields(props) {
                 </TextField>
             )}
 
-            {Array.of(tableType.TEAM, tableType.EPISODE).includes(table) && (
+            {Array.of(
+                tableType.TEAM,
+                tableType.EPISODE,
+                tableType.TOUR
+            ).includes(table) && (
                 <TextField
                     margin="dense"
                     name="season_id"
@@ -409,12 +460,69 @@ function DialogFields(props) {
                 </TextField>
             )}
 
+            {Array.of(tableType.TOUR).includes(table) && (
+                <MobileDatePicker
+                    margin="dense"
+                    label="First Show"
+                    inputFormat="MM/dd/yyyy"
+                    value={formData.first_show || ''}
+                    onChange={(date) =>
+                        setFormData({ ...formData, first_show: date })
+                    }
+                    renderInput={(params) => <TextField {...params} />}
+                />
+            )}
+
+            {Array.of(tableType.TOUR).includes(table) && (
+                <MobileDatePicker
+                    margin="dense"
+                    label="Last Show"
+                    inputFormat="MM/dd/yyyy"
+                    value={formData.last_show || ''}
+                    onChange={(date) =>
+                        setFormData({ ...formData, last_show: date })
+                    }
+                    renderInput={(params) => <TextField {...params} />}
+                />
+            )}
+
+            {Array.of(tableType.TOUR).includes(table) && (
+                <TextField
+                    margin="dense"
+                    name="num_shows"
+                    label="# Shows"
+                    type="text"
+                    value={formData.num_shows || ''}
+                    onChange={handleChange}
+                />
+            )}
+
+            {Array.of(tableType.TOURCAST).includes(table) && (
+                <TextField
+                    margin="dense"
+                    name="is_swing"
+                    select
+                    label="Swing Dancer?"
+                    value={formData.is_swing}
+                    onChange={handleChange}
+                >
+                    <MenuItem key={1} value={true}>
+                        Yes
+                    </MenuItem>
+                    <MenuItem key={2} value={false}>
+                        No
+                    </MenuItem>
+                </TextField>
+            )}
+
             {/* EXTRA */}
             {Array.of(
                 tableType.SEASON,
                 tableType.TEAM,
                 tableType.DANCE,
-                tableType.DANCER
+                tableType.DANCER,
+                tableType.TOUR,
+                tableType.TOURCAST
             ).includes(table) && (
                 <TextField
                     margin="dense"

@@ -9,6 +9,7 @@ function DataGetter(props) {
     const episodes = useSelector((state) => state.episodes.episodes);
     const judges = useSelector((state) => state.judges.judges);
     const dances = useSelector((state) => state.dances.dances);
+    const tours = useSelector((state) => state.tours.tours);
     const type = props.type;
     const id = props.id;
 
@@ -109,6 +110,15 @@ function DataGetter(props) {
             );
             string = danceName + ' | ' + episodeNumber;
             break;
+
+        case tableType.TOUR:
+            tours.find((team) =>
+                team.id === id
+                    ? (string = `${team.name} (Season ${team.season_id})`)
+                    : ''
+            );
+            break;
+
         default:
     }
 

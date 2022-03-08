@@ -15,6 +15,7 @@ import dances from './dances';
 import judges from './judges';
 import scores from './scores';
 import dancers from './dancers';
+import tours from './tours';
 import users from './users';
 
 export const reducers = combineReducers({
@@ -30,5 +31,6 @@ export const reducers = combineReducers({
     judges,
     scores,
     dancers,
+    tours,
     users,
 });

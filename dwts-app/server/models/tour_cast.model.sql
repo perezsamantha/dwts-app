@@ -1,20 +1,17 @@
 
-CREATE TABLE IF NOT EXISTS dancers(
+CREATE TABLE IF NOT EXISTS tour_cast(
     id SERIAL NOT NULL,
-    dance_id INT NOT NULL,
-    team_id INT,
+    tour_id INT NOT NULL,
     pro_id INT,
     celeb_id INT,
+    is_swing BOOLEAN,
     extra VARCHAR(100),
-    is_background BOOLEAN,
     PRIMARY KEY(id),
-    CONSTRAINT fk_dance
-        FOREIGN KEY(dance_id)
-            REFERENCES dances(id)
-            ON DELETE CASCADE,
-    CONSTRAINT fk_team
-        FOREIGN KEY(team_id)
-            REFERENCES teams(id)
+    UNIQUE(tour_id, pro_id),
+    UNIQUE(tour_id, celeb_id),
+    CONSTRAINT fk_tour
+        FOREIGN KEY(tour_id)
+            REFERENCES tours(id)
             ON DELETE CASCADE,
     CONSTRAINT fk_pro
         FOREIGN KEY(pro_id)
@@ -26,4 +23,4 @@ CREATE TABLE IF NOT EXISTS dancers(
             ON DELETE CASCADE
 );
 
--- tour ???
+-- 

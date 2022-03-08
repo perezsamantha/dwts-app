@@ -7,6 +7,7 @@ import { fetchDancers } from './dancers';
 import { fetchScores } from './scores';
 import { fetchEpisodes } from './episodes';
 import { fetchJudges } from './judges';
+import { fetchTours } from './tours';
 
 // export const getDataForTeams = (input) => (dispatch) => {
 //     dispatch(searchTeams(input)).then(() =>
@@ -51,6 +52,16 @@ export const getScoreData = () => async (dispatch) => {
 // seasons is fetched twice
 export const getDancerData = () => async (dispatch) => {
     Promise.resolve(dispatch(fetchTeams())).then(() => dispatch(fetchDances()));
+};
+
+export const getTourData = () => async (dispatch) => {
+    Promise.resolve(dispatch(fetchSeasons()));
+};
+
+export const getTourCastData = () => async (dispatch) => {
+    Promise.resolve(dispatch(fetchTours()))
+        .then(() => dispatch(fetchPros()))
+        .then(() => dispatch(fetchCelebs()));
 };
 
 export const getUserData = () => async (dispatch) => {

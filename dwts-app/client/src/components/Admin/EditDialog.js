@@ -21,6 +21,7 @@ import { updateEpisode } from '../../actions/episodes';
 import { updateDance } from '../../actions/dances';
 import { updateScore } from '../../actions/scores';
 import { updateDancer } from '../../actions/dancers';
+import { updateTour, updateTourCast, setTourPic } from '../../actions/tours';
 import { setUserPic, updateUser } from '../../actions/fans';
 import Progress from '../shared/Progress';
 
@@ -53,6 +54,10 @@ function EditDialog(props) {
                 return state.loading.SCOREFIND;
             case tableType.DANCER:
                 return state.loading.DANCERFIND;
+            case tableType.TOUR:
+                return state.loading.TOURFIND;
+            case tableType.TOURCAST:
+                return state.loading.TOURCASTFIND;
             case tableType.USER:
                 return state.loading.USERFIND;
             default:
@@ -104,6 +109,9 @@ function EditDialog(props) {
                     case tableType.TEAM:
                         dispatch(setTeamPic(id, data));
                         break;
+                    case tableType.TOUR:
+                        dispatch(setTourPic(id, data));
+                        break;
                     case tableType.USER:
                         dispatch(setUserPic(id, data));
                         break;
@@ -142,6 +150,12 @@ function EditDialog(props) {
             case tableType.DANCER:
                 dispatch(updateDancer(id, formData));
                 break;
+            case tableType.TOUR:
+                dispatch(updateTour(id, formData));
+                break;
+            case tableType.TOURCAST:
+                dispatch(updateTourCast(id, formData));
+                break;
             case tableType.USER:
                 dispatch(updateUser(id, formData));
                 break;
@@ -167,6 +181,7 @@ function EditDialog(props) {
                         <DialogContent>
                             <DialogFields
                                 formData={formData}
+                                setFormData={setFormData}
                                 table={table}
                                 handleChange={handleChange}
                                 handleBirthday={handleBirthday}
