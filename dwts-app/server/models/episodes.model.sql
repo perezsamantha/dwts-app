@@ -15,5 +15,6 @@ CREATE TABLE IF NOT EXISTS episodes(
 
 -- extra?
 -- viewership?
--- !!! theme ?? !!! instead of in dances model? only if every dance
+-- !!! theme ?? !!! instead of in dances model? only if every dance 
 -- (including bumpers) would fall under that same umbrella
+-- yes should do theme here so 'on this day' works better

@@ -12,6 +12,7 @@ import EditAccount from './EditAccount';
 import Favorites from '../Favorites/Favorites';
 import { celebs, fans, pros } from '../Dashboard/Birthdays/sampleData';
 import * as searchType from '../../constants/searchTypes';
+import { BsThreeDots } from 'react-icons/bs';
 
 function AccountHeader() {
     //const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -62,7 +63,7 @@ function AccountHeader() {
                         {user.username.charAt(0)}
                     </Avatar>
                     <Button onClick={() => setOpen(true)}>
-                        <SettingsIcon />
+                        <BsThreeDots style={{ width: '60%', height: '60%' }} />
                     </Button>
                 </Box>
                 <Typography variant="h4">{user.nickname}</Typography>

@@ -95,7 +95,7 @@ function DanceWrapper() {
                 <>
                     <Stack direction="row" spacing={2} mb={1}>
                         <StyledRating
-                            defualtValue={0.5}
+                            defaultValue={0.5}
                             precision={0.5}
                             max={10}
                             value={score}

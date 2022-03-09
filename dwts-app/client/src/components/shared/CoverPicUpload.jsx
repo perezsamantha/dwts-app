@@ -34,7 +34,7 @@ function CoverPicUpload(props) {
                 id="file"
             />
             <Label htmlFor="file">
-                <AddAPhotoIcon />
+                <AddAPhotoIcon sx={{ cursor: 'pointer' }} />
             </Label>
             <FileInput>
                 {fileData != null && (

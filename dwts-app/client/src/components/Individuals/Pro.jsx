@@ -15,7 +15,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { createLoadingSelector } from '../../api/selectors';
 
 import * as actionType from '../../constants/actionTypes';
-import { convertDate, getAge, Likes } from '../shared/functions';
+import { convertDate, convertHeight, getAge } from '../shared/functions';
 import { Grid, Paper } from '@mui/material';
 
 import TwitterIcon from '@mui/icons-material/Twitter';
@@ -24,10 +24,11 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import ExtraPicUpload from '../shared/ExtraPicUpload';
 import * as tableType from '../../constants/tableTypes';
 import SocialsLink from '../shared/SocialsLink';
-import { CardContainer } from '../shared/muiStyles';
+import { IndividualsContainer } from '../shared/muiStyles';
 import Progress from '../shared/Progress';
+import Likes from '../shared/Likes';
 
-function ProCard() {
+function Pro() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem('profile'));
@@ -47,7 +48,7 @@ function ProCard() {
     return loading ? (
         <Progress />
     ) : (
-        <CardContainer>
+        <IndividualsContainer>
             <Stack direction="row">
                 <Button onClick={() => navigate(-1)}>
                     <ArrowBackIosIcon />
@@ -74,7 +75,9 @@ function ProCard() {
                 </Typography>
             )}
             {pro?.height && (
-                <Typography variant="h5">Height - {pro.height}</Typography>
+                <Typography variant="h5">
+                    Height - {convertHeight(pro.height)}
+                </Typography>
             )}
             {/* is junior? */}
 
@@ -132,8 +135,8 @@ function ProCard() {
             </Grid>
 
             <ExtraPicUpload id={pro.id} type={tableType.PRO} />
-        </CardContainer>
+        </IndividualsContainer>
     );
 }
 
-export default ProCard;
+export default Pro;

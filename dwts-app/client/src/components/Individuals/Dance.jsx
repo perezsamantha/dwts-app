@@ -4,7 +4,6 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { findDanceById } from '../../actions/dances';
-import { fetchTeams } from '../../actions/teams';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 
 import { likeDance } from '../../actions/dances';
@@ -12,18 +11,18 @@ import * as tableType from '../../constants/tableTypes';
 
 import { Picture, LikesContainer, CardAvatar } from '../shared/regStyles.js';
 
-import TeamsPreview from '../Previews/TeamsPreview';
-import { convertPlacement, Likes } from '../shared/functions';
+import { convertPlacement } from '../shared/functions';
 import ExtraPicUpload from '../shared/ExtraPicUpload';
 import DataGetter from '../shared/DataGetter';
 
 import { createLoadingSelector } from '../../api/selectors';
 
 import * as actionType from '../../constants/actionTypes';
-import { CardContainer } from '../shared/muiStyles';
+import { IndividualsContainer } from '../shared/muiStyles';
 import Progress from '../shared/Progress';
+import Likes from '../shared/Likes';
 
-function DanceCard() {
+function Dance() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem('profile'));
@@ -52,7 +51,7 @@ function DanceCard() {
     return loading || Object.keys(dance).length === 0 ? (
         <Progress />
     ) : (
-        <CardContainer>
+        <IndividualsContainer>
             <Stack direction="row">
                 <Button onClick={() => navigate(-1)}>
                     <ArrowBackIosIcon />
@@ -139,8 +138,8 @@ function DanceCard() {
                 ))}
             </Grid>
             <ExtraPicUpload id={dance.id} type={tableType.DANCE} />
-        </CardContainer>
+        </IndividualsContainer>
     );
 }
 
-export default DanceCard;
+export default Dance;

@@ -69,9 +69,7 @@ function ExtraPicUpload(props) {
                 id="file"
             />
             <Label htmlFor="file">
-                {/* <Button> */}
-                <AddAPhotoIcon />
-                {/* </Button> */}
+                <AddAPhotoIcon sx={{ cursor: 'pointer' }} />
             </Label>
             <FileInput>
                 {fileData != null && (

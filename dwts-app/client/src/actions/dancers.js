@@ -76,6 +76,25 @@ export const fetchDancers = () => async (dispatch) => {
     }
 };
 
+export const fetchDancersWithoutData = () => async (dispatch) => {
+    dispatch({ type: actionType.DANCERSEARCH_REQUEST });
+
+    try {
+        const { data } = await api.fetchDancers();
+
+        dispatch({
+            type: actionType.DANCERSEARCH_SUCCESS,
+            payload: data,
+        });
+    } catch (error) {
+        dispatch({
+            type: actionType.DANCERSEARCH_FAILURE,
+            payload: error,
+            error: true,
+        });
+    }
+};
+
 export const deleteDancer = (id) => async (dispatch) => {
     dispatch({ type: actionType.DANCERDELETE_REQUEST });
 

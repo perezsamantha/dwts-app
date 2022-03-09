@@ -5,7 +5,7 @@ import { searchDances } from '../../actions/dances';
 import { Divider } from '@mui/material';
 
 import 'react-multi-carousel/lib/styles.css';
-import DancesPreview from '../Previews/DancesPreview';
+import DancePreview from './Previews/DancePreview';
 import { createLoadingSelector } from '../../api/selectors';
 
 import * as actionType from '../../constants/actionTypes';
@@ -55,7 +55,7 @@ function Dances(props) {
                         color: 'inherit',
                     }}
                 >
-                    <DancesPreview dance={dance} />
+                    <DancePreview dance={dance} />
                     {/* move divider outside of link? if so, need to wrap in div with key */}
                     <Divider />
                 </Link>

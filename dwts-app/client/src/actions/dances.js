@@ -1,6 +1,6 @@
 import * as actionType from '../constants/actionTypes';
 import * as api from '../api/index.js';
-import { getAllData, getDanceData } from './multipleActions';
+import { getDanceData } from './multipleActions';
 
 export const addDance = (dance) => async (dispatch) => {
     dispatch({ type: actionType.DANCEADD_REQUEST });
@@ -73,23 +73,42 @@ export const fetchDances = () => async (dispatch) => {
     }
 };
 
+export const fetchDancesWithoutData = () => async (dispatch) => {
+    dispatch({ type: actionType.DANCESEARCH_REQUEST });
+
+    try {
+        const { data } = await api.fetchDances();
+
+        dispatch({
+            type: actionType.DANCESEARCH_SUCCESS,
+            payload: data,
+        });
+    } catch (error) {
+        dispatch({
+            type: actionType.DANCESEARCH_FAILURE,
+            payload: error,
+            error: true,
+        });
+    }
+};
+
 export const findDanceById = (id) => async (dispatch) => {
     dispatch({ type: actionType.DANCEFIND_REQUEST });
 
     try {
         const { data } = await api.findDanceById(id);
 
-        Promise.resolve(dispatch(getAllData())).then(() =>
-            dispatch({
-                type: actionType.DANCEFIND_SUCCESS,
-                payload: data,
-            })
-        );
+        // Promise.resolve(dispatch(getDanceData())).then(() =>
+        //     dispatch({
+        //         type: actionType.DANCEFIND_SUCCESS,
+        //         payload: data,
+        //     })
+        // );
 
-        // dispatch({
-        //     type: actionType.DANCEFIND_SUCCESS,
-        //     payload: data,
-        // });
+        dispatch({
+            type: actionType.DANCEFIND_SUCCESS,
+            payload: data,
+        });
     } catch (error) {
         dispatch({
             type: actionType.DANCEFIND_FAILURE,

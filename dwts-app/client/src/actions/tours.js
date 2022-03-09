@@ -41,20 +41,36 @@ export const fetchTours = () => async (dispatch) => {
     }
 };
 
+export const fetchToursWithoutData = () => async (dispatch) => {
+    dispatch({ type: actionType.TOURSEARCH_REQUEST });
+
+    try {
+        const { data } = await api.fetchTours();
+
+        dispatch({ type: actionType.TOURSEARCH_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: actionType.TOURSEARCH_FAILURE,
+            payload: error,
+            error: true,
+        });
+    }
+};
+
 export const findTourById = (id) => async (dispatch) => {
     dispatch({ type: actionType.TOURFIND_REQUEST });
 
     try {
         const { data } = await api.findTourById(id);
 
-        Promise.resolve(dispatch(getTourData())).then(() =>
-            dispatch({
-                type: actionType.TOURFIND_SUCCESS,
-                payload: data,
-            })
-        );
+        // Promise.resolve(dispatch(getTourData())).then(() =>
+        //     dispatch({
+        //         type: actionType.TOURFIND_SUCCESS,
+        //         payload: data,
+        //     })
+        // );
 
-        // dispatch({ type: actionType.TOURFIND_SUCCESS, payload: data });
+        dispatch({ type: actionType.TOURFIND_SUCCESS, payload: data });
     } catch (error) {
         dispatch({
             type: actionType.TOURFIND_FAILURE,
@@ -153,20 +169,36 @@ export const fetchTourCast = () => async (dispatch) => {
     }
 };
 
+export const fetchTourCastWithoutData = () => async (dispatch) => {
+    dispatch({ type: actionType.TOURCASTSEARCH_REQUEST });
+
+    try {
+        const { data } = await api.fetchTourCast();
+
+        dispatch({ type: actionType.TOURCASTSEARCH_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: actionType.TOURCASTSEARCH_FAILURE,
+            payload: error,
+            error: true,
+        });
+    }
+};
+
 export const findTourCastById = (id) => async (dispatch) => {
     dispatch({ type: actionType.TOURCASTFIND_REQUEST });
 
     try {
         const { data } = await api.findTourCastById(id);
 
-        Promise.resolve(dispatch(getTourCastData())).then(() =>
-            dispatch({
-                type: actionType.TOURCASTFIND_SUCCESS,
-                payload: data,
-            })
-        );
+        // Promise.resolve(dispatch(getTourCastData())).then(() =>
+        //     dispatch({
+        //         type: actionType.TOURCASTFIND_SUCCESS,
+        //         payload: data,
+        //     })
+        // );
 
-        // dispatch({ type: actionType.TOURCASTFIND_SUCCESS, payload: data });
+        dispatch({ type: actionType.TOURCASTFIND_SUCCESS, payload: data });
     } catch (error) {
         dispatch({
             type: actionType.TOURCASTFIND_FAILURE,

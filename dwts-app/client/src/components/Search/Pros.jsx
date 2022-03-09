@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { searchPros } from '../../actions/pros';
 import { Grid } from '@mui/material';
-import ProsPreview from '../Previews/ProsPreview';
+import ProPreview from './Previews/ProPreview';
 import { createLoadingSelector } from '../../api/selectors';
 
 import * as actionType from '../../constants/actionTypes';
@@ -33,7 +33,7 @@ function Pros(props) {
         <Progress />
     ) : (
         <ResultsContainer>
-            <Grid container spacing={2}>
+            <Grid container spacing={1} justifyContent="center">
                 {filteredPros.map((pro, index) => (
                     <Grid key={index} item>
                         <Link
@@ -43,7 +43,7 @@ function Pros(props) {
                                 color: 'inherit',
                             }}
                         >
-                            <ProsPreview pro={pro} />
+                            <ProPreview pro={pro} />
                         </Link>
                     </Grid>
                 ))}

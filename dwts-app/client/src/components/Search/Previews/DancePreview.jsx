@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { Preview } from '../shared/regStyles.js';
+import { Preview } from '../../shared/regStyles.js';
 
 import { Typography } from '@mui/material';
-import DataGetter from '../shared/DataGetter';
+import DataGetter from '../../shared/DataGetter';
 
-function DancesPreview(props) {
+function DancePreview(props) {
     const dance = props.dance;
 
     useEffect(() => {}, []);
@@ -22,4 +22,4 @@ function DancesPreview(props) {
     );
 }
 
-export default DancesPreview;
+export default DancePreview;

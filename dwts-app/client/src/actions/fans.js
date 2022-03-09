@@ -60,6 +60,25 @@ export const fetchUsers = () => async (dispatch) => {
     }
 };
 
+export const fetchUsersWithoutData = () => async (dispatch) => {
+    dispatch({ type: actionType.USERSEARCH_REQUEST });
+
+    try {
+        const { data } = await api.fetchUsers();
+
+        dispatch({
+            type: actionType.USERSEARCH_SUCCESS,
+            payload: data,
+        });
+    } catch (error) {
+        dispatch({
+            type: actionType.USERSEARCH_FAILURE,
+            payload: error,
+            error: true,
+        });
+    }
+};
+
 export const searchUsers = (input) => async (dispatch) => {
     dispatch({ type: actionType.USERSEARCH_REQUEST });
 

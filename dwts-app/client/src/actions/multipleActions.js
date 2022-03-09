@@ -1,13 +1,19 @@
 import { fetchSeasons } from './seasons';
 import { fetchCelebs } from './celebs';
 import { fetchPros } from './pros';
-import { fetchTeams } from './teams';
-import { fetchDances } from './dances';
-import { fetchDancers } from './dancers';
-import { fetchScores } from './scores';
-import { fetchEpisodes } from './episodes';
+import { fetchTeams, fetchTeamsWithoutData } from './teams';
+import { fetchDances, fetchDancesWithoutData } from './dances';
+import { fetchDancers, fetchDancersWithoutData } from './dancers';
+import { fetchScores, fetchScoresWithoutData } from './scores';
+import { fetchEpisodes, fetchEpisodesWithoutData } from './episodes';
 import { fetchJudges } from './judges';
-import { fetchTours } from './tours';
+import {
+    fetchTourCastWithoutData,
+    fetchTours,
+    fetchToursWithoutData,
+} from './tours';
+
+import * as actionType from '../constants/actionTypes';
 
 // export const getDataForTeams = (input) => (dispatch) => {
 //     dispatch(searchTeams(input)).then(() =>
@@ -70,7 +76,28 @@ export const getUserData = () => async (dispatch) => {
 
 // not the most efficient
 export const getAllData = () => async (dispatch) => {
-    Promise.resolve(dispatch(fetchDancers())).then(() =>
-        dispatch(fetchScores())
-    );
+    dispatch({ type: actionType.FETCHALLDATA_REQUEST });
+
+    try {
+        Promise.resolve(dispatch(fetchCelebs()))
+            .then(() => dispatch(fetchPros()))
+            .then(() => dispatch(fetchSeasons()))
+            .then(() => dispatch(fetchTeamsWithoutData()))
+            .then(() => dispatch(fetchEpisodesWithoutData()))
+            .then(() => dispatch(fetchTeamsWithoutData()))
+            .then(() => dispatch(fetchDancesWithoutData()))
+            .then(() => dispatch(fetchJudges()))
+            .then(() => dispatch(fetchScoresWithoutData()))
+            .then(() => dispatch(fetchDancersWithoutData()))
+            .then(() => dispatch(fetchToursWithoutData()))
+            .then(() => dispatch(fetchTourCastWithoutData()))
+            .then(() => dispatch({ type: actionType.FETCHALLDATA_SUCCESS }));
+        // users??
+    } catch (error) {
+        dispatch({
+            type: actionType.FETCHALLDATA_FAILURE,
+            payload: error,
+            error: true,
+        });
+    }
 };

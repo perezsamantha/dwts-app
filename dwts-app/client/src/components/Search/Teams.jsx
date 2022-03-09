@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { searchTeams } from '../../actions/teams';
 import { Typography } from '@mui/material';
-import TeamsPreview from '../Previews/TeamsPreview';
+import TeamPreview from './Previews/TeamPreview';
 
 import { createLoadingSelector } from '../../api/selectors';
 

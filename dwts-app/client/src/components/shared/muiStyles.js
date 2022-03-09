@@ -29,7 +29,7 @@ export const MainContainer = styled(Box)`
 // search results
 
 export const ResultsContainer = styled(Box)`
-    padding: 1rem;
+    padding: 1rem 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -52,9 +52,9 @@ export const SearchTextField = styled(TextField)(({ theme }) => ({
     },
 }));
 
-// cards
+// individuals
 
-export const CardContainer = styled(Box)`
+export const IndividualsContainer = styled(Box)`
     //width: 100%;
     display: flex;
     flex-direction: column;
@@ -63,3 +63,11 @@ export const CardContainer = styled(Box)`
     //overflow-x: auto;
     text-align: center;
 `;
+
+export const ExtraPic = styled(Box)(({ theme }) => ({
+    width: 80,
+    height: 80,
+    borderRadius: 15,
+    boxShadow:
+        theme.palette.mode === 'light' ? '1px 5px 15px lightgrey' : 'none',
+}));

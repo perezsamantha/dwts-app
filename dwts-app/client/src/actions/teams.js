@@ -1,6 +1,6 @@
 import * as actionType from '../constants/actionTypes';
 import * as api from '../api/index.js';
-import { getAllData, getTeamData } from './multipleActions';
+import { getTeamData } from './multipleActions';
 
 export const addTeam = (team) => async (dispatch) => {
     dispatch({ type: actionType.TEAMADD_REQUEST });
@@ -56,17 +56,17 @@ export const findTeamById = (id) => async (dispatch) => {
     try {
         const { data } = await api.findTeamById(id);
 
-        Promise.resolve(dispatch(getAllData())).then(() =>
-            dispatch({
-                type: actionType.TEAMFIND_SUCCESS,
-                payload: data,
-            })
-        );
+        // Promise.resolve(dispatch(getTeamData())).then(() =>
+        //     dispatch({
+        //         type: actionType.TEAMFIND_SUCCESS,
+        //         payload: data,
+        //     })
+        // );
 
-        // dispatch({
-        //     type: actionType.TEAMFIND_SUCCESS,
-        //     payload: data,
-        // });
+        dispatch({
+            type: actionType.TEAMFIND_SUCCESS,
+            payload: data,
+        });
     } catch (error) {
         dispatch({
             type: actionType.TEAMFIND_FAILURE,
@@ -93,6 +93,25 @@ export const fetchTeams = () => async (dispatch) => {
         //     type: actionType.TEAMSEARCH_SUCCESS,
         //     payload: data,
         // });
+    } catch (error) {
+        dispatch({
+            type: actionType.TEAMSEARCH_FAILURE,
+            payload: error,
+            error: true,
+        });
+    }
+};
+
+export const fetchTeamsWithoutData = () => async (dispatch) => {
+    dispatch({ type: actionType.TEAMSEARCH_REQUEST });
+
+    try {
+        const { data } = await api.fetchTeams();
+
+        dispatch({
+            type: actionType.TEAMSEARCH_SUCCESS,
+            payload: data,
+        });
     } catch (error) {
         dispatch({
             type: actionType.TEAMSEARCH_FAILURE,

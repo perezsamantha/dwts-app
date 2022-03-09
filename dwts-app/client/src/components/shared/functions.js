@@ -1,6 +1,3 @@
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-
 export const convertDate = (val) => {
     const date = new Date(val);
     return (
@@ -50,34 +47,8 @@ export const convertHeight = (heightInInches) => {
     return feet + `'` + inches;
 };
 
-export const Likes = (props) => {
-    const { user, likes } = props;
-
-    if (likes?.length > 0) {
-        return likes.find((like) => like === user?.result?.id) ? (
-            <>
-                <FavoriteIcon />
-            </>
-        ) : (
-            <>
-                <FavoriteBorderIcon />
-            </>
-        );
-    }
-
-    return (
-        <>
-            <FavoriteBorderIcon />
-        </>
-    );
-};
-
 // what
 export const getFullTeamName = (celeb, pro) => {
-    // const { team, celebs, pros } = props;
-    // const pro = pros.find((pro) => pro.id === team.pro_id);
-    // const celeb = celebs.find((celeb) => celeb.id === team.celeb_id);
-
     const celebName = celeb?.last_name
         ? celeb.first_name + ' ' + celeb.last_name
         : celeb.first_name;
@@ -87,12 +58,10 @@ export const getFullTeamName = (celeb, pro) => {
     return celebName + ' & ' + proName;
 };
 
-export const getDancesByTeam = (team, dances, dancers) => {
+export const getDancesByTeam = (team, dances, dancers, episodes) => {
     const filteredDancers = dancers.filter(
         (dancer) => dancer.team_id === team.id
     );
-
-    //let filtered = [];
 
     const filteredDances = dances.reduce(function (filtered, dance) {
         filteredDancers.map((dancer) =>
@@ -102,6 +71,81 @@ export const getDancesByTeam = (team, dances, dancers) => {
     }, []);
 
     return filteredDances;
+};
+
+export const sortTeamDancesByWeek = (dances, episodes) => {
+    const sorted = dances.sort((a, b) => {
+        let episodeA = episodes.find((episode) => episode.id === a.episode_id);
+        let episodeB = episodes.find((episode) => episode.id === b.episode_id);
+        if (episodeA.week < episodeB.week) {
+            return -1;
+        } else if (episodeA.week > episodeB.week) {
+            return 1;
+        }
+        return 0;
+    });
+
+    return sorted;
+};
+
+export const getAverageScore = (dances, scores) => {
+    let avgScore = 0;
+
+    let scoresByDance;
+    let totalScore;
+    let numScores = 0;
+    let allScores = [];
+
+    dances.map((dance) => {
+        scoresByDance = [];
+        totalScore = 0;
+
+        scores.map((score) => {
+            if (score.dance_id === dance.id) {
+                scoresByDance.push(score.value);
+            }
+
+            return '';
+        });
+
+        if (scoresByDance.length !== 0) {
+            totalScore = scoresByDance.reduce((a, b) => a + b);
+
+            allScores.push(totalScore);
+        }
+
+        return '';
+    });
+
+    numScores = allScores.length;
+    if (allScores.length !== 0) {
+        avgScore = allScores.reduce((a, b) => a + b) / numScores;
+    }
+
+    return avgScore;
+};
+
+export const getScoreByDance = (dance, scores) => {
+    let scoresByDance = [];
+    let totalScore = 0;
+    let numScores = 0;
+
+    scores.map((score) => {
+        if (score.dance_id === dance.id) {
+            scoresByDance.push(score.value);
+            // leave out guest judge scores??
+        }
+
+        return '';
+    });
+
+    numScores = scoresByDance.length;
+
+    if (scoresByDance.length !== 0) {
+        totalScore = scoresByDance.reduce((a, b) => a + b);
+    }
+
+    return totalScore + '/' + numScores * 10;
 };
 
 export const getNumberOfTens = (dances, scores) => {
@@ -125,5 +169,63 @@ export const getNumberOfTens = (dances, scores) => {
 };
 
 // TODO: num perfect scores
+export const getNumberOfPerfects = (dances, scores) => {
+    let numPerfects = 0;
+
+    let scoresByDance;
+    let totalScore;
+    let numScores;
+
+    dances.map((dance) => {
+        scoresByDance = [];
+        totalScore = 0;
+        numScores = 0;
+
+        scores.map((score) => {
+            if (score.dance_id === dance.id) {
+                scoresByDance.push(score.value);
+            }
+
+            return '';
+        });
+
+        numScores = scoresByDance.length;
+
+        if (scoresByDance.length !== 0) {
+            totalScore = scoresByDance.reduce((a, b) => a + b);
+        }
+        if (totalScore === numScores * 10) {
+            numPerfects++;
+        }
+
+        return '';
+    });
+
+    return numPerfects;
+};
 
 // TODO: all scores per dance
+
+// one for all and one for just main dancers where not background??
+export const getDancesByPro = (pro, teams, dances, dancers) => {
+    const filteredDancers = dancers.filter(
+        (dancer) =>
+            (dancer.pro_id === pro.id ||
+                teams.find(
+                    (team) =>
+                        team.id === dancer.team_id && team.pro_id === pro.id
+                )) &&
+            dancer.is_background === false
+    );
+
+    //let filtered = [];
+
+    const filteredDances = dances.reduce(function (filtered, dance) {
+        filteredDancers.map((dancer) =>
+            dancer.dance_id === dance.id ? filtered.push(dance) : null
+        );
+        return filtered;
+    }, []);
+
+    return filteredDances;
+};

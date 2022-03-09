@@ -40,14 +40,14 @@ export const findEpisodeById = (id) => async (dispatch) => {
     try {
         const { data } = await api.findEpisodeById(id);
 
-        Promise.resolve(dispatch(getEpisodeData())).then(() =>
-            dispatch({
-                type: actionType.EPISODEFIND_SUCCESS,
-                payload: data,
-            })
-        );
+        // Promise.resolve(dispatch(getEpisodeData())).then(() =>
+        //     dispatch({
+        //         type: actionType.EPISODEFIND_SUCCESS,
+        //         payload: data,
+        //     })
+        // );
 
-        //dispatch({ type: actionType.EPISODEFIND_SUCCESS, payload: data });
+        dispatch({ type: actionType.EPISODEFIND_SUCCESS, payload: data });
     } catch (error) {
         dispatch({
             type: actionType.EPISODEFIND_FAILURE,
@@ -71,6 +71,22 @@ export const fetchEpisodes = () => async (dispatch) => {
         );
 
         //dispatch({ type: actionType.EPISODESEARCH_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: actionType.EPISODESEARCH_FAILURE,
+            payload: error,
+            error: true,
+        });
+    }
+};
+
+export const fetchEpisodesWithoutData = () => async (dispatch) => {
+    dispatch({ type: actionType.EPISODESEARCH_REQUEST });
+
+    try {
+        const { data } = await api.fetchEpisodes();
+
+        dispatch({ type: actionType.EPISODESEARCH_SUCCESS, payload: data });
     } catch (error) {
         dispatch({
             type: actionType.EPISODESEARCH_FAILURE,

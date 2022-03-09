@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Avatar, Paper, Stack, Typography } from '@mui/material';
 
-function FansPreview(props) {
+function FanPreview(props) {
     const { fan } = props;
 
     return (
@@ -24,4 +24,4 @@ function FansPreview(props) {
     );
 }
 
-export default FansPreview;
+export default FanPreview;

@@ -8,6 +8,9 @@ CREATE TABLE IF NOT EXISTS dancers(
     extra VARCHAR(100),
     is_background BOOLEAN,
     PRIMARY KEY(id),
+    UNIQUE(dance_id, team_id),
+    UNIQUE(dance_id, pro_id),
+    UNIQUE(dance_id, celeb_id),
     CONSTRAINT fk_dance
         FOREIGN KEY(dance_id)
             REFERENCES dances(id)

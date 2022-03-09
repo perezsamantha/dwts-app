@@ -1,9 +1,8 @@
 import { Box, Stack, Typography } from '@mui/material';
 import React from 'react';
-import DataGetter from '../shared/DataGetter.js';
-import { convertPlacement } from '../shared/functions.js';
-
-function TeamsPreview(props) {
+import DataGetter from '../../shared/DataGetter.js';
+import { convertPlacement } from '../../shared/functions.js';
+function TeamPreview(props) {
     const team = props.team;
     const placement = convertPlacement(team.placement);
 
@@ -28,4 +27,4 @@ function TeamsPreview(props) {
     );
 }
 
-export default TeamsPreview;
+export default TeamPreview;

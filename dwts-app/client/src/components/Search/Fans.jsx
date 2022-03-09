@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import FansPreview from '../Previews/FansPreview';
+import FanPreview from './Previews/FanPreview';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { searchUsers } from '../../actions/fans';
@@ -38,7 +38,7 @@ function Fans(props) {
                                 color: 'inherit',
                             }}
                         >
-                            <FansPreview fan={fan} />
+                            <FanPreview fan={fan} />
                         </Link>
                     </Grid>
                 ))}

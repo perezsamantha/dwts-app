@@ -76,6 +76,25 @@ export const fetchScores = () => async (dispatch) => {
     }
 };
 
+export const fetchScoresWithoutData = () => async (dispatch) => {
+    dispatch({ type: actionType.SCORESEARCH_REQUEST });
+
+    try {
+        const { data } = await api.fetchScores();
+
+        dispatch({
+            type: actionType.SCORESEARCH_SUCCESS,
+            payload: data,
+        });
+    } catch (error) {
+        dispatch({
+            type: actionType.SCORESEARCH_FAILURE,
+            payload: error,
+            error: true,
+        });
+    }
+};
+
 export const deleteScore = (id) => async (dispatch) => {
     dispatch({ type: actionType.SCOREDELETE_REQUEST });
 

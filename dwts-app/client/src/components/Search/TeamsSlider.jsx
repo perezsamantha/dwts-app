@@ -6,7 +6,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Box } from '@mui/material';
 import { Link } from 'react-router-dom';
-import TeamsPreview from '../Previews/TeamsPreview';
+import TeamPreview from './Previews/TeamPreview';
 
 function TeamsSlider(props) {
     const { filteredTeams, item } = props;
@@ -63,7 +63,7 @@ function TeamsSlider(props) {
                                 color: 'inherit',
                             }}
                         >
-                            <TeamsPreview key={index} team={team} />
+                            <TeamPreview key={index} team={team} />
                         </Link>
                     </SwiperSlide>
                 ))}
