@@ -5,7 +5,7 @@ import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
-import { Avatar, Typography } from '@mui/material';
+import { Avatar, Box, Stack, Typography } from '@mui/material';
 import { LocalizationProvider } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDateFns';
 
@@ -884,46 +884,53 @@ function Table(props) {
             columns = [];
     }
 
+    const [pageSize, setPageSize] = React.useState(10);
+
     return (
         <LocalizationProvider dateAdapter={DateAdapter}>
-            <TableContainer>
-                <HeaderContainer>
+            <Box sx={{ height: 700, minWidth: '100%' }}>
+                <Stack direction="row" justifyContent="space-between" mb={2}>
                     <Typography variant="h4">{table}s Table</Typography>
                     <AddDialog table={table} />
-                </HeaderContainer>
+                </Stack>
 
-                {
-                    <div>
-                        <DataGridContainer>
+                <DataGrid
+                    rows={items}
+                    columns={columns}
+                    loading={loading}
+                    pageSize={pageSize}
+                    onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                    rowsPerPageOptions={[10, 25, 50]}
+                    pagination
+                />
+                {/* <DataGridContainer>
                             <DataGrid
                                 rows={items}
                                 columns={columns}
                                 loading={loading}
                                 //checkboxSelection
                             />
-                        </DataGridContainer>
+                        </DataGridContainer> */}
 
-                        {open.edit && (
-                            <EditDialog
-                                item={item}
-                                table={table}
-                                open={open.edit}
-                                handleClose={handleClose}
-                            />
-                        )}
+                {open.edit && (
+                    <EditDialog
+                        item={item}
+                        table={table}
+                        open={open.edit}
+                        handleClose={handleClose}
+                    />
+                )}
 
-                        {open.delete && (
-                            <DeleteDialog
-                                item={item}
-                                table={table}
-                                open={open.delete}
-                                handleClose={handleClose}
-                                confirmDelete={confirmDelete}
-                            />
-                        )}
-                    </div>
-                }
-            </TableContainer>
+                {open.delete && (
+                    <DeleteDialog
+                        item={item}
+                        table={table}
+                        open={open.delete}
+                        handleClose={handleClose}
+                        confirmDelete={confirmDelete}
+                    />
+                )}
+            </Box>
         </LocalizationProvider>
     );
 }

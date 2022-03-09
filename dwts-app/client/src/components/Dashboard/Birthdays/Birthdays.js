@@ -1,10 +1,9 @@
-import { Box, Divider, Grid, Paper, Typography } from '@mui/material';
+import { Card, Divider, Grid, Typography } from '@mui/material';
 import { pros, celebs, fans } from './sampleData';
 import { getBirthdays, getDateName, getMonthName } from './birthdayFunctions';
 import ProPreview from './ProPreview';
 import CelebPreview from './CelebPreview';
 import FanPreview from './FanPreview';
-import { CardContainer } from '../sharedStyles';
 
 function Birthdays() {
     // TODO: make sure it works in different time zones
@@ -27,7 +26,7 @@ function Birthdays() {
 
     return (
         !noBirthdays && (
-            <CardContainer elevation={3}>
+            <Card elevation={3}>
                 <Typography variant="h5">Today's Birthdays</Typography>
                 <Divider />
 
@@ -69,7 +68,7 @@ function Birthdays() {
                         </Grid>
                     </>
                 )}
-            </CardContainer>
+            </Card>
         )
     );
 }

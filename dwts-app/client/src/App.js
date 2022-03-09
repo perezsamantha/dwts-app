@@ -116,7 +116,17 @@ function App() {
                 styleOverrides: {
                     root: {
                         //padding: 15,
+                        //borderRadius: 15,
+                    },
+                },
+            },
+            MuiCard: {
+                styleOverrides: {
+                    root: {
+                        padding: 15,
                         borderRadius: 15,
+                        marginTop: 15,
+                        marginBottom: 15,
                     },
                 },
             },
@@ -161,6 +171,15 @@ function App() {
                         //width: '95%',
                         marginTop: 10,
                         marginBottom: 10,
+                    },
+                },
+            },
+            MuiListItemButton: {
+                styleOverrides: {
+                    root: {
+                        '&.Mui-selected': {
+                            background: 'transparent',
+                        },
                     },
                 },
             },

@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { Box } from '@mui/material';
 
 export const CardAvatar = styled.img`
     width: 175px;
@@ -55,16 +56,14 @@ export const FileInput = styled.div`
     align-items: center;
 `;
 
-export const TableContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 95%;
-    margin: auto;
+export const TableContainer = styled(Box)`
+    //display: flex;
+    //flex-direction: column;
+    //width: 95%;
+    //margin: auto;
 `;
 
-export const DataGridContainer = styled.div`
-    height: 500px;
-`;
+export const DataGridContainer = styled(Box)``;
 
 export const HeaderContainer = styled.div`
     display: flex;

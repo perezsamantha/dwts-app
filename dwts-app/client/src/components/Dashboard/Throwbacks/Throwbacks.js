@@ -1,9 +1,9 @@
-import { Divider, Typography } from '@mui/material';
+import { Card, Divider, Typography } from '@mui/material';
 import { CardContainer } from '../sharedStyles';
 
 function Throwbacks() {
     return (
-        <CardContainer elevation={3}>
+        <Card elevation={3}>
             <Typography variant="h5">On this day...</Typography>
             <Divider />
             <Typography>
@@ -15,7 +15,7 @@ function Throwbacks() {
             <Typography>
                 9 years ago - Season 15 &#8226; Week 10 (Semi-Finals)
             </Typography>
-        </CardContainer>
+        </Card>
     );
 }
 

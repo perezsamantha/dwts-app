@@ -3,11 +3,11 @@ import {
     AccordionDetails,
     AccordionSummary,
     Box,
+    Card,
     Divider,
     Stack,
     Typography,
 } from '@mui/material';
-import { CardContainer } from '../sharedStyles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import styled from '@emotion/styled';
 import { FiSearch, FiBarChart2 } from 'react-icons/fi';
@@ -17,7 +17,7 @@ import { BsStars } from 'react-icons/bs';
 
 function Introduction() {
     return (
-        <CardContainer elevation={3}>
+        <Card elevation={3}>
             <Accordion elevation={0} sx={{ backgroundColor: 'transparent' }}>
                 <StyledSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography variant="h5">App Overview</Typography>
@@ -127,7 +127,7 @@ function Introduction() {
                     </Stack>
                 </AccordionDetails>
             </Accordion>
-        </CardContainer>
+        </Card>
     );
 }
 
@@ -135,12 +135,12 @@ const StyledSummary = styled(AccordionSummary)(({ theme }) => ({
     padding: 0,
     minHeight: 'fit-content',
     maxHeight: 'fit-content',
+    '& .MuiAccordionSummary-content': {
+        margin: 0,
+    },
     '&.Mui-expanded': {
         minHeight: 'fit-content',
         maxHeight: 'fit-content',
-    },
-    '& .MuiAccordionSummary-content': {
-        margin: 0,
     },
 }));
 

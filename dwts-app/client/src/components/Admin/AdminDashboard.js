@@ -11,6 +11,8 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
+    Paper,
+    Stack,
     Toolbar,
     Typography,
 } from '@mui/material';
@@ -54,12 +56,26 @@ function AdminDashboard(props) {
         navigate('/');
     };
 
+    const types = [
+        tableType.CELEB,
+        tableType.PRO,
+        tableType.SEASON,
+        tableType.TEAM,
+        tableType.EPISODE,
+        tableType.DANCE,
+        tableType.JUDGE,
+        tableType.SCORE,
+        tableType.DANCER,
+        tableType.TOUR,
+        tableType.TOURCAST,
+        tableType.USER,
+    ];
+
     const drawer = (
         <Box>
-            <Divider />
             <List>
                 <ListItemButton
-                    selected={selectedIndex === 0}
+                    //selected={selectedIndex === 0}
                     onClick={() => handleComponent(<AdminLanding key={0} />, 0)}
                 >
                     <ListItemText>Admin Dashboard</ListItemText>
@@ -67,143 +83,41 @@ function AdminDashboard(props) {
 
                 <Divider />
 
-                <ListItemButton
-                    selected={selectedIndex === 1}
-                    onClick={() =>
-                        handleComponent(
-                            <Table key={1} type={tableType.CELEB} />,
-                            1
-                        )
-                    }
-                >
-                    <ListItemText>Celebs</ListItemText>
-                </ListItemButton>
-                <ListItemButton
-                    selected={selectedIndex === 2}
-                    onClick={() =>
-                        handleComponent(
-                            <Table key={2} type={tableType.PRO} />,
-                            2
-                        )
-                    }
-                >
-                    <ListItemText>Pros</ListItemText>
-                </ListItemButton>
-                <ListItemButton
-                    selected={selectedIndex === 3}
-                    onClick={() =>
-                        handleComponent(
-                            <Table key={3} type={tableType.SEASON} />,
-                            3
-                        )
-                    }
-                >
-                    <ListItemText>Seasons</ListItemText>
-                </ListItemButton>
-                {/* Episodes nested list? */}
-                <ListItemButton
-                    selected={selectedIndex === 4}
-                    onClick={() =>
-                        handleComponent(
-                            <Table key={4} type={tableType.EPISODE} />,
-                            4
-                        )
-                    }
-                >
-                    <ListItemText>Episodes</ListItemText>
-                </ListItemButton>
-                <ListItemButton
-                    selected={selectedIndex === 5}
-                    onClick={() =>
-                        handleComponent(
-                            <Table key={5} type={tableType.TEAM} />,
-                            5
-                        )
-                    }
-                >
-                    <ListItemText>Teams</ListItemText>
-                </ListItemButton>
-                <ListItemButton
-                    selected={selectedIndex === 6}
-                    onClick={() =>
-                        handleComponent(
-                            <Table key={6} type={tableType.DANCE} />,
-                            6
-                        )
-                    }
-                >
-                    <ListItemText>Dances</ListItemText>
-                </ListItemButton>
-                {/* Dancers nested list? */}
-                <ListItemButton
-                    selected={selectedIndex === 7}
-                    onClick={() =>
-                        handleComponent(
-                            <Table key={7} type={tableType.JUDGE} />,
-                            7
-                        )
-                    }
-                >
-                    <ListItemText>Judges</ListItemText>
-                </ListItemButton>
-                <ListItemButton
-                    selected={selectedIndex === 8}
-                    onClick={() =>
-                        handleComponent(
-                            <Table key={8} type={tableType.SCORE} />,
-                            8
-                        )
-                    }
-                >
-                    <ListItemText>Scores</ListItemText>
-                </ListItemButton>
-                <ListItemButton
-                    selected={selectedIndex === 9}
-                    onClick={() =>
-                        handleComponent(
-                            <Table key={9} type={tableType.DANCER} />,
-                            9
-                        )
-                    }
-                >
-                    <ListItemText>Dancers</ListItemText>
-                </ListItemButton>
-
-                <ListItemButton
-                    selected={selectedIndex === 10}
-                    onClick={() =>
-                        handleComponent(
-                            <Table key={10} type={tableType.TOUR} />,
-                            10
-                        )
-                    }
-                >
-                    <ListItemText>Tours</ListItemText>
-                </ListItemButton>
-
-                <ListItemButton
-                    selected={selectedIndex === 11}
-                    onClick={() =>
-                        handleComponent(
-                            <Table key={11} type={tableType.TOURCAST} />,
-                            11
-                        )
-                    }
-                >
-                    <ListItemText>Tour Cast</ListItemText>
-                </ListItemButton>
-
-                <ListItemButton
-                    selected={selectedIndex === 12}
-                    onClick={() =>
-                        handleComponent(
-                            <Table key={12} type={tableType.USER} />,
-                            12
-                        )
-                    }
-                >
-                    <ListItemText>Users</ListItemText>
-                </ListItemButton>
+                {types.map((type, index) => (
+                    <ListItemButton
+                        key={index}
+                        //selected={selectedIndex === index + 1}
+                        onClick={() =>
+                            handleComponent(
+                                <Table key={index + 1} type={type} />,
+                                index + 1
+                            )
+                        }
+                    >
+                        {selectedIndex === index + 1 ? (
+                            <ListItemText>
+                                <Stack
+                                    direction="row"
+                                    spacing={1}
+                                    alignItems="center"
+                                >
+                                    <Paper
+                                        sx={{
+                                            backgroundColor: 'primary.main',
+                                            zIndex: 10,
+                                            width: 4,
+                                            height: 20,
+                                            borderRadius: 0,
+                                        }}
+                                    />
+                                    <Typography>{type}s</Typography>
+                                </Stack>
+                            </ListItemText>
+                        ) : (
+                            <ListItemText>{type}s</ListItemText>
+                        )}
+                    </ListItemButton>
+                ))}
             </List>
             <Divider />
             <List>
@@ -235,6 +149,8 @@ function AdminDashboard(props) {
                     sx={{
                         width: { sm: `calc(100% - ${drawerWidth}px)` },
                         ml: { sm: `${drawerWidth}px` },
+                        borderBottomLeftRadius: 15,
+                        borderBottomRightRadius: 15,
                     }}
                 >
                     <Toolbar>
@@ -257,20 +173,21 @@ function AdminDashboard(props) {
                     sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
                     aria-label="mailbox folders"
                 >
-                    {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
                     <Drawer
                         container={container}
                         variant="temporary"
                         open={mobileOpen}
                         onClose={handleDrawerToggle}
                         ModalProps={{
-                            keepMounted: true, // Better open performance on mobile.
+                            keepMounted: true,
                         }}
                         sx={{
                             display: { xs: 'block', sm: 'none' },
                             '& .MuiDrawer-paper': {
                                 boxSizing: 'border-box',
                                 width: drawerWidth,
+                                borderTopRightRadius: 15,
+                                borderBottomRightRadius: 15,
                             },
                         }}
                     >
@@ -283,6 +200,8 @@ function AdminDashboard(props) {
                             '& .MuiDrawer-paper': {
                                 boxSizing: 'border-box',
                                 width: drawerWidth,
+                                borderTopRightRadius: 15,
+                                borderBottomRightRadius: 15,
                             },
                         }}
                         open
@@ -299,9 +218,6 @@ function AdminDashboard(props) {
                     }}
                 >
                     <Toolbar />
-                    {/* <Typography paragraph>
-                        Teams table bla bla bla
-                    </Typography> */}
                     {table}
                 </Box>
             </Box>

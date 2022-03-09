@@ -1,5 +1,6 @@
 import {
     Button,
+    Card,
     Divider,
     Link,
     Paper,
@@ -18,7 +19,6 @@ import {
     BsArrowRight,
 } from 'react-icons/bs';
 import { MdOutlineQueueMusic } from 'react-icons/md';
-import { CardContainer } from '../sharedStyles';
 
 function DanceWrapper() {
     const [score, setScore] = useState(0);
@@ -38,7 +38,7 @@ function DanceWrapper() {
     };
 
     return (
-        <CardContainer elevation={3}>
+        <Card elevation={3}>
             <Typography variant="h5">Today's Daily Dance</Typography>
             <Divider />
 
@@ -114,7 +114,7 @@ function DanceWrapper() {
                     </Button>
                 </>
             )}
-        </CardContainer>
+        </Card>
     );
 }
 
