@@ -1,26 +1,22 @@
 import React from 'react';
 
-import { Avatar, Paper, Stack, Typography } from '@mui/material';
+import { Avatar, Box, Card, Paper, Stack, Typography } from '@mui/material';
 
 function FanPreview(props) {
     const { fan } = props;
 
     return (
-        <Paper elevation={3} sx={{ padding: '0.5rem 1rem' }}>
-            <Stack direction="row" alignItems="center" my={1}>
-                <Avatar
-                    src={fan.cover_pic}
-                    sx={{ width: 50, height: 50, marginRight: 1 }}
-                />
-                {/* TODO: make same size ? */}
+        <Card elevation={3} sx={{ padding: 1, margin: 0 }}>
+            <Stack direction="row" alignItems="center" spacing={1}>
+                <Avatar src={fan.cover_pic} sx={{ width: 30, height: 30 }} />
                 <Stack>
                     <Typography variant="subtitle1">
-                        {fan.nickname || '.'}
+                        {fan?.nickname || '.'}
                     </Typography>
-                    <Typography>@{fan.username}</Typography>
+                    <Typography variant="subtitle2">@{fan.username}</Typography>
                 </Stack>
             </Stack>
-        </Paper>
+        </Card>
     );
 }
 

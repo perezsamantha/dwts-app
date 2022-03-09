@@ -12,19 +12,7 @@ import { verify } from '../email/emailTemplate.js';
 
 export const signUp = async (req, res) => {
     try {
-        const {
-            cover_pic,
-            username,
-            email,
-            password,
-            confirm_password,
-            nickname,
-            email_verified,
-            watching_since,
-            twitter,
-            instagram,
-            user_role,
-        } = req.body;
+        const { username, email, password, confirm_password } = req.body;
 
         // return message if email and/or username already exists in database
 
@@ -34,28 +22,12 @@ export const signUp = async (req, res) => {
         const hashed_password = await bcrypt.hash(password, 12);
 
         const result = await pool.query(
-            `INSERT INTO users (username, email, password, nickname, email_verified, watching_since, twitter, instagram, user_role) VALUES($1, $2, $3, $4, default, $5, $6, $7, default) RETURNING *`,
-            [
-                username,
-                email,
-                hashed_password,
-                nickname,
-                watching_since,
-                twitter,
-                instagram,
-            ]
+            `INSERT INTO users (username, email, password, email_verified, user_role) VALUES($1, $2, $3, default, default) RETURNING *`,
+            [username, email, hashed_password]
         );
 
-        // need a bypass for admins to register users ?
         sendEmail(email, verify(result.rows[0].id));
 
-        // const token = jwt.sign(
-        //     { username: result.rows[0].username, id: result.rows[0].id },
-        //     process.env.SECRET_STRING,
-        //     { expiresIn: '1h' }
-        // );
-
-        // res.status(200).json({ result: result.rows[0], token });
         res.status(200).json({ message: messages.verify });
     } catch (error) {
         res.status(500).json({ message: error });
@@ -83,6 +55,13 @@ export const signIn = async (req, res) => {
             return res.status(400).json({ message: 'Incorrect password.' });
 
         if (existing_user.rows[0].email_verified) {
+            const new_login = new Date();
+
+            await pool.query('UPDATE users SET last_login = $1 WHERE id = $2', [
+                new_login,
+                existing_user.rows[0].id,
+            ]);
+
             const token = jwt.sign(
                 {
                     username: existing_user.rows[0].username,
@@ -167,6 +146,61 @@ export const verifyEmail = async (req, res) => {
     }
 };
 
+export const addUser = async (req, res) => {
+    try {
+        const {
+            username,
+            email,
+            password,
+            confirm_password,
+            nickname,
+            watching_since,
+            twitter,
+            instagram,
+            tiktok,
+            birthday,
+        } = req.body;
+
+        // return message if email and/or username already exists in database
+
+        if (password != confirm_password)
+            return res.status(400).json({ message: 'Passwords do not match.' });
+
+        const hashed_password = await bcrypt.hash(password, 12);
+
+        const result = await pool.query(
+            `INSERT INTO users (username, email, password, nickname, email_verified, watching_since, twitter, instagram, tiktok, birthday, user_role) VALUES($1, $2, $3, $4, default, $5, $6, $7, $8, $9, default) RETURNING *`,
+            [
+                username,
+                email,
+                hashed_password,
+                nickname,
+                watching_since,
+                twitter,
+                instagram,
+                tiktok,
+                birthday,
+            ]
+        );
+
+        sendEmail(email, verify(result.rows[0].id));
+
+        const token = jwt.sign(
+            { username: result.rows[0].username, id: result.rows[0].id },
+            process.env.SECRET_STRING,
+            { expiresIn: '1h' }
+        );
+
+        res.status(200).json({
+            result: result.rows[0],
+            token,
+            message: messages.verify,
+        });
+    } catch (error) {
+        res.status(500).json({ message: error });
+    }
+};
+
 export const fetchUsers = async (req, res) => {
     try {
         const users = await pool.query('SELECT * FROM users');
@@ -217,16 +251,19 @@ export const updateUser = async (req, res) => {
             username,
             email,
             password,
+            confirm_password,
             nickname,
             email_verified,
             watching_since,
             twitter,
             instagram,
+            tiktok,
+            birthday,
             user_role,
         } = req.body;
 
         const result = await pool.query(
-            `UPDATE users SET username = $1, email = $2, nickname = $3, email_verified = $4, watching_since = $5, twitter = $6, instagram = $7, user_role = $8 WHERE id = $9 RETURNING *`,
+            `UPDATE users SET username = $1, email = $2, nickname = $3, email_verified = $4, watching_since = $5, twitter = $6, instagram = $7, tiktok = $8, birthday = $9, user_role = $10 WHERE id = $11 RETURNING *`,
             [
                 username,
                 email,
@@ -235,6 +272,8 @@ export const updateUser = async (req, res) => {
                 watching_since,
                 twitter,
                 instagram,
+                tiktok,
+                birthday,
                 user_role,
                 id,
             ]

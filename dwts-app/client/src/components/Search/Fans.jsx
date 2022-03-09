@@ -3,7 +3,7 @@ import FanPreview from './Previews/FanPreview';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { searchUsers } from '../../actions/fans';
-import { Grid } from '@mui/material';
+import { Box, Divider, Grid, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { createLoadingSelector } from '../../api/selectors';
 
@@ -28,9 +28,18 @@ function Fans(props) {
         <Progress />
     ) : (
         <ResultsContainer>
-            <Grid container justifyContent="center" spacing={2}>
+            <Stack mb={1}>
+                <Typography>{fans.length} Fans</Typography>
+                <Divider />
+            </Stack>
+
+            <Grid container justifyContent="center" spacing={1}>
                 {fans.map((fan, index) => (
-                    <Grid item key={index}>
+                    <Grid
+                        item
+                        key={index}
+                        width={{ xs: 1, sm: '30%', lg: '20%' }}
+                    >
                         <Link
                             to={{ pathname: `/fans/${fan.id}` }}
                             style={{

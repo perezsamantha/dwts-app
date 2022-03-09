@@ -1,19 +1,20 @@
 import React, { useEffect } from 'react';
-import { Button, Grid, Stack, Typography } from '@mui/material';
+import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { findUserById } from '../../actions/fans';
 
-import { CardAvatar, LikesContainer, SocialsRow } from '../shared/regStyles.js';
+import { CardAvatar } from '../shared/regStyles.js';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import * as actionType from '../../constants/actionTypes';
 import { createLoadingSelector } from '../../api/selectors';
 import SocialsLink from '../shared/SocialsLink';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import FacebookIcon from '@mui/icons-material/Facebook';
 import { IndividualsContainer } from '../shared/muiStyles';
 import Progress from '../shared/Progress';
+import { FaBirthdayCake } from 'react-icons/fa';
+import Favorites from '../Favorites/Favorites';
+import * as searchType from '../../constants/searchTypes';
+import { celebs, fans, pros } from '../Dashboard/Birthdays/sampleData';
 
 function Fan() {
     const navigate = useNavigate();
@@ -38,54 +39,81 @@ function Fan() {
                 <CardAvatar
                     src={fan.cover_pic ? fan.cover_pic : '/defaultPic.jpeg'}
                 />
-                <LikesContainer>
-                    <Button>test</Button>
-                    <Typography variant="subtitle1">2</Typography>
-                </LikesContainer>
+                <Button disabled></Button>
             </Stack>
 
-            <Typography variant="h4" gutterBottom>
-                {fan.username}
-            </Typography>
+            <Stack mt={1} mb={2}>
+                <Typography variant="h3">{fan?.nickname}</Typography>
+                <Typography variant="h5">@{fan.username}</Typography>
+            </Stack>
 
-            <Typography variant="h6" my={2}>
-                SOCIALS
-            </Typography>
-            <Grid container justifyContent="center" spacing={2}>
-                {fan?.instagram && (
-                    <Grid item>
-                        <InstagramIcon />
-                        <SocialsRow>
-                            <SocialsLink
-                                platform={'instagram'}
-                                username={fan.instagram}
-                            />
-                        </SocialsRow>
-                    </Grid>
+            {(fan?.watching_since || fan?.birthday) && (
+                <Stack my={1}>
+                    <Typography variant="h5">
+                        Overview
+                        <Divider />
+                    </Typography>
+                    <Stack spacing={1}>
+                        <Typography variant="h5">Watching since S1</Typography>
+                        <Stack
+                            direction="row"
+                            spacing={1}
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            <FaBirthdayCake />
+                            <Typography variant="h5">January 1st</Typography>
+                        </Stack>
+                    </Stack>
+                </Stack>
+            )}
+
+            <Stack my={1}>
+                <Typography variant="h5">
+                    Socials
+                    <Divider />
+                </Typography>
+                {fan?.instagram || fan?.twitter || fan?.tiktok ? (
+                    <Stack direction="row" spacing={2}>
+                        <SocialsLink
+                            platform={'instagram'}
+                            username={fan?.instagram}
+                        />
+                        <SocialsLink
+                            platform={'twitter'}
+                            username={fan?.twitter}
+                        />
+                        <SocialsLink
+                            platform={'tiktok'}
+                            username={fan?.tiktok}
+                        />
+                    </Stack>
+                ) : (
+                    <Typography>User has no linked socials 💔</Typography>
                 )}
-                {fan?.twitter && (
-                    <Grid item>
-                        <TwitterIcon />
-                        <SocialsRow>
-                            <SocialsLink
-                                platform={'twitter'}
-                                username={fan.twitter}
-                            />
-                        </SocialsRow>
-                    </Grid>
-                )}
-                {fan?.tiktok && (
-                    <Grid item>
-                        <FacebookIcon />
-                        <SocialsRow>
-                            <SocialsLink
-                                platform={'tiktok'}
-                                username={fan.tiktok}
-                            />
-                        </SocialsRow>
-                    </Grid>
-                )}
-            </Grid>
+            </Stack>
+
+            <Box sx={{ width: '100%' }} my={2}>
+                <Stack width="fit-content" margin="auto">
+                    <Typography variant="h5">Favorites</Typography>
+                    <Divider />
+                </Stack>
+
+                <Typography variant="h6" align="left">
+                    Pros
+                </Typography>
+                <Favorites arr={pros} type={searchType.PROS} />
+
+                <Typography variant="h6" align="left">
+                    Teams
+                </Typography>
+                <Favorites arr={celebs} type={searchType.TEAMS} />
+
+                <Typography variant="h6" align="left">
+                    Dances
+                </Typography>
+                <Favorites arr={fans} type={searchType.DANCES} />
+            </Box>
         </IndividualsContainer>
     );
 }

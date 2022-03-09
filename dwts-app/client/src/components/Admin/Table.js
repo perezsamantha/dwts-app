@@ -856,6 +856,13 @@ function Table(props) {
                 },
                 { field: 'twitter', headerName: 'Twitter', width: 100 },
                 { field: 'instagram', headerName: 'Instagram', width: 100 },
+                { field: 'tiktok', headerName: 'TikTok', width: 100 },
+                {
+                    field: 'birthday',
+                    headerName: 'Birthday',
+                    width: 100,
+                    valueGetter: (params) => convertDate(params.value),
+                },
                 { field: 'user_role', headerName: 'Role', width: 80 },
                 {
                     field: 'actions',

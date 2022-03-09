@@ -15,6 +15,7 @@ API.interceptors.request.use((req) => {
 export const signIn = (formData) => API.post('/users/signIn', formData);
 export const signUp = (formData) => API.post('/users/signUp', formData);
 export const verifyUser = (id) => API.get(`/users/verify/${id}`);
+export const addUser = (formData) => API.post('/users/add', formData);
 export const updateUser = (id, user) => API.patch(`/users/update/${id}`, user);
 export const setUserPic = (id, image) =>
     API.patch(`/users/setPic/${id}`, image);

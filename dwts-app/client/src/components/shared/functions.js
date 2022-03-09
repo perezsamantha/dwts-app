@@ -1,4 +1,7 @@
 export const convertDate = (val) => {
+    if (val === null) {
+        return '';
+    }
     const date = new Date(val);
     return (
         (date.getMonth() > 8

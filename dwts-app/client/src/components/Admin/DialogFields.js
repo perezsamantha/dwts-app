@@ -465,7 +465,7 @@ function DialogFields(props) {
                     margin="dense"
                     label="First Show"
                     inputFormat="MM/dd/yyyy"
-                    value={formData.first_show || ''}
+                    value={formData.first_show || null}
                     onChange={(date) =>
                         setFormData({ ...formData, first_show: date })
                     }
@@ -541,7 +541,7 @@ function DialogFields(props) {
                     margin="dense"
                     label="Birthday"
                     inputFormat="MM/dd/yyyy"
-                    value={formData.birthday || ''}
+                    value={formData.birthday || null}
                     onChange={handleBirthday}
                     renderInput={(params) => <TextField {...params} />}
                 />
@@ -748,7 +748,9 @@ function DialogFields(props) {
                 />
             )}
 
-            {Array.of(tableType.CELEB, tableType.PRO).includes(table) && (
+            {Array.of(tableType.CELEB, tableType.PRO, tableType.USER).includes(
+                table
+            ) && (
                 <TextField
                     margin="dense"
                     name="tiktok"
@@ -852,6 +854,17 @@ function DialogFields(props) {
                         No
                     </MenuItem>
                 </TextField>
+            )}
+
+            {Array.of(tableType.USER).includes(table) && (
+                <MobileDatePicker
+                    margin="dense"
+                    label="Birthday"
+                    inputFormat="MM/dd/yyyy"
+                    value={formData.birthday || null}
+                    onChange={handleBirthday}
+                    renderInput={(params) => <TextField {...params} />}
+                />
             )}
 
             {Array.of(tableType.USER).includes(table) && (

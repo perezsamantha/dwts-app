@@ -1,5 +1,5 @@
 
-CREATE TYPE user_role AS ENUM ('fan', 'pro', 'admin');
+CREATE TYPE user_role AS ENUM ('fan', 'moderator', 'pro', 'admin');
 
 CREATE TABLE IF NOT EXISTS users(
     id SERIAL NOT NULL,
@@ -12,16 +12,14 @@ CREATE TABLE IF NOT EXISTS users(
     watching_since SMALLINT,
     twitter VARCHAR(30),
     instagram VARCHAR(30),
-    user_role user_rolue DEFAULT 'fan',
+    tiktok VARCHAR(30),
+    birthday DATE,
+    user_role user_role DEFAULT 'fan',
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    last_login TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     PRIMARY KEY(id),
     CONSTRAINT fk_watching_since
         FOREIGN KEY(watching_since)
             REFERENCES seasons(id)
             ON DELETE CASCADE
 );
-
--- timestamps? tz means timezone included
--- last login?
--- birthday?
--- tiktok?

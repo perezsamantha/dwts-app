@@ -6,7 +6,7 @@ export const addUser = (user) => async (dispatch) => {
     dispatch({ type: actionType.USERADD_REQUEST });
 
     try {
-        const { data } = await api.signUp(user);
+        const { data } = await api.addUser(user);
 
         dispatch({ type: actionType.USERADD_SUCCESS, payload: data });
     } catch (error) {

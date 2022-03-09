@@ -38,7 +38,8 @@ function AddDialog(props) {
                     cover_pic: null,
                     first_name: null,
                     last_name: null,
-                    birthday: new Date().toISOString(),
+                    //birthday: new Date().toISOString(),
+                    birthday: null,
                     height: null,
                     gender: null,
                     twitter: null,
@@ -58,7 +59,8 @@ function AddDialog(props) {
                     season_id: null,
                     week: null,
                     night: null,
-                    date: new Date().toISOString(),
+                    //date: new Date().toISOString(),
+                    date: null,
                 };
             case tableType.TEAM:
                 return {
@@ -86,7 +88,8 @@ function AddDialog(props) {
                 return {
                     first_name: null,
                     last_name: null,
-                    birthday: new Date().toISOString(),
+                    //birthday: new Date().toISOString(),
+                    birthday: null,
                 };
             case tableType.SCORE:
                 return {
@@ -135,6 +138,8 @@ function AddDialog(props) {
                     watching_since: null,
                     instagram: null,
                     twitter: null,
+                    tiktok: null,
+                    birthday: null,
                     user_role: 'fan',
                 };
             default:

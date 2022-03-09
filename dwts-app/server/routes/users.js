@@ -1,6 +1,7 @@
 import express from 'express';
 
 import {
+    addUser,
     grantAccess,
     deleteUser,
     fetchUsers,
@@ -21,6 +22,7 @@ const router = express.Router();
 
 router.post('/signIn', signIn);
 router.post('/signUp', signUp);
+router.post('/add', addUser);
 router.get('/', fetchUsers);
 router.get('/:id', findUserById);
 router.post('/search', searchUsers);
