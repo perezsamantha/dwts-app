@@ -112,14 +112,6 @@ function App() {
                     },
                 },
             },
-            MuiPaper: {
-                styleOverrides: {
-                    root: {
-                        //padding: 15,
-                        //borderRadius: 15,
-                    },
-                },
-            },
             MuiCard: {
                 styleOverrides: {
                     root: {
@@ -180,6 +172,17 @@ function App() {
                         '&.Mui-selected': {
                             background: 'transparent',
                         },
+                    },
+                },
+            },
+            MuiTableCell: {
+                styleOverrides: {
+                    root: {
+                        // paddingLeft: 0,
+                        // paddingRight: 0,
+                        // paddingTop: 3,
+                        // paddingBottom: 3,
+                        padding: 4,
                     },
                 },
             },

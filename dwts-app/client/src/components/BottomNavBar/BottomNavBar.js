@@ -73,13 +73,15 @@ function BottomNavBar() {
     );
 }
 
-const NavBarContainer = styled(Paper)`
-    bottom: 0;
-    position: fixed;
-    width: 100%;
-    z-index: 10;
-    padding: 5;
-`;
+const NavBarContainer = styled(Paper)({
+    bottom: 0,
+    position: 'fixed',
+    width: '100%',
+    zIndex: 10,
+    //padding: 5,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+});
 
 const CustomSearch = styled(Paper)(({ theme }) => ({
     width: 50,

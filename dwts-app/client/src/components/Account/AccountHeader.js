@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Avatar, Box, Divider } from '@mui/material';
+import { Avatar, Box, Card, Divider } from '@mui/material';
 import * as actionType from '../../constants/actionTypes';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
@@ -43,7 +43,7 @@ function AccountHeader() {
 
     return (
         <Container>
-            <AccountContainer elevation={4}>
+            <AccountContainer elevation={4} sx={{ borderRadius: 10 }}>
                 <Box
                     sx={{
                         width: '100%',
@@ -81,7 +81,7 @@ function AccountHeader() {
                 </Button>
                 <Divider />
 
-                <Box sx={{ width: '100%' }}>
+                <Box sx={{ width: '100%' }} mb={2}>
                     <Typography my={1} variant="h4">
                         Favorites
                     </Typography>
@@ -116,21 +116,28 @@ function AccountHeader() {
 
 const Container = styled(Box)`
     /* width: 100%;
-    min-height: 100vh;
+    min-height: 100vh; */
     display: flex;
     flex-direction: column;
-    align-items: center; */
+    align-items: center;
 `;
 
-const AccountContainer = styled(Paper)`
-    width: 90%;
-    margin: 4rem auto 0 auto;
-    //border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    //box-shadow: 0px 0px 5px rgba(250, 250, 250, 0.1);
-    align-items: center;
-    padding: 1rem;
-`;
+const AccountContainer = styled(Paper)({
+    width: '90%',
+    marginTop: 50,
+    padding: 15,
+    borderRadius: 15,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+});
+// width: 90%;
+// margin: 4rem auto 0 auto;
+// //border-radius: 50%;
+// display: flex;
+// flex-direction: column;
+// //box-shadow: 0px 0px 5px rgba(250, 250, 250, 0.1);
+// align-items: center;
+// padding: 1rem;
 
 export default AccountHeader;

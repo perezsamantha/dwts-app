@@ -4,9 +4,9 @@ function TeamPreview() {
     return (
         <Box>
             <Stack alignItems="center">
-                <Avatar></Avatar>
-                <Typography>Celeb &</Typography>
-                <Typography>Pro</Typography>
+                <Avatar sx={{ height: 30, width: 30 }}></Avatar>
+                <Typography sx={{ fontSize: 12 }}>Celeb &</Typography>
+                <Typography sx={{ fontSize: 12 }}>Pro</Typography>
             </Stack>
         </Box>
     );

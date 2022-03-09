@@ -1,28 +1,23 @@
-import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
-    Box,
-    Card,
-    Divider,
-    Stack,
-    Typography,
-} from '@mui/material';
+import { Box, Card, Divider, Stack, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import styled from '@emotion/styled';
 import { FiSearch, FiBarChart2 } from 'react-icons/fi';
 import { AiOutlineUser } from 'react-icons/ai';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import { BsStars } from 'react-icons/bs';
+import {
+    StyledAccordion,
+    StyledAccordionDetails,
+    StyledAccordionSummary,
+} from '../sharedStyles';
 
 function Introduction() {
     return (
         <Card elevation={3}>
-            <Accordion elevation={0} sx={{ backgroundColor: 'transparent' }}>
-                <StyledSummary expandIcon={<ExpandMoreIcon />}>
+            <StyledAccordion elevation={0}>
+                <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography variant="h5">App Overview</Typography>
-                </StyledSummary>
-                <AccordionDetails sx={{ padding: 0 }}>
+                </StyledAccordionSummary>
+                <StyledAccordionDetails sx={{ padding: 0 }}>
                     <Divider />
 
                     <Stack direction="row" spacing={1}>
@@ -125,23 +120,10 @@ function Introduction() {
                             </Stack>
                         </Box>
                     </Stack>
-                </AccordionDetails>
-            </Accordion>
+                </StyledAccordionDetails>
+            </StyledAccordion>
         </Card>
     );
 }
-
-const StyledSummary = styled(AccordionSummary)(({ theme }) => ({
-    padding: 0,
-    minHeight: 'fit-content',
-    maxHeight: 'fit-content',
-    '& .MuiAccordionSummary-content': {
-        margin: 0,
-    },
-    '&.Mui-expanded': {
-        minHeight: 'fit-content',
-        maxHeight: 'fit-content',
-    },
-}));
 
 export default Introduction;
