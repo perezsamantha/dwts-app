@@ -40,8 +40,35 @@ export const addSeason = async (req, res) => {
 
 export const fetchAllSeasons = async (req, res) => {
     try {
+        // const seasons = await pool.query(
+        //     'SELECT * FROM seasons ORDER BY id DESC'
+        // );
+
+        // const seasons = await pool.query(
+        //     `SELECT s.*, COALESCE(ARRAY_AGG(t.id) FILTER (WHERE t.id IS NOT NULL), '{}') AS teams FROM seasons s LEFT JOIN teams t ON s.id = t.season_id GROUP BY s.id ORDER BY s.id DESC`
+        // );
+
         const seasons = await pool.query(
-            'SELECT * FROM seasons ORDER BY id DESC'
+            `
+            SELECT s.*, 
+                COALESCE(json_agg(t) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams 
+            FROM seasons s 
+            LEFT JOIN (
+                SELECT t.*, 
+                    ROW_TO_JSON(p) AS pro, 
+                    ROW_TO_JSON(c) AS celeb 
+                FROM teams t 
+                LEFT JOIN pros p 
+                ON t.pro_id = p.id 
+                LEFT JOIN celebs c 
+                ON t.celeb_id = c.id 
+                GROUP BY t.id, p.id, c.id  
+                ORDER BY t.placement
+            ) t 
+            ON s.id = t.season_id 
+            GROUP BY s.id 
+            ORDER BY s.id DESC
+            `
         );
 
         res.status(200).json(seasons.rows);

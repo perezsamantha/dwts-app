@@ -19,12 +19,10 @@ import {
     StyledAccordionSummary,
 } from '../../Dashboard/sharedStyles';
 import { useSelector } from 'react-redux';
-import { getCeleb, getPro, getShortDate } from '../../shared/functions';
+import { getShortDate } from '../../shared/functions';
 
 function TourOverview() {
     const tours = useSelector((state) => state.tours.tours);
-    const pros = useSelector((state) => state.pros.pros);
-    const celebs = useSelector((state) => state.celebs.celebs);
 
     return (
         <Card elevation={3}>
@@ -74,23 +72,26 @@ function TourOverview() {
                                         <TableCell>{tour.num_shows}</TableCell>
                                         <TableCell>
                                             <Stack direction="row" spacing={1}>
-                                                {tour?.pros?.map((pro) => (
-                                                    <CastPreview
-                                                        item={getPro(pro, pros)}
-                                                    />
-                                                ))}
+                                                {tour?.pros?.map(
+                                                    (pro, index) => (
+                                                        <CastPreview
+                                                            key={index}
+                                                            item={pro}
+                                                        />
+                                                    )
+                                                )}
                                             </Stack>
                                         </TableCell>
                                         <TableCell>
                                             <Stack direction="row" spacing={1}>
-                                                {tour?.celebs?.map((celeb) => (
-                                                    <CastPreview
-                                                        item={getCeleb(
-                                                            celeb,
-                                                            celebs
-                                                        )}
-                                                    />
-                                                ))}
+                                                {tour?.celebs?.map(
+                                                    (celeb, index) => (
+                                                        <CastPreview
+                                                            key={index}
+                                                            item={celeb}
+                                                        />
+                                                    )
+                                                )}
                                             </Stack>
                                         </TableCell>
                                     </TableRow>

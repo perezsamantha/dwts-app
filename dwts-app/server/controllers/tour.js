@@ -24,8 +24,31 @@ export const fetchAllTours = async (req, res) => {
         //     'SELECT * FROM tours ORDER BY season_id'
         // );
 
+        // const tours = await pool.query(
+        //     `SELECT t.*, COALESCE(ARRAY_AGG(pro_id) filter (where pro_id is not null), '{}') as pros, COALESCE(ARRAY_AGG(celeb_id) filter (where celeb_id is not null), '{}') AS celebs FROM tours t LEFT JOIN tour_cast tc ON t.id = tc.tour_id GROUP BY t.id ORDER BY t.season_id`
+        // );
+
         const tours = await pool.query(
-            `SELECT t.*, COALESCE(ARRAY_AGG(pro_id) filter (where pro_id is not null), '{}') as pros, COALESCE(ARRAY_AGG(celeb_id) filter (where celeb_id is not null), '{}') AS celebs FROM tours t LEFT JOIN tour_cast tc ON t.id = tc.tour_id GROUP BY t.id ORDER BY t.season_id`
+            `
+            SELECT t.*, 
+                COALESCE(JSON_AGG(tc.pro) filter (where tc.pro_id is not null), '[]') as pros, 
+                COALESCE(JSON_AGG(tc.celeb) filter (where tc.celeb_id is not null), '[]') AS celebs 
+            FROM tours t 
+            LEFT JOIN (
+                SELECT tc.*, 
+                    ROW_TO_JSON(p) AS pro, 
+                    ROW_TO_JSON(c) AS celeb 
+                FROM tour_cast tc 
+                LEFT JOIN pros p 
+                ON tc.pro_id = p.id 
+                LEFT JOIN celebs c 
+                ON tc.celeb_id = c.id 
+                GROUP BY tc.id, p.id, c.id 
+            ) tc 
+            ON t.id = tc.tour_id 
+            GROUP BY t.id 
+            ORDER BY t.season_id
+            `
         );
 
         res.status(200).json(tours.rows);

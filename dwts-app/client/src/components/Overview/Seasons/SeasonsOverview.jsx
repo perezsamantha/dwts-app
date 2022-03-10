@@ -21,6 +21,7 @@ import { useSelector } from 'react-redux';
 
 function SeasonsOverview() {
     const seasons = useSelector((state) => state.seasons.seasons);
+
     return (
         <Card elevation={3}>
             <StyledAccordion elevation={0}>
@@ -59,15 +60,35 @@ function SeasonsOverview() {
                                             {season.id}
                                         </TableCell>
                                         <TableCell>12</TableCell>
-                                        <TableCell>10</TableCell>
                                         <TableCell>
-                                            <TeamPreview />
+                                            {season.teams.length}
                                         </TableCell>
                                         <TableCell>
-                                            <TeamPreview />
+                                            {season.teams.map((team) =>
+                                                team.placement === 1 ? (
+                                                    <TeamPreview team={team} />
+                                                ) : (
+                                                    ''
+                                                )
+                                            )}
                                         </TableCell>
                                         <TableCell>
-                                            <TeamPreview />
+                                            {season.teams.map((team) =>
+                                                team.placement === 2 ? (
+                                                    <TeamPreview team={team} />
+                                                ) : (
+                                                    ''
+                                                )
+                                            )}
+                                        </TableCell>
+                                        <TableCell>
+                                            {season.teams.map((team) =>
+                                                team.placement === 3 ? (
+                                                    <TeamPreview team={team} />
+                                                ) : (
+                                                    ''
+                                                )
+                                            )}
                                         </TableCell>
                                     </TableRow>
                                 ))}
