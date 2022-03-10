@@ -1,3 +1,5 @@
+import { monthNames } from '../../../constants/dropdowns';
+
 export const getBirthdays = (arr, today) => {
     const isToday = (date) => {
         return (
@@ -14,21 +16,6 @@ export const getBirthdays = (arr, today) => {
 };
 
 export const getMonthName = (i) => {
-    const monthNames = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December',
-    ];
-
     return monthNames[i];
 };
 

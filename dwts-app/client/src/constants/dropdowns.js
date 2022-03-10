@@ -135,3 +135,18 @@ export const genders = [
 export const scoreOrders = Array.from({ length: 5 }, (_, i) => i + 1);
 
 export const roles = ['fan', 'pro', 'admin'];
+
+export const monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+];

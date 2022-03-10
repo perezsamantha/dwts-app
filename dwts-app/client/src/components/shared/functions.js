@@ -1,3 +1,5 @@
+import { monthNames } from '../../constants/dropdowns';
+//TODO: separate into separate files under functions folder?
 export const convertDate = (val) => {
     if (val === null) {
         return '';
@@ -12,6 +14,78 @@ export const convertDate = (val) => {
         '/' +
         date.getFullYear()
     );
+};
+
+export const getShortDate = (val) => {
+    if (val === null) {
+        return '';
+    }
+    const date = new Date(val);
+    return (
+        date.getMonth() +
+        1 +
+        '/' +
+        date.getDate() +
+        '/' +
+        (date.getFullYear() % 100)
+    );
+};
+
+export const getMonthAndDay = (val) => {
+    const date = new Date(val);
+    const month = date.getMonth();
+    const i = date.getDate();
+
+    let monthStr,
+        dateStr = '';
+
+    monthStr = monthNames[month];
+
+    if (i === null) {
+        dateStr = '';
+    }
+    var j = i % 10,
+        k = i % 100;
+    if (j === 1 && k !== 11) {
+        dateStr = i + 'st';
+    } else if (j === 2 && k !== 12) {
+        dateStr = i + 'nd';
+    } else if (j === 3 && k !== 13) {
+        dateStr = i + 'rd';
+    } else {
+        dateStr = i + 'th';
+    }
+
+    return monthStr + ' ' + dateStr;
+};
+
+export const getMonthDayAndYear = (val) => {
+    const date = new Date(val);
+    const month = date.getMonth();
+    const i = date.getDate();
+    const year = date.getFullYear();
+
+    let monthStr,
+        dateStr = '';
+
+    monthStr = monthNames[month];
+
+    if (i === null) {
+        dateStr = '';
+    }
+    var j = i % 10,
+        k = i % 100;
+    if (j === 1 && k !== 11) {
+        dateStr = i + 'st';
+    } else if (j === 2 && k !== 12) {
+        dateStr = i + 'nd';
+    } else if (j === 3 && k !== 13) {
+        dateStr = i + 'rd';
+    } else {
+        dateStr = i + 'th';
+    }
+
+    return monthStr + ' ' + dateStr + ', ' + year;
 };
 
 export const getAge = (dateString) => {

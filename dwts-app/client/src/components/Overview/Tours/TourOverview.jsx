@@ -19,9 +19,13 @@ import {
     StyledAccordionSummary,
 } from '../../Dashboard/sharedStyles';
 import { useSelector } from 'react-redux';
+import { getCeleb, getPro, getShortDate } from '../../shared/functions';
 
 function TourOverview() {
-    const seasons = useSelector((state) => state.seasons.seasons);
+    const tours = useSelector((state) => state.tours.tours);
+    const pros = useSelector((state) => state.pros.pros);
+    const celebs = useSelector((state) => state.celebs.celebs);
+
     return (
         <Card elevation={3}>
             <StyledAccordion elevation={0}>
@@ -48,7 +52,7 @@ function TourOverview() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {seasons.map((season, index) => (
+                                {tours.map((tour, index) => (
                                     <TableRow
                                         key={index}
                                         sx={{
@@ -57,24 +61,36 @@ function TourOverview() {
                                         }}
                                     >
                                         <TableCell component="th" scope="row">
-                                            {season.id}
+                                            {tour.season_id}
                                         </TableCell>
+                                        <TableCell>{tour.name}</TableCell>
                                         <TableCell>
-                                            Dare to Be Different
+                                            <Typography variant="caption">
+                                                {getShortDate(tour?.first_show)}{' '}
+                                                -{' '}
+                                                {getShortDate(tour?.last_show)}
+                                            </Typography>
                                         </TableCell>
-                                        <TableCell>1/7/22 - 3/28/22</TableCell>
-                                        <TableCell>71</TableCell>
+                                        <TableCell>{tour.num_shows}</TableCell>
                                         <TableCell>
                                             <Stack direction="row" spacing={1}>
-                                                <CastPreview />
-                                                <CastPreview />
-                                                <CastPreview />
-                                                <CastPreview />
+                                                {tour?.pros?.map((pro) => (
+                                                    <CastPreview
+                                                        item={getPro(pro, pros)}
+                                                    />
+                                                ))}
                                             </Stack>
                                         </TableCell>
                                         <TableCell>
                                             <Stack direction="row" spacing={1}>
-                                                <CastPreview />
+                                                {tour?.celebs?.map((celeb) => (
+                                                    <CastPreview
+                                                        item={getCeleb(
+                                                            celeb,
+                                                            celebs
+                                                        )}
+                                                    />
+                                                ))}
                                             </Stack>
                                         </TableCell>
                                     </TableRow>

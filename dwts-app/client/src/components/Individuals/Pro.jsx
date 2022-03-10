@@ -11,10 +11,10 @@ import { createLoadingSelector } from '../../api/selectors';
 
 import * as actionType from '../../constants/actionTypes';
 import {
-    convertDate,
     convertHeight,
     getAge,
     getFullCelebName,
+    getMonthDayAndYear,
     getTeamsByPro,
 } from '../shared/functions';
 
@@ -43,7 +43,7 @@ function Pro() {
     ]);
     const loading = useSelector((state) => loadingSelector(state));
 
-    const birthday = convertDate(pro.birthday);
+    const birthday = getMonthDayAndYear(pro.birthday);
     const age = getAge(pro.birthday);
 
     useEffect(() => {

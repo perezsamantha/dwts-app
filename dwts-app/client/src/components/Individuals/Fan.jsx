@@ -15,6 +15,7 @@ import { FaBirthdayCake } from 'react-icons/fa';
 import Favorites from '../Favorites/Favorites';
 import * as searchType from '../../constants/searchTypes';
 import { celebs, fans, pros } from '../Dashboard/Birthdays/sampleData';
+import { getMonthAndDay } from '../shared/functions';
 
 function Fan() {
     const navigate = useNavigate();
@@ -62,7 +63,9 @@ function Fan() {
                             alignItems="center"
                         >
                             <FaBirthdayCake />
-                            <Typography variant="h6">January 1st</Typography>
+                            <Typography variant="h6">
+                                {getMonthAndDay(fan?.birthday)}
+                            </Typography>
                         </Stack>
                     </Stack>
                 </Stack>
