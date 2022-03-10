@@ -54,7 +54,7 @@ function Fan() {
                         <Divider />
                     </Typography>
                     <Stack spacing={1}>
-                        <Typography variant="h5">Watching since S1</Typography>
+                        <Typography variant="h6">Watching since S1</Typography>
                         <Stack
                             direction="row"
                             spacing={1}
@@ -62,7 +62,7 @@ function Fan() {
                             alignItems="center"
                         >
                             <FaBirthdayCake />
-                            <Typography variant="h5">January 1st</Typography>
+                            <Typography variant="h6">January 1st</Typography>
                         </Stack>
                     </Stack>
                 </Stack>
@@ -74,7 +74,7 @@ function Fan() {
                     <Divider />
                 </Typography>
                 {fan?.instagram || fan?.twitter || fan?.tiktok ? (
-                    <Stack direction="row" spacing={2}>
+                    <Stack direction="row" spacing={2} justifyContent="center">
                         <SocialsLink
                             platform={'instagram'}
                             username={fan?.instagram}

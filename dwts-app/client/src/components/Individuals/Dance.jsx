@@ -1,15 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import {
-    Avatar,
-    Box,
-    Button,
-    Divider,
-    Grid,
-    Link,
-    Paper,
-    Stack,
-    Typography,
-} from '@mui/material';
+import React, { useEffect } from 'react';
+import { Box, Button, Divider, Grid, Stack, Typography } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 import { useDispatch, useSelector } from 'react-redux';

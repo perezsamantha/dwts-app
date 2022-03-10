@@ -77,6 +77,14 @@ export const getSeasonAndWeek = (dance, episodes) => {
     return str;
 };
 
+export const getFullCelebName = (id, celebs) => {
+    const celeb = celebs.find((celeb) => celeb.id === id);
+    const celebName = celeb?.last_name
+        ? celeb.first_name + ' ' + celeb.last_name
+        : celeb.first_name;
+    return celebName;
+};
+
 export const getFullTeamName = (celeb, pro) => {
     const celebName = celeb?.last_name
         ? celeb.first_name + ' ' + celeb.last_name
@@ -94,6 +102,22 @@ export const getFullJudgeName = (id, judges) => {
         ? judge.first_name + ' ' + judge.last_name
         : judge.first_name;
     return judgeName;
+};
+
+export const getTeamsByPro = (pro, teams) => {
+    const teamsByPro = teams.filter((team) => team.pro_id === pro.id);
+
+    // sort by season (ascending)
+    teamsByPro.sort((a, b) => {
+        if (a.season_id < b.season_id) {
+            return -1;
+        } else if (a.season_id > b.season_id) {
+            return 1;
+        }
+        return 0;
+    });
+
+    return teamsByPro;
 };
 
 export const getDancesByTeam = (team, dances, dancers, episodes) => {

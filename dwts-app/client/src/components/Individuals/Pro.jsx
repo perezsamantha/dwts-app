@@ -1,41 +1,46 @@
 import React, { useEffect } from 'react';
-import { Button, Stack, Typography } from '@mui/material';
+import { Button, Divider, Grid, Stack, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { findProById, likePro } from '../../actions/pros';
 
-import {
-    CardAvatar,
-    LikesContainer,
-    SocialsRow,
-    Picture,
-} from '../shared/regStyles.js';
+import { CardAvatar, LikesContainer } from '../shared/regStyles.js';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 import { createLoadingSelector } from '../../api/selectors';
 
 import * as actionType from '../../constants/actionTypes';
-import { convertDate, convertHeight, getAge } from '../shared/functions';
-import { Grid, Paper } from '@mui/material';
+import {
+    convertDate,
+    convertHeight,
+    getAge,
+    getFullCelebName,
+    getTeamsByPro,
+} from '../shared/functions';
 
-import TwitterIcon from '@mui/icons-material/Twitter';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import FacebookIcon from '@mui/icons-material/Facebook';
 import ExtraPicUpload from '../shared/ExtraPicUpload';
 import * as tableType from '../../constants/tableTypes';
 import SocialsLink from '../shared/SocialsLink';
 import { IndividualsContainer } from '../shared/muiStyles';
 import Progress from '../shared/Progress';
 import Likes from '../shared/Likes';
+import PicturesGrid from './Supporting/PicturesGrid';
+import { Link } from 'react-router-dom';
+import { FaBirthdayCake } from 'react-icons/fa';
 
 function Pro() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem('profile'));
     const pro = useSelector((state) => state.pros.pro);
+    const celebs = useSelector((state) => state.celebs.celebs);
+    const teams = useSelector((state) => state.teams.teams);
     const { id } = useParams();
 
-    const loadingSelector = createLoadingSelector([actionType.PROFIND]);
+    const loadingSelector = createLoadingSelector([
+        actionType.PROFIND,
+        actionType.FETCHALLDATA,
+    ]);
     const loading = useSelector((state) => loadingSelector(state));
 
     const birthday = convertDate(pro.birthday);
@@ -45,7 +50,13 @@ function Pro() {
         dispatch(findProById(id));
     }, [dispatch, id]);
 
-    return loading ? (
+    let teamsByPro = [];
+
+    if (!loading) {
+        teamsByPro = getTeamsByPro(pro, teams);
+    }
+
+    return loading || Number(pro?.id) !== Number(id) ? (
         <Progress />
     ) : (
         <IndividualsContainer>
@@ -66,75 +77,130 @@ function Pro() {
                 </LikesContainer>
             </Stack>
 
-            <Typography variant="h4" gutterBottom>
-                {pro.first_name} {pro?.last_name}
-            </Typography>
-            {pro?.birthday && (
-                <Typography variant="h5">
-                    Age - {age} ({birthday})
+            <Stack my={1}>
+                <Typography variant="h4" gutterBottom>
+                    {pro.first_name} {pro?.last_name}
                 </Typography>
-            )}
-            {pro?.height && (
+                {pro.is_junior && <Typography>Junior Pro</Typography>}
+            </Stack>
+
+            <Stack my={1}>
                 <Typography variant="h5">
-                    Height - {convertHeight(pro.height)}
+                    Overview
+                    <Divider />
                 </Typography>
+
+                {pro?.height && (
+                    <Typography variant="h6">
+                        {convertHeight(pro.height)}
+                    </Typography>
+                )}
+                {pro?.birthday && (
+                    <>
+                        <Typography variant="h6">{age} years old</Typography>
+                        <Stack
+                            direction="row"
+                            spacing={1}
+                            justifyContent="center"
+                            alignItems="center"
+                        >
+                            <FaBirthdayCake />
+                            <Typography variant="h6">{birthday}</Typography>
+                        </Stack>
+                    </>
+                )}
+            </Stack>
+
+            <Stack my={1}>
+                <Typography variant="h5">
+                    Stats
+                    <Divider />
+                </Typography>
+                <Grid container justifyContent="center" spacing={2}>
+                    <Grid item>
+                        <Typography variant="subtitle1">Wins</Typography>
+                        <Typography variant="subtitle1">10</Typography>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="subtitle1">
+                            Avg Placement
+                        </Typography>
+                        <Typography variant="subtitle1">10</Typography>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="subtitle1">Dances</Typography>
+                        <Typography variant="subtitle1">10</Typography>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="subtitle1">Perfects</Typography>
+                        <Typography variant="subtitle1">10</Typography>
+                    </Grid>
+                </Grid>
+            </Stack>
+
+            <Stack my={1}>
+                <Typography variant="h5">
+                    Socials
+                    <Divider />
+                </Typography>
+                {pro?.instagram || pro?.twitter || pro?.tiktok ? (
+                    <Stack direction="row" spacing={2} justifyContent="center">
+                        <SocialsLink
+                            platform={'instagram'}
+                            username={pro?.instagram}
+                        />
+                        <SocialsLink
+                            platform={'twitter'}
+                            username={pro?.twitter}
+                        />
+                        <SocialsLink
+                            platform={'tiktok'}
+                            username={pro?.tiktok}
+                        />
+                    </Stack>
+                ) : (
+                    <Typography>Pro has no linked socials 💔</Typography>
+                )}
+            </Stack>
+
+            {teamsByPro.length !== 0 && (
+                <Stack my={1}>
+                    <Typography variant="h5">
+                        Teams (In Order)
+                        <Divider />
+                    </Typography>
+                    {teamsByPro.map((team, index) => (
+                        <Link
+                            key={index}
+                            to={{ pathname: `/teams/${team.id}` }}
+                            style={{
+                                textDecoration: 'inherit',
+                                color: 'inherit',
+                            }}
+                        >
+                            Season {team.season_id} w/{' '}
+                            {getFullCelebName(team.celeb_id, celebs)}
+                        </Link>
+                    ))}
+                </Stack>
             )}
-            {/* is junior? */}
 
-            <Typography variant="h6" my={2}>
-                SOCIALS
-            </Typography>
-            <Grid container justifyContent="center" spacing={2}>
-                {pro?.instagram && (
-                    <Grid item>
-                        <InstagramIcon />
-                        <SocialsRow>
-                            <SocialsLink
-                                platform={'instagram'}
-                                username={pro.instagram}
-                            />
-                        </SocialsRow>
-                    </Grid>
+            <Stack my={1}>
+                <Typography variant="h5">
+                    Pictures
+                    <Divider />
+                </Typography>
+
+                {pro?.pictures ? (
+                    <PicturesGrid pictures={pro.pictures} />
+                ) : (
+                    <Typography mb={1}>
+                        No pictures yet for this pro 💔
+                    </Typography>
                 )}
-                {pro?.twitter && (
-                    <Grid item>
-                        <TwitterIcon />
-                        <SocialsRow>
-                            <SocialsLink
-                                platform={'twitter'}
-                                username={pro.twitter}
-                            />
-                        </SocialsRow>
-                    </Grid>
-                )}
-                {pro?.tiktok && (
-                    <Grid item>
-                        <FacebookIcon />
-                        <SocialsRow>
-                            <SocialsLink
-                                platform={'tiktok'}
-                                username={pro.tiktok}
-                            />
-                        </SocialsRow>
-                    </Grid>
-                )}
-            </Grid>
 
-            <Typography variant="h6" my={2}>
-                PICTURES
-            </Typography>
-
-            <Grid container justifyContent="center" spacing={2} mb={2}>
-                {pro?.pictures?.map((picture, index) => (
-                    <Grid key={index} item>
-                        <Paper elevation={0}>
-                            <Picture src={picture} />
-                        </Paper>
-                    </Grid>
-                ))}
-            </Grid>
-
-            <ExtraPicUpload id={pro.id} type={tableType.PRO} />
+                <ExtraPicUpload id={pro.id} type={tableType.PRO} />
+            </Stack>
         </IndividualsContainer>
     );
 }

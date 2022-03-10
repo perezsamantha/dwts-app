@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Avatar, Box, Card, Paper, Stack, Typography } from '@mui/material';
+import { Avatar, Card, Stack, Typography } from '@mui/material';
 
 function FanPreview(props) {
     const { fan } = props;

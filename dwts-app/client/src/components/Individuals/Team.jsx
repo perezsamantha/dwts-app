@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { findTeamById } from '../../actions/teams';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { likeTeam } from '../../actions/teams';
-import { CardAvatar, LikesContainer, Picture } from '../shared/regStyles.js';
+import { CardAvatar, LikesContainer } from '../shared/regStyles.js';
 import ExtraPicUpload from '../shared/ExtraPicUpload';
 import * as tableType from '../../constants/tableTypes';
 import {
@@ -32,7 +32,7 @@ import {
 import SocialsLink from '../shared/SocialsLink';
 import { createLoadingSelector } from '../../api/selectors';
 import * as actionType from '../../constants/actionTypes';
-import { IndividualsContainer, ExtraPic } from '../shared/muiStyles';
+import { IndividualsContainer } from '../shared/muiStyles';
 import Progress from '../shared/Progress';
 import Likes from '../shared/Likes';
 import PicturesGrid from './Supporting/PicturesGrid';
@@ -116,7 +116,7 @@ function Team(props) {
                 </LikesContainer>
             </Stack>
 
-            <Box my={1}>
+            <Stack my={1}>
                 <Typography variant="h4">{fullTeamName}</Typography>
 
                 {team.team_name && (
@@ -124,9 +124,9 @@ function Team(props) {
                         #team{team.team_name}
                     </Typography>
                 )}
-            </Box>
+            </Stack>
 
-            <Box my={1}>
+            <Stack my={1}>
                 <Typography variant="h5">Season {team.season_id}</Typography>
 
                 {team.placement && (
@@ -134,9 +134,9 @@ function Team(props) {
                 )}
 
                 <Typography variant="h6">Average Score - {avgScore}</Typography>
-            </Box>
+            </Stack>
 
-            <Box my={1}>
+            <Stack my={1}>
                 <Typography variant="h5" my={1}>
                     Overview
                     <Divider />
@@ -173,9 +173,9 @@ function Team(props) {
                         </Box>
                     </Stack>
                 </Stack>
-            </Box>
+            </Stack>
 
-            <Box my={1}>
+            <Stack my={1}>
                 <Typography variant="h5">
                     Stats
                     <Divider />
@@ -198,9 +198,9 @@ function Team(props) {
                         </Typography>
                     </Grid>
                 </Grid>
-            </Box>
+            </Stack>
 
-            <Box sx={{ display: 'flex', flexDirection: 'column' }} my={1}>
+            <Stack sx={{ display: 'flex', flexDirection: 'column' }} my={1}>
                 <Typography variant="h5">
                     Dances (In Order)
                     <Divider />
@@ -217,9 +217,9 @@ function Team(props) {
                         {dance.style} - {getScoreByDance(dance, scores)}
                     </Link>
                 ))}
-            </Box>
+            </Stack>
 
-            <Box my={1}>
+            <Stack my={1}>
                 <Typography variant="h5" my={1}>
                     Socials
                     <Divider />
@@ -268,10 +268,10 @@ function Team(props) {
                         </Box>
                     </Stack>
                 </Stack>
-            </Box>
+            </Stack>
 
-            <Box my={1}>
-                <Typography variant="h5" my={1}>
+            <Stack my={1}>
+                <Typography variant="h5">
                     Pictures
                     <Divider />
                 </Typography>
@@ -279,7 +279,7 @@ function Team(props) {
                 <PicturesGrid pictures={team?.pictures} />
 
                 <ExtraPicUpload id={team.id} type={tableType.TEAM} />
-            </Box>
+            </Stack>
         </IndividualsContainer>
     );
 }
