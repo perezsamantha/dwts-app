@@ -50,7 +50,33 @@ export const convertHeight = (heightInInches) => {
     return feet + `'` + inches;
 };
 
-// what
+export const getPro = (id, pros) => {
+    return pros.find((pro) => pro.id === id);
+};
+
+export const getCeleb = (id, celebs) => {
+    return celebs.find((pro) => pro.id === id);
+};
+
+export const getTeam = (id, teams) => {
+    return teams.find((team) => team.id === id);
+};
+
+// for dance previews in search
+export const getSeasonAndWeek = (dance, episodes) => {
+    let str = '';
+
+    episodes.find((episode) =>
+        episode.id === dance.episode_id && episode?.night
+            ? (str = `Season ${episode.season_id} \u2022 Week ${episode.week} \u2022 Night ${episode.night}`)
+            : episode.id === dance.episode_id
+            ? (str = `Season ${episode.season_id} \u2022 Week ${episode.week}`)
+            : ''
+    );
+
+    return str;
+};
+
 export const getFullTeamName = (celeb, pro) => {
     const celebName = celeb?.last_name
         ? celeb.first_name + ' ' + celeb.last_name
@@ -59,6 +85,15 @@ export const getFullTeamName = (celeb, pro) => {
         ? pro.first_name + ' ' + pro.last_name
         : pro.first_name;
     return celebName + ' & ' + proName;
+};
+
+export const getFullJudgeName = (id, judges) => {
+    const judge = judges.find((judge) => judge.id === id);
+
+    const judgeName = judge?.last_name
+        ? judge.first_name + ' ' + judge.last_name
+        : judge.first_name;
+    return judgeName;
 };
 
 export const getDancesByTeam = (team, dances, dancers, episodes) => {
@@ -151,6 +186,22 @@ export const getScoreByDance = (dance, scores) => {
     return totalScore + '/' + numScores * 10;
 };
 
+export const filterScoresByDance = (dance, scores) => {
+    const arr = scores.filter((score) => score.dance_id === dance.id);
+
+    arr.sort((a, b) => {
+        if (a.order < b.order) {
+            return -1;
+        } else if (a.order > b.order) {
+            return 1;
+        } else {
+            return 0;
+        }
+    });
+
+    return arr;
+};
+
 export const getNumberOfTens = (dances, scores) => {
     let numTens = 0;
 
@@ -207,8 +258,6 @@ export const getNumberOfPerfects = (dances, scores) => {
     return numPerfects;
 };
 
-// TODO: all scores per dance
-
 // one for all and one for just main dancers where not background??
 export const getDancesByPro = (pro, teams, dances, dancers) => {
     const filteredDancers = dancers.filter(
@@ -231,4 +280,12 @@ export const getDancesByPro = (pro, teams, dances, dancers) => {
     }, []);
 
     return filteredDances;
+};
+
+export const getDancersByDance = (dance, dancers) => {
+    const filteredDancers = dancers.filter(
+        (dancer) => dancer.dance_id === dance.id
+    );
+
+    return filteredDancers;
 };

@@ -1,24 +1,23 @@
-import React, { useEffect } from 'react';
-import { Preview } from '../../shared/regStyles.js';
+import React from 'react';
 
-import { Typography } from '@mui/material';
-import DataGetter from '../../shared/DataGetter';
+import { Card, Stack, Typography } from '@mui/material';
+import { getSeasonAndWeek } from '../../shared/functions';
+import { useSelector } from 'react-redux';
 
 function DancePreview(props) {
-    const dance = props.dance;
-
-    useEffect(() => {}, []);
+    const { dance } = props;
+    const episodes = useSelector((state) => state.episodes.episodes);
 
     return (
-        <Preview>
-            {/* <PreviewPhoto src={dance.cover_pic ? dance.cover_pic : "/defaultPic.jpeg"} /> */}
-
-            {/* <Typography variant='h2'>Testing</Typography> */}
-            <Typography variant="body1">
-                <DataGetter id={dance.episode_id} type={'Episode'} />{' '}
-                {dance.style} &bull; {dance.song_title} - {dance.song_artist}
-            </Typography>
-        </Preview>
+        <Card elevation={3} sx={{ padding: 1, margin: 0 }}>
+            <Stack>
+                <Typography>{dance.style}</Typography>
+                <Typography>{getSeasonAndWeek(dance, episodes)}</Typography>
+                <Typography noWrap>
+                    {dance.song_title} - {dance.song_artist}
+                </Typography>
+            </Stack>
+        </Card>
     );
 }
 

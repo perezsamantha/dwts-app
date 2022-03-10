@@ -35,6 +35,7 @@ import * as actionType from '../../constants/actionTypes';
 import { IndividualsContainer, ExtraPic } from '../shared/muiStyles';
 import Progress from '../shared/Progress';
 import Likes from '../shared/Likes';
+import PicturesGrid from './Supporting/PicturesGrid';
 
 function Team(props) {
     const navigate = useNavigate();
@@ -275,16 +276,7 @@ function Team(props) {
                     <Divider />
                 </Typography>
 
-                <Grid container justifyContent="center" spacing={1} my={1}>
-                    {team?.pictures?.map((picture, index) => (
-                        <Grid key={index} item>
-                            {/* <Paper elevation={0}>
-                                <Picture src={picture} />
-                            </Paper> */}
-                            <ExtraPic component="img" src={picture} />
-                        </Grid>
-                    ))}
-                </Grid>
+                <PicturesGrid pictures={team?.pictures} />
 
                 <ExtraPicUpload id={team.id} type={tableType.TEAM} />
             </Box>

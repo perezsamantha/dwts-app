@@ -27,3 +27,5 @@ yarn-error.log*
 /server/.env
 /server/api/services/*.json
 /server/api/pool.js
+
+.VSCodeCounter

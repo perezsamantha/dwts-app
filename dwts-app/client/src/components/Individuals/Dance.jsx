@@ -1,19 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Grid, Paper, Stack, Typography } from '@mui/material';
+import {
+    Avatar,
+    Box,
+    Button,
+    Divider,
+    Grid,
+    Link,
+    Paper,
+    Stack,
+    Typography,
+} from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { findDanceById } from '../../actions/dances';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import { likeDance } from '../../actions/dances';
 import * as tableType from '../../constants/tableTypes';
 
-import { Picture, LikesContainer, CardAvatar } from '../shared/regStyles.js';
+import { LikesContainer, CardAvatar } from '../shared/regStyles.js';
 
-import { convertPlacement } from '../shared/functions';
+import {
+    convertPlacement,
+    filterScoresByDance,
+    getDancersByDance,
+    getFullJudgeName,
+    getScoreByDance,
+    getSeasonAndWeek,
+} from '../shared/functions';
 import ExtraPicUpload from '../shared/ExtraPicUpload';
-import DataGetter from '../shared/DataGetter';
 
 import { createLoadingSelector } from '../../api/selectors';
 
@@ -21,6 +37,9 @@ import * as actionType from '../../constants/actionTypes';
 import { IndividualsContainer } from '../shared/muiStyles';
 import Progress from '../shared/Progress';
 import Likes from '../shared/Likes';
+import DanceLink from '../shared/DanceLink';
+import PicturesGrid from './Supporting/PicturesGrid';
+import DancerPreview from './Supporting/DancerPreview';
 
 function Dance() {
     const navigate = useNavigate();
@@ -33,22 +52,32 @@ function Dance() {
 
     const loadingSelector = createLoadingSelector([
         actionType.DANCEFIND,
-        actionType.CELEBSEARCH,
-        actionType.PROSEARCH,
-        actionType.TEAMSEARCH,
-        actionType.SEASONSEARCH,
-        actionType.EPISODESEARCH,
-        actionType.DANCERSEARCH,
-        actionType.JUDGESEARCH,
-        actionType.SCORESEARCH,
+        actionType.FETCHALLDATA,
     ]);
     const loading = useSelector((state) => loadingSelector(state));
+
+    const scores = useSelector((state) => state.scores.scores);
+    const episodes = useSelector((state) => state.episodes.episodes);
+    const judges = useSelector((state) => state.judges.judges);
+    const dancers = useSelector((state) => state.dancers.dancers);
 
     useEffect(() => {
         dispatch(findDanceById(id));
     }, [dispatch, id]);
 
-    return loading || Object.keys(dance).length === 0 ? (
+    let seasonAndWeek = '';
+    let totalScore = 0;
+    let filteredScores,
+        filteredDancers = [];
+
+    if (!loading) {
+        seasonAndWeek = getSeasonAndWeek(dance, episodes);
+        filteredScores = filterScoresByDance(dance, scores);
+        totalScore = getScoreByDance(dance, filteredScores);
+        filteredDancers = getDancersByDance(dance, dancers);
+    }
+
+    return loading || Number(dance?.id) !== Number(id) ? (
         <Progress />
     ) : (
         <IndividualsContainer>
@@ -67,77 +96,124 @@ function Dance() {
                 </LikesContainer>
             </Stack>
 
-            {/* <Grid container justify="center" className={classes.root} spacing={2}>
-                        {dance.teams.map((id, index) => (
-                            <div key={index} style={{ margin: "5px" }}>
-                                {Array.isArray(teams) && teams.filter(team => team._id === id)
-                                    .map((team, index) => (
-                                        <Grid key={index} item>
-                                            <Link key={index} to={{ pathname: `/teams/${team._id}` }} style={{ textDecoration: "none" }} >
-                                                <TeamsPreview team={team} preview="dance" pro={pros.find(pro => pro._id === team.pro)} />
-                                            </Link>
-                                        </Grid>
-                                    ))}
-                            </div>
-                        ))}
-                    </Grid> */}
+            <Stack mb={1} spacing={1}>
+                <Typography variant="h4">{dance.style}</Typography>
+                <Typography variant="h5">{seasonAndWeek}</Typography>
+                <Typography variant="h5">{totalScore}</Typography>
+            </Stack>
 
-            <Typography variant="h6">
-                <DataGetter id={dance.episode_id} type={tableType.EPISODE} />
-            </Typography>
-            <Typography variant="h6">Style - {dance.style}</Typography>
-            {dance?.song_title && (
-                <Typography variant="h6">Song - {dance.song_title}</Typography>
-            )}
-            {dance?.song_artist && (
-                <Typography variant="h6">
-                    Artist - {dance.song_artist}
+            <Stack my={1}>
+                <Typography variant="h5">
+                    Overview
+                    <Divider />
                 </Typography>
-            )}
-            {dance?.running_order && (
-                <Typography variant="h6">Running Order - {ro}</Typography>
-            )}
 
-            <Typography variant="h5">Judges Scores</Typography>
-            {/* <Grid
-                container
-                justify="center"
-                spacing={2}
-            >
-                {dance?.scores_judges.map((judge, index) => (
-                    <Grid key={index} item>
-                        <Typography variant='h6'>
-                            {judge.substring(0, judge.lastIndexOf(' '))}
-                        </Typography>
-                        <Typography variant='h6'>{dance.scores_values[index]}</Typography>
-                    </Grid>
-                ))}
-            </Grid> */}
+                {dance?.song_title && (
+                    <Typography>Song - {dance.song_title}</Typography>
+                )}
+                {dance?.song_artist && (
+                    <Typography>Artist - {dance.song_artist}</Typography>
+                )}
 
-            {dance?.link && <Typography variant="h6">{dance?.link}</Typography>}
-            {dance?.theme && dance.theme !== 'No theme' && (
-                <Typography variant="h6">{dance.theme} Week</Typography>
-            )}
+                {dance?.running_order && (
+                    <Typography my={1}>Running Order - {ro}</Typography>
+                )}
+
+                {dance?.theme && <Typography>{dance.theme} Week</Typography>}
+
+                {/* maybe getTheme ? */}
+            </Stack>
+
+            <Stack my={1} alignItems="center">
+                <Typography variant="h5">
+                    Danced by
+                    <Divider />
+                </Typography>
+
+                <Grid container justifyContent="center" spacing={1}>
+                    {filteredDancers.map((dancer, index) =>
+                        dancer.team_id ? (
+                            <Grid key={index} item>
+                                <DancerPreview dancer={dancer} type={'team'} />
+                            </Grid>
+                        ) : dancer.pro_id ? (
+                            <Grid key={index} item>
+                                <DancerPreview dancer={dancer} type={'pro'} />
+                            </Grid>
+                        ) : dancer.celeb_id ? (
+                            <Grid key={index} item>
+                                <DancerPreview dancer={dancer} type={'celeb'} />
+                            </Grid>
+                        ) : (
+                            <></>
+                        )
+                    )}
+                </Grid>
+            </Stack>
+
+            <Stack my={1}>
+                <Typography variant="h5">
+                    Judges Scores
+                    <Divider />
+                </Typography>
+
+                {filteredScores.length === 0 ? (
+                    <Typography>No scores yet for this dance 💔</Typography>
+                ) : (
+                    <>
+                        {filteredScores.map((score, index) => (
+                            <Box key={index}>
+                                <Typography>
+                                    {getFullJudgeName(score.judge_id, judges)} -{' '}
+                                    {score.value}
+                                </Typography>
+                                {/* * or similar for guest judge */}
+                            </Box>
+                        ))}
+                    </>
+                )}
+            </Stack>
+
+            <Stack my={1}>
+                <Typography variant="h5">
+                    Link
+                    <Divider />
+                </Typography>
+
+                {dance?.link ? (
+                    <DanceLink link={dance.link} />
+                ) : (
+                    <Typography>No link yet for this dance 💔</Typography>
+                )}
+            </Stack>
 
             {dance?.extra && (
-                <Typography variant="h6">Notes - {dance.extra}</Typography>
+                <Stack my={1}>
+                    <Typography variant="h5">
+                        Notes
+                        <Divider />
+                    </Typography>
+
+                    <Typography>{dance.extra}</Typography>
+                </Stack>
             )}
 
-            {/* turn into shared picture grid component */}
-            <Typography variant="h5" mb={2}>
-                PICTURES
-            </Typography>
+            <Stack my={1}>
+                <Typography variant="h5">
+                    Pictures
+                    <Divider />
+                </Typography>
 
-            <Grid container justifyContent="center" spacing={2} mb={2}>
-                {dance.pictures?.map((picture, index) => (
-                    <Grid key={index} item>
-                        <Paper elevation={0}>
-                            <Picture src={picture} />
-                        </Paper>
-                    </Grid>
-                ))}
-            </Grid>
-            <ExtraPicUpload id={dance.id} type={tableType.DANCE} />
+                {dance?.pictures ? (
+                    <PicturesGrid pictures={dance.pictures} />
+                ) : (
+                    <Typography mb={1}>
+                        No pictures yet for this dance 💔
+                    </Typography>
+                )}
+
+                <ExtraPicUpload id={dance.id} type={tableType.DANCE} />
+            </Stack>
         </IndividualsContainer>
     );
 }

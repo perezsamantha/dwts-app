@@ -168,7 +168,7 @@ const SearchContainer = styled.div`
 `;
 
 const SearchBoxContainer = styled.div`
-    width: 90%;
+    width: 95%;
     margin: 10px auto;
     display: flex;
     flex-direction: row;
