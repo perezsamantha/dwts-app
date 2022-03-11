@@ -31,8 +31,8 @@ export const fetchAllTours = async (req, res) => {
         const tours = await pool.query(
             `
             SELECT t.*, 
-                COALESCE(JSON_AGG(tc.pro) filter (where tc.pro_id is not null), '[]') as pros, 
-                COALESCE(JSON_AGG(tc.celeb) filter (where tc.celeb_id is not null), '[]') AS celebs 
+                COALESCE(JSON_AGG(tc.pro) FILTER (WHERE tc.pro_id IS NOT NULL), '[]') AS pros, 
+                COALESCE(JSON_AGG(tc.celeb) FILTER (WHERE tc.celeb_id IS NOT NULL), '[]') AS celebs 
             FROM tours t 
             LEFT JOIN (
                 SELECT tc.*, 

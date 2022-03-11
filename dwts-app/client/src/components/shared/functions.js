@@ -261,6 +261,23 @@ export const getAverageScore = (dances, scores) => {
     return avgScore;
 };
 
+// ✅ using array of score objects instead of array of plain values
+export const getTotalScore = (scores) => {
+    let totalScore = 0;
+    let numScores = 0;
+
+    numScores = scores.length;
+
+    if (scores.length !== 0) {
+        totalScore = Object.values(scores).reduce(
+            (a, { value }) => a + value,
+            0
+        );
+    }
+
+    return totalScore + '/' + numScores * 10;
+};
+
 export const getScoreByDance = (dance, scores) => {
     let scoresByDance = [];
     let totalScore = 0;

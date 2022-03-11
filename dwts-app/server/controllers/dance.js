@@ -41,9 +41,61 @@ export const addDance = async (req, res) => {
 export const fetchAllDances = async (req, res) => {
     try {
         //const dances = await pool.query('SELECT * FROM dances');
+        // const dances = await pool.query(
+        //     "SELECT d.*, COALESCE(ARRAY_AGG(user_id) filter (where user_id is not null), '{}') likes FROM dances d LEFT JOIN dance_likes l ON d.id = l.dance_id GROUP BY d.id"
+        // );
+
         const dances = await pool.query(
-            "SELECT d.*, COALESCE(ARRAY_AGG(user_id) filter (where user_id is not null), '{}') likes FROM dances d LEFT JOIN dance_likes l ON d.id = l.dance_id GROUP BY d.id"
+            `
+            SELECT d.*,
+                (
+                    SELECT ROW_TO_JSON(e.*)
+                    FROM episodes e
+                    WHERE e.id = d.episode_id
+                ) AS episode,
+                (
+                    SELECT COALESCE(JSON_AGG(s) FILTER (WHERE s.id IS NOT NULL), '[]')
+                    FROM (
+                        SELECT s2.*,
+                            ROW_TO_JSON(j) as judge
+                        FROM scores s2
+                        LEFT JOIN judges j
+                        ON s2.judge_id = j.id
+                        GROUP BY s2.id, j.id
+                    ) s
+                    WHERE s.dance_id = d.id
+                ) AS scores, 
+                COALESCE(JSON_AGG(dc) FILTER (WHERE dc.id IS NOT NULL), '[]') AS dancers
+            FROM dances d
+            LEFT JOIN (
+                SELECT dc2.*, 
+                    ROW_TO_JSON(t) AS team, 
+                    ROW_TO_JSON(p) AS pro, 
+                    ROW_TO_JSON(c) AS celeb 
+                FROM dancers dc2 
+                LEFT JOIN (
+                    SELECT t2.*, 
+                        ROW_TO_JSON(p) AS pro, 
+                        ROW_TO_JSON(c) AS celeb 
+                    FROM teams t2 
+                    LEFT JOIN pros p 
+                    ON t2.pro_id = p.id 
+                    LEFT JOIN celebs c 
+                    ON t2.celeb_id = c.id 
+                    GROUP BY t2.id, p.id, c.id
+                ) t 
+                ON t.id = dc2.team_id 
+                LEFT JOIN pros p 
+                ON p.id = dc2.pro_id 
+                LEFT JOIN celebs c 
+                ON c.id = dc2.celeb_id 
+                GROUP BY dc2.id, dc2.dance_id, t.*, p.id, c.id
+            ) dc
+            ON d.id = dc.dance_id
+            GROUP BY d.id
+            `
         );
+
         res.status(200).json(dances.rows);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -79,8 +131,29 @@ export const searchDances = async (req, res) => {
         if (search === '') {
             //dances = await pool.query('SELECT * FROM dances');
 
+            // dances = await pool.query(
+            //     "SELECT d.*, COALESCE(ARRAY_AGG(user_id) filter (where user_id is not null), '{}') likes FROM dances d LEFT JOIN dance_likes l ON d.id = l.dance_id GROUP BY d.id"
+            // );
+
             dances = await pool.query(
-                "SELECT d.*, COALESCE(ARRAY_AGG(user_id) filter (where user_id is not null), '{}') likes FROM dances d LEFT JOIN dance_likes l ON d.id = l.dance_id GROUP BY d.id"
+                `
+                SELECT d.*,
+                    ROW_TO_JSON(e) AS episode,
+                    COALESCE(JSON_AGG(s) FILTER (WHERE s.id IS NOT NULL), '[]') AS scores 
+                FROM dances d 
+                LEFT JOIN episodes e
+                ON d.episode_id = e.id
+                LEFT JOIN (
+                    SELECT s.*, 
+                        ROW_TO_JSON(j) AS judge 
+                    FROM scores s
+                    LEFT JOIN judges j
+                    ON s.judge_id = j.id
+                    GROUP BY s.id, j.id
+                ) s
+                ON d.id = s.dance_id
+                GROUP BY d.id, e.id
+                `
             );
         } else {
             // dances = await pool.query(
@@ -88,15 +161,33 @@ export const searchDances = async (req, res) => {
             //     [`%${search}%`]
             // );
 
+            // dances = await pool.query(
+            //     "SELECT d.*, COALESCE(ARRAY_AGG(user_id) filter (where user_id is not null), '{}') likes FROM dances d LEFT JOIN dance_likes l ON d.id = l.dance_id WHERE song_title || ' ' || song_artist ILIKE $1 GROUP BY d.id",
+            //     [`%${search}%`]
+            // );
             dances = await pool.query(
-                "SELECT d.*, COALESCE(ARRAY_AGG(user_id) filter (where user_id is not null), '{}') likes FROM dances d LEFT JOIN dance_likes l ON d.id = l.dance_id WHERE song_title || ' ' || song_artist ILIKE $1 GROUP BY d.id",
+                `
+                SELECT d.*,
+                    ROW_TO_JSON(e) AS episode,
+                    COALESCE(JSON_AGG(s) FILTER (WHERE s.id IS NOT NULL), '[]') AS scores 
+                FROM dances d 
+                LEFT JOIN episodes e
+                ON d.episode_id = e.id
+                LEFT JOIN (
+                    SELECT s.*, 
+                        ROW_TO_JSON(j) AS judge 
+                    FROM scores s
+                    LEFT JOIN judges j
+                    ON s.judge_id = j.id
+                    GROUP BY s.id, j.id
+                ) s
+                ON d.id = s.dance_id
+                WHERE song_title || ' ' || song_artist ILIKE $1
+                GROUP BY d.id, e.id
+                `,
                 [`%${search}%`]
             );
         }
-        // const dances = await pool.query(
-        //     "SELECT * FROM dances WHERE song_title || ' ' || song_artist ILIKE $1",
-        //     [`%${search}%`]
-        // );
 
         res.status(200).json(dances.rows);
     } catch (error) {
