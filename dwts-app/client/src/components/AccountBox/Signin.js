@@ -20,7 +20,8 @@ import {
     FullTextField,
 } from './common';
 import { AccountContext } from './AccountContext';
-import { Typography, IconButton, InputAdornment } from '@mui/material';
+import { Typography, IconButton, InputAdornment, Stack } from '@mui/material';
+import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 
 const initialState = { username: '', password: '' };
 
@@ -69,22 +70,25 @@ function Signin(props) {
     return (
         <BoxContainer>
             <FullTextField
-                required
-                id="username"
                 name="username"
-                label="username"
+                label="Username"
                 type="text"
                 onChange={handleChange}
                 margin="dense"
-                //InputProps={{
-                //startAdornment: '@'
-                //}}
+                InputProps={{
+                    startAdornment: (
+                        <InputAdornment position="start">
+                            <IconButton onClick={handleShowPass}>
+                                {showPass ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                        </InputAdornment>
+                    ),
+                }}
+                sx={{}}
             />
             <FullTextField
-                required
-                id="pass"
                 name="password"
-                label="password"
+                label="Password"
                 type={showPass ? 'text' : 'password'}
                 onChange={handleChange}
                 handleShowPass={handleShowPass}
@@ -103,15 +107,40 @@ function Signin(props) {
             {message && <Typography>{message}</Typography>}
 
             <MutedLink href="#">Forgot your password?</MutedLink>
-            <SubmitButton type="submit" onClick={handleSubmit}>
+            {/* <SubmitButton type="submit" onClick={handleSubmit}>
                 Sign In
-            </SubmitButton>
-            <MutedLink href="#">
+            </SubmitButton> */}
+            <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                width={0.9}
+                my={2}
+            >
+                <Typography
+                    variant="h4"
+                    color="primary"
+                    sx={{ fontWeight: 500 }}
+                >
+                    Sign In
+                </Typography>
+                <SubmitButton type="submit" onClick={handleSubmit}>
+                    <ArrowRightAltIcon
+                        sx={{
+                            width: 0.8,
+                            height: 0.8,
+                            color: 'rgba(255, 255, 255, 0.9)',
+                            textShadow: '150px 250px 100px green',
+                        }}
+                    />
+                </SubmitButton>
+            </Stack>
+            {/* <MutedLink href="#">
                 Don't have an account?{' '}
                 <BoldLink href="#" onClick={switchToSignup}>
                     Sign up.
                 </BoldLink>
-            </MutedLink>
+            </MutedLink> */}
         </BoxContainer>
         /* keep for when implementing google oauth
         <form autoComplete="off" onSubmit={handleSubmit}>

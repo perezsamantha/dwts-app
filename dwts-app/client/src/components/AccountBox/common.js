@@ -3,6 +3,7 @@ import { TextField, Typography } from '@mui/material';
 
 export const FullTextField = styled(TextField)({
     width: '100%',
+    //padding: 10,
 });
 
 export const HeaderText = styled(Typography)(({ theme }) => ({
@@ -42,25 +43,37 @@ export const BoldLink = styled.a`
     text-decoration: none;
 `;
 
-export const SubmitButton = styled.button`
-    width: 100%;
-    padding: 11px 20%;
-    color: #fff;
-    font-size: 15px;
-    font-weight: 600;
-    border: none;
-    border-radius: 100px 100px 100px 100px;
-    cursor: pointer;
-    transition: all, 240ms ease-in-out;
-    background: rgb(236, 220, 141);
-    background: radial-gradient(
-        circle,
-        rgba(236, 220, 141, 1) 0%,
-        rgba(208, 174, 87, 1) 100%
-    );
-    margin: 1em 0;
+// export const SubmitButton = styled.button`
+//     width: 100%;
+//     padding: 11px 20%;
+//     color: #fff;
+//     font-size: 15px;
+//     font-weight: 600;
+//     border: none;
+//     border-radius: 100px 100px 100px 100px;
+//     cursor: pointer;
+//     transition: all, 240ms ease-in-out;
+//     background: rgb(236, 220, 141);
+//     background: radial-gradient(
+//         circle,
+//         rgba(236, 220, 141, 1) 0%,
+//         rgba(208, 174, 87, 1) 100%
+//     );
+//     margin: 1em 0;
 
-    &:hover {
-        filter: brightness(1.03);
-    }
-`;
+//     &:hover {
+//         filter: brightness(1.03);
+//     }
+// `;
+
+export const SubmitButton = styled('button')({
+    height: 60,
+    width: 60,
+    borderRadius: '50%',
+    border: 'none',
+    backgroundColor: '#fae27a',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transition: 'all, 240ms ease-in-out',
+});
