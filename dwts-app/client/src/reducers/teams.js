@@ -40,7 +40,7 @@ const teamReducer = (
         case actionType.TEAMLIKE_SUCCESS:
             return {
                 ...state,
-                team: { ...state.team, likes: action.payload },
+                team: { ...state.team, likes: action.payload.likes },
             };
 
         default:

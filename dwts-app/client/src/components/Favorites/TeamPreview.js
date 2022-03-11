@@ -2,7 +2,8 @@ import { Box, Stack, Typography } from '@mui/material';
 import React from 'react';
 
 function TeamPreview(props) {
-    const team = props.team;
+    const { team } = props;
+    const { pro, celeb } = team;
 
     return (
         <Stack alignContent="left">
@@ -12,9 +13,9 @@ function TeamPreview(props) {
                 src={team.cover_pic ? team.cover_pic : '/defaultPic.jpeg'}
             />
             <Typography mt={1} variant="body1">
-                {team.first_name} &
+                {celeb.first_name} &
             </Typography>
-            <Typography variant="body1">{team.last_name}</Typography>
+            <Typography variant="body1">{pro.first_name}</Typography>
             {/* <Typography variant="body1">
                 {getTeamName} just first names with &
             </Typography> */}

@@ -17,6 +17,7 @@ import DialogFields from '../Admin/DialogFields';
 function EditAccount(props) {
     const [open, setOpen] = useState(props.open);
     const [formData, setFormData] = useState(props.user);
+    console.log(formData);
     const [fileData, setFileData] = useState(null);
     const [editor, setEditor] = useState(null);
     const dispatch = useDispatch();

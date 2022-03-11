@@ -193,8 +193,15 @@ export const likeTeam = (id) => async (dispatch) => {
 
     try {
         const { data } = await api.likeTeam(id, user?.token);
+        console.log(data);
 
-        dispatch({ type: actionType.TEAMLIKE_SUCCESS, payload: data.likes });
+        const isLike = data.likes.includes(user.result.id);
+        console.log(isLike);
+
+        dispatch({
+            type: actionType.TEAMLIKE_SUCCESS,
+            payload: { team: data.team, likes: data.likes, isLike: isLike },
+        });
     } catch (error) {
         dispatch({
             type: actionType.TEAMLIKE_FAILURE,

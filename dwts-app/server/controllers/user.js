@@ -55,23 +55,80 @@ export const signIn = async (req, res) => {
             return res.status(400).json({ message: 'Incorrect password.' });
 
         if (existing_user.rows[0].email_verified) {
+            const user = await pool.query(
+                `
+                SELECT u.*,
+                    JSON_BUILD_OBJECT('pros', 
+                        COALESCE((ARRAY_AGG(pl.pros))[1], '[]'), 
+                        'teams', 
+                        COALESCE((ARRAY_AGG(tl.teams))[1], '[]'),
+                        'dances', 
+                        COALESCE((ARRAY_AGG(dl.dances))[1], '[]')) 
+                    AS likes
+                FROM users u 
+                LEFT JOIN (
+                    SELECT pl.user_id,
+                        COALESCE(JSON_AGG(ROW_TO_JSON(p)) FILTER (WHERE p.id IS NOT NULL), '[]') AS pros
+                    FROM pro_likes pl
+                    LEFT JOIN pros p
+                    ON pl.pro_id = p.id
+                    WHERE pl.user_id = $1
+                    GROUP BY pl.user_id
+                ) pl 
+                ON u.id = pl.user_id
+                LEFT JOIN (
+                    SELECT tl.user_id,
+                        COALESCE(JSON_AGG(ROW_TO_JSON(t)) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams
+                    FROM team_likes tl
+                    LEFT JOIN (
+                        SELECT t.*, 
+                            ROW_TO_JSON(p) AS pro, 
+                            ROW_TO_JSON(c) AS celeb 
+                        FROM teams t 
+                        LEFT JOIN pros p 
+                        ON t.pro_id = p.id 
+                        LEFT JOIN celebs c 
+                        ON t.celeb_id = c.id 
+                        GROUP BY t.id, p.id, c.id 
+                    ) t
+                    ON tl.team_id = t.id
+                    WHERE tl.user_id = $1
+                    GROUP BY tl.user_id
+                ) tl 
+                ON u.id = tl.user_id
+                LEFT JOIN (
+                    SELECT dl.user_id,
+                        COALESCE(JSON_AGG(ROW_TO_JSON(d)) FILTER (WHERE d.id IS NOT NULL), '[]') AS dances
+                    FROM dance_likes dl
+                    LEFT JOIN dances d
+                    ON dl.dance_id = d.id
+                    WHERE dl.user_id = $1
+                    GROUP BY dl.user_id
+                ) dl 
+                ON u.id = dl.user_id
+                WHERE u.id = $1
+                GROUP BY u.id
+                `,
+                [existing_user.rows[0].id]
+            );
+
             const new_login = new Date();
 
             await pool.query('UPDATE users SET last_login = $1 WHERE id = $2', [
                 new_login,
-                existing_user.rows[0].id,
+                user.rows[0].id,
             ]);
 
             const token = jwt.sign(
                 {
-                    username: existing_user.rows[0].username,
-                    id: existing_user.rows[0].id,
+                    username: user.rows[0].username,
+                    id: user.rows[0].id,
                 },
                 process.env.SECRET_STRING,
                 { expiresIn: '1h' }
             );
 
-            res.status(200).json({ result: existing_user.rows[0], token });
+            res.status(200).json({ result: user.rows[0], token });
         } else {
             res.status(200).json({ message: messages.notVerified });
         }
@@ -203,7 +260,49 @@ export const addUser = async (req, res) => {
 
 export const fetchUsers = async (req, res) => {
     try {
-        const users = await pool.query('SELECT * FROM users');
+        // const users = await pool.query('SELECT * FROM users');
+
+        const users = await pool.query(
+            `
+            SELECT u.*, 
+                JSON_BUILD_OBJECT('pros', 
+                    COALESCE((ARRAY_AGG(pl.pros))[1], '[]'), 
+                    'teams', 
+                    COALESCE((ARRAY_AGG(tl.teams))[1], '[]'),
+                    'dances', 
+                    COALESCE((ARRAY_AGG(dl.dances))[1], '[]')) 
+                AS likes
+            FROM users u 
+            LEFT JOIN (
+                SELECT pl.user_id,
+                    COALESCE(JSON_AGG(ROW_TO_JSON(p)) FILTER (WHERE p.id IS NOT NULL), '[]') AS pros
+                FROM pro_likes pl
+                LEFT JOIN pros p
+                ON pl.pro_id = p.id
+                GROUP BY pl.user_id
+            ) pl 
+            ON u.id = pl.user_id
+            LEFT JOIN (
+                SELECT tl.user_id,
+                    COALESCE(JSON_AGG(ROW_TO_JSON(t)) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams
+                FROM team_likes tl
+                LEFT JOIN teams t
+                ON tl.team_id = t.id
+                GROUP BY tl.user_id
+            ) tl 
+            ON u.id = tl.user_id
+            LEFT JOIN (
+                SELECT dl.user_id,
+                    COALESCE(JSON_AGG(ROW_TO_JSON(d)) FILTER (WHERE d.id IS NOT NULL), '[]') AS dances
+                FROM dance_likes dl
+                LEFT JOIN dances d
+                ON dl.dance_id = d.id
+                GROUP BY dl.user_id
+            ) dl 
+            ON u.id = dl.user_id
+            GROUP BY u.id
+            `
+        );
 
         res.status(200).json(users.rows);
     } catch (error) {
@@ -216,9 +315,73 @@ export const findUserById = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const user = await pool.query('SELECT * FROM users WHERE id = $1', [
-            id,
-        ]);
+        // const user = await pool.query('SELECT * FROM users WHERE id = $1', [
+        //     id,
+        // ]);
+
+        const user = await pool.query(
+            `
+            SELECT u.id, 
+                u.cover_pic, 
+                u.username, 
+                u.nickname, 
+                u.watching_since, 
+                u.twitter, 
+                u.instagram, 
+                u.birthday,
+                JSON_BUILD_OBJECT('pros', 
+                    COALESCE((ARRAY_AGG(pl.pros))[1], '[]'), 
+                    'teams', 
+                    COALESCE((ARRAY_AGG(tl.teams))[1], '[]'),
+                    'dances', 
+                    COALESCE((ARRAY_AGG(dl.dances))[1], '[]')) 
+                AS likes
+            FROM users u 
+            LEFT JOIN (
+                SELECT pl.user_id,
+                    COALESCE(JSON_AGG(ROW_TO_JSON(p)) FILTER (WHERE p.id IS NOT NULL), '[]') AS pros
+                FROM pro_likes pl
+                LEFT JOIN pros p
+                ON pl.pro_id = p.id
+                WHERE pl.user_id = $1
+                GROUP BY pl.user_id
+            ) pl 
+            ON u.id = pl.user_id
+            LEFT JOIN (
+                SELECT tl.user_id,
+                    COALESCE(JSON_AGG(ROW_TO_JSON(t)) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams
+                FROM team_likes tl
+                LEFT JOIN (
+                    SELECT t.*, 
+                        ROW_TO_JSON(p) AS pro, 
+                        ROW_TO_JSON(c) AS celeb 
+                    FROM teams t 
+                    LEFT JOIN pros p 
+                    ON t.pro_id = p.id 
+                    LEFT JOIN celebs c 
+                    ON t.celeb_id = c.id 
+                    GROUP BY t.id, p.id, c.id 
+                ) t
+                ON tl.team_id = t.id
+                WHERE tl.user_id = $1
+                GROUP BY tl.user_id
+            ) tl 
+            ON u.id = tl.user_id
+            LEFT JOIN (
+                SELECT dl.user_id,
+                    COALESCE(JSON_AGG(ROW_TO_JSON(d)) FILTER (WHERE d.id IS NOT NULL), '[]') AS dances
+                FROM dance_likes dl
+                LEFT JOIN dances d
+                ON dl.dance_id = d.id
+                WHERE dl.user_id = $1
+                GROUP BY dl.user_id
+            ) dl 
+            ON u.id = dl.user_id
+            WHERE u.id = $1
+            GROUP BY u.id
+            `,
+            [id]
+        );
 
         res.status(200).json(user.rows[0]);
     } catch (error) {
@@ -231,8 +394,53 @@ export const searchUsers = async (req, res) => {
     const { search } = req.body;
 
     try {
+        // const users = await pool.query(
+        //     `SELECT * FROM users WHERE username || ' ' || nickname ILIKE $1 OR nickname IS NULL ORDER BY username`,
+        //     [`%${search}%`]
+        // );
+
         const users = await pool.query(
-            `SELECT * FROM users WHERE username || ' ' || nickname ILIKE $1 OR nickname IS NULL ORDER BY username`,
+            `
+            SELECT u.*, 
+                JSON_BUILD_OBJECT('pros', 
+                    COALESCE((ARRAY_AGG(pl.pros))[1], '[]'), 
+                    'teams', 
+                    COALESCE((ARRAY_AGG(tl.teams))[1], '[]'),
+                    'dances', 
+                    COALESCE((ARRAY_AGG(dl.dances))[1], '[]')) 
+                AS likes
+            FROM users u 
+            LEFT JOIN (
+                SELECT pl.user_id,
+                    COALESCE(JSON_AGG(ROW_TO_JSON(p)) FILTER (WHERE p.id IS NOT NULL), '[]') AS pros
+                FROM pro_likes pl
+                LEFT JOIN pros p
+                ON pl.pro_id = p.id
+                GROUP BY pl.user_id
+            ) pl 
+            ON u.id = pl.user_id
+            LEFT JOIN (
+                SELECT tl.user_id,
+                    COALESCE(JSON_AGG(ROW_TO_JSON(t)) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams
+                FROM team_likes tl
+                LEFT JOIN teams t
+                ON tl.team_id = t.id
+                GROUP BY tl.user_id
+            ) tl 
+            ON u.id = tl.user_id
+            LEFT JOIN (
+                SELECT dl.user_id,
+                    COALESCE(JSON_AGG(ROW_TO_JSON(d)) FILTER (WHERE d.id IS NOT NULL), '[]') AS dances
+                FROM dance_likes dl
+                LEFT JOIN dances d
+                ON dl.dance_id = d.id
+                GROUP BY dl.user_id
+            ) dl 
+            ON u.id = dl.user_id
+            WHERE username || ' ' || nickname ILIKE $1 OR nickname IS NULL
+            GROUP BY u.id
+            ORDER BY username
+            `,
             [`%${search}%`]
         );
 
@@ -281,7 +489,8 @@ export const updateUser = async (req, res) => {
 
         res.status(200).json(result.rows[0]);
     } catch (error) {
-        res.status(500).json({ message: error });
+        console.log(error);
+        res.status(500).json({ message: error.message });
     }
 };
 

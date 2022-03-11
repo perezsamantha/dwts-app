@@ -27,7 +27,30 @@ const authReducer = (state = initialState, action) => {
 
             return {
                 ...state,
-                authData: { ...state.authData.result, result: action.payload },
+                authData: { ...state.authData, result: action.payload },
+            };
+        case actionType.TEAMLIKE_SUCCESS:
+            return {
+                ...state,
+                authData: {
+                    ...state.authData,
+                    result: {
+                        ...state.authData.result,
+                        likes: {
+                            ...state.authData.result.likes,
+                            teams: action.payload.isLike
+                                ? [
+                                      ...state.authData.result.likes.teams,
+                                      action.payload.team,
+                                  ]
+                                : state.authData.result.likes.teams.filter(
+                                      (team) =>
+                                          team.id !== action.payload.team.id
+                                  ),
+                            //teams: state.authData.result.likes.teams.filter((team) => team.id !== action.payload.id)
+                        },
+                    },
+                },
             };
 
         case actionType.AUTHDELETE_SUCCESS:

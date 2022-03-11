@@ -267,8 +267,29 @@ export const likeTeam = async (req, res, next) => {
             [id]
         );
 
-        res.status(200).json(result.rows[0]);
+        const team = await pool.query(
+            `
+            SELECT t.*,
+                ROW_TO_JSON(p) AS pro, 
+                ROW_TO_JSON(c) AS celeb 
+            FROM teams t 
+            LEFT JOIN pros p 
+            ON t.pro_id = p.id 
+            LEFT JOIN celebs c 
+            ON t.celeb_id = c.id 
+            WHERE t.id = $1
+            GROUP BY t.id, p.id, c.id
+            `,
+            [id]
+        );
+
+        //res.status(200).json(result.rows[0]);
+        res.status(200).json({
+            team: team.rows[0],
+            likes: result.rows[0].likes,
+        });
     } catch (error) {
+        console.log(error);
         res.status(500).json({ message: error });
     }
 };

@@ -1,30 +1,15 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { Navigation, Pagination } from 'swiper';
+import { Navigation } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Box } from '@mui/material';
 import ProPreview from './ProPreview';
-import * as searchType from '../../constants/searchTypes';
-import TeamPreview from './TeamPreview';
-import DancePreview from './DancePreview';
+import { Link } from 'react-router-dom';
 
-function Favorites(props) {
-    const { arr, type } = props;
-
-    const component = (item) => {
-        switch (type) {
-            case searchType.PROS:
-                return <ProPreview pro={item} />;
-            case searchType.TEAMS:
-                return <TeamPreview team={item} />;
-            case searchType.DANCES:
-                return <DancePreview dance={item} />;
-            default:
-                return <></>;
-        }
-    };
+function ProFavorites(props) {
+    const { pros } = props;
 
     return (
         // <Box my={2}>
@@ -65,12 +50,23 @@ function Favorites(props) {
             modules={[Navigation]}
             className="mySwiper"
         >
-            {arr.map((item, index) => (
-                <SwiperSlide key={index}>{component(item)}</SwiperSlide>
+            {pros.map((pro, index) => (
+                <SwiperSlide key={index}>
+                    <Link
+                        key={index}
+                        to={{ pathname: `/pros/${pro.id}` }}
+                        style={{
+                            textDecoration: 'inherit',
+                            color: 'inherit',
+                        }}
+                    >
+                        <ProPreview pro={pro} />
+                    </Link>
+                </SwiperSlide>
             ))}
         </Swiper>
         // </Box>
     );
 }
 
-export default Favorites;
+export default ProFavorites;

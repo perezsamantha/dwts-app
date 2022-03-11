@@ -12,10 +12,8 @@ import SocialsLink from '../shared/SocialsLink';
 import { IndividualsContainer } from '../shared/muiStyles';
 import Progress from '../shared/Progress';
 import { FaBirthdayCake } from 'react-icons/fa';
-import Favorites from '../Favorites/Favorites';
-import * as searchType from '../../constants/searchTypes';
-import { celebs, fans, pros } from '../Dashboard/Birthdays/sampleData';
 import { getMonthAndDay } from '../shared/functions';
+import FavoritesWrapper from '../Favorites/Favorites';
 
 function Fan() {
     const navigate = useNavigate();
@@ -96,27 +94,7 @@ function Fan() {
                 )}
             </Stack>
 
-            <Box sx={{ width: '100%' }} my={2}>
-                <Stack width="fit-content" margin="auto">
-                    <Typography variant="h5">Favorites</Typography>
-                    <Divider />
-                </Stack>
-
-                <Typography variant="h6" align="left">
-                    Pros
-                </Typography>
-                <Favorites arr={pros} type={searchType.PROS} />
-
-                <Typography variant="h6" align="left">
-                    Teams
-                </Typography>
-                <Favorites arr={celebs} type={searchType.TEAMS} />
-
-                <Typography variant="h6" align="left">
-                    Dances
-                </Typography>
-                <Favorites arr={fans} type={searchType.DANCES} />
-            </Box>
+            <FavoritesWrapper likes={fan.likes} />
         </IndividualsContainer>
     );
 }

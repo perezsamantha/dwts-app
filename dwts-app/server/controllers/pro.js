@@ -42,7 +42,21 @@ export const fetchAllPros = async (req, res) => {
     try {
         //const pros = await pool.query('SELECT * FROM pros');
         const pros = await pool.query(
-            "SELECT p.*, COALESCE(ARRAY_AGG(user_id) filter (where user_id is not null), '{}') likes FROM pros p LEFT JOIN pro_likes l ON p.id = l.pro_id GROUP BY p.id"
+            `
+            SELECT p.*, 
+                COALESCE(JSON_AGG(l.user) FILTER (WHERE l.user IS NOT NULL), '[]') AS likes 
+            FROM pros p 
+            LEFT JOIN (
+                SELECT pl.pro_id,
+                    json_build_object('id', u.id, 'username', u.username, 'cover_pic', u.cover_pic) AS user
+                FROM pro_likes pl
+                LEFT JOIN users u
+                ON pl.user_id = u.id
+                GROUP BY pl.pro_id, u.id
+            ) l 
+            ON p.id = l.pro_id 
+            GROUP BY p.id
+            `
         );
 
         res.status(200).json(pros.rows);

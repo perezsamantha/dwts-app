@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Avatar, Box, Card, Divider } from '@mui/material';
+import { Avatar, Box, Card, Divider, Stack } from '@mui/material';
 import * as actionType from '../../constants/actionTypes';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import 'react-multi-carousel/lib/styles.css';
 import { createLoadingSelector } from '../../api/selectors';
 import { Button, Paper, Typography } from '@mui/material';
-import SettingsIcon from '@mui/icons-material/Settings';
 import EditAccount from './EditAccount';
-import Favorites from '../Favorites/Favorites';
-import { celebs, fans, pros } from '../Dashboard/Birthdays/sampleData';
-import * as searchType from '../../constants/searchTypes';
 import { BsThreeDots } from 'react-icons/bs';
+import SocialsLink from '../shared/SocialsLink';
+import FavoritesWrapper from '../Favorites/Favorites';
 
 function AccountHeader() {
     //const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -82,7 +80,38 @@ function AccountHeader() {
                 </Button>
                 <Divider />
 
-                <Box sx={{ width: '100%' }} mb={2}>
+                <Stack my={1}>
+                    <Typography variant="h5">
+                        Socials
+                        <Divider />
+                    </Typography>
+                    {user.instagram || user.twitter || user.tiktok ? (
+                        <Stack
+                            direction="row"
+                            spacing={2}
+                            justifyContent="center"
+                        >
+                            <SocialsLink
+                                platform={'instagram'}
+                                username={user.instagram}
+                            />
+                            <SocialsLink
+                                platform={'twitter'}
+                                username={user.twitter}
+                            />
+                            <SocialsLink
+                                platform={'tiktok'}
+                                username={user.tiktok}
+                            />
+                        </Stack>
+                    ) : (
+                        <Typography>No linked socials 💔</Typography>
+                    )}
+                </Stack>
+
+                <FavoritesWrapper likes={user.likes} />
+
+                {/* <Box sx={{ width: '100%' }} mb={2}>
                     <Typography my={1} variant="h4">
                         Favorites
                     </Typography>
@@ -101,7 +130,7 @@ function AccountHeader() {
                         Dances
                     </Typography>
                     <Favorites arr={fans} type={searchType.DANCES} />
-                </Box>
+                </Box> */}
             </AccountContainer>
 
             {open && (
