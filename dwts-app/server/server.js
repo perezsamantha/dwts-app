@@ -1,15 +1,17 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 const app = express();
 
 import { PORT, CLIENT_ORIGIN } from './config.js';
-
+app.use(cookieParser());
 app.use(
     cors({
         origin: CLIENT_ORIGIN,
+        credentials: true,
     })
 );
 app.use(express.json());

@@ -76,4 +76,5 @@ export const SubmitButton = styled('button')({
     alignItems: 'center',
     justifyContent: 'center',
     transition: 'all, 240ms ease-in-out',
+    cursor: 'pointer',
 });

@@ -1,6 +1,16 @@
 import express from 'express';
 
-import { addPic, addTeam, deleteTeam, fetchAllTeams, findTeamById, getFavoriteTeams, likeTeam, searchTeams, setTeamPic, updateTeam } from '../controllers/team.js';
+import {
+    addPic,
+    addTeam,
+    deleteTeam,
+    fetchAllTeams,
+    findTeamById,
+    likeTeam,
+    searchTeams,
+    setTeamPic,
+    updateTeam,
+} from '../controllers/team.js';
 
 import uploadCoverPicture from '../middleware/uploadCoverPicture.js';
 import uploadExtraPicture from '../middleware/uploadExtraPicture.js';
@@ -13,7 +23,6 @@ router.post('/add', addTeam);
 router.patch('/update/:id', updateTeam);
 router.patch('/setPic/:id', uploadCoverPicture, setTeamPic);
 router.get('/', fetchAllTeams);
-router.get('/favorites', auth, getFavoriteTeams);
 router.post('/search', searchTeams);
 router.delete('/delete/:id', deleteTeam);
 router.get('/:id', findTeamById);

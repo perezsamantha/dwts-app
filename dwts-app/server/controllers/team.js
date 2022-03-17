@@ -3,10 +3,8 @@ import UUID from 'uuid-v4';
 import pool from '../api/pool.js';
 
 export const addTeam = async (req, res) => {
-    //console.log(req);
     try {
         const {
-            cover_pic,
             celeb_id,
             pro_id,
             mentor_id,
@@ -41,8 +39,32 @@ export const fetchAllTeams = async (req, res) => {
         //     'SELECT * FROM teams ORDER BY season_id DESC, placement ASC'
         // );
 
+        // const teams = await pool.query(
+        //     "SELECT t.*, COALESCE(ARRAY_AGG(user_id) filter (where user_id is not null), '{}') likes FROM teams t LEFT JOIN team_likes l ON t.id = l.team_id GROUP BY t.id"
+        // );
+
         const teams = await pool.query(
-            "SELECT t.*, COALESCE(ARRAY_AGG(user_id) filter (where user_id is not null), '{}') likes FROM teams t LEFT JOIN team_likes l ON t.id = l.team_id GROUP BY t.id"
+            `
+            SELECT t.*,
+                ROW_TO_JSON(p) AS pro,
+                ROW_TO_JSON(c) AS celeb,
+                COALESCE((ARRAY_AGG(l.users))[1], '[]') AS likes
+            FROM teams t
+            LEFT JOIN pros p
+            ON t.pro_id = p.id
+            LEFT JOIN celebs c
+            ON t.celeb_id = c.id
+            LEFT JOIN (
+                SELECT tl.team_id,
+                    COALESCE(JSON_AGG(JSON_BUILD_OBJECT('id', u.id, 'username', u.username)) FILTER (WHERE u.id IS NOT NULL), '[]') AS users
+                FROM team_likes tl
+                LEFT JOIN users u
+                ON tl.user_id = u.id
+                GROUP BY tl.team_id
+            ) l
+            ON t.id = l.team_id
+            GROUP BY t.id, p.id, c.id
+            `
         );
 
         res.status(200).json(teams.rows);
@@ -60,7 +82,28 @@ export const findTeamById = async (req, res) => {
         // ]);
 
         const team = await pool.query(
-            "SELECT t.*, COALESCE(ARRAY_AGG(user_id) filter (where user_id is not null), '{}') likes FROM teams t LEFT JOIN team_likes l ON t.id = l.team_id WHERE t.id = $1 GROUP BY t.id",
+            `
+            SELECT t.*,
+                ROW_TO_JSON(p) AS pro,
+                ROW_TO_JSON(c) AS celeb,
+                COALESCE((ARRAY_AGG(l.users))[1], '[]') AS likes
+            FROM teams t
+            LEFT JOIN pros p
+            ON t.pro_id = p.id
+            LEFT JOIN celebs c
+            ON t.celeb_id = c.id
+            LEFT JOIN (
+                SELECT tl.team_id,
+                    COALESCE(JSON_AGG(JSON_BUILD_OBJECT('id', u.id, 'username', u.username)) FILTER (WHERE u.id IS NOT NULL), '[]') AS users
+                FROM team_likes tl
+                LEFT JOIN users u
+                ON tl.user_id = u.id
+                GROUP BY tl.team_id
+            ) l
+            ON t.id = l.team_id
+            WHERE t.id = $1
+            GROUP BY t.id, p.id, c.id
+            `,
             [id]
         );
 
@@ -72,7 +115,6 @@ export const findTeamById = async (req, res) => {
 
 export const searchTeams = async (req, res) => {
     const { search } = req.body;
-    //const nameQuery = ("SELECT celeb_id FROM celebs WHERE first_name || ' ' || last_name ILIKE $1", [`%${search}%`]);
 
     try {
         // const teams = await pool.query(
@@ -84,7 +126,36 @@ export const searchTeams = async (req, res) => {
         // );
 
         const teams = await pool.query(
-            "SELECT t.*, COALESCE(ARRAY_AGG(user_id) filter (where user_id is not null), '{}') likes FROM teams t LEFT JOIN team_likes l ON t.id = l.team_id WHERE celeb_id IN (SELECT id FROM celebs WHERE first_name || ' ' || last_name ILIKE $1) OR pro_id IN (SELECT id FROM pros WHERE first_name || ' ' || last_name ILIKE $1) GROUP BY t.id",
+            `
+            SELECT t.*,
+                ROW_TO_JSON(p) AS pro,
+                ROW_TO_JSON(c) AS celeb,
+                COALESCE((ARRAY_AGG(l.users))[1], '[]') AS likes
+            FROM teams t
+            LEFT JOIN pros p
+            ON t.pro_id = p.id
+            LEFT JOIN celebs c
+            ON t.celeb_id = c.id
+            LEFT JOIN (
+                SELECT tl.team_id,
+                    COALESCE(JSON_AGG(JSON_BUILD_OBJECT('id', u.id, 'username', u.username)) FILTER (WHERE u.id IS NOT NULL), '[]') AS users
+                FROM team_likes tl
+                LEFT JOIN users u
+                ON tl.user_id = u.id
+                GROUP BY tl.team_id
+            ) l
+            ON t.id = l.team_id
+            WHERE t.celeb_id IN (
+                SELECT id
+                FROM celebs
+                WHERE first_name || ' ' || last_name ILIKE $1
+            ) OR t.pro_id IN (
+                SELECT id
+                FROM pros
+                WHERE first_name || ' ' || last_name ILIKE $1
+            )
+            GROUP BY t.id, p.id, c.id
+            `,
             [`%${search}%`]
         );
 
@@ -124,7 +195,28 @@ export const updateTeam = async (req, res) => {
         );
 
         const result = await pool.query(
-            "SELECT t.*, COALESCE(ARRAY_AGG(user_id) filter (where user_id is not null), '{}') likes FROM teams t LEFT JOIN team_likes l ON t.id = l.team_id WHERE t.id = $1 GROUP BY t.id",
+            `
+            SELECT t.*,
+                ROW_TO_JSON(p) AS pro,
+                ROW_TO_JSON(c) AS celeb,
+                COALESCE((ARRAY_AGG(l.users))[1], '[]') AS likes
+            FROM teams t
+            LEFT JOIN pros p
+            ON t.pro_id = p.id
+            LEFT JOIN celebs c
+            ON t.celeb_id = c.id
+            LEFT JOIN (
+                SELECT tl.team_id,
+                    COALESCE(JSON_AGG(JSON_BUILD_OBJECT('id', u.id, 'username', u.username)) FILTER (WHERE u.id IS NOT NULL), '[]') AS users
+                FROM team_likes tl
+                LEFT JOIN users u
+                ON tl.user_id = u.id
+                GROUP BY tl.team_id
+            ) l
+            ON t.id = l.team_id
+            WHERE t.id = $1
+            GROUP BY t.id, p.id, c.id
+            `,
             [id]
         );
 
@@ -222,7 +314,28 @@ export const addPic = async (req, res) => {
             );
 
             const result = await pool.query(
-                "SELECT t.*, COALESCE(ARRAY_AGG(user_id) filter (where user_id is not null), '{}') likes FROM teams t LEFT JOIN team_likes l ON t.id = l.team_id WHERE t.id = $1 GROUP BY t.id",
+                `
+                SELECT t.*,
+                    ROW_TO_JSON(p) AS pro,
+                    ROW_TO_JSON(c) AS celeb,
+                    COALESCE((ARRAY_AGG(l.users))[1], '[]') AS likes
+                FROM teams t
+                LEFT JOIN pros p
+                ON t.pro_id = p.id
+                LEFT JOIN celebs c
+                ON t.celeb_id = c.id
+                LEFT JOIN (
+                    SELECT tl.team_id,
+                        COALESCE(JSON_AGG(JSON_BUILD_OBJECT('id', u.id, 'username', u.username)) FILTER (WHERE u.id IS NOT NULL), '[]') AS users
+                    FROM team_likes tl
+                    LEFT JOIN users u
+                    ON tl.user_id = u.id
+                    GROUP BY tl.team_id
+                ) l
+                ON t.id = l.team_id
+                WHERE t.id = $1
+                GROUP BY t.id, p.id, c.id
+                `,
                 [id]
             );
 
@@ -248,51 +361,30 @@ export const likeTeam = async (req, res, next) => {
             'select exists(SELECT 1 FROM team_likes WHERE team_id = $1 AND user_id = $2)',
             [id, req.userId]
         );
-        let result;
+
+        const user = await pool.query(
+            `
+            SELECT id, username
+            FROM users u
+            WHERE id = $1
+            `,
+            [req.userId]
+        );
 
         if (query.rows[0].exists) {
             await pool.query(
                 'DELETE FROM team_likes WHERE team_id = $1 AND user_id = $2',
                 [id, req.userId]
             );
+            res.status(200).json({ user: user.rows[0], type: 'unlike' });
         } else {
             await pool.query(
                 'INSERT INTO team_likes (team_id, user_id) VALUES($1, $2)',
                 [id, req.userId]
             );
+            res.status(200).json({ user: user.rows[0], type: 'like' });
         }
-
-        result = await pool.query(
-            "SELECT COALESCE(ARRAY_AGG(user_id) filter (where user_id is not null), '{}') likes FROM team_likes WHERE team_id = $1",
-            [id]
-        );
-
-        const team = await pool.query(
-            `
-            SELECT t.*,
-                ROW_TO_JSON(p) AS pro, 
-                ROW_TO_JSON(c) AS celeb 
-            FROM teams t 
-            LEFT JOIN pros p 
-            ON t.pro_id = p.id 
-            LEFT JOIN celebs c 
-            ON t.celeb_id = c.id 
-            WHERE t.id = $1
-            GROUP BY t.id, p.id, c.id
-            `,
-            [id]
-        );
-
-        //res.status(200).json(result.rows[0]);
-        res.status(200).json({
-            team: team.rows[0],
-            likes: result.rows[0].likes,
-        });
     } catch (error) {
-        console.log(error);
         res.status(500).json({ message: error });
     }
 };
-
-// TODO:
-export const getFavoriteTeams = async (req, res, next) => {};

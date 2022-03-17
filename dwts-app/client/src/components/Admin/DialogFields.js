@@ -1,5 +1,11 @@
 import React, { useEffect } from 'react';
-import { MenuItem, TextField, Avatar, InputAdornment } from '@mui/material';
+import {
+    MenuItem,
+    TextField,
+    Avatar,
+    InputAdornment,
+    Autocomplete,
+} from '@mui/material';
 import { MobileDatePicker } from '@mui/lab';
 
 import * as tableType from '../../constants/tableTypes';
@@ -197,6 +203,20 @@ function DialogFields(props) {
                 </TextField>
             )}
 
+            {/* <Autocomplete
+                name="celeb_id"
+                options={celebs}
+                autoHighlight
+                getOptionLabel={(option) => option.first_name}
+                value={formData.celeb_id || null}
+                renderInput={(params) => (
+                    <TextField {...params} label="Celeb" />
+                )}
+                onChange={(e, newValue) =>
+                    setFormData({ ...formData, celeb_id: newValue.id })
+                }
+            /> */}
+
             {Array.of(
                 tableType.TEAM,
                 tableType.DANCER,
@@ -209,7 +229,6 @@ function DialogFields(props) {
                     type="text"
                     select
                     value={formData.celeb_id || ''}
-                    onChange={handleChange}
                 >
                     {celebs.map((celeb, index) => {
                         return (

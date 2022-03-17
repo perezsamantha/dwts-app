@@ -8,9 +8,9 @@ export const signIn = (formData, navigate) => async (dispatch) => {
 
         dispatch({ type: actionType.AUTH, data });
 
-        if (data.message) {
-            return;
-        }
+        // if (data.message) {
+        //     return;
+        // }
 
         navigate('/dashboard');
     } catch (error) {
@@ -44,6 +44,22 @@ export const verifyUser = (id, navigate) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: actionType.AUTHVERIFY_FAILURE,
+            payload: error,
+            error: true,
+        });
+    }
+};
+
+export const fetchAuthData = () => async (dispatch) => {
+    dispatch({ type: actionType.AUTHFETCH_REQUEST });
+
+    try {
+        const { data } = await api.fetchAuthData();
+
+        dispatch({ type: actionType.AUTHFETCH_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: actionType.AUTHFETCH_FAILURE,
             payload: error,
             error: true,
         });

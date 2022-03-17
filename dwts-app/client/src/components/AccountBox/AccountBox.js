@@ -34,14 +34,35 @@ const AccountBox = (props) => {
 
     useEffect(() => {
         setWave(
-            `M 0 0 L ${width} 0 L ${width} 150 C ${width} ${width} 250 125 200 225 C 175 275 100 300 0 300 Z`
+            `M 0 0 L 0 150 C 175 150 150 50 300 75 C 450 100 500 25 600 50 L 600 0 Z`
         );
+        // if (width >= 1200) {
+        //     setWave(
+        //         `M 0 0 L 0 150 C 175 150 200 25 825 75 C 1300 125 1525 25 1600 50 L 1600 0 Z`
+        //     );
+        // } else if (width >= 900) {
+        //     setWave(
+        //         `M 0 0 L 0 175 C 175 50 475 150 625 75 C 800 0 950 100 1200 50 L 1200 0 Z`
+        //     );
+        // } else if (width >= 600) {
+        //     setWave(
+        //         `M 0 0 L 0 150 C 100 175 325 25 475 100 C 650 175 750 50 900 50 L 900 0 Z`
+        //     );
+        // } else if (width >= 300) {
+        //     setWave(
+        //         `M 0 0 L 0 150 C 175 150 150 50 300 75 C 450 100 500 25 600 50 L 600 0 Z`
+        //     );
+        // } else if (width >= 0) {
+        //     setWave(
+        //         `M 0 0 L 0 175 C 60 180 100 80 160 100 C 260 140 260 60 300 75 L 300 0 Z`
+        //     );
+        // }
     }, [height, width, wave]);
 
     const backdropVariants = {
         expanded: {
-            //scale: 20,
-            d: `M 0 0 L ${width} 0 L ${width} ${height} C 325 ${height} 325 ${height} 200 ${height} C 125 ${height} 125 ${height} 0 ${height} Z`,
+            //scale: 10,
+            d: `M 0 0 L 0 ${height} C 100 ${height} 180 ${height} 300 ${height} C 400 ${height} 500 ${height} 600 ${height} L 600 0 Z`,
         },
         collapsed: {
             scale: 1,
@@ -208,9 +229,10 @@ const ShapeContainer = styled.div`
 const Shape = styled(motion.svg)`
     //display: inline-block;
     position: absolute;
-    top: 0;
-    left: 0;
+    //top: 0;
+    //left: 0;
     pointer-events: none;
+    //overflow: hidden;
 `;
 
 const NewShapeBack = styled(motion.path)`
@@ -218,9 +240,12 @@ const NewShapeBack = styled(motion.path)`
 `;
 
 const Container = styled(Box)`
+    max-width: 600px;
+    margin: auto;
     display: flex;
     flex-direction: column;
     align-content: center;
+    //padding: 1rem 0;
     //position: relative;
 `;
 

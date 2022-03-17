@@ -7,14 +7,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import 'react-multi-carousel/lib/styles.css';
 import { createLoadingSelector } from '../../api/selectors';
 import { Button, Paper, Typography } from '@mui/material';
-import EditAccount from './EditAccount';
 import { BsThreeDots } from 'react-icons/bs';
 import SocialsLink from '../shared/SocialsLink';
 import FavoritesWrapper from '../Favorites/Favorites';
+import AccountInfo from './AccountInfo';
+import { fetchAuthData } from '../../actions/auth';
+import Progress from '../shared/Progress';
 
 function AccountHeader() {
-    //const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
-    const user = useSelector((state) => state.auth.authData.result);
+    const user = useSelector((state) => state.auth.authData);
     //const [isLoading, setIsLoading] = useState(true);
     const [open, setOpen] = useState(false);
     const dispatch = useDispatch();
@@ -22,8 +23,8 @@ function AccountHeader() {
 
     //const favorites = useSelector(state => state.teams.teams);
 
-    //const loadingSelector = createLoadingSelector([actionType.TEAMSEARCH]);
-    //const isFetching = useSelector((state) => loadingSelector(state));
+    const loadingSelector = createLoadingSelector([actionType.AUTHFETCH]);
+    const loading = useSelector((state) => loadingSelector(state));
 
     const logout = () => {
         dispatch({ type: actionType.LOGOUT });
@@ -32,15 +33,16 @@ function AccountHeader() {
     };
 
     useEffect(() => {
-        // TODO: need to fetch seasons for settings dropdown,
-        // but considering will need to dispatch for favorites, might wanna wait on that
-    }, []);
+        dispatch(fetchAuthData());
+    }, [dispatch]);
 
     const handleClose = () => {
         setOpen(false);
     };
 
-    return (
+    return loading || !Object.keys(user).includes('id') ? (
+        <Progress />
+    ) : (
         <Container>
             <AccountContainer elevation={4} sx={{ borderRadius: 10 }}>
                 <Box
@@ -110,31 +112,10 @@ function AccountHeader() {
                 </Stack>
 
                 <FavoritesWrapper likes={user.likes} />
-
-                {/* <Box sx={{ width: '100%' }} mb={2}>
-                    <Typography my={1} variant="h4">
-                        Favorites
-                    </Typography>
-
-                    <Typography mt={2} variant="h5">
-                        Pros
-                    </Typography>
-                    <Favorites arr={pros} type={searchType.PROS} />
-
-                    <Typography mt={2} variant="h5">
-                        Teams
-                    </Typography>
-                    <Favorites arr={celebs} type={searchType.TEAMS} />
-
-                    <Typography mt={2} variant="h5">
-                        Dances
-                    </Typography>
-                    <Favorites arr={fans} type={searchType.DANCES} />
-                </Box> */}
             </AccountContainer>
 
             {open && (
-                <EditAccount
+                <AccountInfo
                     user={user}
                     open={open}
                     handleClose={handleClose}

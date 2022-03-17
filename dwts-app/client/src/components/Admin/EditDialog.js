@@ -70,6 +70,7 @@ function EditDialog(props) {
     }, [props]);
 
     const handleChange = (e) => {
+        console.log(e);
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 

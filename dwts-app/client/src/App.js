@@ -50,23 +50,23 @@ function App() {
             return;
         }
 
-        const user = JSON.parse(localStorage.getItem('profile'));
+        // const user = JSON.parse(localStorage.getItem('profile'));
 
-        if (user === null) {
-            dispatch({ type: actionType.LOGOUT });
-            navigate('/');
-        }
+        // if (user === null) {
+        //     dispatch({ type: actionType.LOGOUT });
+        //     navigate('/');
+        // }
 
-        const token = user?.token;
+        // const token = user?.token;
 
-        if (token) {
-            const decodedToken = decode(token);
-            // need to test functionality
-            if (decodedToken.exp * 1000 < new Date().getTime()) {
-                dispatch({ type: actionType.LOGOUT });
-                navigate('/');
-            }
-        }
+        // if (token) {
+        //     const decodedToken = decode(token);
+        //     // need to test functionality
+        //     if (decodedToken.exp * 1000 < new Date().getTime()) {
+        //         dispatch({ type: actionType.LOGOUT });
+        //         navigate('/');
+        //     }
+        // }
     }, [dispatch, navigate, prefersDarkMode]);
 
     const PrivateRoute = () => {
@@ -186,6 +186,19 @@ function App() {
                     },
                 },
             },
+            // MuiOutlinedInput: {
+            //     styleOverrides: {
+            //         root: {
+            //             input: {
+            //                 '&:-webkit-autofill': {
+            //                     '-webkit-box-shadow':
+            //                         '0 0 0 1000px rgb(28, 28, 28) inset',
+            //                     '-webkit-text-fill-color': '#fff',
+            //                 },
+            //             },
+            //         },
+            //     },
+            // },
         },
     });
 

@@ -10,7 +10,6 @@ export const addDance = (dance) => async (dispatch) => {
 
         dispatch({ type: actionType.DANCEADD_SUCCESS, payload: data });
     } catch (error) {
-        console.log(error);
         dispatch({
             type: actionType.DANCEADD_FAILURE,
             payload: error,
@@ -34,18 +33,6 @@ export const updateDance = (id, dance) => async (dispatch) => {
         });
     }
 };
-
-// export const setDancePic = (id, image) => async (dispatch) => {
-//     dispatch({ type: actionType.DANCEUPDATE_REQUEST });
-
-//     try {
-//         const { data } = await api.setDancePic(id, image);
-
-//         dispatch({ type: actionType.DANCEUPDATE_SUCCESS, payload: data });
-//     } catch (error) {
-//         dispatch({ type: actionType.DANCEUPDATE_FAILURE, payload: error, error: true });
-//     }
-// }
 
 export const fetchDances = () => async (dispatch) => {
     dispatch({ type: actionType.DANCESEARCH_REQUEST });
@@ -182,31 +169,16 @@ export const addDancePic = (id, image) => async (dispatch) => {
 export const likeDance = (id) => async (dispatch) => {
     dispatch({ type: actionType.DANCELIKE_REQUEST });
 
-    const user = JSON.parse(localStorage.getItem('profile'));
+    //const user = JSON.parse(localStorage.getItem('profile'));
 
     try {
-        const { data } = await api.likeDance(id, user?.token);
+        const { data } = await api.likeDance(id);
+        console.log(data);
 
-        dispatch({ type: actionType.DANCELIKE_SUCCESS, payload: data.likes });
+        dispatch({ type: actionType.DANCELIKE_SUCCESS, payload: data });
     } catch (error) {
         dispatch({
             type: actionType.DANCELIKE_FAILURE,
-            payload: error,
-            error: true,
-        });
-    }
-};
-
-export const getFavoriteDances = () => async (dispatch) => {
-    dispatch({ type: actionType.DANCESEARCH_REQUEST });
-
-    try {
-        const { data } = await api.getFavoriteDances();
-
-        dispatch({ type: actionType.DANCESEARCH_SUCCESS, payload: data });
-    } catch (error) {
-        dispatch({
-            type: actionType.DANCESEARCH_FAILURE,
             payload: error,
             error: true,
         });

@@ -40,9 +40,21 @@ const danceReducer = (
                 ),
             };
         case actionType.DANCELIKE_SUCCESS:
+            // return {
+            //     ...state,
+            //     dance: { ...state.dance, likes: action.payload },
+            // };
             return {
                 ...state,
-                dance: { ...state.dance, likes: action.payload },
+                dance: {
+                    ...state.dance,
+                    likes:
+                        action.payload.type === 'like'
+                            ? [...state.dance.likes, action.payload.user]
+                            : state.dance.likes.filter(
+                                  (like) => like.id !== action.payload.user.id
+                              ),
+                },
             };
 
         default:

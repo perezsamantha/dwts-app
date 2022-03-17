@@ -34,7 +34,7 @@ import DancerPreview from './Supporting/DancerPreview';
 function Dance() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const user = JSON.parse(localStorage.getItem('profile'));
+    //const user = JSON.parse(localStorage.getItem('profile'));
     const dance = useSelector((state) => state.dances.dance);
     const { id } = useParams();
 
@@ -78,7 +78,7 @@ function Dance() {
                 <CardAvatar src={'/defaultPic.jpeg'} />
                 <LikesContainer>
                     <Button onClick={() => dispatch(likeDance(id))}>
-                        <Likes user={user} likes={dance.likes} />
+                        <Likes likes={dance.likes} />
                     </Button>
                     <Typography variant="subtitle1">
                         {dance.likes?.length}

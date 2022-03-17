@@ -12,16 +12,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { signIn } from '../../actions/auth';
 
-import {
-    BoxContainer,
-    MutedLink,
-    BoldLink,
-    SubmitButton,
-    FullTextField,
-} from './common';
+import { MutedLink, SubmitButton, FullTextField } from './common';
 import { AccountContext } from './AccountContext';
-import { Typography, IconButton, InputAdornment, Stack } from '@mui/material';
+import {
+    Typography,
+    IconButton,
+    InputAdornment,
+    Stack,
+    Box,
+} from '@mui/material';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
+import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
+import LockIcon from '@mui/icons-material/Lock';
 
 const initialState = { username: '', password: '' };
 
@@ -68,19 +70,34 @@ function Signin(props) {
     const { switchToSignup } = useContext(AccountContext);
 
     return (
-        <BoxContainer>
-            <FullTextField
+        <Box>
+            {/* <FullTextField
                 name="username"
-                label="Username"
                 type="text"
+                variant="standard"
+                placeholder="username"
                 onChange={handleChange}
-                margin="dense"
                 InputProps={{
                     startAdornment: (
                         <InputAdornment position="start">
-                            <IconButton onClick={handleShowPass}>
-                                {showPass ? <Visibility /> : <VisibilityOff />}
-                            </IconButton>
+                            <AlternateEmailIcon />
+                        </InputAdornment>
+                    ),
+                }}
+                sx={{}}
+            /> */}
+            <FullTextField
+                name="username"
+                //label="Username"
+                type="text"
+                onChange={handleChange}
+                margin="dense"
+                placeholder="username"
+                autoComplete="off"
+                InputProps={{
+                    startAdornment: (
+                        <InputAdornment position="start">
+                            <AlternateEmailIcon />
                         </InputAdornment>
                     ),
                 }}
@@ -88,12 +105,18 @@ function Signin(props) {
             />
             <FullTextField
                 name="password"
-                label="Password"
+                //label="Password"
+                placeholder="password"
                 type={showPass ? 'text' : 'password'}
                 onChange={handleChange}
                 handleShowPass={handleShowPass}
                 margin="dense"
                 InputProps={{
+                    startAdornment: (
+                        <InputAdornment position="start">
+                            <LockIcon />
+                        </InputAdornment>
+                    ),
                     endAdornment: (
                         <InputAdornment position="end">
                             <IconButton onClick={handleShowPass}>
@@ -106,15 +129,11 @@ function Signin(props) {
 
             {message && <Typography>{message}</Typography>}
 
-            <MutedLink href="#">Forgot your password?</MutedLink>
-            {/* <SubmitButton type="submit" onClick={handleSubmit}>
-                Sign In
-            </SubmitButton> */}
             <Stack
                 direction="row"
                 justifyContent="space-between"
                 alignItems="center"
-                width={0.9}
+                //width={0.9}
                 my={2}
             >
                 <Typography
@@ -135,13 +154,8 @@ function Signin(props) {
                     />
                 </SubmitButton>
             </Stack>
-            {/* <MutedLink href="#">
-                Don't have an account?{' '}
-                <BoldLink href="#" onClick={switchToSignup}>
-                    Sign up.
-                </BoldLink>
-            </MutedLink> */}
-        </BoxContainer>
+            <MutedLink href="#">Forgot your password?</MutedLink>
+        </Box>
         /* keep for when implementing google oauth
         <form autoComplete="off" onSubmit={handleSubmit}>
                 <TextField required id="standard-basic" name="email" label="email" type="email" onChange={handleChange}/>

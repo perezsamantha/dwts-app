@@ -1,20 +1,24 @@
 import axios from 'axios';
 
-const API = axios.create({ baseURL: 'http://localhost:5000' });
+const API = axios.create({
+    baseURL: 'http://localhost:5000',
+    withCredentials: true,
+});
 
 API.interceptors.request.use((req) => {
-    if (localStorage.getItem('profile')) {
-        req.headers.authorization = `Bearer ${
-            JSON.parse(localStorage.getItem('profile')).token
-        }`; // lowercase a ??
-    }
-
+    //console.log(req);
+    // if (localStorage.getItem('profile')) {
+    //     req.headers.authorization = `Bearer ${
+    //         JSON.parse(localStorage.getItem('profile')).token
+    //     }`; // lowercase a ??
+    // }
     return req;
 }); // for future auth actions (liking cards)
 
 export const signIn = (formData) => API.post('/users/signIn', formData);
 export const signUp = (formData) => API.post('/users/signUp', formData);
 export const verifyUser = (id) => API.get(`/users/verify/${id}`);
+export const fetchAuthData = () => API.get('/users/authData');
 export const addUser = (formData) => API.post('/users/add', formData);
 export const updateUser = (id, user) => API.patch(`/users/update/${id}`, user);
 export const setUserPic = (id, image) =>
@@ -38,7 +42,6 @@ export const deleteDance = (id) => API.delete(`/dances/delete/${id}`);
 export const addDancePic = (id, image) =>
     API.patch(`/dances/addPic/${id}`, image);
 export const likeDance = (id) => API.patch(`/dances/${id}/likeDance`);
-export const getFavoriteDances = () => API.get('/dances/favorites');
 
 export const addTeam = (team) => API.post('/teams/add', team);
 export const updateTeam = (id, team) => API.patch(`/teams/update/${id}`, team);
@@ -51,7 +54,6 @@ export const deleteTeam = (id) => API.delete(`/teams/delete/${id}`);
 export const addTeamPic = (id, image) =>
     API.patch(`/teams/addPic/${id}`, image);
 export const likeTeam = (id) => API.patch(`/teams/${id}/likeTeam`);
-export const getFavoriteTeams = () => API.get('/teams/favorites'); // eventually make a combined favorites function
 
 export const addPro = (pro) => API.post('/pros/add', pro);
 export const updatePro = (id, pro) => API.patch(`/pros/update/${id}`, pro);
@@ -62,7 +64,6 @@ export const searchPros = (input) => API.post('/pros/search', input);
 export const deletePro = (id) => API.delete(`/pros/delete/${id}`);
 export const addProPic = (id, image) => API.patch(`/pros/addPic/${id}`, image);
 export const likePro = (id) => API.patch(`/pros/${id}/likePro`);
-export const getFavoritePros = () => API.get('/pros/favorites');
 
 export const addCeleb = (celeb) => API.post('/celebs/add', celeb);
 export const updateCeleb = (id, celeb) =>

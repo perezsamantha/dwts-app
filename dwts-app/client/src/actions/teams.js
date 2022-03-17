@@ -189,38 +189,16 @@ export const addTeamPic = (id, image) => async (dispatch) => {
 export const likeTeam = (id) => async (dispatch) => {
     dispatch({ type: actionType.TEAMLIKE_REQUEST });
 
-    const user = JSON.parse(localStorage.getItem('profile'));
-
     try {
-        const { data } = await api.likeTeam(id, user?.token);
-        console.log(data);
-
-        const isLike = data.likes.includes(user.result.id);
-        console.log(isLike);
+        const { data } = await api.likeTeam(id);
 
         dispatch({
             type: actionType.TEAMLIKE_SUCCESS,
-            payload: { team: data.team, likes: data.likes, isLike: isLike },
+            payload: data,
         });
     } catch (error) {
         dispatch({
             type: actionType.TEAMLIKE_FAILURE,
-            payload: error,
-            error: true,
-        });
-    }
-};
-
-export const getFavoriteTeams = () => async (dispatch) => {
-    dispatch({ type: actionType.TEAMSEARCH_REQUEST });
-
-    try {
-        const { data } = await api.getFavoriteTeams();
-
-        dispatch({ type: actionType.TEAMSEARCH_SUCCESS, payload: data });
-    } catch (error) {
-        dispatch({
-            type: actionType.TEAMSEARCH_FAILURE,
             payload: error,
             error: true,
         });

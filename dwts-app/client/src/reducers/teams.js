@@ -40,7 +40,15 @@ const teamReducer = (
         case actionType.TEAMLIKE_SUCCESS:
             return {
                 ...state,
-                team: { ...state.team, likes: action.payload.likes },
+                team: {
+                    ...state.team,
+                    likes:
+                        action.payload.type === 'like'
+                            ? [...state.team.likes, action.payload.user]
+                            : state.team.likes.filter(
+                                  (like) => like.id !== action.payload.user.id
+                              ),
+                },
             };
 
         default:

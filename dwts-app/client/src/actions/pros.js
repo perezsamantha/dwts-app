@@ -137,31 +137,13 @@ export const addProPic = (id, image) => async (dispatch) => {
 export const likePro = (id) => async (dispatch) => {
     dispatch({ type: actionType.PROLIKE_REQUEST });
 
-    const user = JSON.parse(localStorage.getItem('profile'));
-
     try {
-        const { data } = await api.likePro(id, user?.token);
+        const { data } = await api.likePro(id);
 
-        dispatch({ type: actionType.PROLIKE_SUCCESS, payload: data.likes });
+        dispatch({ type: actionType.PROLIKE_SUCCESS, payload: data });
     } catch (error) {
         dispatch({
             type: actionType.PROLIKE_FAILURE,
-            payload: error,
-            error: true,
-        });
-    }
-};
-
-export const getFavoritePros = () => async (dispatch) => {
-    dispatch({ type: actionType.PROSEARCH_REQUEST });
-
-    try {
-        const { data } = await api.getFavoritePros();
-
-        dispatch({ type: actionType.PROSEARCH_SUCCESS, payload: data });
-    } catch (error) {
-        dispatch({
-            type: actionType.PROSEARCH_FAILURE,
             payload: error,
             error: true,
         });

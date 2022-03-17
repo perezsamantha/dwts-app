@@ -34,7 +34,15 @@ const proReducer = (
         case actionType.PROLIKE_SUCCESS:
             return {
                 ...state,
-                pro: { ...state.pro, likes: action.payload },
+                pro: {
+                    ...state.pro,
+                    likes:
+                        action.payload.type === 'like'
+                            ? [...state.pro.likes, action.payload.user]
+                            : state.pro.likes.filter(
+                                  (like) => like.id !== action.payload.user.id
+                              ),
+                },
             };
 
         default:

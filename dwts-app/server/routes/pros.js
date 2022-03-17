@@ -1,5 +1,15 @@
 import express from 'express';
-import { addPro, findProById, searchPros, updatePro, setProPic, deletePro, addPic, likePro, fetchAllPros } from '../controllers/pro.js';
+import {
+    addPro,
+    findProById,
+    searchPros,
+    updatePro,
+    setProPic,
+    deletePro,
+    addPic,
+    likePro,
+    fetchAllPros,
+} from '../controllers/pro.js';
 
 import uploadCoverPicture from '../middleware/uploadCoverPicture.js';
 import uploadExtraPicture from '../middleware/uploadExtraPicture.js';
@@ -12,12 +22,10 @@ router.post('/add', addPro);
 router.patch('/update/:id', updatePro);
 router.patch('/setPic/:id', uploadCoverPicture, setProPic);
 router.get('/', fetchAllPros);
-//router.get('/favorites', auth, getFavoritePros);
 router.post('/search', searchPros);
 router.delete('/delete/:id', deletePro);
 router.get('/:id', findProById);
 router.patch('/addPic/:id', uploadExtraPicture, addPic);
 router.patch('/:id/likePro', auth, likePro);
-
 
 export default router;

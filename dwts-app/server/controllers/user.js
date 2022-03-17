@@ -128,7 +128,14 @@ export const signIn = async (req, res) => {
                 { expiresIn: '1h' }
             );
 
-            res.status(200).json({ result: user.rows[0], token });
+            //res.status(200).json({ result: user.rows[0], token });
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'Strict',
+            })
+                .status(200)
+                .json({ message: 'Login successful' });
         } else {
             res.status(200).json({ message: messages.notVerified });
         }
@@ -170,11 +177,19 @@ export const verifyEmail = async (req, res) => {
                 { expiresIn: '1h' }
             );
 
-            res.status(200).json({
-                result: user.rows[0],
-                token,
-                message: messages.alreadyVerified,
-            });
+            // res.status(200).json({
+            //     result: user.rows[0],
+            //     token,
+            //     message: messages.alreadyVerified,
+            // });
+
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'Strict',
+            })
+                .status(200)
+                .json({ message: messages.alreadyVerified });
 
             return;
         }
@@ -193,15 +208,105 @@ export const verifyEmail = async (req, res) => {
             { expiresIn: '1h' }
         );
 
-        res.status(200).json({
-            result: result.rows[0],
-            token,
-            message: messages.verified,
-        });
+        // res.status(200).json({
+        //     result: result.rows[0],
+        //     token,
+        //     message: messages.verified,
+        // });
+
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Strict',
+        })
+            .status(200)
+            .json({ message: messages.verified });
     } catch (error) {
         res.status(500).json({ message: error });
     }
 };
+
+export const fetchAuthData = async (req, res) => {
+    //const { id } = req.params;
+    const id = req.userId;
+
+    try {
+        // const user = await pool.query('SELECT * FROM users WHERE id = $1', [
+        //     id,
+        // ]);
+
+        const user = await pool.query(
+            `
+            SELECT u.id, 
+                u.cover_pic, 
+                u.username, 
+                u.email,
+                u.nickname, 
+                u.watching_since, 
+                u.twitter, 
+                u.instagram, 
+                u.birthday,
+                JSON_BUILD_OBJECT('pros', 
+                    COALESCE((ARRAY_AGG(pl.pros))[1], '[]'), 
+                    'teams', 
+                    COALESCE((ARRAY_AGG(tl.teams))[1], '[]'),
+                    'dances', 
+                    COALESCE((ARRAY_AGG(dl.dances))[1], '[]')) 
+                AS likes
+            FROM users u 
+            LEFT JOIN (
+                SELECT pl.user_id,
+                    COALESCE(JSON_AGG(ROW_TO_JSON(p)) FILTER (WHERE p.id IS NOT NULL), '[]') AS pros
+                FROM pro_likes pl
+                LEFT JOIN pros p
+                ON pl.pro_id = p.id
+                WHERE pl.user_id = $1
+                GROUP BY pl.user_id
+            ) pl 
+            ON u.id = pl.user_id
+            LEFT JOIN (
+                SELECT tl.user_id,
+                    COALESCE(JSON_AGG(ROW_TO_JSON(t)) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams
+                FROM team_likes tl
+                LEFT JOIN (
+                    SELECT t.*, 
+                        ROW_TO_JSON(p) AS pro, 
+                        ROW_TO_JSON(c) AS celeb 
+                    FROM teams t 
+                    LEFT JOIN pros p 
+                    ON t.pro_id = p.id 
+                    LEFT JOIN celebs c 
+                    ON t.celeb_id = c.id 
+                    GROUP BY t.id, p.id, c.id 
+                ) t
+                ON tl.team_id = t.id
+                WHERE tl.user_id = $1
+                GROUP BY tl.user_id
+            ) tl 
+            ON u.id = tl.user_id
+            LEFT JOIN (
+                SELECT dl.user_id,
+                    COALESCE(JSON_AGG(ROW_TO_JSON(d)) FILTER (WHERE d.id IS NOT NULL), '[]') AS dances
+                FROM dance_likes dl
+                LEFT JOIN dances d
+                ON dl.dance_id = d.id
+                WHERE dl.user_id = $1
+                GROUP BY dl.user_id
+            ) dl 
+            ON u.id = dl.user_id
+            WHERE u.id = $1
+            GROUP BY u.id
+            `,
+            [id]
+        );
+
+        res.status(200).json(user.rows[0]);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// general CRUD for users
 
 export const addUser = async (req, res) => {
     try {

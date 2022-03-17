@@ -78,7 +78,7 @@ function AdminDashboard(props) {
                     //selected={selectedIndex === 0}
                     onClick={() => handleComponent(<AdminLanding key={0} />, 0)}
                 >
-                    <ListItemText>Admin Dashboard</ListItemText>
+                    <ListItemText>Overview</ListItemText>
                 </ListItemButton>
 
                 <Divider />
@@ -164,7 +164,7 @@ function AdminDashboard(props) {
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" noWrap component="div">
-                            Statistics & Tables
+                            Admin Dashboard
                         </Typography>
                     </Toolbar>
                 </AppBar>

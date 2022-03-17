@@ -4,7 +4,6 @@ import auth from './auth';
 //import fans from './fans';
 import loading from './loading';
 import errors from './errors';
-//import data from './data';
 
 import celebs from './celebs';
 import pros from './pros';

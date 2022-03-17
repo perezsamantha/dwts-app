@@ -12,6 +12,7 @@ import {
     signUp,
     updateUser,
     verifyEmail,
+    fetchAuthData,
 } from '../controllers/user.js';
 
 import uploadCoverPicture from '../middleware/uploadCoverPicture.js';
@@ -22,6 +23,7 @@ const router = express.Router();
 
 router.post('/signIn', signIn);
 router.post('/signUp', signUp);
+router.get('/authData', auth, fetchAuthData);
 router.post('/add', addUser);
 router.get('/', fetchUsers);
 router.get('/:id', findUserById);
