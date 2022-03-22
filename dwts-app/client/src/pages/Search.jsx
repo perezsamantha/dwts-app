@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-//import SearchBar from '../components/Search/SearchBar';
 import BottomNavBar from '../components/BottomNavBar/BottomNavBar';
 import Dances from '../components/Search/Dances';
 import Teams from '../components/Search/Teams';
@@ -15,17 +14,18 @@ import {
     Page,
     SearchTextField,
 } from '../components/shared/muiStyles';
-import Filters from '../components/Search/Filters/Filters';
 import { initialFilters } from '../components/Search/Filters/initialFilters';
 import * as searchType from '../constants/searchTypes';
+import DanceFilters from '../components/Search/Filters/DanceFilters';
+import TeamFilters from '../components/Search/Filters/TeamFilters';
+import ProFilters from '../components/Search/Filters/ProFilters';
 
 function Search(props) {
     const [type, setType] = useState(props.type);
     const [searchVal, setSearchVal] = useState('');
     const [key, setKey] = useState(1);
     const [placeholder, setPlaceholder] = useState('');
-
-    const [finalFilters, setFinalFilters] = useState(initialFilters(type));
+    const [filters, setFilters] = useState({});
 
     localStorage.setItem('parentPath', window.location.pathname);
 
@@ -60,24 +60,46 @@ function Search(props) {
     useEffect(() => {
         setType(type);
         placeholderText(type);
-        setFinalFilters(initialFilters(type));
+        setFilters({});
     }, [type]);
+
+    const FilterComponent = () => {
+        switch (type) {
+            case searchType.DANCES:
+                return (
+                    <DanceFilters
+                        filters={initialFilters(type)}
+                        setFilters={setFilters}
+                    />
+                );
+            case searchType.TEAMS:
+                return (
+                    <TeamFilters
+                        filters={initialFilters(type)}
+                        setFilters={setFilters}
+                    />
+                );
+            case searchType.PROS:
+                return (
+                    <ProFilters
+                        filters={initialFilters(type)}
+                        setFilters={setFilters}
+                    />
+                );
+            default:
+                return <></>;
+        }
+    };
 
     const SearchComponent = () => {
         // TODO: recap of filters above component, maybe number of results too
         switch (type) {
             case searchType.DANCES:
-                return (
-                    <Dances key={1} search={searchVal} filters={finalFilters} />
-                );
+                return <Dances key={1} search={searchVal} filters={filters} />;
             case searchType.TEAMS:
-                return (
-                    <Teams key={2} search={searchVal} filters={finalFilters} />
-                );
+                return <Teams key={2} search={searchVal} filters={filters} />;
             case searchType.PROS:
-                return (
-                    <Pros key={3} search={searchVal} filters={finalFilters} />
-                );
+                return <Pros key={3} search={searchVal} filters={filters} />;
             case searchType.FANS:
                 return <Fans key={4} search={searchVal} />;
             default:
@@ -108,11 +130,7 @@ function Search(props) {
                                 ),
                             }}
                         />
-                        <Filters
-                            type={type}
-                            finalFilters={finalFilters}
-                            setFinalFilters={setFinalFilters}
-                        />
+                        <FilterComponent />
                     </SearchBoxContainer>
 
                     <Tabs value={type} onChange={handleChange} centered>

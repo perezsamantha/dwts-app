@@ -16,13 +16,14 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionType from './constants/actionTypes';
 import * as searchType from './constants/searchTypes';
-import decode from 'jwt-decode';
 import { CssBaseline, Paper, useMediaQuery } from '@mui/material';
 import NotFound from './pages/NotFound';
 import Overview from './pages/Overview';
-import 'swiper/css/bundle';
 import ForgotPassword from './pages/Landing/ForgotPassword';
 import Verification from './pages/Landing/Verification';
+import 'swiper/css/bundle';
+import { fetchAuthData } from './actions/auth';
+import Notifications from './pages/Notifications';
 
 function App() {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark');
@@ -36,6 +37,7 @@ function App() {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const authError = useSelector((state) => state.errors.AUTHFETCH);
 
     useEffect(() => {
         setToggleDark(
@@ -50,29 +52,16 @@ function App() {
             return;
         }
 
-        // const user = JSON.parse(localStorage.getItem('profile'));
+        dispatch(fetchAuthData());
 
-        // if (user === null) {
-        //     dispatch({ type: actionType.LOGOUT });
-        //     navigate('/');
-        // }
-
-        // const token = user?.token;
-
-        // if (token) {
-        //     const decodedToken = decode(token);
-        //     // need to test functionality
-        //     if (decodedToken.exp * 1000 < new Date().getTime()) {
-        //         dispatch({ type: actionType.LOGOUT });
-        //         navigate('/');
-        //     }
-        // }
-    }, [dispatch, navigate, prefersDarkMode]);
+        if (authError) {
+            dispatch({ type: actionType.LOGOUT });
+            navigate('/');
+        }
+    }, [dispatch, navigate, prefersDarkMode, authError]);
 
     const PrivateRoute = () => {
-        const role = useSelector(
-            (state) => state.auth?.authData?.result?.user_role
-        );
+        const role = useSelector((state) => state.auth?.authData?.user_role);
 
         return role === 'admin' ? <Outlet /> : <Navigate to="/" />;
     };
@@ -243,15 +232,7 @@ function App() {
                             element={<ForgotPassword />}
                         />
                         <Route path="verify/:id" element={<Verification />} />
-                        <Route
-                            path="dashboard"
-                            element={
-                                <Dashboard
-                                    toggleDark={toggleDark}
-                                    handleDarkMode={handleDarkMode}
-                                />
-                            }
-                        />
+                        <Route path="dashboard" element={<Dashboard />} />
                         <Route path="overview" element={<Overview />} />
                         <Route exact path="search">
                             <Route
@@ -278,7 +259,19 @@ function App() {
                                 element={<Search type={searchType.FANS} />}
                             />
                         </Route>
-                        <Route path="account" element={<Account />} />
+                        <Route
+                            path="notifications"
+                            element={<Notifications />}
+                        />
+                        <Route
+                            path="account"
+                            element={
+                                <Account
+                                    toggleDark={toggleDark}
+                                    handleDarkMode={handleDarkMode}
+                                />
+                            }
+                        />
                         <Route path="admin" element={<PrivateRoute />}>
                             <Route path="" element={<Admin />} />
                         </Route>

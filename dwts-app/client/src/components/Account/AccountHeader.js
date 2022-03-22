@@ -1,40 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Avatar, Box, Card, Divider, Stack } from '@mui/material';
+import {
+    Avatar,
+    Box,
+    Button,
+    Divider,
+    Paper,
+    Stack,
+    Typography,
+} from '@mui/material';
 import * as actionType from '../../constants/actionTypes';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
 import 'react-multi-carousel/lib/styles.css';
 import { createLoadingSelector } from '../../api/selectors';
-import { Button, Paper, Typography } from '@mui/material';
 import { BsThreeDots } from 'react-icons/bs';
 import SocialsLink from '../shared/SocialsLink';
 import FavoritesWrapper from '../Favorites/Favorites';
 import AccountInfo from './AccountInfo';
-import { fetchAuthData } from '../../actions/auth';
 import Progress from '../shared/Progress';
 
-function AccountHeader() {
+function AccountHeader(props) {
     const user = useSelector((state) => state.auth.authData);
     //const [isLoading, setIsLoading] = useState(true);
     const [open, setOpen] = useState(false);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-
-    //const favorites = useSelector(state => state.teams.teams);
 
     const loadingSelector = createLoadingSelector([actionType.AUTHFETCH]);
     const loading = useSelector((state) => loadingSelector(state));
 
-    const logout = () => {
-        dispatch({ type: actionType.LOGOUT });
-
-        navigate('/');
-    };
-
-    useEffect(() => {
-        dispatch(fetchAuthData());
-    }, [dispatch]);
+    useEffect(() => {}, []);
 
     const handleClose = () => {
         setOpen(false);
@@ -62,31 +55,30 @@ function AccountHeader() {
                     >
                         {user.username.charAt(0)}
                     </Avatar>
-                    <Button onClick={() => setOpen(true)}>
-                        <BsThreeDots style={{ width: '60%', height: '60%' }} />
+                    <Button onClick={() => setOpen(true)} color="inherit">
+                        <BsThreeDots
+                            style={{
+                                width: '60%',
+                                height: '60%',
+                            }}
+                        />
                     </Button>
                 </Box>
+
                 <Typography variant="h4">{user.nickname}</Typography>
                 <Typography variant="h5">@{user.username}</Typography>
+
                 {user.watching_since > 0 && (
                     <Typography variant="subtitle1">
                         Watching since season {user.watching_since}
                     </Typography>
                 )}
 
-                <Button variant="filled" onClick={() => navigate('/admin')}>
-                    Admin Panel
-                </Button>
-                <Button variant="contained" onClick={logout}>
-                    Logout
-                </Button>
                 <Divider />
 
                 <Stack my={1}>
-                    <Typography variant="h5">
-                        Socials
-                        <Divider />
-                    </Typography>
+                    <Typography variant="h5">Socials</Typography>
+                    <Divider />
                     {user.instagram || user.twitter || user.tiktok ? (
                         <Stack
                             direction="row"
@@ -119,6 +111,8 @@ function AccountHeader() {
                     user={user}
                     open={open}
                     handleClose={handleClose}
+                    toggleDark={props.toggleDark}
+                    handleDarkMode={props.handleDarkMode}
                 />
             )}
         </Container>

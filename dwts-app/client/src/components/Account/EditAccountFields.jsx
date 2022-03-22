@@ -72,7 +72,7 @@ function EditAccountFields(props) {
                 open={props.open}
                 onClose={props.close}
             >
-                <DialogTitle>Account</DialogTitle>
+                <DialogTitle>Update Account</DialogTitle>
                 <DialogContent>
                     <PhotoContainer>
                         <Avatar

@@ -31,7 +31,7 @@ import { FaBirthdayCake } from 'react-icons/fa';
 function Pro() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const user = JSON.parse(localStorage.getItem('profile'));
+    const user = useSelector((state) => state.auth.authData);
     const pro = useSelector((state) => state.pros.pro);
     const celebs = useSelector((state) => state.celebs.celebs);
     const teams = useSelector((state) => state.teams.teams);

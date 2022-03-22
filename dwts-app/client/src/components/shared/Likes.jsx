@@ -5,7 +5,7 @@ function Likes(props) {
     const { user, likes } = props;
 
     if (likes?.length > 0) {
-        return likes.find((like) => like === user?.result?.id) ? (
+        return likes.find((like) => like.id === user?.id) ? (
             <>
                 <FavoriteIcon />
             </>

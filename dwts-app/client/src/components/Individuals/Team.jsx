@@ -39,7 +39,7 @@ import PicturesGrid from './Supporting/PicturesGrid';
 
 function Team(props) {
     const navigate = useNavigate();
-    const user = JSON.parse(localStorage.getItem('profile'));
+    const user = useSelector((state) => state.auth.authData);
 
     const dispatch = useDispatch();
 

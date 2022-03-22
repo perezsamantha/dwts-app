@@ -129,7 +129,7 @@ export const signIn = async (req, res) => {
             );
 
             //res.status(200).json({ result: user.rows[0], token });
-            res.cookie('token', token, {
+            res.cookie('da_jwt', token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: 'Strict',
@@ -183,7 +183,7 @@ export const verifyEmail = async (req, res) => {
             //     message: messages.alreadyVerified,
             // });
 
-            res.cookie('token', token, {
+            res.cookie('da_jwt', token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: 'Strict',
@@ -214,7 +214,7 @@ export const verifyEmail = async (req, res) => {
         //     message: messages.verified,
         // });
 
-        res.cookie('token', token, {
+        res.cookie('da_jwt', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'Strict',
@@ -246,6 +246,7 @@ export const fetchAuthData = async (req, res) => {
                 u.twitter, 
                 u.instagram, 
                 u.birthday,
+                u.user_role,
                 JSON_BUILD_OBJECT('pros', 
                     COALESCE((ARRAY_AGG(pl.pros))[1], '[]'), 
                     'teams', 
@@ -306,6 +307,8 @@ export const fetchAuthData = async (req, res) => {
     }
 };
 
+// TODO:: logout user and "remove" cookie
+
 // general CRUD for users
 
 export const addUser = async (req, res) => {
@@ -347,15 +350,8 @@ export const addUser = async (req, res) => {
 
         sendEmail(email, verify(result.rows[0].id));
 
-        const token = jwt.sign(
-            { username: result.rows[0].username, id: result.rows[0].id },
-            process.env.SECRET_STRING,
-            { expiresIn: '1h' }
-        );
-
         res.status(200).json({
             result: result.rows[0],
-            token,
             message: messages.verify,
         });
     } catch (error) {

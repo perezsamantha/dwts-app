@@ -1,19 +1,19 @@
 import React from 'react';
+import { Typography } from '@mui/material';
 import BottomNavBar from '../components/BottomNavBar/BottomNavBar';
-import AccountHeader from '../components/Account/AccountHeader';
 import { MainContainer, Page } from '../components/shared/muiStyles';
 
-function Account() {
+function Notifications() {
     localStorage.setItem('parentPath', window.location.pathname);
 
     return (
         <Page>
             <MainContainer>
-                <AccountHeader />
+                <Typography variant="h3">Activity?</Typography>
             </MainContainer>
             <BottomNavBar />
         </Page>
     );
 }
 
-export default Account;
+export default Notifications;
