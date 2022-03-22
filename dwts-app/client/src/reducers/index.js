@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 
 import auth from './auth';
-//import fans from './fans';
 import loading from './loading';
 import errors from './errors';
 

@@ -1,14 +1,13 @@
 import { Box, Stack, Typography } from '@mui/material';
 import React from 'react';
-import DataGetter from '../../shared/DataGetter.js';
 import { convertPlacement } from '../../shared/functions.js';
+
 function TeamPreview(props) {
-    const team = props.team;
+    const { team, sortType } = props;
     const placement = convertPlacement(team.placement);
 
     // notes:
     // average score?
-    // only show season if organized by season?
 
     return (
         <Stack>
@@ -18,11 +17,19 @@ function TeamPreview(props) {
                 src={team.cover_pic ? team.cover_pic : '/defaultPic.jpeg'}
             />
             <Typography variant="subtitle1" noWrap>
-                <DataGetter id={team.id} type={'Team'} />
+                {team.celeb.first_name} & {team.pro.first_name}
             </Typography>
-            <Typography variant="caption" noWrap>
-                Season {team.season_id} &#8226; {placement} Place
-            </Typography>
+
+            {sortType === 'season' && (
+                <Typography variant="caption" noWrap>
+                    {placement} Place &#8226; Avg Score -
+                </Typography>
+            )}
+            {sortType === 'placement' && (
+                <Typography variant="caption" noWrap>
+                    Season {team.season_id} &#8226; Avg Score -
+                </Typography>
+            )}
         </Stack>
     );
 }

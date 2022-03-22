@@ -19,17 +19,20 @@ import {
     Typography,
 } from '@mui/material';
 import { placements, seasons } from '../../../constants/dropdowns';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import * as actionType from '../../../constants/actionTypes';
 
 //TODO: clear filters button?
 
-function TeamFilters(props) {
+function TeamFilters() {
     const [open, setOpen] = useState(false);
-    const [filters, setFilters] = useState(props.filters);
+    const initialFilters = useSelector((state) => state.teams.filters);
+    const [filters, setFilters] = useState(initialFilters);
     const pros = useSelector((state) => state.pros.pros);
+    const dispatch = useDispatch();
 
     const handleOpen = () => {
-        setFilters(props.filters);
+        setFilters(initialFilters);
         setOpen(true);
     };
 
@@ -38,7 +41,7 @@ function TeamFilters(props) {
     };
 
     const handleSubmit = () => {
-        props.setFilters(filters);
+        dispatch({ type: actionType.TEAMFILTERS, payload: filters });
         setOpen(false);
     };
 
@@ -76,17 +79,17 @@ function TeamFilters(props) {
                             <FormControlLabel
                                 value="seasonDesc"
                                 control={<Radio />}
-                                label="Season Descending"
+                                label="Season (High to Low)"
                             />
                             <FormControlLabel
                                 value="seasonAsc"
                                 control={<Radio />}
-                                label="Season Ascending"
+                                label="Season (Low to High)"
                             />
                             <FormControlLabel
                                 value="placement"
                                 control={<Radio />}
-                                label="placement"
+                                label="Placement"
                             />
                             {/* <FormControlLabel
                     value="perfects"
@@ -99,66 +102,55 @@ function TeamFilters(props) {
                     label="Average Score"
                 /> */}
                         </RadioGroup>
-                        <Typography variant="h5" mb={1}>
+
+                        <Typography variant="h5" my={1}>
                             Filter By
                         </Typography>
-                        <Typography>Pro(s)</Typography>
-                        <Select
-                            multiple
-                            name="pros"
-                            value={filters.pros}
-                            onChange={handleChange}
-                            input={<OutlinedInput />}
-                            renderValue={(selected) => (
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        flexWrap: 'wrap',
-                                        gap: 0.5,
-                                    }}
-                                >
-                                    {selected.map((value) => {
-                                        const pro = pros.find(
-                                            (pro) => pro.id === value
-                                        );
-                                        const name =
-                                            pro.first_name +
-                                            ' ' +
-                                            pro?.last_name;
-                                        return (
-                                            <Chip key={value} label={name} />
-                                        );
-                                    })}
-                                </Box>
-                            )}
-                        >
-                            {pros.map((pro, index) => {
-                                return (
-                                    <MenuItem key={index} value={pro.id}>
-                                        {pro.first_name} {pro?.last_name}
-                                    </MenuItem>
-                                );
-                            })}
-                        </Select>
 
-                        <Typography>Only Show Teams w/ Pictures?</Typography>
-                        <RadioGroup
-                            name="hasPictures"
-                            value={filters.hasPictures}
-                            onChange={handleChange}
-                            row
-                        >
-                            <FormControlLabel
-                                value={true}
-                                control={<Radio />}
-                                label="Yes"
-                            />
-                            <FormControlLabel
-                                value={false}
-                                control={<Radio />}
-                                label="No"
-                            />
-                        </RadioGroup>
+                        <Typography>Pro(s)</Typography>
+                        <FormControl margin="dense">
+                            <Select
+                                multiple
+                                name="pros"
+                                value={filters.pros}
+                                onChange={handleChange}
+                                input={<OutlinedInput />}
+                                renderValue={(selected) => (
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            flexWrap: 'wrap',
+                                            gap: 0.5,
+                                        }}
+                                    >
+                                        {selected.map((value) => {
+                                            const pro = pros.find(
+                                                (pro) => pro.id === value
+                                            );
+                                            const name =
+                                                pro.first_name +
+                                                ' ' +
+                                                pro?.last_name;
+                                            return (
+                                                <Chip
+                                                    key={value}
+                                                    label={name}
+                                                />
+                                            );
+                                        })}
+                                    </Box>
+                                )}
+                            >
+                                {pros.map((pro, index) => {
+                                    return (
+                                        <MenuItem key={index} value={pro.id}>
+                                            {pro.first_name} {pro?.last_name}
+                                        </MenuItem>
+                                    );
+                                })}
+                            </Select>
+                        </FormControl>
+
                         <Typography>Seasons</Typography>
                         <Stack direction="row">
                             <TextField
@@ -167,6 +159,11 @@ function TeamFilters(props) {
                                 name="seasons"
                                 value={filters.seasons[0]}
                                 onChange={handleChangeFrom}
+                                sx={{
+                                    '&.MuiOutlinedInput-root': {
+                                        marginLeft: 0,
+                                    },
+                                }}
                             >
                                 {seasons.map((season, index) => {
                                     return (
@@ -195,8 +192,8 @@ function TeamFilters(props) {
                                 })}
                             </TextField>
                         </Stack>
-                        <Typography>Placements</Typography>
 
+                        <Typography>Placements</Typography>
                         <Stack direction="row">
                             <TextField
                                 select
@@ -232,6 +229,25 @@ function TeamFilters(props) {
                                 })}
                             </TextField>
                         </Stack>
+
+                        <Typography>Must Have Pictures?</Typography>
+                        <RadioGroup
+                            name="hasPictures"
+                            value={filters.hasPictures}
+                            onChange={handleChange}
+                            row
+                        >
+                            <FormControlLabel
+                                value={true}
+                                control={<Radio />}
+                                label="Yes"
+                            />
+                            <FormControlLabel
+                                value={false}
+                                control={<Radio />}
+                                label="No"
+                            />
+                        </RadioGroup>
                     </FormControl>
                 </DialogContent>
                 <DialogActions>

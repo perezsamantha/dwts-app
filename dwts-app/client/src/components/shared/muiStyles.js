@@ -35,6 +35,10 @@ export const ResultsContainer = styled(Box)`
     align-items: center;
 `;
 
+export const ContentContainer = styled(Box)({
+    width: '100%',
+});
+
 export const SearchTextField = styled(TextField)(({ theme }) => ({
     width: '90%',
     '& .MuiOutlinedInput-root': {

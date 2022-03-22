@@ -25,6 +25,8 @@ import {
     themes,
     weeks,
 } from '../../../constants/dropdowns';
+import { useDispatch, useSelector } from 'react-redux';
+import * as actionType from '../../../constants/actionTypes';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -41,11 +43,12 @@ const MenuProps = {
 
 function DanceFilters(props) {
     const [open, setOpen] = useState(false);
-
-    const [filters, setFilters] = useState(props.filters);
+    const initialFilters = useSelector((state) => state.dances.filters);
+    const [filters, setFilters] = useState(initialFilters);
+    const dispatch = useDispatch();
 
     const handleOpen = () => {
-        setFilters(props.filters);
+        setFilters(initialFilters);
         setOpen(true);
     };
 
@@ -54,7 +57,8 @@ function DanceFilters(props) {
     };
 
     const handleSubmit = () => {
-        props.setFilters(filters);
+        dispatch({ type: actionType.DANCEFILTERS, payload: filters });
+        //props.setFilters(filters);
         setOpen(false);
     };
 
@@ -212,25 +216,6 @@ function DanceFilters(props) {
             </Select> */}
                         {/* teams */}
 
-                        <Typography>Only Show Dances w/ Pictures?</Typography>
-                        <RadioGroup
-                            name="hasPictures"
-                            value={filters.hasPictures}
-                            onChange={handleChange}
-                            row
-                        >
-                            <FormControlLabel
-                                value={true}
-                                control={<Radio />}
-                                label="Yes"
-                            />
-                            <FormControlLabel
-                                value={false}
-                                control={<Radio />}
-                                label="No"
-                            />
-                        </RadioGroup>
-
                         <Typography>Seasons</Typography>
                         <Stack direction="row">
                             <TextField
@@ -342,6 +327,26 @@ function DanceFilters(props) {
                                 })}
                             </TextField>
                         </Stack>
+
+                        <Typography>Must Have Pictures?</Typography>
+                        <RadioGroup
+                            name="hasPictures"
+                            value={filters.hasPictures}
+                            onChange={handleChange}
+                            row
+                        >
+                            <FormControlLabel
+                                value={true}
+                                control={<Radio />}
+                                label="Yes"
+                            />
+                            <FormControlLabel
+                                value={false}
+                                control={<Radio />}
+                                label="No"
+                            />
+                        </RadioGroup>
+
                         <Typography>Must Have Link?</Typography>
                         <RadioGroup
                             name="hasLink"

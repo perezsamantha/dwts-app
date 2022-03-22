@@ -1,24 +1,20 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { searchTeams } from '../../actions/teams';
-import { Typography } from '@mui/material';
-import TeamPreview from './Previews/TeamPreview';
-
+import { Divider, Stack, Typography } from '@mui/material';
 import { createLoadingSelector } from '../../api/selectors';
-
 import * as actionType from '../../constants/actionTypes';
 import { filterTeams } from './Filters/filtered';
-import { ResultsContainer } from '../shared/muiStyles';
+import { ContentContainer, ResultsContainer } from '../shared/muiStyles';
 import Progress from '../shared/Progress';
 import TeamsSlider from './TeamsSlider';
+import { convertPlacement } from '../shared/functions';
 
 function Teams(props) {
-    const { search, filters } = props;
+    const { search } = props;
     const dispatch = useDispatch();
-
     const teams = useSelector((state) => state.teams.teams);
+    const filters = useSelector((state) => state.teams.filters);
 
     const loadingSelector = createLoadingSelector([
         actionType.TEAMSEARCH,
@@ -36,37 +32,67 @@ function Teams(props) {
     }, [dispatch, search]);
 
     let filteredTeams = [];
+    let sortType = '';
 
     if (!loading) {
         filteredTeams = filterTeams(teams, filters);
 
-        // sorts by placement first, should this be after ??
-        filteredTeams.sort((a, b) => {
-            if (a.placement < b.placement) {
-                return -1;
-            } else if (a.placement > b.placement) {
-                return 1;
-            } else {
-                return 0;
+        if (filters.sortBy === 'seasonAsc' || filters.sortBy === 'seasonDesc') {
+            sortType = 'season';
+
+            filteredTeams.sort((a, b) => {
+                if (a.placement < b.placement) {
+                    return -1;
+                } else if (a.placement > b.placement) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+
+            const categorizeBySeason = filteredTeams.reduce((acc, item) => {
+                if (!acc[item.season_id]) {
+                    acc[item.season_id] = [];
+                }
+
+                acc[item.season_id].push(item);
+                return acc;
+            }, {});
+
+            for (let [season_id] of Object.entries(categorizeBySeason)) {
+                arr.push(season_id);
             }
-        });
 
-        const categorizeBySeason = filteredTeams.reduce((acc, item) => {
-            if (!acc[item.season_id]) {
-                acc[item.season_id] = [];
+            if (filters.sortBy === 'seasonDesc') {
+                arr.reverse();
             }
-
-            acc[item.season_id].push(item);
-            return acc;
-        }, {});
-
-        for (let [season_id] of Object.entries(categorizeBySeason)) {
-            arr.push(season_id);
         }
 
-        // reverses array, to start with newst season working backwards
-        if (filters.sortBy === 'seasonDesc') {
-            arr.reverse();
+        if (filters.sortBy === 'placement') {
+            sortType = 'placement';
+
+            filteredTeams.sort((a, b) => {
+                if (a.season_id > b.season_id) {
+                    return -1;
+                } else if (a.season_id < b.season_id) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+
+            const categorizeByPlacement = filteredTeams.reduce((acc, item) => {
+                if (!acc[item.placement]) {
+                    acc[item.placement] = [];
+                }
+
+                acc[item.placement].push(item);
+                return acc;
+            }, {});
+
+            for (let [placement] of Object.entries(categorizeByPlacement)) {
+                arr.push(placement);
+            }
         }
     }
 
@@ -74,42 +100,29 @@ function Teams(props) {
         <Progress />
     ) : (
         <ResultsContainer>
+            <Stack>
+                <Typography>{filteredTeams.length} Teams</Typography>
+                <Divider />
+            </Stack>
+
             {arr.map((item, index) => (
                 <ContentContainer key={index}>
                     <Typography variant="h5" my={1}>
-                        Season {item}
+                        {sortType === 'season'
+                            ? `Season ${item}`
+                            : sortType === 'placement'
+                            ? `${convertPlacement(item)} Place`
+                            : ''}
                     </Typography>
-                    <TeamsSlider filteredTeams={filteredTeams} item={item} />
-                    {/* <Carousel responsive={responsive} partialVisible={true}>
-                        {filteredTeams
-                            .filter(
-                                (team) =>
-                                    Number(team.season_id) === Number(item)
-                            )
-                            .map((team, index) => (
-                                <Link
-                                    key={index}
-                                    to={{
-                                        pathname: `/teams/${team.id}`,
-                                    }}
-                                    style={{
-                                        textDecoration: 'inherit',
-                                        color: 'inherit',
-                                    }}
-                                >
-                                    <TeamsPreview key={index} team={team} />
-                                </Link>
-                            ))}
-                    </Carousel> */}
+                    <TeamsSlider
+                        filteredTeams={filteredTeams}
+                        item={item}
+                        sortType={sortType}
+                    />
                 </ContentContainer>
             ))}
         </ResultsContainer>
     );
 }
-
-const ContentContainer = styled.div`
-    width: 100%;
-    //margin: 15px auto;
-`;
 
 export default Teams;

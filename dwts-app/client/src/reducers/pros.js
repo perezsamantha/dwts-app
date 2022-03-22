@@ -1,11 +1,22 @@
 import * as actionType from '../constants/actionTypes';
-
+import { heightsInInches } from '../constants/dropdowns';
 // initial state from here?
 
 const proReducer = (
     state = {
         pros: [],
         pro: {},
+        filters: {
+            sortBy: 'firstName',
+            age: [0, 100],
+            height: [
+                heightsInInches[0],
+                heightsInInches[heightsInInches.length - 1],
+            ],
+            gender: ['Male', 'Female'],
+            showJuniors: false,
+            // hasPictures
+        },
     },
     action
 ) => {
@@ -44,7 +55,11 @@ const proReducer = (
                               ),
                 },
             };
-
+        case actionType.PROFILTERS:
+            return {
+                ...state,
+                filters: action.payload,
+            };
         default:
             return state;
     }

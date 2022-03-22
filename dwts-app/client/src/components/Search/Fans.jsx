@@ -3,19 +3,21 @@ import FanPreview from './Previews/FanPreview';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { searchUsers } from '../../actions/fans';
-import { Box, Divider, Grid, Stack, Typography } from '@mui/material';
+import { Divider, Grid, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { createLoadingSelector } from '../../api/selectors';
 
 import * as actionType from '../../constants/actionTypes';
 import { ResultsContainer } from '../shared/muiStyles';
 import Progress from '../shared/Progress';
+import { filterFans } from './Filters/filtered';
 
 function Fans(props) {
     const { search } = props;
     const dispatch = useDispatch();
-
     const fans = useSelector((state) => state.users.users);
+    const filters = useSelector((state) => state.users.filters);
+
     const loadingSelector = createLoadingSelector([actionType.USERSEARCH]);
     const loading = useSelector((state) => loadingSelector(state));
 
@@ -24,17 +26,23 @@ function Fans(props) {
         dispatch(searchUsers(input));
     }, [dispatch, search]);
 
+    let filteredFans = [];
+
+    if (!loading) {
+        filteredFans = filterFans(fans, filters);
+    }
+
     return loading || !Array.isArray(fans) ? (
         <Progress />
     ) : (
         <ResultsContainer>
             <Stack mb={1}>
-                <Typography>{fans.length} Fans</Typography>
+                <Typography>{filteredFans.length} Fans</Typography>
                 <Divider />
             </Stack>
 
             <Grid container justifyContent="center" spacing={1}>
-                {fans.map((fan, index) => (
+                {filteredFans.map((fan, index) => (
                     <Grid
                         item
                         key={index}

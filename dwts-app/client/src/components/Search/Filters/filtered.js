@@ -1,19 +1,17 @@
 import { getAge } from '../../shared/functions';
 
-// TODO: sort before returning arr ???
-
 export const filterDances = (dances, filters) => {
-    // console.log(filters);
+    console.log(filters);
+    console.log(dances);
     const filterKeys = Object.keys(filters);
     const filtered = dances.filter((dance) => {
         return filterKeys.every((key) => {
             switch (key) {
-                // case 'seasons':
-                //     // nest by getting data from episodes
-                //     return dance.episode_id >= filters.seasons[0] &&
-                //     dance.season_id <= filters.seasons[1]
-                //         ? true
-                //         : false;
+                case 'seasons':
+                    return dance.episode.season_id >= filters.seasons[0] &&
+                        dance.episode.season_id <= filters.seasons[1]
+                        ? true
+                        : false;
                 // case 'pros':
                 //     // nest by getting data from teams -> pros
                 //     return dance.episode_id >= filters.seasons[0] &&
@@ -182,6 +180,62 @@ export const filterPros = (pros, filters) => {
             // case 'avgPlacement':
             // case 'numPerfects':
             // case 'wins':
+            default:
+                return 0;
+        }
+    });
+    //console.log(filtered);
+
+    return filtered;
+};
+
+export const filterFans = (fans, filters) => {
+    const filterKeys = Object.keys(filters);
+    const filtered = fans.filter((fan) => {
+        return filterKeys.every((key) => {
+            switch (key) {
+                case 'pros':
+                    if (filters.pros.length === 0) {
+                        return true;
+                    }
+                    return filters.pros.every((id) => {
+                        return fan.likes.pros.some((pro) => pro.id === id);
+                    });
+                case 'teams':
+                    if (filters.teams.length === 0) {
+                        return true;
+                    }
+                    return filters.teams.every((id) => {
+                        return fan.likes.teams.some((team) => team.id === id);
+                    });
+                default:
+                    return true;
+            }
+        });
+    });
+
+    filtered.sort((a, b) => {
+        switch (filters.sortBy) {
+            case 'username':
+                let usernameA = a.username.toUpperCase();
+                let usernameB = b.username.toUpperCase();
+                if (usernameA < usernameB) {
+                    return -1;
+                } else if (usernameA > usernameB) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            case 'nickname':
+                let nicknameA = a.nickname.toUpperCase();
+                let nicknameB = b.nickname.toUpperCase();
+                if (nicknameA < nicknameB) {
+                    return -1;
+                } else if (nicknameA > nicknameB) {
+                    return 1;
+                } else {
+                    return 0;
+                }
             default:
                 return 0;
         }

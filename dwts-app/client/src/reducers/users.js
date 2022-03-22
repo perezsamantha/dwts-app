@@ -6,7 +6,12 @@ const userReducer = (
     state = {
         users: [],
         user: {},
-        likes: 0,
+        filters: {
+            sortBy: 'username',
+            pros: [],
+            teams: [],
+            // birthdayMonth ??
+        },
     },
     action
 ) => {
@@ -34,7 +39,11 @@ const userReducer = (
                 ...state,
                 users: state.users.filter((user) => user.id !== action.payload),
             };
-
+        case actionType.FANFILTERS:
+            return {
+                ...state,
+                filters: action.payload,
+            };
         default:
             return state;
     }

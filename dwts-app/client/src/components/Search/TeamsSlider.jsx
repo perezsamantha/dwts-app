@@ -4,21 +4,16 @@ import { Navigation } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { Box } from '@mui/material';
 import { Link } from 'react-router-dom';
 import TeamPreview from './Previews/TeamPreview';
 
 function TeamsSlider(props) {
-    const { filteredTeams, item } = props;
+    const { filteredTeams, item, sortType } = props;
 
     return (
-        // <Box my={2}>
         <Swiper
             slidesPerView={3}
             spaceBetween={10}
-            // pagination={{
-            //     clickable: true,
-            // }}
             navigation={true}
             breakpoints={{
                 300: {
@@ -50,7 +45,13 @@ function TeamsSlider(props) {
             className="mySwiper"
         >
             {filteredTeams
-                .filter((team) => Number(team.season_id) === Number(item))
+                .filter((team) =>
+                    sortType === 'season'
+                        ? Number(team.season_id) === Number(item)
+                        : sortType === 'placement'
+                        ? Number(team.placement) === Number(item)
+                        : ''
+                )
                 .map((team, index) => (
                     <SwiperSlide key={index}>
                         <Link
@@ -63,12 +64,15 @@ function TeamsSlider(props) {
                                 color: 'inherit',
                             }}
                         >
-                            <TeamPreview key={index} team={team} />
+                            <TeamPreview
+                                key={index}
+                                team={team}
+                                sortType={sortType}
+                            />
                         </Link>
                     </SwiperSlide>
                 ))}
         </Swiper>
-        // </Box>
     );
 }
 

@@ -1,4 +1,5 @@
 import * as actionType from '../constants/actionTypes';
+import { placements, seasons } from '../constants/dropdowns';
 
 // initial state from here?
 
@@ -6,6 +7,19 @@ const teamReducer = (
     state = {
         teams: [],
         team: {},
+        filters: {
+            sortBy: 'seasonDesc',
+            seasons: [seasons[0], seasons[seasons.length - 1]],
+            placements: [placements[0], placements[placements.length - 1]],
+            hasPictures: 'false',
+            pros: [],
+            // minimumDances: 0,
+            // minimumTens: 0,
+            // minimumPerfects: 0,
+            // averageScore: []
+            // celebAge ?
+            // celebHeight
+        },
     },
     action
 ) => {
@@ -50,7 +64,11 @@ const teamReducer = (
                               ),
                 },
             };
-
+        case actionType.TEAMFILTERS:
+            return {
+                ...state,
+                filters: action.payload,
+            };
         default:
             return state;
     }

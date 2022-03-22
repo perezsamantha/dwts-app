@@ -14,9 +14,10 @@ import { filterDances } from './Filters/filtered';
 import Progress from '../shared/Progress';
 
 function Dances(props) {
-    const { search, filters } = props;
+    const { search } = props;
     const dispatch = useDispatch();
     const dances = useSelector((state) => state.dances.dances);
+    const filters = useSelector((state) => state.dances.filters);
 
     const loadingSelector = createLoadingSelector([
         actionType.DANCESEARCH,

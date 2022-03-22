@@ -24,15 +24,19 @@ import {
     genders,
     heightsInInches,
 } from '../../../constants/dropdowns';
+import { useDispatch, useSelector } from 'react-redux';
+import * as actionType from '../../../constants/actionTypes';
 
 //TODO: clear filters button?
 
 function ProFilters(props) {
     const [open, setOpen] = useState(false);
-    const [filters, setFilters] = useState(props.filters);
+    const initialFilters = useSelector((state) => state.pros.filters);
+    const [filters, setFilters] = useState(initialFilters);
+    const dispatch = useDispatch();
 
     const handleOpen = () => {
-        setFilters(props.filters);
+        setFilters(initialFilters);
         setOpen(true);
     };
 
@@ -41,7 +45,8 @@ function ProFilters(props) {
     };
 
     const handleSubmit = () => {
-        props.setFilters(filters);
+        dispatch({ type: actionType.PROFILTERS, payload: filters });
+        //props.setFilters(filters);
         setOpen(false);
     };
 

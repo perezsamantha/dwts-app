@@ -12,9 +12,10 @@ import { filterPros } from './Filters/filtered';
 import Progress from '../shared/Progress';
 
 function Pros(props) {
-    const { search, filters } = props;
+    const { search } = props;
     const dispatch = useDispatch();
     const pros = useSelector((state) => state.pros.pros);
+    const filters = useSelector((state) => state.pros.filters);
 
     const loadingSelector = createLoadingSelector([actionType.PROSEARCH]);
     const loading = useSelector((state) => loadingSelector(state));
