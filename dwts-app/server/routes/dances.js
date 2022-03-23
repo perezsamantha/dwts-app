@@ -10,6 +10,7 @@ import {
     searchDances,
     updateDance,
 } from '../controllers/dance.js';
+import { grantAccess } from '../controllers/user.js';
 
 import uploadExtraPicture from '../middleware/uploadExtraPicture.js';
 
@@ -17,13 +18,34 @@ import auth from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.post('/add', addDance);
-router.patch('/update/:id', updateDance);
-router.get('/', auth, fetchAllDances);
-router.post('/search', searchDances);
-router.delete('/delete/:id', deleteDance);
-router.get('/:id', findDanceById);
-router.patch('/addPic/:id', uploadExtraPicture, addPic);
-router.patch('/:id/likeDance', auth, likeDance);
+router.post('/add', auth, grantAccess('createAny', 'dance'), addDance);
+router.get('/', auth, grantAccess('readAny', 'dance'), fetchAllDances);
+router.post('/search', auth, grantAccess('readAny', 'dance'), searchDances);
+router.get('/:id', auth, grantAccess('readAny', 'dance'), findDanceById);
+router.patch(
+    '/update/:id',
+    auth,
+    grantAccess('updateAny', 'dance'),
+    updateDance
+);
+router.delete(
+    '/delete/:id',
+    auth,
+    grantAccess('deleteAny', 'dance'),
+    deleteDance
+);
+router.patch(
+    '/addPic/:id',
+    auth,
+    grantAccess('updateAny', 'dance'),
+    uploadExtraPicture,
+    addPic
+);
+router.patch(
+    '/:id/likeDance',
+    auth,
+    grantAccess('updateAny', 'dance_like'),
+    likeDance
+);
 
 export default router;

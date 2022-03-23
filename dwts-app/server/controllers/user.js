@@ -667,7 +667,7 @@ export const grantAccess = function (action, resource) {
                 req.userId,
             ]);
 
-            const permission = ac.can(user.rows[0].role)[action](resource);
+            const permission = ac.can(user.rows[0].user_role)[action](resource);
 
             if (!permission.granted) {
                 return res.status(401).json({ message: 'Invalid permission' });

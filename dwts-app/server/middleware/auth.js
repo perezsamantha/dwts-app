@@ -42,6 +42,14 @@ const auth = async (req, res, next) => {
 
                 //req.userId = decodedData?.sub;
             }
+        } else {
+            res.cookie('da_jwt', '', {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'Strict',
+            })
+                .status(403)
+                .json({ message: 'JWT Expired' });
         }
 
         next();
