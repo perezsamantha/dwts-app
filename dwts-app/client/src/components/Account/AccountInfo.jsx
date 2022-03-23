@@ -20,6 +20,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { BsBookmarkStar } from 'react-icons/bs';
 import styled from '@emotion/styled';
 import AppInfo from './AppInfo';
+import { logout } from '../../actions/auth';
 
 function AccountInfo(props) {
     const { user } = props;
@@ -51,10 +52,8 @@ function AccountInfo(props) {
         setInfoOpen(false);
     };
 
-    const logout = () => {
-        dispatch({ type: actionType.LOGOUT });
-
-        navigate('/');
+    const handleLogout = () => {
+        dispatch(logout(navigate));
     };
 
     return (
@@ -146,7 +145,7 @@ function AccountInfo(props) {
                     </Box> */}
 
                     <Box alignSelf="center" mt={2}>
-                        <Button onClick={logout} variant="contained">
+                        <Button onClick={handleLogout} variant="contained">
                             Logout
                         </Button>
                     </Box>

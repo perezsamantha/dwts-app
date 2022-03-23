@@ -169,11 +169,8 @@ export const addDancePic = (id, image) => async (dispatch) => {
 export const likeDance = (id) => async (dispatch) => {
     dispatch({ type: actionType.DANCELIKE_REQUEST });
 
-    //const user = JSON.parse(localStorage.getItem('profile'));
-
     try {
         const { data } = await api.likeDance(id);
-        console.log(data);
 
         dispatch({ type: actionType.DANCELIKE_SUCCESS, payload: data });
     } catch (error) {

@@ -70,7 +70,6 @@ function EditDialog(props) {
     }, [props]);
 
     const handleChange = (e) => {
-        console.log(e);
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
@@ -118,7 +117,6 @@ function EditDialog(props) {
                         break;
                     // not judge, score, dance ?
                     default:
-                    //console.log('Invald table type');
                 }
             });
         }
@@ -161,7 +159,6 @@ function EditDialog(props) {
                 dispatch(updateUser(id, formData));
                 break;
             default:
-            //console.log('Invald table type');
         }
         props.handleClose();
     };

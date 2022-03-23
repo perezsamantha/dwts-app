@@ -6,38 +6,20 @@ import * as actionType from '../constants/actionTypes';
 const authReducer = (state = { authData: {} }, action) => {
     switch (action.type) {
         case actionType.AUTH:
-            // localStorage.setItem(
-            //     'profile',
-            //     JSON.stringify({ ...action?.data })
-            // );
-
             return { ...state, authData: action.data };
         case actionType.AUTHVERIFY_SUCCESS:
-            // localStorage.setItem(
-            //     'profile',
-            //     JSON.stringify({ ...action?.data })
-            // );
-
             return { ...state, authData: action.payload };
         case actionType.AUTHFETCH_SUCCESS:
             return { ...state, authData: action.payload };
         case actionType.AUTHUPDATE_SUCCESS:
-            // localStorage.setItem(
-            //     'profile',
-            //     JSON.stringify({ ...action.payload })
-            // );
-
             return {
                 ...state,
                 authData: { ...state.authData, result: action.payload },
             };
         case actionType.AUTHDELETE_SUCCESS:
         case actionType.LOGOUT:
-            //localStorage.clear();
-            // TODO: clear/remove cookie? or set it with date from past in new backend logout controller
-
-            //return { ...state, authData: null };
-            return {};
+            localStorage.clear();
+            return { authData: {} };
         default:
             return state;
     }

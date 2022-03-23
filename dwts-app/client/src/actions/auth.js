@@ -113,3 +113,15 @@ export const deleteUser = (id) => async (dispatch) => {
         });
     }
 };
+
+export const logout = (navigate) => async (dispatch) => {
+    try {
+        await api.logout();
+
+        dispatch({ type: actionType.LOGOUT });
+
+        navigate('/');
+    } catch (error) {
+        console.log(error);
+    }
+};

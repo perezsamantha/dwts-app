@@ -19,7 +19,14 @@ const auth = async (req, res, next) => {
                 );
 
                 if (exp < Date.now().valueOf() / 1000) {
-                    return res.status(401).json({ error: 'Expired JWT' });
+                    return res
+                        .cookie('da_jwt', '', {
+                            httpOnly: true,
+                            secure: process.env.NODE_ENV === 'production',
+                            sameSite: 'Strict',
+                        })
+                        .status(403)
+                        .json({ message: 'JWT Expired' });
                 }
 
                 req.userId = id;
@@ -39,7 +46,6 @@ const auth = async (req, res, next) => {
 
         next();
     } catch (error) {
-        console.log(error);
         res.cookie('da_jwt', '', {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',

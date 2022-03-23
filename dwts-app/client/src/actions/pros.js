@@ -55,10 +55,8 @@ export const searchPros = (input) => async (dispatch) => {
     try {
         const { data } = await api.searchPros(input);
 
-        //dispatch({ type: actionType.PROSEARCH, payload: data });
         dispatch({ type: actionType.PROSEARCH_SUCCESS, payload: data });
     } catch (error) {
-        //console.log(error);
         dispatch({
             type: actionType.PROSEARCH_FAILURE,
             payload: error,

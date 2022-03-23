@@ -6,7 +6,6 @@ const API = axios.create({
 });
 
 API.interceptors.request.use((req) => {
-    //console.log(req);
     // if (localStorage.getItem('profile')) {
     //     req.headers.authorization = `Bearer ${
     //         JSON.parse(localStorage.getItem('profile')).token
@@ -19,6 +18,7 @@ export const signIn = (formData) => API.post('/users/signIn', formData);
 export const signUp = (formData) => API.post('/users/signUp', formData);
 export const verifyUser = (id) => API.get(`/users/verify/${id}`);
 export const fetchAuthData = () => API.get('/users/authData');
+export const logout = () => API.post('/users/logout');
 export const addUser = (formData) => API.post('/users/add', formData);
 export const updateUser = (id, user) => API.patch(`/users/update/${id}`, user);
 export const setUserPic = (id, image) =>

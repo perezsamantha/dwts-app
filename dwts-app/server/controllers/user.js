@@ -307,7 +307,19 @@ export const fetchAuthData = async (req, res) => {
     }
 };
 
-// TODO:: logout user and "remove" cookie
+export const logout = async (req, res) => {
+    try {
+        res.cookie('da_jwt', '', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Strict',
+        })
+            .status(200)
+            .json({ message: 'Logout Successful' });
+    } catch (error) {
+        res.status(500).json({ message: error });
+    }
+};
 
 // general CRUD for users
 

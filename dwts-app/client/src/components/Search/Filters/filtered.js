@@ -1,8 +1,6 @@
 import { getAge } from '../../shared/functions';
 
 export const filterDances = (dances, filters) => {
-    console.log(filters);
-    console.log(dances);
     const filterKeys = Object.keys(filters);
     const filtered = dances.filter((dance) => {
         return filterKeys.every((key) => {
@@ -71,12 +69,11 @@ export const filterDances = (dances, filters) => {
                 return 0;
         }
     });
-    //console.log(filtered);
+
     return filtered;
 };
 
 export const filterTeams = (teams, filters) => {
-    //console.log(filters);
     const filterKeys = Object.keys(filters);
     const arr = teams.filter((team) => {
         return filterKeys.every((key) => {
@@ -107,8 +104,6 @@ export const filterTeams = (teams, filters) => {
             }
         });
     });
-
-    //console.log(arr);
 
     return arr;
 };
@@ -184,7 +179,6 @@ export const filterPros = (pros, filters) => {
                 return 0;
         }
     });
-    //console.log(filtered);
 
     return filtered;
 };
@@ -240,7 +234,6 @@ export const filterFans = (fans, filters) => {
                 return 0;
         }
     });
-    //console.log(filtered);
 
     return filtered;
 };

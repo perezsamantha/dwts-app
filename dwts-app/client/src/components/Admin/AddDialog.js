@@ -205,7 +205,6 @@ function AddDialog(props) {
                 dispatch(addUser(formData));
                 break;
             default:
-            //console.log('Invald table type');
         }
         setFormData(initialState);
         handleClose();

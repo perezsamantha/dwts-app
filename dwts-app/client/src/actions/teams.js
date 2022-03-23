@@ -139,7 +139,6 @@ export const searchTeams = (input) => async (dispatch) => {
         //     payload: data,
         // });
     } catch (error) {
-        console.log(error);
         dispatch({
             type: actionType.TEAMSEARCH_FAILURE,
             payload: error,

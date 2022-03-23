@@ -320,12 +320,6 @@ export const filterScoresByDance = (dance, scores) => {
 export const getNumberOfTens = (dances, scores) => {
     let numTens = 0;
 
-    // const calculateTens = scores.reduce(function (numTens, score) {
-    //     dances.map((dance) => (dance.id === score.dance_id ? numTens++ : null));
-    //     return numTens;
-    // });
-    //console.log(calculateTens);
-
     dances.map((dance) =>
         scores.map((score) =>
             score.dance_id === dance.id && Number(score.value) === 10

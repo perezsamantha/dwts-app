@@ -15,26 +15,6 @@ import {
 
 import * as actionType from '../constants/actionTypes';
 
-// export const getDataForTeams = (input) => (dispatch) => {
-//     dispatch(searchTeams(input)).then(() =>
-//         Promise.all([
-//             dispatch(fetchCelebs()),
-//             dispatch(fetchPros()),
-//             dispatch(fetchSeasons()),
-//         ])
-//     );
-// };
-
-// export const getDataForTeams = (input) => async (dispatch) => {
-//     console.log(input);
-//     return Promise.all([
-//         dispatch(searchTeams({ input })),
-//         dispatch(fetchCelebs()),
-//         dispatch(fetchPros()),
-//         dispatch(fetchSeasons()),
-//     ]);
-// };
-
 export const getTeamData = () => async (dispatch) => {
     Promise.resolve(dispatch(fetchCelebs()))
         .then(() => dispatch(fetchPros()))

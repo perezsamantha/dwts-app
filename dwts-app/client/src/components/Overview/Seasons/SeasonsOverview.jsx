@@ -66,7 +66,10 @@ function SeasonsOverview() {
                                         <TableCell>
                                             {season.teams.map((team) =>
                                                 team.placement === 1 ? (
-                                                    <TeamPreview team={team} />
+                                                    <TeamPreview
+                                                        key={1}
+                                                        team={team}
+                                                    />
                                                 ) : (
                                                     ''
                                                 )
@@ -75,7 +78,10 @@ function SeasonsOverview() {
                                         <TableCell>
                                             {season.teams.map((team) =>
                                                 team.placement === 2 ? (
-                                                    <TeamPreview team={team} />
+                                                    <TeamPreview
+                                                        key={2}
+                                                        team={team}
+                                                    />
                                                 ) : (
                                                     ''
                                                 )
@@ -84,7 +90,10 @@ function SeasonsOverview() {
                                         <TableCell>
                                             {season.teams.map((team) =>
                                                 team.placement === 3 ? (
-                                                    <TeamPreview team={team} />
+                                                    <TeamPreview
+                                                        key={3}
+                                                        team={team}
+                                                    />
                                                 ) : (
                                                     ''
                                                 )

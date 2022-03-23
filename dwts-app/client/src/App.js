@@ -22,7 +22,7 @@ import Overview from './pages/Overview';
 import ForgotPassword from './pages/Landing/ForgotPassword';
 import Verification from './pages/Landing/Verification';
 import 'swiper/css/bundle';
-import { fetchAuthData } from './actions/auth';
+import { fetchAuthData, logout } from './actions/auth';
 import Notifications from './pages/Notifications';
 
 function App() {
@@ -55,8 +55,9 @@ function App() {
         dispatch(fetchAuthData());
 
         if (authError) {
-            dispatch({ type: actionType.LOGOUT });
-            navigate('/');
+            // dispatch({ type: actionType.LOGOUT });
+            // navigate('/');
+            dispatch(logout(navigate));
         }
     }, [dispatch, navigate, prefersDarkMode, authError]);
 

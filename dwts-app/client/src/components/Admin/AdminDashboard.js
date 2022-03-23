@@ -25,8 +25,8 @@ import * as tableType from '../../constants/tableTypes';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import * as actionType from '../../constants/actionTypes';
 import AdminLanding from './AdminLanding';
+import { logout } from '../../actions/auth';
 
 const drawerWidth = 180;
 
@@ -52,8 +52,7 @@ function AdminDashboard(props) {
     };
 
     const handleLogout = () => {
-        dispatch({ type: actionType.LOGOUT });
-        navigate('/');
+        dispatch(logout(navigate));
     };
 
     const types = [
