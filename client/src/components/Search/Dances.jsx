@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { searchDances } from '../../actions/dances';
-import { Box, Divider, Grid, Stack, Typography } from '@mui/material';
+import { Box, Divider, Fade, Grid, Stack, Typography } from '@mui/material';
 
 import 'react-multi-carousel/lib/styles.css';
 import DancePreview from './Previews/DancePreview';
@@ -18,6 +18,7 @@ function Dances(props) {
     const dispatch = useDispatch();
     const dances = useSelector((state) => state.dances.dances);
     const filters = useSelector((state) => state.dances.filters);
+    const [slide, setSlide] = useState(false);
 
     const loadingSelector = createLoadingSelector([
         actionType.DANCESEARCH,
@@ -35,6 +36,7 @@ function Dances(props) {
     useEffect(() => {
         const input = { search: search };
         dispatch(searchDances(input));
+        setSlide(true);
     }, [dispatch, search]);
 
     let filteredDances = [];
@@ -46,39 +48,41 @@ function Dances(props) {
     return loading ? (
         <Progress />
     ) : (
-        <ResultsContainer>
-            <Stack mb={1}>
-                <Typography>{filteredDances.length} Dances</Typography>
-                <Divider />
-            </Stack>
+        <Fade in={slide} style={{ transitionDuration: '0.5s' }}>
+            <ResultsContainer>
+                <Stack mb={1}>
+                    <Typography>{filteredDances.length} Dances</Typography>
+                    <Divider />
+                </Stack>
 
-            <Grid container justifyContent="center" spacing={1}>
-                {filteredDances.map((dance, index) => (
-                    <Grid
-                        item
-                        key={index}
-                        width={{
-                            xs: 1,
-                            sm: 1 / 2,
-                            md: 1 / 3,
-                            lg: 1 / 4,
-                            xl: 1 / 5,
-                        }}
-                    >
-                        <Link
+                <Grid container justifyContent="center" spacing={1}>
+                    {filteredDances.map((dance, index) => (
+                        <Grid
+                            item
                             key={index}
-                            to={{ pathname: `/dances/${dance.id}` }}
-                            style={{
-                                textDecoration: 'inherit',
-                                color: 'inherit',
+                            width={{
+                                xs: 1,
+                                sm: 1 / 2,
+                                md: 1 / 3,
+                                lg: 1 / 4,
+                                xl: 1 / 5,
                             }}
                         >
-                            <DancePreview dance={dance} />
-                        </Link>
-                    </Grid>
-                ))}
-            </Grid>
-        </ResultsContainer>
+                            <Link
+                                key={index}
+                                to={{ pathname: `/dances/${dance.id}` }}
+                                style={{
+                                    textDecoration: 'inherit',
+                                    color: 'inherit',
+                                }}
+                            >
+                                <DancePreview dance={dance} />
+                            </Link>
+                        </Grid>
+                    ))}
+                </Grid>
+            </ResultsContainer>
+        </Fade>
     );
 }
 
