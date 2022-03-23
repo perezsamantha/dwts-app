@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import BottomNavBar from '../components/BottomNavBar/BottomNavBar';
 import Dances from '../components/Search/Dances';
 import Teams from '../components/Search/Teams';
 import Fans from '../components/Search/Fans';
 import Pros from '../components/Search/Pros';
 
-import { InputAdornment, Tab, Tabs, Typography } from '@mui/material';
+import { Box, InputAdornment, Tab, Tabs, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import {
     MainContainer,
     Page,
+    SearchBoxContainer,
+    SearchContainer,
     SearchTextField,
 } from '../components/shared/muiStyles';
 import * as searchType from '../constants/searchTypes';
@@ -19,6 +20,7 @@ import DanceFilters from '../components/Search/Filters/DanceFilters';
 import TeamFilters from '../components/Search/Filters/TeamFilters';
 import ProFilters from '../components/Search/Filters/ProFilters';
 import FanFilters from '../components/Search/Filters/FanFilters';
+import { AnimatePresence, motion } from 'framer-motion';
 
 function Search(props) {
     const [type, setType] = useState(props.type);
@@ -149,7 +151,17 @@ function Search(props) {
                         />
                     </Tabs>
                 </SearchContainer>
-
+                {/* <AnimatePresence>
+                    <Box
+                        component={motion.div}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 2.5 }}
+                    >
+                        <SearchComponent />
+                    </Box>
+                </AnimatePresence> */}
                 <SearchComponent />
             </MainContainer>
 
@@ -157,24 +169,5 @@ function Search(props) {
         </Page>
     );
 }
-
-const SearchContainer = styled.div`
-    width: 100%;
-    //min-height: 170px;
-    position: relative;
-    //border-radius: 0 0 10px 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    //box-shadow: 1px 1px 5px lightgrey;
-    border-bottom: 1px solid grey;
-`;
-
-const SearchBoxContainer = styled.div`
-    width: 95%;
-    margin: 10px auto;
-    display: flex;
-    flex-direction: row;
-`;
 
 export default Search;

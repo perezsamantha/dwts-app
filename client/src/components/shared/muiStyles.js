@@ -39,8 +39,24 @@ export const ContentContainer = styled(Box)({
     width: '100%',
 });
 
+export const SearchContainer = styled(Box)({
+    width: '100%',
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    borderBottom: '1px solid grey',
+});
+
+export const SearchBoxContainer = styled(Box)({
+    width: '98%',
+    margin: '10px auto',
+    display: 'flex',
+    flexDirection: 'row',
+});
+
 export const SearchTextField = styled(TextField)(({ theme }) => ({
-    width: '90%',
+    width: '100%',
     '& .MuiOutlinedInput-root': {
         background:
             theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.04)' : 'white',
