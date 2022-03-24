@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     MenuItem,
     TextField,
     Avatar,
     InputAdornment,
     Autocomplete,
+    Box,
 } from '@mui/material';
 import { MobileDatePicker } from '@mui/lab';
 
@@ -45,10 +46,16 @@ function DialogFields(props) {
     const teams = useSelector((state) => state.teams.teams);
     const tours = useSelector((state) => state.tours.tours);
 
+    const [autoValues, setAutoValues] = useState({
+        celeb: null,
+        pro: null,
+        mentor: null,
+    });
+
     useEffect(() => {}, []);
 
     return (
-        <div>
+        <>
             {Array.of(
                 tableType.CELEB,
                 tableType.PRO,
@@ -203,44 +210,39 @@ function DialogFields(props) {
                 </TextField>
             )}
 
-            {/* <Autocomplete
-                name="celeb_id"
-                options={celebs}
-                autoHighlight
-                getOptionLabel={(option) => option.first_name}
-                value={formData.celeb_id || null}
-                renderInput={(params) => (
-                    <TextField {...params} label="Celeb" />
-                )}
-                onChange={(e, newValue) =>
-                    setFormData({ ...formData, celeb_id: newValue.id })
-                }
-            /> */}
-
             {Array.of(
                 tableType.TEAM,
                 tableType.DANCER,
                 tableType.TOURCAST
             ).includes(table) && (
-                <TextField
-                    margin="dense"
+                <Autocomplete
                     name="celeb_id"
-                    label="Celeb"
-                    type="text"
-                    select
-                    value={formData.celeb_id || ''}
-                >
-                    {celebs.map((celeb, index) => {
-                        return (
-                            <MenuItem key={index} value={celeb.id}>
-                                <DataGetter
-                                    id={celeb.id}
-                                    type={tableType.CELEB}
-                                />
-                            </MenuItem>
-                        );
-                    })}
-                </TextField>
+                    options={celebs}
+                    autoHighlight
+                    value={autoValues.celeb}
+                    getOptionLabel={(option) =>
+                        option?.last_name
+                            ? `${option.first_name} ${option.last_name}`
+                            : option?.first_name
+                            ? `${option.first_name}`
+                            : ''
+                    }
+                    renderOption={(props, option) => (
+                        <Box component="li" {...props}>
+                            {option.first_name} {option.last_name}
+                        </Box>
+                    )}
+                    renderInput={(params) => (
+                        <TextField margin="dense" {...params} label="Celeb" />
+                    )}
+                    onChange={(e, newValue) => {
+                        setFormData({
+                            ...formData,
+                            celeb_id: newValue?.id,
+                        });
+                        setAutoValues({ ...autoValues, celeb: newValue });
+                    }}
+                />
             )}
 
             {Array.of(
@@ -248,43 +250,68 @@ function DialogFields(props) {
                 tableType.DANCER,
                 tableType.TOURCAST
             ).includes(table) && (
-                <TextField
-                    margin="dense"
+                <Autocomplete
                     name="pro_id"
-                    label="Pro"
-                    type="text"
-                    select
-                    value={formData.pro_id || ''}
-                    onChange={handleChange}
-                >
-                    {pros.map((pro, index) => {
-                        return (
-                            <MenuItem key={index} value={pro.id}>
-                                <DataGetter id={pro.id} type={tableType.PRO} />
-                            </MenuItem>
-                        );
-                    })}
-                </TextField>
+                    options={pros}
+                    autoHighlight
+                    value={autoValues.pro}
+                    getOptionLabel={(option) =>
+                        option?.last_name
+                            ? `${option.first_name} ${option.last_name}`
+                            : option?.first_name
+                            ? `${option.first_name}`
+                            : ''
+                    }
+                    renderOption={(props, option) => (
+                        <Box component="li" {...props}>
+                            {option.first_name} {option.last_name}
+                        </Box>
+                    )}
+                    renderInput={(params) => (
+                        <TextField margin="dense" {...params} label="Pro" />
+                    )}
+                    onChange={(e, newValue) => {
+                        setFormData({
+                            ...formData,
+                            pro_id: newValue?.id,
+                        });
+                        setAutoValues({ ...autoValues, pro: newValue });
+                    }}
+                />
             )}
 
             {Array.of(tableType.TEAM).includes(table) && (
-                <TextField
-                    margin="dense"
+                <Autocomplete
                     name="mentor_id"
-                    label="Mentor"
-                    type="text"
-                    select
-                    value={formData.mentor_id || ''}
-                    onChange={handleChange}
-                >
-                    {pros.map((pro, index) => {
-                        return (
-                            <MenuItem key={index} value={pro.id}>
-                                <DataGetter id={pro.id} type={tableType.PRO} />
-                            </MenuItem>
-                        );
-                    })}
-                </TextField>
+                    options={pros}
+                    autoHighlight
+                    value={autoValues.mentor}
+                    getOptionLabel={(option) =>
+                        option?.last_name
+                            ? `${option.first_name} ${option.last_name}`
+                            : option?.first_name
+                            ? `${option.first_name}`
+                            : ''
+                    }
+                    renderOption={(props, option) => (
+                        <Box component="li" {...props}>
+                            {option.first_name} {option.last_name}
+                        </Box>
+                    )}
+                    renderInput={(params) => (
+                        <TextField margin="dense" {...params} label="Mentor" />
+                    )}
+                    onChange={(e, newValue) => {
+                        setFormData({
+                            ...formData,
+                            mentor_id: newValue?.id,
+                        });
+                        setAutoValues({
+                            ...autoValues,
+                            mentor: newValue,
+                        });
+                    }}
+                />
             )}
 
             {Array.of(
@@ -927,7 +954,7 @@ function DialogFields(props) {
                         onChange={handleChange}
                     />
                 )}
-        </div>
+        </>
     );
 }
 

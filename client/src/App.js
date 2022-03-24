@@ -14,7 +14,6 @@ import {
     responsiveFontSizes,
 } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import * as actionType from './constants/actionTypes';
 import * as searchType from './constants/searchTypes';
 import { CssBaseline, Paper, useMediaQuery } from '@mui/material';
 import NotFound from './pages/NotFound';
@@ -72,7 +71,7 @@ function App() {
         localStorage.setItem('theme', toggleDark ? 'dark' : 'light');
     };
 
-    let baseTheme = createTheme({
+    let theme = createTheme({
         palette: {
             mode: toggleDark ? 'dark' : 'light',
         },
@@ -84,6 +83,9 @@ function App() {
                 'sans-serif',
             ].join(','),
         },
+    });
+
+    theme = createTheme(theme, {
         components: {
             MuiCssBaseline: {
                 styleOverrides: {
@@ -119,7 +121,12 @@ function App() {
                             margin: '10px',
                         },
                         margin: '0',
-                        width: '50%',
+                        [theme.breakpoints.down('sm')]: {
+                            minWidth: '50%',
+                        },
+                        [theme.breakpoints.up('sm')]: {
+                            minWidth: '30%',
+                        },
                     },
                 },
             },
@@ -176,6 +183,27 @@ function App() {
                     },
                 },
             },
+            MuiMenu: {
+                styleOverrides: {
+                    root: {
+                        maxHeight: 48 * 4.5 + 8,
+                    },
+                },
+            },
+            MuiAutocomplete: {
+                styleOverrides: {
+                    root: {
+                        display: 'inline-flex',
+                        [theme.breakpoints.down('sm')]: {
+                            width: '100%',
+                        },
+                        [theme.breakpoints.up('sm')]: {
+                            width: '40%',
+                            marginRight: 20,
+                        },
+                    },
+                },
+            },
             // MuiOutlinedInput: {
             //     styleOverrides: {
             //         root: {
@@ -195,7 +223,7 @@ function App() {
     // #f5dc6c
 
     let lightTheme = createTheme({
-        ...baseTheme,
+        ...theme,
         palette: {
             mode: 'light',
             primary: {
@@ -207,7 +235,7 @@ function App() {
     });
 
     let darkTheme = createTheme({
-        ...baseTheme,
+        ...theme,
         palette: {
             mode: 'dark',
             primary: {
