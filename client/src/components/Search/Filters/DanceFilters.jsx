@@ -28,17 +28,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionType from '../../../constants/actionTypes';
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
-    },
-};
-
 //TODO: clear filters button?
 
 function DanceFilters(props) {
@@ -58,7 +47,6 @@ function DanceFilters(props) {
 
     const handleSubmit = () => {
         dispatch({ type: actionType.DANCEFILTERS, payload: filters });
-        //props.setFilters(filters);
         setOpen(false);
     };
 
@@ -143,7 +131,6 @@ function DanceFilters(props) {
                                         ))}
                                     </Box>
                                 )}
-                                MenuProps={MenuProps}
                             >
                                 {styles.map((style) => (
                                     <MenuItem key={style} value={style}>
@@ -178,7 +165,6 @@ function DanceFilters(props) {
                                         })}
                                     </Box>
                                 )}
-                                MenuProps={MenuProps}
                             >
                                 {themes.map((theme, index) => {
                                     return (

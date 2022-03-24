@@ -9,11 +9,6 @@ import { Avatar, Box, Stack, Typography } from '@mui/material';
 import { LocalizationProvider } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDateFns';
 
-import {
-    TableContainer,
-    DataGridContainer,
-    HeaderContainer,
-} from '../shared/regStyles';
 import { convertDate, convertHeight } from '../shared/functions';
 import AddDialog from './AddDialog';
 import EditDialog from './EditDialog';
