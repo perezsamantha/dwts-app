@@ -181,3 +181,22 @@ export const likeDance = (id) => async (dispatch) => {
         });
     }
 };
+
+export const findDailyDance = () => async (dispatch) => {
+    dispatch({ type: actionType.DANCEFIND_REQUEST });
+
+    try {
+        const { data } = await api.findDailyDance();
+
+        dispatch({
+            type: actionType.DANCEFIND_SUCCESS,
+            payload: data,
+        });
+    } catch (error) {
+        dispatch({
+            type: actionType.DANCEFIND_FAILURE,
+            payload: error,
+            error: true,
+        });
+    }
+};

@@ -419,7 +419,7 @@ function DialogFields(props) {
                 </TextField>
             )}
 
-            {Array.of(tableType.DANCE).includes(table) && (
+            {Array.of(tableType.EPISODE).includes(table) && (
                 <TextField
                     margin="dense"
                     name="theme"
@@ -480,11 +480,42 @@ function DialogFields(props) {
             {Array.of(tableType.DANCE).includes(table) && (
                 <TextField
                     margin="dense"
+                    name="is_main"
+                    select
+                    label="Main Dance?"
+                    value={formData.is_main}
+                    onChange={handleChange}
+                >
+                    <MenuItem key={1} value={true}>
+                        Yes
+                    </MenuItem>
+                    <MenuItem key={2} value={false}>
+                        No
+                    </MenuItem>
+                </TextField>
+            )}
+
+            {Array.of(tableType.DANCE).includes(table) && (
+                <TextField
+                    margin="dense"
                     name="link"
                     label="Link"
                     type="text"
                     value={formData.link || ''}
                     onChange={handleChange}
+                />
+            )}
+
+            {Array.of(tableType.DANCE).includes(table) && (
+                <MobileDatePicker
+                    margin="dense"
+                    label="Daily Date"
+                    inputFormat="MM/dd/yyyy"
+                    value={formData.daily_date || null}
+                    onChange={(date) =>
+                        setFormData({ ...formData, daily_date: date })
+                    }
+                    renderInput={(params) => <TextField {...params} />}
                 />
             )}
 

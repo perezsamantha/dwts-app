@@ -2,7 +2,7 @@ import React from 'react';
 import { Typography } from '@mui/material';
 import BottomNavBar from '../components/BottomNavBar/BottomNavBar';
 import Birthdays from '../components/Dashboard/Birthdays/Birthdays';
-import DailyDances from '../components/Dashboard/DailyDances/DailyDances';
+import DailyDanceWrapper from '../components/Dashboard/DailyDances/DailyDanceWrapper';
 import Introduction from '../components/Dashboard/Intro/Introduction';
 import Throwbacks from '../components/Dashboard/Throwbacks/Throwbacks';
 import { MainContainer, Page } from '../components/shared/muiStyles';
@@ -19,7 +19,7 @@ function Dashboard() {
 
                 <Birthdays />
 
-                <DailyDances />
+                <DailyDanceWrapper />
 
                 <Throwbacks />
             </MainContainer>

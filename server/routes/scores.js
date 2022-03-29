@@ -5,6 +5,7 @@ import {
     deleteScore,
     fetchScores,
     findScoreById,
+    setUserScore,
     updateScore,
 } from '../controllers/Score.js';
 import { grantAccess } from '../controllers/user.js';
@@ -27,5 +28,7 @@ router.delete(
     grantAccess('deleteAny', 'score'),
     deleteScore
 );
+
+router.patch('/user/:id', auth, setUserScore);
 
 export default router;

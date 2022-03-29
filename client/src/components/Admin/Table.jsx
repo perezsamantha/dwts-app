@@ -9,7 +9,7 @@ import { Avatar, Box, Stack, Typography } from '@mui/material';
 import { LocalizationProvider } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDateFns';
 
-import { convertDate, convertHeight } from '../shared/functions';
+import { convertDate, convertHeight, getFullName } from '../shared/functions';
 import AddDialog from './AddDialog';
 import EditDialog from './EditDialog';
 import DeleteDialog from './DeleteDialog';
@@ -390,11 +390,9 @@ function Table(props) {
                     width: 60,
                     renderCell: (params) => <Avatar src={params.value} />,
                 },
-                // { field: 'number', headerName: 'Number', width: 75 },
-                { field: 'extra', headerName: 'Extra', width: 250 },
+                { field: 'extra', headerName: 'Extra', minWidth: 150, flex: 1 },
                 {
                     field: 'actions',
-                    //headerName: 'Actions',
                     type: 'actions',
                     width: 50,
                     getActions: (params) => [
@@ -422,21 +420,19 @@ function Table(props) {
                     field: 'season_id',
                     headerName: 'Season',
                     width: 75,
-                    renderCell: (params) => (
-                        <DataGetter id={params.value} type={tableType.SEASON} />
-                    ),
                 },
                 { field: 'week', headerName: 'Week', width: 75 },
                 { field: 'night', headerName: 'Night', width: 75 },
+                { field: 'theme', headerName: 'Theme', width: 150 },
                 {
                     field: 'date',
                     headerName: 'Date',
-                    width: 100,
+                    minWidth: 100,
+                    flex: 1,
                     valueGetter: (params) => convertDate(params.value),
                 },
                 {
                     field: 'actions',
-                    //headerName: 'Actions',
                     type: 'actions',
                     width: 50,
                     getActions: (params) => [
@@ -470,40 +466,31 @@ function Table(props) {
                     field: 'celeb_id',
                     headerName: 'Celeb',
                     width: 100,
-                    renderCell: (params) => (
-                        <DataGetter id={params.value} type={tableType.CELEB} />
-                    ),
+                    valueGetter: (params) => getFullName(params.row?.celeb),
                 },
                 {
                     field: 'pro_id',
                     headerName: 'Pro',
                     width: 100,
-                    renderCell: (params) => (
-                        <DataGetter id={params.value} type={tableType.PRO} />
-                    ),
+                    valueGetter: (params) => getFullName(params.row?.pro),
                 },
                 {
                     field: 'mentor_id',
                     headerName: 'Mentor',
                     width: 100,
-                    renderCell: (params) => (
-                        <DataGetter id={params.value} type={tableType.PRO} />
-                    ),
+                    //valueGetter: (params) => getFullName(params.row?.mentor)
+                    // TODO: once mentor is left joined
                 },
                 {
                     field: 'season_id',
                     headerName: 'Season',
                     width: 75,
-                    renderCell: (params) => (
-                        <DataGetter id={params.value} type={tableType.SEASON} />
-                    ),
                 },
                 { field: 'placement', headerName: 'Place', width: 100 },
                 { field: 'team_name', headerName: 'Team Name', width: 150 },
-                { field: 'extra', headerName: 'Extra', width: 250 },
+                { field: 'extra', headerName: 'Extra', minWidth: 150, flex: 1 },
                 {
                     field: 'actions',
-                    //headerName: 'Actions',
                     type: 'actions',
                     width: 50,
                     getActions: (params) => [
@@ -528,23 +515,35 @@ function Table(props) {
             columns = [
                 { field: 'id', headerName: 'ID', width: 40 },
                 {
-                    field: 'episode_id',
-                    headerName: 'Episode',
-                    width: 100,
-                    renderCell: (params) => (
-                        <DataGetter
-                            id={params.value}
-                            type={tableType.EPISODE}
-                        />
-                    ),
+                    field: 'season',
+                    headerName: 'Season',
+                    width: 75,
+                    valueGetter: (params) => params.row?.episode?.season_id,
+                },
+                {
+                    field: 'week',
+                    headerName: 'Week',
+                    width: 75,
+                    valueGetter: (params) => params.row?.episode?.week,
                 },
                 { field: 'style', headerName: 'Style', width: 100 },
-                { field: 'theme', headerName: 'Theme', width: 100 },
                 { field: 'running_order', headerName: 'RO', width: 50 },
                 { field: 'song_title', headerName: 'Song', width: 175 },
                 { field: 'song_artist', headerName: 'Artist', width: 175 },
                 { field: 'link', headerName: 'Link', width: 150 },
-                { field: 'extra', headerName: 'Extra', width: 150 },
+                {
+                    field: 'is_main',
+                    headerName: 'Main?',
+                    width: 75,
+                    renderCell: (params) => (params.value ? 'Yes' : 'No'),
+                },
+                {
+                    field: 'daily_date',
+                    headerName: 'Daily Date',
+                    width: 100,
+                    valueGetter: (params) => convertDate(params.value),
+                },
+                { field: 'extra', headerName: 'Extra', minWidth: 150, flex: 1 },
                 {
                     field: 'actions',
                     //headerName: 'Actions',
@@ -617,9 +616,8 @@ function Table(props) {
                     field: 'judge_id',
                     headerName: 'Judge',
                     width: 150,
-                    renderCell: (params) => (
-                        <DataGetter id={params.value} type={tableType.JUDGE} />
-                    ),
+                    //valueGetter: (params) => getFullName(params.row?.judge)
+                    // TODO: once left join with judges
                 },
                 { field: 'value', headerName: 'Value', width: 100 },
                 { field: 'order', headerName: 'Order', width: 100 },
@@ -693,7 +691,7 @@ function Table(props) {
                     width: 100,
                     renderCell: (params) => (params.value ? 'Yes' : 'No'),
                 },
-                { field: 'extra', headerName: 'Extra', width: 150 },
+                { field: 'extra', headerName: 'Extra', minWidth: 150, flex: 1 },
                 {
                     field: 'actions',
                     //headerName: 'Actions',
@@ -741,7 +739,7 @@ function Table(props) {
                     valueGetter: (params) => convertDate(params.value),
                 },
                 { field: 'num_shows', headerName: '# Shows', width: 90 },
-                { field: 'extra', headerName: 'Extra', width: 100 },
+                { field: 'extra', headerName: 'Extra', minWidth: 150, flex: 1 },
                 {
                     field: 'actions',
                     //headerName: 'Actions',
@@ -799,7 +797,7 @@ function Table(props) {
                     width: 75,
                     renderCell: (params) => (params.value ? 'Yes' : 'No'),
                 },
-                { field: 'extra', headerName: 'Extra', width: 100 },
+                { field: 'extra', headerName: 'Extra', minWidth: 150, flex: 1 },
                 {
                     field: 'actions',
                     //headerName: 'Actions',
@@ -845,9 +843,8 @@ function Table(props) {
                     field: 'watching_since',
                     headerName: 'Watching Since',
                     width: 80,
-                    renderCell: (params) => (
-                        <DataGetter id={params.value} type={tableType.SEASON} />
-                    ),
+                    valueFormatter: (params) =>
+                        params.value !== null ? `S${params.value}` : '',
                 },
                 { field: 'twitter', headerName: 'Twitter', width: 100 },
                 { field: 'instagram', headerName: 'Instagram', width: 100 },

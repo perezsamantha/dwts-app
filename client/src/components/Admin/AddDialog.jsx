@@ -59,7 +59,7 @@ function AddDialog(props) {
                     season_id: null,
                     week: null,
                     night: null,
-                    //date: new Date().toISOString(),
+                    theme: null,
                     date: null,
                 };
             case tableType.TEAM:
@@ -77,10 +77,11 @@ function AddDialog(props) {
                 return {
                     episode_id: null,
                     style: null,
-                    theme: null,
                     running_order: null,
                     song_title: null,
                     song_artist: null,
+                    is_main: true,
+                    daily_date: null,
                     link: null,
                     extra: null,
                 };
