@@ -8,23 +8,25 @@ export const addDance = async (req, res) => {
         const {
             style,
             episode_id,
-            theme,
             running_order,
             song_title,
             song_artist,
+            is_main,
+            daily_date,
             link,
             extra,
         } = req.body;
 
         const result = await pool.query(
-            `INSERT INTO dances (style, episode_id, theme, running_order, song_title, song_artist, link, extra) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+            `INSERT INTO dances (style, episode_id, running_order, song_title, song_artist, is_main, daily_date, link, extra) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
             [
                 style,
                 episode_id,
-                theme,
                 running_order,
                 song_title,
                 song_artist,
+                is_main,
+                daily_date,
                 link,
                 extra,
             ]
@@ -32,6 +34,7 @@ export const addDance = async (req, res) => {
 
         res.status(200).json(result.rows[0]);
     } catch (error) {
+        console.log(error);
         res.status(500).json({ message: error });
     }
 };
@@ -365,23 +368,25 @@ export const updateDance = async (req, res) => {
         const {
             style,
             episode_id,
-            theme,
             running_order,
             song_title,
             song_artist,
+            is_main,
+            daily_date,
             link,
             extra,
         } = req.body;
 
         await pool.query(
-            'UPDATE dances SET style = $1, episode_id = $2, theme = $3, running_order = $4, song_title = $5, song_artist = $6, link = $7, extra = $8 WHERE id = $9',
+            'UPDATE dances SET style = $1, episode_id = $2, running_order = $3, song_title = $4, song_artist = $5, is_main = $6, daily_date = $7, link = $8, extra = $9 WHERE id = $10',
             [
                 style,
                 episode_id,
-                theme,
                 running_order,
                 song_title,
                 song_artist,
+                is_main,
+                daily_date,
                 link,
                 extra,
                 id,
@@ -630,5 +635,89 @@ export const likeDance = async (req, res, next) => {
         //res.status(200).json(result.rows[0]);
     } catch (error) {
         res.status(500).json({ message: error });
+    }
+};
+
+export const findDailyDance = async (req, res) => {
+    //const { date } = req.params;
+
+    try {
+        const dance = await pool.query(
+            `
+            SELECT d.*,
+                (
+                    SELECT ROW_TO_JSON(e.*)
+                    FROM episodes e
+                    WHERE e.id = d.episode_id
+                ) AS episode,
+                COALESCE((ARRAY_AGG(s.scores))[1], '[]') AS scores,
+                COALESCE(JSON_AGG(dc) FILTER (WHERE dc.id IS NOT NULL), '[]') AS dancers,
+                COALESCE((ARRAY_AGG(l.users))[1], '[]') AS likes,
+                (
+                    SELECT value
+                    FROM user_scores us
+                    WHERE us.dance_id = d.id
+                        AND us.user_id = 1
+                ) as user_score
+            FROM dances d
+            LEFT JOIN (
+                SELECT dc2.*, 
+                    ROW_TO_JSON(t) AS team, 
+                    ROW_TO_JSON(p) AS pro, 
+                    ROW_TO_JSON(c) AS celeb 
+                FROM dancers dc2 
+                LEFT JOIN (
+                    SELECT t2.*, 
+                        ROW_TO_JSON(p) AS pro, 
+                        ROW_TO_JSON(c) AS celeb 
+                    FROM teams t2 
+                    LEFT JOIN pros p 
+                    ON t2.pro_id = p.id 
+                    LEFT JOIN celebs c 
+                    ON t2.celeb_id = c.id 
+                    GROUP BY t2.id, p.id, c.id
+                ) t 
+                ON t.id = dc2.team_id 
+                LEFT JOIN pros p 
+                ON p.id = dc2.pro_id 
+                LEFT JOIN celebs c 
+                ON c.id = dc2.celeb_id 
+                GROUP BY dc2.id, dc2.dance_id, t.*, p.id, c.id
+            ) dc
+            ON d.id = dc.dance_id
+            LEFT JOIN (
+                SELECT s1.dance_id,
+                    COALESCE(JSON_AGG(ROW_TO_JSON(s2)) FILTER (WHERE s2.id IS NOT NULL), '[]') AS scores
+                FROM scores s1
+                LEFT JOIN (
+                    SELECT s.*,
+                        ROW_TO_JSON(j) AS judge
+                    FROM scores s
+                    LEFT JOIN judges j
+                    ON s.judge_id = j.id
+                    GROUP BY s.id, j.id 
+                ) s2
+                ON s1.id = s2.id
+                GROUP BY s1.dance_id
+            ) s
+            ON d.id = s.dance_id
+            LEFT JOIN (
+                SELECT dl.dance_id,
+                    COALESCE(JSON_AGG(JSON_BUILD_OBJECT('id', u.id, 'username', u.username)) FILTER (WHERE u.id IS NOT NULL), '[]') AS users
+                FROM dance_likes dl
+                LEFT JOIN users u
+                ON dl.user_id = u.id
+                GROUP BY dl.dance_id
+            ) l
+            ON d.id = l.dance_id
+            WHERE daily_date = now()::date
+            GROUP BY d.id
+            `
+        );
+
+        res.status(200).json(dance.rows[0]);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
     }
 };

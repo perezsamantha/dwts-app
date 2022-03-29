@@ -159,6 +159,18 @@ export const getFullCelebName = (id, celebs) => {
     return celebName;
 };
 
+export const getFullName = (person) => {
+    let str = '';
+
+    if (person?.last_name) {
+        str = person.first_name + ' ' + person.last_name;
+    } else {
+        str = person.first_name;
+    }
+
+    return str;
+};
+
 export const getFullTeamName = (celeb, pro) => {
     const celebName = celeb?.last_name
         ? celeb.first_name + ' ' + celeb.last_name
@@ -397,4 +409,20 @@ export const getDancersByDance = (dance, dancers) => {
     );
 
     return filteredDancers;
+};
+
+export const getDanceName = (dance) => {
+    let str = '';
+
+    const ep = `S${dance.episode.season_id} \u2022 W${dance.episode.week}`;
+
+    const style = `${dance.style}`;
+
+    const song = dance?.song_artist
+        ? `${dance.song_title} by ${dance.song_artist}`
+        : `${dance.song_title}`;
+
+    str = ep + ' | ' + style + ' - ' + song;
+
+    return str;
 };

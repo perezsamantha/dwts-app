@@ -110,3 +110,19 @@ export const deleteScore = (id) => async (dispatch) => {
         });
     }
 };
+
+export const setUserScore = (id, value) => async (dispatch) => {
+    dispatch({ type: actionType.USERSCORE_REQUEST });
+
+    try {
+        const { data } = await api.setUserScore(id, value);
+
+        dispatch({ type: actionType.USERSCORE_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: actionType.USERSCORE_FAILURE,
+            payload: error,
+            error: true,
+        });
+    }
+};

@@ -75,6 +75,14 @@ const danceReducer = (
                 ...state,
                 filters: action.payload,
             };
+        case actionType.USERSCORE_SUCCESS:
+            return {
+                ...state,
+                dance: {
+                    ...state.dance,
+                    user_score: action.payload.value,
+                },
+            };
         default:
             return state;
     }
