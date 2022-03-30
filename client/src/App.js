@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Dashboard from './pages/Dashboard';
 import Search from './pages/Search';
 import Account from './pages/Account';
-import Landing from './pages/Landing';
+import Landing from './pages/Landing/Landing';
 import { Navigate, Outlet, Route, Routes, useNavigate } from 'react-router-dom';
 import Individuals from './pages/Individuals';
 import Admin from './pages/Admin';

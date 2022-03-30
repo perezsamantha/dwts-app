@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { signIn } from '../../actions/auth';
 
-import { MutedLink, SubmitButton, FullTextField } from './common';
+import { MutedLink, SubmitButton } from './common';
 import { AccountContext } from './AccountContext';
 import {
     Typography,
@@ -20,6 +20,7 @@ import {
     InputAdornment,
     Stack,
     Box,
+    TextField,
 } from '@mui/material';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
@@ -27,7 +28,7 @@ import LockIcon from '@mui/icons-material/Lock';
 
 const initialState = { username: '', password: '' };
 
-function Signin(props) {
+function SignIn(props) {
     const [showPass, setShowPass] = useState(false);
 
     const [formData, setFormData] = useState(initialState);
@@ -71,61 +72,54 @@ function Signin(props) {
 
     return (
         <Box>
-            {/* <FullTextField
-                name="username"
-                type="text"
-                variant="standard"
-                placeholder="username"
-                onChange={handleChange}
-                InputProps={{
-                    startAdornment: (
-                        <InputAdornment position="start">
-                            <AlternateEmailIcon />
-                        </InputAdornment>
-                    ),
-                }}
-                sx={{}}
-            /> */}
-            <FullTextField
-                name="username"
-                //label="Username"
-                type="text"
-                onChange={handleChange}
-                margin="dense"
-                placeholder="username"
-                autoComplete="off"
-                InputProps={{
-                    startAdornment: (
-                        <InputAdornment position="start">
-                            <AlternateEmailIcon />
-                        </InputAdornment>
-                    ),
-                }}
-                sx={{}}
-            />
-            <FullTextField
-                name="password"
-                //label="Password"
-                placeholder="password"
-                type={showPass ? 'text' : 'password'}
-                onChange={handleChange}
-                handleShowPass={handleShowPass}
-                margin="dense"
-                InputProps={{
-                    startAdornment: (
-                        <InputAdornment position="start">
-                            <LockIcon />
-                        </InputAdornment>
-                    ),
-                    endAdornment: (
-                        <InputAdornment position="end">
-                            <IconButton onClick={handleShowPass}>
-                                {showPass ? <Visibility /> : <VisibilityOff />}
-                            </IconButton>
-                        </InputAdornment>
-                    ),
-                }}
-            />
+            <Box component="form" noValidate autoComplete="off">
+                <div>
+                    <TextField
+                        fullWidth
+                        name="username"
+                        //label="Username"
+                        type="text"
+                        onChange={handleChange}
+                        margin="dense"
+                        placeholder="username"
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <AlternateEmailIcon />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                    <TextField
+                        fullWidth
+                        autoComplete="off"
+                        name="password"
+                        //label="Password"
+                        placeholder="password"
+                        type={showPass ? 'text' : 'password'}
+                        onChange={handleChange}
+                        margin="dense"
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <LockIcon />
+                                </InputAdornment>
+                            ),
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton onClick={handleShowPass}>
+                                        {showPass ? (
+                                            <Visibility />
+                                        ) : (
+                                            <VisibilityOff />
+                                        )}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                </div>
+            </Box>
 
             {message && <Typography>{message}</Typography>}
 
@@ -178,4 +172,4 @@ function Signin(props) {
     );
 }
 
-export default Signin;
+export default SignIn;

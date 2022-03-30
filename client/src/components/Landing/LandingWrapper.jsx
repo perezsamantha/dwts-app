@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-import Signin from './Signin';
-import Signup from './Signup';
+import SignIn from './SignIn';
+import SignUp from './SignUp';
 
 import { AccountContext } from './AccountContext';
 
@@ -26,7 +26,7 @@ import useWindowDimensions from '../shared/useWindowDimensions';
 //     },
 // };
 
-const AccountBox = (props) => {
+const LandingWrapper = (props) => {
     const [isExpanded, setExpanded] = useState(false);
     const [active, setActive] = useState('signin');
     const [wave, setWave] = useState(null);
@@ -100,9 +100,9 @@ const AccountBox = (props) => {
 
     return (
         <AccountContext.Provider value={contextValue}>
-            <Container>
+            <Container elevation={3}>
                 <ShapeContainer>
-                    <Shape
+                    {/* <Shape
                         width="100%"
                         height="100vh"
                         //viewBox="0 0 500 500"
@@ -118,7 +118,7 @@ const AccountBox = (props) => {
                             animate={isExpanded ? 'expanded' : 'collapsed'}
                             variants={backdropVariants}
                         />
-                    </Shape>
+                    </Shape> */}
                 </ShapeContainer>
                 <TabBox>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -165,8 +165,8 @@ const AccountBox = (props) => {
                     )}
                 </NewTop>
                 <InnerContainer>
-                    {active === 'signin' && <Signin />}
-                    {active === 'signup' && <Signup />}
+                    {active === 'signin' && <SignIn />}
+                    {active === 'signup' && <SignUp />}
                 </InnerContainer>
             </Container>
         </AccountContext.Provider>
@@ -239,15 +239,20 @@ const NewShapeBack = styled(motion.path)`
     fill: #fae27a;
 `;
 
-const Container = styled(Box)`
-    max-width: 600px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    align-content: center;
-    //padding: 1rem 0;
-    //position: relative;
-`;
+const Container = styled(Paper)(({ theme }) => ({
+    maxWidth: 600,
+    margin: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    alignContent: 'center',
+    [theme.breakpoints.down('sm')]: {
+        minHeight: '100vh',
+    },
+    [theme.breakpoints.up('sm')]: {
+        borderRadius: 15,
+        minHeight: '90vh',
+    },
+}));
 
 const TabBox = styled(Box)`
     //width: 60%;
@@ -310,4 +315,4 @@ const InnerContainer = styled(Box)`
     top: 0;
 `;
 
-export default AccountBox;
+export default LandingWrapper;

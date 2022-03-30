@@ -50,7 +50,7 @@ function DanceCard() {
 
     return (
         <Card elevation={3}>
-            <Typography variant="h5">Today's Daily Dance</Typography>
+            <Typography variant="h5">Today's Dance</Typography>
             <Divider />
 
             {Object.keys(dance).length === 0 ? (
