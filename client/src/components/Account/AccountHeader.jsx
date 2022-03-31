@@ -9,10 +9,8 @@ import {
     Stack,
     Typography,
 } from '@mui/material';
-import * as actionType from '../../constants/actionTypes';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import 'react-multi-carousel/lib/styles.css';
-import { createLoadingSelector } from '../../api/selectors';
 import { BsThreeDots } from 'react-icons/bs';
 import SocialsLink from '../shared/SocialsLink';
 import FavoritesWrapper from '../Favorites/Favorites';
@@ -24,16 +22,13 @@ function AccountHeader(props) {
     //const [isLoading, setIsLoading] = useState(true);
     const [open, setOpen] = useState(false);
 
-    const loadingSelector = createLoadingSelector([actionType.AUTHFETCH]);
-    const loading = useSelector((state) => loadingSelector(state));
-
     useEffect(() => {}, []);
 
     const handleClose = () => {
         setOpen(false);
     };
 
-    return loading || !Object.keys(user).includes('id') ? (
+    return !Object.keys(user).includes('id') ? (
         <Progress />
     ) : (
         <Container>

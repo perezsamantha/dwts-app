@@ -148,7 +148,7 @@ function DailyDancesOverview() {
                                 },
                             }}
                         >
-                            <TableCell align="right">
+                            <TableCell align="right" width="fit-content">
                                 <Typography noWrap>{day.date}</Typography>
                             </TableCell>
                             <TableCell sx={{ paddingLeft: 2 }}>

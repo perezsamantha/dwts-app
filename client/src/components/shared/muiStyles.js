@@ -1,6 +1,13 @@
 //import styled from 'styled-components';
 import styled from '@emotion/styled';
-import { Box, Chip, TextField } from '@mui/material';
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Box,
+    Chip,
+    TextField,
+} from '@mui/material';
 
 export const ChipsWrapper = styled.div`
     display: flex;
@@ -90,4 +97,30 @@ export const ExtraPic = styled(Box)(({ theme }) => ({
     borderRadius: 15,
     boxShadow:
         theme.palette.mode === 'light' ? '1px 5px 15px lightgrey' : 'none',
+}));
+
+// accordions
+
+export const StyledAccordion = styled(Accordion)(({ theme }) => ({
+    backgroundColor: 'transparent',
+}));
+
+export const StyledAccordionSummary = styled(AccordionSummary)(({ theme }) => ({
+    padding: 0,
+    minHeight: 'fit-content',
+    maxHeight: 'fit-content',
+    '& .MuiAccordionSummary-content': {
+        margin: 0,
+    },
+    '&.Mui-expanded': {
+        minHeight: 'fit-content',
+        maxHeight: 'fit-content',
+        '& .MuiAccordionSummary-content': {
+            margin: 0,
+        },
+    },
+}));
+
+export const StyledAccordionDetails = styled(AccordionDetails)(({ theme }) => ({
+    padding: 0,
 }));

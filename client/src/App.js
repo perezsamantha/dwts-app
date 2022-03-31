@@ -22,7 +22,7 @@ import ForgotPassword from './pages/Landing/ForgotPassword';
 import Verification from './pages/Landing/Verification';
 import 'swiper/css/bundle';
 import { fetchAuthData, logout } from './actions/auth';
-import Notifications from './pages/Notifications';
+import Activity from './pages/Activity';
 
 function App() {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark');
@@ -288,10 +288,7 @@ function App() {
                                 element={<Search type={searchType.FANS} />}
                             />
                         </Route>
-                        <Route
-                            path="notifications"
-                            element={<Notifications />}
-                        />
+                        <Route path="activity" element={<Activity />} />
                         <Route
                             path="account"
                             element={

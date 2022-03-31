@@ -26,7 +26,7 @@ import CoverPicUpload from '../shared/CoverPicUpload';
 import { PhotoContainer } from '../shared/regStyles';
 import { useSelector } from 'react-redux';
 import DataGetter from '../shared/DataGetter';
-import { convertHeight } from '../shared/functions';
+import { convertHeight, getFullName } from '../shared/functions';
 
 function DialogFields(props) {
     const {
@@ -419,42 +419,6 @@ function DialogFields(props) {
                 </TextField>
             )}
 
-            {Array.of(tableType.EPISODE).includes(table) && (
-                <TextField
-                    margin="dense"
-                    name="theme"
-                    label="Theme"
-                    type="text"
-                    select
-                    value={formData.theme || ''}
-                    onChange={handleChange}
-                >
-                    {themes.map((theme, index) => (
-                        <MenuItem key={index} value={theme}>
-                            {theme}
-                        </MenuItem>
-                    ))}
-                </TextField>
-            )}
-
-            {Array.of(tableType.DANCE).includes(table) && (
-                <TextField
-                    margin="dense"
-                    name="running_order"
-                    label="Running Order"
-                    type="text"
-                    select
-                    value={formData.running_order || ''}
-                    onChange={handleChange}
-                >
-                    {runningOrders.map((ro, index) => (
-                        <MenuItem key={index} value={ro}>
-                            {ro}
-                        </MenuItem>
-                    ))}
-                </TextField>
-            )}
-
             {Array.of(tableType.DANCE).includes(table) && (
                 <TextField
                     margin="dense"
@@ -475,6 +439,24 @@ function DialogFields(props) {
                     value={formData.song_artist || ''}
                     onChange={handleChange}
                 />
+            )}
+
+            {Array.of(tableType.DANCE).includes(table) && (
+                <TextField
+                    margin="dense"
+                    name="running_order"
+                    label="Running Order"
+                    type="text"
+                    select
+                    value={formData.running_order || ''}
+                    onChange={handleChange}
+                >
+                    {runningOrders.map((ro, index) => (
+                        <MenuItem key={index} value={ro}>
+                            {ro}
+                        </MenuItem>
+                    ))}
+                </TextField>
             )}
 
             {Array.of(tableType.DANCE).includes(table) && (
@@ -661,11 +643,29 @@ function DialogFields(props) {
             )}
 
             {Array.of(tableType.EPISODE).includes(table) && (
+                <TextField
+                    margin="dense"
+                    name="theme"
+                    label="Theme"
+                    type="text"
+                    select
+                    value={formData.theme || ''}
+                    onChange={handleChange}
+                >
+                    {themes.map((theme, index) => (
+                        <MenuItem key={index} value={theme}>
+                            {theme}
+                        </MenuItem>
+                    ))}
+                </TextField>
+            )}
+
+            {Array.of(tableType.EPISODE).includes(table) && (
                 <MobileDatePicker
                     margin="dense"
                     label="Date"
                     inputFormat="MM/dd/yyyy"
-                    value={formData.date || ''}
+                    value={formData.date || null}
                     onChange={handleDate}
                     renderInput={(params) => <TextField {...params} />}
                 />
@@ -783,10 +783,7 @@ function DialogFields(props) {
                     {seasons.map((season, index) => {
                         return (
                             <MenuItem key={index} value={season.id}>
-                                <DataGetter
-                                    id={season.id}
-                                    type={tableType.SEASON}
-                                />
+                                {season.id}
                             </MenuItem>
                         );
                     })}
@@ -869,10 +866,7 @@ function DialogFields(props) {
                     {judges.map((judge, index) => {
                         return (
                             <MenuItem key={index} value={judge.id}>
-                                <DataGetter
-                                    id={judge.id}
-                                    type={tableType.JUDGE}
-                                />
+                                {getFullName(judge)}
                             </MenuItem>
                         );
                     })}

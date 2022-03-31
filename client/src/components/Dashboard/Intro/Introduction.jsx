@@ -1,14 +1,13 @@
 import { Box, Card, Divider, Stack, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { FiSearch, FiBarChart2 } from 'react-icons/fi';
+import { FiSearch, FiBarChart2, FiActivity } from 'react-icons/fi';
 import { AiOutlineUser } from 'react-icons/ai';
-import { IoMdNotificationsOutline } from 'react-icons/io';
 import { BsStars } from 'react-icons/bs';
 import {
     StyledAccordion,
     StyledAccordionDetails,
     StyledAccordionSummary,
-} from '../sharedStyles';
+} from '../../shared/muiStyles';
 
 function Introduction() {
     return (
@@ -33,10 +32,10 @@ function Introduction() {
                                     registered fans
                                 </Typography>
                                 <Typography>
-                                    One dance from a previous season is randomly
-                                    generated daily; submit your personal score
-                                    to gain points and see how other fans scored
-                                    in comparison
+                                    One dance from a previous season is
+                                    generated daily - submit your personal score
+                                    and check back tomorrow to see how other
+                                    fans scored in comparison
                                 </Typography>
                                 <Typography>
                                     Reminisce on what happened on this day in
@@ -79,7 +78,8 @@ function Introduction() {
                                     Filter / sort for more precise results
                                 </Typography>
                                 <Typography>
-                                    Click each card to view more information
+                                    Click each to view more information and like
+                                    your favorites
                                 </Typography>
                             </Stack>
                         </Box>
@@ -87,16 +87,12 @@ function Introduction() {
 
                     <Stack direction="row" spacing={1}>
                         <Box>
-                            <IoMdNotificationsOutline
-                                style={{ marginTop: 5 }}
-                            />
+                            <FiActivity style={{ marginTop: 5 }} />
                         </Box>
                         <Box>
                             <Stack>
-                                <Typography variant="h6">
-                                    Notifications?
-                                </Typography>
-                                <Typography>?</Typography>
+                                <Typography variant="h6">Activity</Typography>
+                                <Typography>View recent activity</Typography>
                             </Stack>
                         </Box>
                     </Stack>
