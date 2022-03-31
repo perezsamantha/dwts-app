@@ -107,19 +107,20 @@ function DanceCard() {
                     </Stack>
 
                     {alreadyScored && !loading ? (
-                        <Stack direction="row" spacing={1} alignItems="center">
-                            {/* <BsClipboardCheck /> */}
-                            <Typography variant="body2">
-                                Score of {dance.user_score} has been recorded -
-                                change score{' '}
-                                <Link onClick={handleRescore} underline="hover">
-                                    here.
-                                </Link>
-                            </Typography>
-                        </Stack>
+                        <Typography variant="body2" my={1}>
+                            Score of {dance.user_score} has been recorded -
+                            change score{' '}
+                            <Link
+                                onClick={handleRescore}
+                                underline="hover"
+                                sx={{ cursor: 'pointer' }}
+                            >
+                                here.
+                            </Link>
+                        </Typography>
                     ) : (
                         <Box>
-                            <Stack direction="row" spacing={2} mb={1}>
+                            <Stack direction="row" spacing={2} my={1}>
                                 <StyledRating
                                     defaultValue={dance.user_score || 0}
                                     precision={0.5}
@@ -133,8 +134,9 @@ function DanceCard() {
                                 <Typography>{score}</Typography>
                             </Stack>
                             <Button
-                                variant="contained"
+                                variant="text"
                                 size="small"
+                                color="inherit"
                                 onClick={handleSubmit}
                             >
                                 Submit Score

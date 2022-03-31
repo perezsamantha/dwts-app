@@ -4,9 +4,8 @@ import { Link } from 'react-router-dom';
 import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material';
 import styled from '@emotion/styled';
 
-import { FiSearch, FiBarChart2 } from 'react-icons/fi';
+import { FiSearch, FiBarChart2, FiActivity } from 'react-icons/fi';
 import { AiOutlineUser } from 'react-icons/ai';
-import { IoMdNotificationsOutline } from 'react-icons/io';
 import { BsStars } from 'react-icons/bs';
 
 function BottomNavBar() {
@@ -18,7 +17,7 @@ function BottomNavBar() {
         value !== 'overview' &&
         value !== 'search' &&
         value !== 'account' &&
-        value !== 'notifications'
+        value !== 'activity'
     ) {
         setValue('home');
     }
@@ -58,9 +57,9 @@ function BottomNavBar() {
                 />
                 <BottomNavigationAction
                     component={Link}
-                    to="/notifications"
-                    value="notifications"
-                    icon={<CustonNotificationsIcon />}
+                    to="/activity"
+                    value="activity"
+                    icon={<CustomActivityIcon />}
                 />
                 <BottomNavigationAction
                     component={Link}
@@ -116,7 +115,7 @@ const CustomOverviewIcon = styled(FiBarChart2)({
     marginTop: -5,
 });
 
-const CustonNotificationsIcon = styled(IoMdNotificationsOutline)({
+const CustomActivityIcon = styled(FiActivity)({
     width: 25,
     height: 25,
     marginTop: -5,

@@ -17,7 +17,7 @@ import {
     StyledAccordion,
     StyledAccordionDetails,
     StyledAccordionSummary,
-} from '../../Dashboard/sharedStyles';
+} from '../../shared/muiStyles';
 import { useSelector } from 'react-redux';
 import { getShortDate } from '../../shared/functions';
 
