@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import {
     Box,
@@ -15,26 +15,33 @@ import {
     RadioGroup,
     Select,
     Stack,
-    TextField,
     Typography,
 } from '@mui/material';
-import {
-    placements,
-    seasons,
-    styles,
-    themes,
-    weeks,
-} from '../../../constants/dropdowns';
+import { seasons, styles, themes, weeks } from '../../../constants/dropdowns';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionType from '../../../constants/actionTypes';
+import { createLoadingSelector } from '../../../api/selectors';
+import { fetchTeams } from '../../../actions/teams';
+import Progress from '../../shared/Progress';
+import { initialDanceState } from '../../../reducers/initialState';
 
-//TODO: clear filters button?
-
-function DanceFilters(props) {
+function DanceFilters() {
     const [open, setOpen] = useState(false);
     const initialFilters = useSelector((state) => state.dances.filters);
     const [filters, setFilters] = useState(initialFilters);
+    const pros = useSelector((state) => state.pros.pros);
+    const teams = useSelector((state) => state.teams.teams);
     const dispatch = useDispatch();
+
+    const loadingSelector = createLoadingSelector([
+        actionType.TEAMSEARCH,
+        actionType.PROSEARCH,
+    ]);
+    const loading = useSelector((state) => loadingSelector(state));
+
+    useEffect(() => {
+        dispatch(fetchTeams());
+    }, [dispatch]);
 
     const handleOpen = () => {
         setFilters(initialFilters);
@@ -54,16 +61,8 @@ function DanceFilters(props) {
         setFilters({ ...filters, [e.target.name]: e.target.value });
     };
 
-    const handleChangeFrom = (e) => {
-        let tempArray = filters[e.target.name];
-        tempArray[0] = e.target.value;
-        setFilters({ ...filters, [e.target.name]: tempArray });
-    };
-
-    const handleChangeTo = (e) => {
-        let tempArray = filters[e.target.name];
-        tempArray[1] = e.target.value;
-        setFilters({ ...filters, [e.target.name]: tempArray });
+    const handleClear = () => {
+        setFilters(initialDanceState.filters);
     };
 
     return (
@@ -72,295 +71,393 @@ function DanceFilters(props) {
                 <FilterListIcon />
             </Button>
             <Dialog open={open} onClose={handleClose} fullWidth>
-                <DialogContent>
-                    <FormControl>
-                        <Typography variant="h5">Sort By</Typography>
-                        <RadioGroup
-                            name="sortBy"
-                            value={filters.sortBy}
-                            onChange={handleChange}
-                            row
-                        >
-                            <FormControlLabel
-                                value="seasonDesc"
-                                control={<Radio />}
-                                label="Season Descending"
-                            />
-                            <FormControlLabel
-                                value="seasonAsc"
-                                control={<Radio />}
-                                label="Season Ascending"
-                            />
-                            {/* <FormControlLabel
+                {loading ? (
+                    <Progress />
+                ) : (
+                    <>
+                        <DialogContent>
+                            <FormControl>
+                                <Typography variant="h5">Sort By</Typography>
+                                <RadioGroup
+                                    name="sortBy"
+                                    value={filters.sortBy}
+                                    onChange={handleChange}
+                                    row
+                                >
+                                    <FormControlLabel
+                                        value="episodeDesc"
+                                        control={<Radio />}
+                                        label="Episode (↑ to ↓)"
+                                    />
+                                    <FormControlLabel
+                                        value="episodeAsc"
+                                        control={<Radio />}
+                                        label="Episode (↓ to ↑)"
+                                    />
+                                    {/* <FormControlLabel
                     value="scoreDesc"
                     control={<Radio />}
                     label="Score (High to Low)"
                 /> */}
-                            {/* <FormControlLabel
+                                    {/* <FormControlLabel
                     value="scoreAsc"
                     control={<Radio />}
                     label="Score (Low to High)"
                 /> */}
-                            <FormControlLabel
-                                value="likes"
-                                control={<Radio />}
-                                label="Most Liked"
-                            />
-                        </RadioGroup>
-                        <Typography variant="h5" mb={1}>
-                            Filter By
-                        </Typography>
-                        <FormControl>
-                            <Typography>Styles</Typography>
-                            <Select
-                                multiple
-                                name="styles"
-                                value={filters.styles}
-                                onChange={handleChange}
-                                input={<OutlinedInput />}
-                                renderValue={(selected) => (
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            flexWrap: 'wrap',
-                                            gap: 0.5,
-                                        }}
-                                    >
-                                        {selected.map((value) => (
-                                            <Chip key={value} label={value} />
-                                        ))}
-                                    </Box>
-                                )}
-                            >
-                                {styles.map((style) => (
-                                    <MenuItem key={style} value={style}>
-                                        {style}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                        <FormControl>
-                            <Typography>Themes</Typography>
-                            <Select
-                                multiple
-                                name="themes"
-                                value={filters.themes}
-                                onChange={handleChange}
-                                input={<OutlinedInput />}
-                                renderValue={(selected) => (
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            flexWrap: 'wrap',
-                                            gap: 0.5,
-                                        }}
-                                    >
-                                        {selected.map((value) => {
+                                    <FormControlLabel
+                                        value="likes"
+                                        control={<Radio />}
+                                        label="Most Likes"
+                                    />
+                                </RadioGroup>
+
+                                <Stack
+                                    direction="row"
+                                    spacing={1}
+                                    mb={1}
+                                    alignItems="center"
+                                >
+                                    <Typography variant="h5">
+                                        Filter By
+                                    </Typography>
+                                    <Button onClick={handleClear} size="small">
+                                        Clear Filters
+                                    </Button>
+                                </Stack>
+
+                                <FormControl>
+                                    <Typography>Styles</Typography>
+                                    <Select
+                                        multiple
+                                        displayEmpty
+                                        name="styles"
+                                        value={filters.styles}
+                                        onChange={handleChange}
+                                        input={<OutlinedInput />}
+                                        renderValue={(selected) => {
+                                            if (selected.length === 0) {
+                                                return <em>All Styles</em>;
+                                            }
                                             return (
-                                                <Chip
-                                                    key={value}
-                                                    label={value}
-                                                />
+                                                <Box
+                                                    sx={{
+                                                        display: 'flex',
+                                                        flexWrap: 'wrap',
+                                                        gap: 0.5,
+                                                    }}
+                                                >
+                                                    {selected.map((value) => (
+                                                        <Chip
+                                                            key={value}
+                                                            label={value}
+                                                        />
+                                                    ))}
+                                                </Box>
                                             );
-                                        })}
-                                    </Box>
-                                )}
-                            >
-                                {themes.map((theme, index) => {
-                                    return (
-                                        <MenuItem key={index} value={theme}>
-                                            {theme}
+                                        }}
+                                    >
+                                        <MenuItem disabled value="">
+                                            All Styles
                                         </MenuItem>
-                                    );
-                                })}
-                            </Select>
-                        </FormControl>
-                        {/* <Typography>Pro(s)</Typography>
-            <Select
-                multiple
-                name="pros"
-                value={filters.pros}
-                onChange={handleChange}
-                input={<OutlinedInput />}
-                renderValue={(selected) => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                        {selected.map((value) => {
-                            const pro = pros.find((pro) => pro.id === value);
-                            const name = pro.first_name + ' ' + pro?.last_name;
-                            return <Chip key={value} label={name} />;
-                        })}
-                    </Box>
+                                        {styles.map((style) => (
+                                            <MenuItem key={style} value={style}>
+                                                {style}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                                <FormControl>
+                                    <Typography>Theme Weeks</Typography>
+                                    <Select
+                                        multiple
+                                        displayEmpty
+                                        name="themes"
+                                        value={filters.themes}
+                                        onChange={handleChange}
+                                        input={<OutlinedInput />}
+                                        renderValue={(selected) => {
+                                            if (selected.length === 0) {
+                                                return <em>All Themes</em>;
+                                            }
+                                            return (
+                                                <Box
+                                                    sx={{
+                                                        display: 'flex',
+                                                        flexWrap: 'wrap',
+                                                        gap: 0.5,
+                                                    }}
+                                                >
+                                                    {selected.map((value) => (
+                                                        <Chip
+                                                            key={value}
+                                                            label={value}
+                                                        />
+                                                    ))}
+                                                </Box>
+                                            );
+                                        }}
+                                    >
+                                        <MenuItem disabled value="">
+                                            All Themes
+                                        </MenuItem>
+                                        {themes.map((theme, index) => (
+                                            <MenuItem key={index} value={theme}>
+                                                {theme}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+
+                                <Typography>Teams</Typography>
+                                <FormControl>
+                                    <Select
+                                        multiple
+                                        displayEmpty
+                                        name="teams"
+                                        value={filters.teams}
+                                        onChange={handleChange}
+                                        input={<OutlinedInput />}
+                                        renderValue={(selected) => {
+                                            if (selected.length === 0) {
+                                                return <em>All Teams</em>;
+                                            }
+                                            return (
+                                                <Box
+                                                    sx={{
+                                                        display: 'flex',
+                                                        flexWrap: 'wrap',
+                                                        gap: 0.5,
+                                                    }}
+                                                >
+                                                    {selected.map((value) => {
+                                                        const team = teams.find(
+                                                            (team) =>
+                                                                team.id ===
+                                                                value
+                                                        );
+                                                        const name =
+                                                            team.celeb
+                                                                .first_name +
+                                                            ' & ' +
+                                                            team.pro.first_name;
+                                                        return (
+                                                            <Chip
+                                                                key={value}
+                                                                label={name}
+                                                            />
+                                                        );
+                                                    })}
+                                                </Box>
+                                            );
+                                        }}
+                                    >
+                                        <MenuItem disabled value="">
+                                            All Teams
+                                        </MenuItem>
+                                        {teams.map((team, index) => (
+                                            <MenuItem
+                                                key={index}
+                                                value={team.id}
+                                            >
+                                                {team.celeb.first_name} &{' '}
+                                                {team.pro.first_name}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+
+                                <Typography>Pros</Typography>
+                                <FormControl>
+                                    <Select
+                                        multiple
+                                        displayEmpty
+                                        name="pros"
+                                        value={filters.pros}
+                                        onChange={handleChange}
+                                        input={<OutlinedInput />}
+                                        renderValue={(selected) => {
+                                            if (selected.length === 0) {
+                                                return <em>All Pros</em>;
+                                            }
+                                            return (
+                                                <Box
+                                                    sx={{
+                                                        display: 'flex',
+                                                        flexWrap: 'wrap',
+                                                        gap: 0.5,
+                                                    }}
+                                                >
+                                                    {selected.map((value) => {
+                                                        const pro = pros.find(
+                                                            (pro) =>
+                                                                pro.id === value
+                                                        );
+                                                        const name =
+                                                            pro.first_name +
+                                                            ' ' +
+                                                            pro?.last_name;
+                                                        return (
+                                                            <Chip
+                                                                key={value}
+                                                                label={name}
+                                                            />
+                                                        );
+                                                    })}
+                                                </Box>
+                                            );
+                                        }}
+                                    >
+                                        <MenuItem disabled value="">
+                                            All Pros
+                                        </MenuItem>
+                                        {pros.map((pro, index) => (
+                                            <MenuItem
+                                                key={index}
+                                                value={pro.id}
+                                            >
+                                                {pro.first_name}{' '}
+                                                {pro?.last_name}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+
+                                <FormControl>
+                                    <Typography>Seasons</Typography>
+                                    <Select
+                                        multiple
+                                        displayEmpty
+                                        name="seasons"
+                                        value={filters.seasons}
+                                        onChange={handleChange}
+                                        input={<OutlinedInput />}
+                                        renderValue={(selected) => {
+                                            if (selected.length === 0) {
+                                                return <em>All Seasons</em>;
+                                            }
+                                            return (
+                                                <Box
+                                                    sx={{
+                                                        display: 'flex',
+                                                        flexWrap: 'wrap',
+                                                        gap: 0.5,
+                                                    }}
+                                                >
+                                                    {selected.map((value) => (
+                                                        <Chip
+                                                            key={value}
+                                                            label={value}
+                                                        />
+                                                    ))}
+                                                </Box>
+                                            );
+                                        }}
+                                    >
+                                        <MenuItem disabled value="">
+                                            All Seasons
+                                        </MenuItem>
+                                        {seasons.map((season) => (
+                                            <MenuItem
+                                                key={season}
+                                                value={season}
+                                            >
+                                                {season}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+
+                                <FormControl>
+                                    <Typography>Weeks</Typography>
+                                    <Select
+                                        multiple
+                                        displayEmpty
+                                        name="weeks"
+                                        value={filters.weeks}
+                                        onChange={handleChange}
+                                        input={<OutlinedInput />}
+                                        renderValue={(selected) => {
+                                            if (selected.length === 0) {
+                                                return <em>All Weeks</em>;
+                                            }
+                                            return (
+                                                <Box
+                                                    sx={{
+                                                        display: 'flex',
+                                                        flexWrap: 'wrap',
+                                                        gap: 0.5,
+                                                    }}
+                                                >
+                                                    {selected.map((value) => (
+                                                        <Chip
+                                                            key={value}
+                                                            label={value}
+                                                        />
+                                                    ))}
+                                                </Box>
+                                            );
+                                        }}
+                                    >
+                                        <MenuItem disabled value="">
+                                            All Weeks
+                                        </MenuItem>
+                                        {weeks.map((week) => (
+                                            <MenuItem key={week} value={week}>
+                                                {week}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+
+                                <Typography>Must Have Pictures?</Typography>
+                                <RadioGroup
+                                    name="hasPictures"
+                                    value={filters.hasPictures}
+                                    onChange={handleChange}
+                                    row
+                                >
+                                    <FormControlLabel
+                                        value={true}
+                                        control={<Radio />}
+                                        label="Yes"
+                                    />
+                                    <FormControlLabel
+                                        value={false}
+                                        control={<Radio />}
+                                        label="No"
+                                    />
+                                </RadioGroup>
+
+                                <Typography>Must Have Link?</Typography>
+                                <RadioGroup
+                                    name="hasLink"
+                                    value={filters.hasLink}
+                                    onChange={handleChange}
+                                    row
+                                >
+                                    <FormControlLabel
+                                        value={true}
+                                        control={<Radio />}
+                                        label="Yes"
+                                    />
+                                    <FormControlLabel
+                                        value={false}
+                                        control={<Radio />}
+                                        label="No"
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button variant="text" onClick={handleClose}>
+                                Cancel
+                            </Button>
+                            <Button variant="text" onClick={handleSubmit}>
+                                Apply
+                            </Button>
+                        </DialogActions>
+                    </>
                 )}
-            >
-                {pros.map((pro, index) => {
-                    return (
-                        <MenuItem key={index} value={pro.id}>
-                            {pro.first_name} {pro?.last_name}
-                        </MenuItem>
-                    );
-                })}
-            </Select> */}
-                        {/* teams */}
-
-                        <Typography>Seasons</Typography>
-                        <Stack direction="row">
-                            <TextField
-                                select
-                                margin="dense"
-                                name="seasons"
-                                value={filters.seasons[0]}
-                                onChange={handleChangeFrom}
-                            >
-                                {seasons.map((season, index) => {
-                                    return (
-                                        <MenuItem key={index} value={season}>
-                                            {season}
-                                        </MenuItem>
-                                    );
-                                })}
-                            </TextField>
-
-                            <Typography alignSelf="center">to</Typography>
-
-                            <TextField
-                                select
-                                margin="dense"
-                                name="seasons"
-                                value={filters.seasons[1]}
-                                onChange={handleChangeTo}
-                            >
-                                {seasons.map((season, index) => {
-                                    return (
-                                        <MenuItem key={index} value={season}>
-                                            {season}
-                                        </MenuItem>
-                                    );
-                                })}
-                            </TextField>
-                        </Stack>
-
-                        <Typography>Weeks</Typography>
-                        <Stack direction="row">
-                            <TextField
-                                select
-                                margin="dense"
-                                name="weeks"
-                                value={filters.weeks[0]}
-                                onChange={handleChangeFrom}
-                            >
-                                {weeks.map((week, index) => {
-                                    return (
-                                        <MenuItem key={index} value={week}>
-                                            {week}
-                                        </MenuItem>
-                                    );
-                                })}
-                            </TextField>
-
-                            <Typography alignSelf="center">to</Typography>
-
-                            <TextField
-                                select
-                                margin="dense"
-                                name="weeks"
-                                value={filters.weeks[1]}
-                                onChange={handleChangeTo}
-                            >
-                                {weeks.map((week, index) => {
-                                    return (
-                                        <MenuItem key={index} value={week}>
-                                            {week}
-                                        </MenuItem>
-                                    );
-                                })}
-                            </TextField>
-                        </Stack>
-
-                        <Typography>Running Order</Typography>
-
-                        <Stack direction="row">
-                            <TextField
-                                select
-                                margin="dense"
-                                name="runningOrders"
-                                value={filters.runningOrders[0]}
-                                onChange={handleChangeFrom}
-                            >
-                                {placements.map((placement, index) => {
-                                    return (
-                                        <MenuItem key={index} value={placement}>
-                                            {placement}
-                                        </MenuItem>
-                                    );
-                                })}
-                            </TextField>
-
-                            <Typography alignSelf="center">to</Typography>
-
-                            <TextField
-                                select
-                                margin="dense"
-                                name="runningOrders"
-                                value={filters.runningOrders[1]}
-                                onChange={handleChangeTo}
-                            >
-                                {placements.map((placement, index) => {
-                                    return (
-                                        <MenuItem key={index} value={placement}>
-                                            {placement}
-                                        </MenuItem>
-                                    );
-                                })}
-                            </TextField>
-                        </Stack>
-
-                        <Typography>Must Have Pictures?</Typography>
-                        <RadioGroup
-                            name="hasPictures"
-                            value={filters.hasPictures}
-                            onChange={handleChange}
-                            row
-                        >
-                            <FormControlLabel
-                                value={true}
-                                control={<Radio />}
-                                label="Yes"
-                            />
-                            <FormControlLabel
-                                value={false}
-                                control={<Radio />}
-                                label="No"
-                            />
-                        </RadioGroup>
-
-                        <Typography>Must Have Link?</Typography>
-                        <RadioGroup
-                            name="hasLink"
-                            value={filters.hasLink}
-                            onChange={handleChange}
-                            row
-                        >
-                            <FormControlLabel
-                                value={true}
-                                control={<Radio />}
-                                label="Yes"
-                            />
-                            <FormControlLabel
-                                value={false}
-                                control={<Radio />}
-                                label="No"
-                            />
-                        </RadioGroup>
-                    </FormControl>
-                </DialogContent>
-                <DialogActions>
-                    <Button variant="contained" onClick={handleClose}>
-                        Cancel
-                    </Button>
-                    <Button variant="contained" onClick={handleSubmit}>
-                        Apply
-                    </Button>
-                </DialogActions>
             </Dialog>
         </>
     );

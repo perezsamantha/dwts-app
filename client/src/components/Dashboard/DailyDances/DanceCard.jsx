@@ -19,8 +19,7 @@ import {
 } from 'react-icons/bs';
 import { MdOutlineQueueMusic } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { findDailyDance } from '../../../actions/dances';
-import { getTotalScore } from '../../shared/functions';
+import { getTotalScore, organizeDancers } from '../../shared/functions';
 import { setUserScore } from '../../../actions/scores';
 import Progress from '../../shared/Progress';
 
@@ -86,7 +85,13 @@ function DanceCard() {
 
                     <Stack direction="row" spacing={1} alignItems="center">
                         <BsPersonCircle />
-                        <Typography>Danced by...</Typography>
+                        {dance.dancers.length !== 0 && (
+                            <Box>
+                                <Typography>
+                                    {organizeDancers(dance.dancers).join(', ')}
+                                </Typography>
+                            </Box>
+                        )}
                     </Stack>
 
                     {dance?.link && (

@@ -181,6 +181,12 @@ export const getFullTeamName = (celeb, pro) => {
     return celebName + ' & ' + proName;
 };
 
+export const getShortTeamName = (celeb, pro) => {
+    const celebName = celeb.first_name;
+    const proName = pro.first_name;
+    return celebName + ' & ' + proName;
+};
+
 export const getFullJudgeName = (id, judges) => {
     const judge = judges.find((judge) => judge.id === id);
 
@@ -425,4 +431,28 @@ export const getDanceName = (dance) => {
     str = ep + ' | ' + style + ' - ' + song;
 
     return str;
+};
+
+export const organizeDancers = (dancers) => {
+    let organized = [];
+
+    dancers.map((dancer) =>
+        dancer.team_id !== null
+            ? organized.push(
+                  getShortTeamName(dancer.team.celeb, dancer.team.pro)
+              )
+            : null
+    );
+
+    dancers.map((dancer) =>
+        dancer.celeb_id !== null
+            ? organized.push(getFullName(dancer.celeb))
+            : null
+    );
+
+    dancers.map((dancer) =>
+        dancer.pro_id !== null ? organized.push(dancer.pro.first_name) : null
+    );
+
+    return organized;
 };

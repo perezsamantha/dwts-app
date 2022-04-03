@@ -26,10 +26,9 @@ import {
 } from '../../../constants/dropdowns';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionType from '../../../constants/actionTypes';
+import { initialProState } from '../../../reducers/initialState';
 
-//TODO: clear filters button?
-
-function ProFilters(props) {
+function ProFilters() {
     const [open, setOpen] = useState(false);
     const initialFilters = useSelector((state) => state.pros.filters);
     const [filters, setFilters] = useState(initialFilters);
@@ -46,7 +45,6 @@ function ProFilters(props) {
 
     const handleSubmit = () => {
         dispatch({ type: actionType.PROFILTERS, payload: filters });
-        //props.setFilters(filters);
         setOpen(false);
     };
 
@@ -55,15 +53,20 @@ function ProFilters(props) {
     };
 
     const handleChangeFrom = (e) => {
-        let tempArray = filters[e.target.name];
+        let tempArray = [...filters[e.target.name]];
         tempArray[0] = e.target.value;
         setFilters({ ...filters, [e.target.name]: tempArray });
     };
 
     const handleChangeTo = (e) => {
-        let tempArray = filters[e.target.name];
+        let tempArray = [...filters[e.target.name]];
         tempArray[1] = e.target.value;
         setFilters({ ...filters, [e.target.name]: tempArray });
+    };
+
+    const handleClear = () => {
+        setFilters(Object.assign({}, initialProState.filters));
+        console.log(filters);
     };
 
     return (
@@ -101,7 +104,7 @@ function ProFilters(props) {
                                 control={<Radio />}
                                 label="Height"
                             />
-                            <FormControlLabel
+                            {/* <FormControlLabel
                                 value="avgPlacement"
                                 control={<Radio />}
                                 label="Average Placement"
@@ -115,11 +118,21 @@ function ProFilters(props) {
                                 value="numWins"
                                 control={<Radio />}
                                 label="Wins"
-                            />
+                            /> */}
                         </RadioGroup>
-                        <Typography variant="h5" mb={1}>
-                            Filter By
-                        </Typography>
+
+                        <Stack
+                            direction="row"
+                            spacing={1}
+                            mb={1}
+                            alignItems="center"
+                        >
+                            <Typography variant="h5">Filter By</Typography>
+                            <Button onClick={handleClear} size="small">
+                                Clear Filters
+                            </Button>
+                        </Stack>
+
                         <Typography>Gender</Typography>
                         <Select
                             multiple
@@ -247,12 +260,8 @@ function ProFilters(props) {
                     </FormControl>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="contained" onClick={handleClose}>
-                        Cancel
-                    </Button>
-                    <Button variant="contained" onClick={handleSubmit}>
-                        Apply
-                    </Button>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={handleSubmit}>Apply</Button>
                 </DialogActions>
             </Dialog>
         </>

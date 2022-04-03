@@ -1,14 +1,7 @@
 import * as actionType from '../constants/actionTypes';
+import { initialTourState } from './initialState';
 
-const tourReducer = (
-    state = {
-        tours: [],
-        tourCast: [],
-        tour: {},
-        castMember: {},
-    },
-    action
-) => {
+const tourReducer = (state = initialTourState, action) => {
     switch (action.type) {
         case actionType.TOURADD_SUCCESS:
             return { ...state, tours: [...state.tours, action.payload] };

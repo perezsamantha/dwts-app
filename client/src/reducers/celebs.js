@@ -1,15 +1,7 @@
 import * as actionType from '../constants/actionTypes';
+import { initialCelebState } from './initialState';
 
-// initial state from here?
-
-const celebReducer = (
-    state = {
-        celebs: [],
-        celeb: {},
-        likes: 0,
-    },
-    action
-) => {
+const celebReducer = (state = initialCelebState, action) => {
     switch (action.type) {
         case actionType.CELEBADD_SUCCESS:
             return { ...state, celebs: [...state.celebs, action.payload] };

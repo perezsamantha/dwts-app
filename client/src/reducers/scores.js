@@ -1,15 +1,7 @@
 import * as actionType from '../constants/actionTypes';
+import { initialScoreState } from './initialState';
 
-// initial state from here?
-
-const scoreReducer = (
-    state = {
-        scores: [],
-        score: {},
-        likes: 0,
-    },
-    action
-) => {
+const scoreReducer = (state = initialScoreState, action) => {
     switch (action.type) {
         case actionType.SCOREADD_SUCCESS:
             return { ...state, scores: [...state.scores, action.payload] };

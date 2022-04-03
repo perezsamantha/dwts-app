@@ -1,15 +1,7 @@
 import * as actionType from '../constants/actionTypes';
+import { initialDancerState } from './initialState';
 
-// initial state from here?
-
-const dancerReducer = (
-    state = {
-        dancers: [],
-        dancer: {},
-        likes: 0,
-    },
-    action
-) => {
+const dancerReducer = (state = initialDancerState, action) => {
     switch (action.type) {
         case actionType.DANCERADD_SUCCESS:
             return { ...state, dancers: [...state.dancers, action.payload] };

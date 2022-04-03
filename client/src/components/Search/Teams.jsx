@@ -68,7 +68,10 @@ function Teams(props) {
             }
         }
 
-        if (filters.sortBy === 'placement') {
+        if (
+            filters.sortBy === 'placementAsc' ||
+            filters.sortBy === 'placementDesc'
+        ) {
             sortType = 'placement';
 
             filteredTeams.sort((a, b) => {
@@ -92,6 +95,10 @@ function Teams(props) {
 
             for (let [placement] of Object.entries(categorizeByPlacement)) {
                 arr.push(placement);
+            }
+
+            if (filters.sortBy === 'placementDesc') {
+                arr.reverse();
             }
         }
     }
