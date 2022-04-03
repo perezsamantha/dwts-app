@@ -1,25 +1,7 @@
 import * as actionType from '../constants/actionTypes';
-import { heightsInInches } from '../constants/dropdowns';
-// initial state from here?
+import { initialProState } from './initialState';
 
-const proReducer = (
-    state = {
-        pros: [],
-        pro: {},
-        filters: {
-            sortBy: 'firstName',
-            age: [0, 100],
-            height: [
-                heightsInInches[0],
-                heightsInInches[heightsInInches.length - 1],
-            ],
-            gender: ['Male', 'Female'],
-            showJuniors: false,
-            // hasPictures
-        },
-    },
-    action
-) => {
+const proReducer = (state = initialProState, action) => {
     switch (action.type) {
         case actionType.PROADD_SUCCESS:
             return { ...state, pros: [...state.pros, action.payload] };

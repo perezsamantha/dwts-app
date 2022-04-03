@@ -1,15 +1,7 @@
 import * as actionType from '../constants/actionTypes';
+import { initialJudgeState } from './initialState';
 
-// initial state from here?
-
-const judgeReducer = (
-    state = {
-        judges: [],
-        judge: {},
-        likes: 0,
-    },
-    action
-) => {
+const judgeReducer = (state = initialJudgeState, action) => {
     switch (action.type) {
         case actionType.JUDGEADD_SUCCESS:
             return { ...state, judges: [...state.judges, action.payload] };

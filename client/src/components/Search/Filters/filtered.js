@@ -6,22 +6,45 @@ export const filterDances = (dances, filters) => {
         return filterKeys.every((key) => {
             switch (key) {
                 case 'seasons':
-                    return dance.episode.season_id >= filters.seasons[0] &&
-                        dance.episode.season_id <= filters.seasons[1]
+                    if (filters.seasons.length === 0) {
+                        return true;
+                    }
+                    return filters.seasons.includes(dance.episode.season_id)
                         ? true
                         : false;
-                // case 'pros':
-                //     // nest by getting data from teams -> pros
-                //     return dance.episode_id >= filters.seasons[0] &&
-                //     dance.season_id <= filters.seasons[1]
-                //         ? true
-                //         : false;
-                // case 'teams':
-                //     // nest by getting data from teams
-                //     return dance.episode_id >= filters.seasons[0] &&
-                //     dance.season_id <= filters.seasons[1]
-                //         ? true
-                //         : false;
+                case 'weeks':
+                    if (filters.weeks.length === 0) {
+                        return true;
+                    }
+                    return filters.weeks.includes(dance.episode.week)
+                        ? true
+                        : false;
+                case 'pros':
+                    if (filters.pros.length === 0) {
+                        return true;
+                    }
+                    // this way only returns dances where all selected pros are in the dance (i think)
+                    // return filters.pros.every((id) => {
+                    //     return dance.dancers.some((dancer) => {
+                    //         if (dancer.team) {
+                    //             return dancer.team.pro_id === id;
+                    //         }
+                    //         return dancer.pro_id === id;
+                    //     });
+                    // });
+                    return dance.dancers.some((dancer) => {
+                        if (dancer.team) {
+                            return filters.pros.includes(dancer.team.pro_id);
+                        }
+                        return filters.pros.includes(dancer.pro_id);
+                    });
+                case 'teams':
+                    if (filters.teams.length === 0) {
+                        return true;
+                    }
+                    return dance.dancers.some((dancer) =>
+                        filters.teams.includes(dancer.team_id)
+                    );
                 case 'styles':
                     if (filters.styles.length === 0) {
                         return true;
@@ -31,10 +54,7 @@ export const filterDances = (dances, filters) => {
                     if (filters.themes.length === 0) {
                         return true;
                     }
-                    return filters.themes.includes(dance.theme) ? true : false;
-                case 'runningOrders':
-                    return dance.running_order >= filters.runningOrders[0] &&
-                        dance.running_order <= filters.runningOrders[1]
+                    return filters.themes.includes(dance.episode.theme)
                         ? true
                         : false;
                 case 'hasPictures':
@@ -57,6 +77,22 @@ export const filterDances = (dances, filters) => {
 
     filtered.sort((a, b) => {
         switch (filters.sortBy) {
+            case 'episodeDesc':
+                if (a.episode.date > b.episode.date) {
+                    return -1;
+                } else if (a.episode.date < b.episode.date) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            case 'episodeAsc':
+                if (a.episode.date < b.episode.date) {
+                    return -1;
+                } else if (a.episode.date > b.episode.date) {
+                    return 1;
+                } else {
+                    return 0;
+                }
             case 'likes': // high to low
                 if (a.likes.length > b.likes.length) {
                     return -1;
@@ -82,15 +118,19 @@ export const filterTeams = (teams, filters) => {
                     if (filters.pros.length === 0) {
                         return true;
                     }
-                    return filters.pros.includes(team.pro_id) ? true : false;
+                    return filters.pros.includes(team.pro_id);
                 case 'seasons':
-                    return team.season_id >= filters.seasons[0] &&
-                        team.season_id <= filters.seasons[1]
+                    if (filters.seasons.length === 0) {
+                        return true;
+                    }
+                    return filters.seasons.includes(team.season_id)
                         ? true
                         : false;
                 case 'placements':
-                    return team.placement >= filters.placements[0] &&
-                        team.placement <= filters.placements[1]
+                    if (filters.placements.length === 0) {
+                        return true;
+                    }
+                    return filters.placements.includes(team.placement)
                         ? true
                         : false;
                 case 'hasPictures':

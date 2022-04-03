@@ -1,20 +1,7 @@
 import * as actionType from '../constants/actionTypes';
+import { initialUserState } from './initialState';
 
-// initial state from here?
-
-const userReducer = (
-    state = {
-        users: [],
-        user: {},
-        filters: {
-            sortBy: 'username',
-            pros: [],
-            teams: [],
-            // birthdayMonth ??
-        },
-    },
-    action
-) => {
+const userReducer = (state = initialUserState, action) => {
     switch (action.type) {
         case actionType.USERADD_SUCCESS:
             return { ...state, users: [...state.users, action.payload.result] };

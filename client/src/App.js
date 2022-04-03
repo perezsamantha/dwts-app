@@ -130,6 +130,14 @@ function App() {
                     },
                 },
             },
+            MuiOutlinedInput: {
+                styleOverrides: {
+                    root: {
+                        marginTop: 10,
+                        marginBottom: 10,
+                    },
+                },
+            },
             MuiTabs: {
                 styleOverrides: {
                     indicator: {
@@ -204,19 +212,6 @@ function App() {
                     },
                 },
             },
-            // MuiOutlinedInput: {
-            //     styleOverrides: {
-            //         root: {
-            //             input: {
-            //                 '&:-webkit-autofill': {
-            //                     '-webkit-box-shadow':
-            //                         '0 0 0 1000px rgb(28, 28, 28) inset',
-            //                     '-webkit-text-fill-color': '#fff',
-            //                 },
-            //             },
-            //         },
-            //     },
-            // },
         },
     });
 

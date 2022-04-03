@@ -1,15 +1,7 @@
 import * as actionType from '../constants/actionTypes';
+import { initialSeasonState } from './initialState';
 
-// initial state from here?
-
-const seasonReducer = (
-    state = {
-        seasons: [],
-        season: {},
-        likes: 0,
-    },
-    action
-) => {
+const seasonReducer = (state = initialSeasonState, action) => {
     switch (action.type) {
         case actionType.SEASONADD_SUCCESS:
             return { ...state, seasons: [...state.seasons, action.payload] };

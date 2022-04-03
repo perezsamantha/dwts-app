@@ -14,6 +14,7 @@ import {
     Radio,
     RadioGroup,
     Select,
+    Stack,
     Typography,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,6 +22,7 @@ import * as actionType from '../../../constants/actionTypes';
 import { fetchTeams } from '../../../actions/teams';
 import { createLoadingSelector } from '../../../api/selectors';
 import Progress from '../../shared/Progress';
+import { initialUserState } from '../../../reducers/initialState';
 
 function FanFilters() {
     const [open, setOpen] = useState(false);
@@ -58,6 +60,10 @@ function FanFilters() {
         setFilters({ ...filters, [e.target.name]: e.target.value });
     };
 
+    const handleClear = () => {
+        setFilters(initialUserState.filters);
+    };
+
     return (
         <>
             <Button color="inherit" onClick={handleOpen}>
@@ -89,105 +95,132 @@ function FanFilters() {
                                         label="Nickname"
                                     />
                                 </RadioGroup>
-                                <Typography variant="h5" mb={1}>
-                                    Filter By
-                                </Typography>
+
+                                <Stack
+                                    direction="row"
+                                    spacing={1}
+                                    mb={1}
+                                    alignItems="center"
+                                >
+                                    <Typography variant="h5">
+                                        Filter By
+                                    </Typography>
+                                    <Button onClick={handleClear} size="small">
+                                        Clear Filters
+                                    </Button>
+                                </Stack>
 
                                 <Typography>Favorite Pros</Typography>
-                                <FormControl margin="dense">
+                                <FormControl>
                                     <Select
                                         multiple
+                                        displayEmpty
                                         name="pros"
                                         value={filters.pros}
                                         onChange={handleChange}
                                         input={<OutlinedInput />}
-                                        renderValue={(selected) => (
-                                            <Box
-                                                sx={{
-                                                    display: 'flex',
-                                                    flexWrap: 'wrap',
-                                                    gap: 0.5,
-                                                }}
-                                            >
-                                                {selected.map((value) => {
-                                                    const pro = pros.find(
-                                                        (pro) =>
-                                                            pro.id === value
-                                                    );
-                                                    const name =
-                                                        pro.first_name +
-                                                        ' ' +
-                                                        pro?.last_name;
-                                                    return (
-                                                        <Chip
-                                                            key={value}
-                                                            label={name}
-                                                        />
-                                                    );
-                                                })}
-                                            </Box>
-                                        )}
-                                    >
-                                        {pros.map((pro, index) => {
+                                        renderValue={(selected) => {
+                                            if (selected.length === 0) {
+                                                return <em>Any Pro</em>;
+                                            }
                                             return (
-                                                <MenuItem
-                                                    key={index}
-                                                    value={pro.id}
+                                                <Box
+                                                    sx={{
+                                                        display: 'flex',
+                                                        flexWrap: 'wrap',
+                                                        gap: 0.5,
+                                                    }}
                                                 >
-                                                    {pro.first_name}{' '}
-                                                    {pro?.last_name}
-                                                </MenuItem>
+                                                    {selected.map((value) => {
+                                                        const pro = pros.find(
+                                                            (pro) =>
+                                                                pro.id === value
+                                                        );
+                                                        const name =
+                                                            pro.first_name +
+                                                            ' ' +
+                                                            pro?.last_name;
+                                                        return (
+                                                            <Chip
+                                                                key={value}
+                                                                label={name}
+                                                            />
+                                                        );
+                                                    })}
+                                                </Box>
                                             );
-                                        })}
+                                        }}
+                                    >
+                                        <MenuItem disabled value="">
+                                            Any Pro
+                                        </MenuItem>
+                                        {pros.map((pro, index) => (
+                                            <MenuItem
+                                                key={index}
+                                                value={pro.id}
+                                            >
+                                                {pro.first_name}{' '}
+                                                {pro?.last_name}
+                                            </MenuItem>
+                                        ))}
                                     </Select>
                                 </FormControl>
 
                                 <Typography>Favorite Teams</Typography>
-                                <FormControl margin="dense">
+                                <FormControl>
                                     <Select
                                         multiple
+                                        displayEmpty
                                         name="teams"
                                         value={filters.teams}
                                         onChange={handleChange}
                                         input={<OutlinedInput />}
-                                        renderValue={(selected) => (
-                                            <Box
-                                                sx={{
-                                                    display: 'flex',
-                                                    flexWrap: 'wrap',
-                                                    gap: 0.5,
-                                                }}
-                                            >
-                                                {selected.map((value) => {
-                                                    const team = teams.find(
-                                                        (team) =>
-                                                            team.id === value
-                                                    );
-                                                    const name =
-                                                        team.celeb.first_name +
-                                                        ' & ' +
-                                                        team.pro.first_name;
-                                                    return (
-                                                        <Chip
-                                                            key={value}
-                                                            label={name}
-                                                        />
-                                                    );
-                                                })}
-                                            </Box>
-                                        )}
-                                    >
-                                        {teams.map((team, index) => {
+                                        renderValue={(selected) => {
+                                            if (selected.length === 0) {
+                                                return <em>Any Team</em>;
+                                            }
                                             return (
-                                                <MenuItem
-                                                    key={index}
-                                                    value={team.id}
+                                                <Box
+                                                    sx={{
+                                                        display: 'flex',
+                                                        flexWrap: 'wrap',
+                                                        gap: 0.5,
+                                                    }}
                                                 >
-                                                    {team.celeb.first_name} &{' '}
-                                                    {team.pro.first_name}
-                                                </MenuItem>
+                                                    {selected.map((value) => {
+                                                        const team = teams.find(
+                                                            (team) =>
+                                                                team.id ===
+                                                                value
+                                                        );
+                                                        const name =
+                                                            team.celeb
+                                                                .first_name +
+                                                            ' & ' +
+                                                            team.pro.first_name;
+                                                        return (
+                                                            <Chip
+                                                                key={value}
+                                                                label={name}
+                                                            />
+                                                        );
+                                                    })}
+                                                </Box>
                                             );
-                                        })}
+                                        }}
+                                    >
+                                        <MenuItem disabled value="">
+                                            Any Team
+                                        </MenuItem>
+                                        {teams.map((team, index) => (
+                                            <MenuItem
+                                                key={index}
+                                                value={team.id}
+                                            >
+                                                {team.celeb.first_name} &{' '}
+                                                {team.pro.first_name}
+                                            </MenuItem>
+                                        ))}
                                     </Select>
                                 </FormControl>
                             </FormControl>
