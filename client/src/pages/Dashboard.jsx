@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 import BottomNavBar from '../components/BottomNavBar/BottomNavBar';
-import Birthdays from '../components/Dashboard/Birthdays/Birthdays';
+import BirthdaysCard from '../components/Dashboard/Birthdays/BirthdaysCard';
 import DailyDanceWrapper from '../components/Dashboard/DailyDances/DailyDanceWrapper';
 import Introduction from '../components/Dashboard/Intro/Introduction';
 import { MainContainer, Page } from '../components/shared/muiStyles';
@@ -13,11 +13,11 @@ function Dashboard() {
     return (
         <Page>
             <MainContainer>
-                <Typography variant="h3">Welcome</Typography>
+                <Typography variant="h3">dashboard</Typography>
 
                 <Introduction />
 
-                <Birthdays />
+                <BirthdaysCard />
 
                 <DailyDanceWrapper />
 

@@ -28,7 +28,8 @@ function DanceCard() {
     const dance = useSelector((state) => state.dances.dance);
     const [score, setScore] = useState(dance.user_score || 0);
     const [alreadyScored, setAlreadyScored] = useState(false);
-    const loading = useSelector((state) => state.loading.USERSCORE);
+    const scoreLoading = useSelector((state) => state.loading.USERSCORE);
+    const loading = useSelector((state) => state.loading.DANCEFIND);
 
     useEffect(() => {
         setAlreadyScored(dance.user_score ? true : false);
@@ -52,7 +53,9 @@ function DanceCard() {
             <Typography variant="h5">Today's Dance</Typography>
             <Divider />
 
-            {Object.keys(dance).length === 0 ? (
+            {loading ? (
+                <Progress />
+            ) : Object.keys(dance).length === 0 ? (
                 <Typography>No dance today</Typography>
             ) : (
                 <Box>
@@ -111,7 +114,7 @@ function DanceCard() {
                         <Typography variant="subtitle1">Your Score</Typography>
                     </Stack>
 
-                    {alreadyScored && !loading ? (
+                    {alreadyScored && !scoreLoading ? (
                         <Typography variant="body2" my={1}>
                             Score of {dance.user_score} has been recorded -
                             change score{' '}

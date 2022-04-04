@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import FanPreview from './Previews/FanPreview';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { searchUsers } from '../../actions/fans';
+import { searchUsers } from '../../actions/users';
 import { Divider, Grid, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { createLoadingSelector } from '../../api/selectors';

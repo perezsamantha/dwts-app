@@ -44,7 +44,7 @@ import {
     findTourById,
     findTourCastById,
 } from '../../actions/tours';
-import { deleteUser, fetchUsers, findUserById } from '../../actions/fans';
+import { deleteUser, fetchUsers, findUserById } from '../../actions/users';
 import DataGetter from '../shared/DataGetter';
 
 function Table(props) {

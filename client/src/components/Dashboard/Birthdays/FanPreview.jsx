@@ -4,7 +4,7 @@ function FanPreview(props) {
     const { fan } = props;
     return (
         <Stack alignItems="center">
-            <Avatar></Avatar>
+            <Avatar src={fan.cover_pic}></Avatar>
             <Typography variant="body1">{fan.nickname || '.'}</Typography>
             <Typography variant="body2">@{fan.username}</Typography>
         </Stack>

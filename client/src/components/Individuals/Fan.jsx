@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { findUserById } from '../../actions/fans';
+import { findUserById } from '../../actions/users';
 
 import { CardAvatar } from '../shared/regStyles.js';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
