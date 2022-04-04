@@ -3,8 +3,8 @@ import { fetchCelebs } from './celebs';
 import { fetchPros } from './pros';
 import { fetchTeams, fetchTeamsWithoutData } from './teams';
 import { fetchDances, fetchDancesWithoutData } from './dances';
-import { fetchDancers, fetchDancersWithoutData } from './dancers';
-import { fetchScores, fetchScoresWithoutData } from './scores';
+import { fetchDancersWithoutData } from './dancers';
+import { fetchScoresWithoutData } from './scores';
 import { fetchEpisodes, fetchEpisodesWithoutData } from './episodes';
 import { fetchJudges } from './judges';
 import {
@@ -12,7 +12,7 @@ import {
     fetchTours,
     fetchToursWithoutData,
 } from './tours';
-
+import { fetchUsersWithoutData } from './users';
 import * as actionType from '../constants/actionTypes';
 
 export const getTeamData = () => async (dispatch) => {
@@ -76,6 +76,25 @@ export const getAllData = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: actionType.FETCHALLDATA_FAILURE,
+            payload: error,
+            error: true,
+        });
+    }
+};
+
+export const getBirthdayData = () => async (dispatch) => {
+    dispatch({ type: actionType.FETCHBIRTHDAYDATA_REQUEST });
+
+    try {
+        Promise.resolve(dispatch(fetchCelebs()))
+            .then(() => dispatch(fetchPros()))
+            .then(() => dispatch(fetchUsersWithoutData()))
+            .then(() =>
+                dispatch({ type: actionType.FETCHBIRTHDAYDATA_SUCCESS })
+            );
+    } catch (error) {
+        dispatch({
+            type: actionType.FETCHBIRTHDAYDATA_FAILURE,
             payload: error,
             error: true,
         });

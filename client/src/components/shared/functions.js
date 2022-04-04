@@ -118,6 +118,9 @@ export const convertPlacement = (i) => {
 };
 
 export const convertHeight = (heightInInches) => {
+    if (!heightInInches) {
+        return '';
+    }
     let feet = Math.floor(heightInInches / 12);
     let inches = heightInInches % 12;
 

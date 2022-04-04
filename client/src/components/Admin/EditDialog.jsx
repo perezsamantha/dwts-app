@@ -22,7 +22,7 @@ import { updateDance } from '../../actions/dances';
 import { updateScore } from '../../actions/scores';
 import { updateDancer } from '../../actions/dancers';
 import { updateTour, updateTourCast, setTourPic } from '../../actions/tours';
-import { setUserPic, updateUser } from '../../actions/fans';
+import { setUserPic, updateUser } from '../../actions/users';
 import Progress from '../shared/Progress';
 
 function EditDialog(props) {

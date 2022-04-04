@@ -23,7 +23,7 @@ import { addDance } from '../../actions/dances';
 import { addScore } from '../../actions/scores';
 import { addDancer } from '../../actions/dancers';
 import { addTour, addTourCast } from '../../actions/tours';
-import { addUser } from '../../actions/fans';
+import { addUser } from '../../actions/users';
 
 function AddDialog(props) {
     const [open, setOpen] = useState(false);
