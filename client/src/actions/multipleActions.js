@@ -81,3 +81,21 @@ export const getAllData = () => async (dispatch) => {
         });
     }
 };
+
+export const getThrowbackData = () => async (dispatch) => {
+    dispatch({ type: actionType.FETCHTHROWBACKDATA_REQUEST });
+
+    try {
+        Promise.resolve(dispatch(fetchEpisodesWithoutData()))
+            .then(() => dispatch(fetchToursWithoutData()))
+            .then(() =>
+                dispatch({ type: actionType.FETCHTHROWBACKDATA_SUCCESS })
+            );
+    } catch (error) {
+        dispatch({
+            type: actionType.FETCHTHROWBACKDATA_FAILURE,
+            payload: error,
+            error: true,
+        });
+    }
+};

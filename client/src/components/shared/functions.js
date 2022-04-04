@@ -136,17 +136,14 @@ export const getTeam = (id, teams) => {
     return teams.find((team) => team.id === id);
 };
 
-// for dance previews in search
-export const getSeasonAndWeek = (dance, episodes) => {
+export const getSeasonAndWeek = (episode) => {
     let str = '';
 
-    episodes.find((episode) =>
-        episode.id === dance.episode_id && episode?.night
-            ? (str = `Season ${episode.season_id} \u2022 Week ${episode.week} \u2022 Night ${episode.night}`)
-            : episode.id === dance.episode_id
-            ? (str = `Season ${episode.season_id} \u2022 Week ${episode.week}`)
-            : ''
-    );
+    if (episode?.night) {
+        str = `Season ${episode.season_id} \u2022 Week ${episode.week} \u2022 Night ${episode.night}`;
+    } else {
+        str = `Season ${episode.season_id} \u2022 Week ${episode.week}`;
+    }
 
     return str;
 };
