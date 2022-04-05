@@ -5,7 +5,6 @@ import {
     Table,
     TableBody,
     TableCell,
-    TableHead,
     TableRow,
     Typography,
 } from '@mui/material';
@@ -22,28 +21,19 @@ function DailyDancesOverview() {
         dispatch(fetchDancesWithoutData());
     }, [dispatch]);
 
-    function GetDates(startDate, daysToAdd) {
+    const getDates = (startDate, daysToAdd) => {
         var arrDates = [];
 
         for (var i = 0; i <= daysToAdd; i++) {
             var currentDate = new Date();
             currentDate.setDate(startDate.getDate() + i);
             arrDates.push(currentDate);
-            // aryDates.push(
-            //     DayAsString(currentDate.getDay()) +
-            //         ', ' +
-            //         MonthAsString(currentDate.getMonth()) +
-            //         ' ' +
-            //         currentDate.getDate() +
-            //         ' ' +
-            //         currentDate.getFullYear()
-            // );
         }
 
         return arrDates;
-    }
+    };
 
-    function MonthAsString(monthIndex) {
+    const monthsAsString = (monthIndex) => {
         var month = new Array(12);
         month[0] = 'January';
         month[1] = 'February';
@@ -59,26 +49,13 @@ function DailyDancesOverview() {
         month[11] = 'December';
 
         return month[monthIndex];
-    }
-
-    function DayAsString(dayIndex) {
-        var weekdays = new Array(7);
-        weekdays[0] = 'Sunday';
-        weekdays[1] = 'Monday';
-        weekdays[2] = 'Tuesday';
-        weekdays[3] = 'Wednesday';
-        weekdays[4] = 'Thursday';
-        weekdays[5] = 'Friday';
-        weekdays[6] = 'Saturday';
-
-        return weekdays[dayIndex];
-    }
+    };
 
     const startDate = new Date();
     let endDate = new Date();
     endDate.setDate(endDate.getDate() + 7);
 
-    const arrDates = GetDates(startDate, 7);
+    const arrDates = getDates(startDate, 7);
 
     const withinWeek = (date) => {
         return (
@@ -111,10 +88,7 @@ function DailyDancesOverview() {
             });
 
             weekInAdvance.push({
-                date:
-                    // DayAsString(date.getDay()) +
-                    // ', ' +
-                    MonthAsString(date.getMonth()) + ' ' + date.getDate(),
+                date: monthsAsString(date.getMonth()) + ' ' + date.getDate(),
                 dance: dance ? getDanceName(dance) : 'No dance selected',
             });
         });
@@ -128,16 +102,6 @@ function DailyDancesOverview() {
             <Divider />
 
             <Table aria-label="daily-dance-table">
-                {/* <TableHead>
-                    <TableRow>
-                        <TableCell>
-                            <Typography variant="h5">Day</Typography>
-                        </TableCell>
-                        <TableCell>
-                            <Typography variant="h5">Dance</Typography>
-                        </TableCell>
-                    </TableRow>
-                </TableHead> */}
                 <TableBody>
                     {weekInAdvance.map((day, index) => (
                         <TableRow
@@ -148,7 +112,7 @@ function DailyDancesOverview() {
                                 },
                             }}
                         >
-                            <TableCell align="right" width="fit-content">
+                            <TableCell align="right" width={1}>
                                 <Typography noWrap>{day.date}</Typography>
                             </TableCell>
                             <TableCell sx={{ paddingLeft: 2 }}>

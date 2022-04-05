@@ -74,7 +74,6 @@ function AdminDashboard(props) {
         <Box>
             <List>
                 <ListItemButton
-                    //selected={selectedIndex === 0}
                     onClick={() => handleComponent(<AdminLanding key={0} />, 0)}
                 >
                     <ListItemText>Overview</ListItemText>
@@ -85,7 +84,6 @@ function AdminDashboard(props) {
                 {types.map((type, index) => (
                     <ListItemButton
                         key={index}
-                        //selected={selectedIndex === index + 1}
                         onClick={() =>
                             handleComponent(
                                 <Table key={index + 1} type={type} />,

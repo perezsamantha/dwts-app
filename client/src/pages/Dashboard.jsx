@@ -13,7 +13,9 @@ function Dashboard() {
     return (
         <Page>
             <MainContainer>
-                <Typography variant="h3">dashboard</Typography>
+                <Typography variant="h3" letterSpacing={-1}>
+                    Dashboard
+                </Typography>
 
                 <Introduction />
 
