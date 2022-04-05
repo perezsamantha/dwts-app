@@ -10,6 +10,12 @@ import * as actionType from '../../../constants/actionTypes';
 import { getBirthdayData } from '../../../actions/multipleActions';
 import Progress from '../../shared/Progress';
 import { Link } from 'react-router-dom';
+import {
+    StyledAccordion,
+    StyledAccordionDetails,
+    StyledAccordionSummary,
+} from '../../shared/muiStyles';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 function BirthdaysCard() {
     const today = new Date();
@@ -46,77 +52,89 @@ function BirthdaysCard() {
 
     return (
         <Card elevation={3}>
-            <Typography variant="h5">Today's Birthdays</Typography>
-            <Divider />
+            <StyledAccordion elevation={0} defaultExpanded>
+                <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography variant="h5">Today's Birthdays</Typography>
+                </StyledAccordionSummary>
+                <StyledAccordionDetails sx={{ padding: 0 }}>
+                    <Divider />
 
-            {loading ? (
-                <Progress />
-            ) : noBirthdays ? (
-                <Typography>No birthdays today</Typography>
-            ) : (
-                <>
-                    {proBirthdays.length !== 0 && (
+                    {loading ? (
+                        <Progress />
+                    ) : noBirthdays ? (
+                        <Typography>No birthdays today</Typography>
+                    ) : (
                         <>
-                            <Typography variant="h6" my={1}>
-                                Pros
-                            </Typography>
-                            <Grid container spacing={2}>
-                                {proBirthdays.map((pro, index) => (
-                                    <Grid item key={index}>
-                                        <Link
-                                            to={{ pathname: `/pros/${pro.id}` }}
-                                            style={{
-                                                textDecoration: 'inherit',
-                                                color: 'inherit',
-                                            }}
-                                        >
-                                            <ProPreview pro={pro} />
-                                        </Link>
+                            {proBirthdays.length !== 0 && (
+                                <>
+                                    <Typography variant="h6" my={1}>
+                                        Pros
+                                    </Typography>
+                                    <Grid container spacing={2}>
+                                        {proBirthdays.map((pro, index) => (
+                                            <Grid item key={index}>
+                                                <Link
+                                                    to={{
+                                                        pathname: `/pros/${pro.id}`,
+                                                    }}
+                                                    style={{
+                                                        textDecoration:
+                                                            'inherit',
+                                                        color: 'inherit',
+                                                    }}
+                                                >
+                                                    <ProPreview pro={pro} />
+                                                </Link>
+                                            </Grid>
+                                        ))}
                                     </Grid>
-                                ))}
-                            </Grid>
+                                </>
+                            )}
+
+                            {celebBirthdays.length !== 0 && (
+                                <>
+                                    <Typography variant="h6" my={1}>
+                                        Celebs
+                                    </Typography>
+                                    <Grid container spacing={2}>
+                                        {celebBirthdays.map((celeb, index) => (
+                                            <Grid item key={index}>
+                                                <CelebPreview celeb={celeb} />
+                                            </Grid>
+                                        ))}
+                                    </Grid>
+                                </>
+                            )}
+
+                            {fanBirthdays.length !== 0 && (
+                                <>
+                                    <Typography variant="h6" my={1}>
+                                        Fans
+                                    </Typography>
+                                    <Grid container spacing={2}>
+                                        {fanBirthdays.map((fan, index) => (
+                                            <Grid item key={index}>
+                                                <Link
+                                                    to={{
+                                                        pathname: `/fans/${fan.id}`,
+                                                    }}
+                                                    style={{
+                                                        textDecoration:
+                                                            'inherit',
+                                                        color: 'inherit',
+                                                    }}
+                                                >
+                                                    <FanPreview fan={fan} />
+                                                </Link>
+                                            </Grid>
+                                        ))}
+                                    </Grid>
+                                </>
+                            )}
                         </>
                     )}
-
-                    {celebBirthdays.length !== 0 && (
-                        <>
-                            <Typography variant="h6" my={1}>
-                                Celebs
-                            </Typography>
-                            <Grid container spacing={2}>
-                                {celebBirthdays.map((celeb, index) => (
-                                    <Grid item key={index}>
-                                        <CelebPreview celeb={celeb} />
-                                    </Grid>
-                                ))}
-                            </Grid>
-                        </>
-                    )}
-
-                    {fanBirthdays.length !== 0 && (
-                        <>
-                            <Typography variant="h6" my={1}>
-                                Fans
-                            </Typography>
-                            <Grid container spacing={2}>
-                                {fanBirthdays.map((fan, index) => (
-                                    <Grid item key={index}>
-                                        <Link
-                                            to={{ pathname: `/fans/${fan.id}` }}
-                                            style={{
-                                                textDecoration: 'inherit',
-                                                color: 'inherit',
-                                            }}
-                                        >
-                                            <FanPreview fan={fan} />
-                                        </Link>
-                                    </Grid>
-                                ))}
-                            </Grid>
-                        </>
-                    )}
-                </>
-            )}
+                </StyledAccordionDetails>
+            </StyledAccordion>
         </Card>
     );
 }

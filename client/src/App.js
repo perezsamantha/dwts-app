@@ -23,6 +23,7 @@ import Verification from './pages/Landing/Verification';
 import 'swiper/css/bundle';
 import { fetchAuthData, logout } from './actions/auth';
 import Activity from './pages/Activity';
+import Progress from './components/shared/Progress';
 
 function App() {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark');
@@ -36,6 +37,8 @@ function App() {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const role = useSelector((state) => state.auth.authData?.user_role);
+    const fetching = useSelector((state) => state.auth.fetching);
     const authError = useSelector((state) => state.errors.AUTHFETCH);
 
     useEffect(() => {
@@ -54,16 +57,18 @@ function App() {
         dispatch(fetchAuthData());
 
         if (authError) {
-            // dispatch({ type: actionType.LOGOUT });
-            // navigate('/');
             dispatch(logout(navigate));
         }
     }, [dispatch, navigate, prefersDarkMode, authError]);
 
     const PrivateRoute = () => {
-        const role = useSelector((state) => state.auth?.authData?.user_role);
-
-        return role === 'admin' ? <Outlet /> : <Navigate to="/" />;
+        return fetching ? (
+            <Progress />
+        ) : role === 'admin' ? (
+            <Outlet />
+        ) : (
+            <Navigate to="/" />
+        );
     };
 
     const handleDarkMode = (toggleDark) => {
@@ -78,6 +83,7 @@ function App() {
         typography: {
             fontFamily: [
                 'Urbanist',
+                'Roboto',
                 'Helvetica Neue',
                 'Arial',
                 'sans-serif',

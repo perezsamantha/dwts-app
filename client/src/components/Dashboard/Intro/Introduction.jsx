@@ -14,7 +14,7 @@ function Introduction() {
         <Card elevation={3}>
             <StyledAccordion elevation={0}>
                 <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant="h5">app overview</Typography>
+                    <Typography variant="h5">App Overview</Typography>
                 </StyledAccordionSummary>
                 <StyledAccordionDetails sx={{ padding: 0 }}>
                     <Divider />
@@ -22,7 +22,7 @@ function Introduction() {
                     <Stack spacing={0.5}>
                         <Stack direction="row" spacing={1} alignItems="center">
                             <BsStars />
-                            <Typography variant="h6">dashboard</Typography>
+                            <Typography variant="h6">Dashboard</Typography>
                         </Stack>
                         <Stack direction="row" spacing={1}>
                             <Box>
@@ -35,17 +35,17 @@ function Introduction() {
                             <Box>
                                 <Stack spacing={0.8}>
                                     <Typography>
-                                        today's birthdays among all professional
+                                        Today's birthdays among all professional
                                         dancers, celebrities, and fans
                                     </Typography>
                                     <Typography>
-                                        one dance from a previous season is
+                                        One dance from a previous season is
                                         generated daily - submit your personal
                                         score and check back tomorrow to see how
                                         other fans scored in comparison
                                     </Typography>
                                     <Typography>
-                                        reminisce on today's throwbacks
+                                        Reminisce on today's throwbacks
                                     </Typography>
                                 </Stack>
                             </Box>
@@ -55,7 +55,7 @@ function Introduction() {
                     <Stack spacing={0.5}>
                         <Stack direction="row" spacing={1} alignItems="center">
                             <FiBarChart2 />
-                            <Typography variant="h6">overview</Typography>
+                            <Typography variant="h6">Overview</Typography>
                         </Stack>
                         <Stack direction="row" spacing={1}>
                             <Box>
@@ -68,10 +68,10 @@ function Introduction() {
                             <Box>
                                 <Stack spacing={0.8}>
                                     <Typography>
-                                        all seasons and tours at a glance
+                                        All seasons and tours at a glance
                                     </Typography>
                                     <Typography>
-                                        statistics about pros, teams, and scores
+                                        Statistics about pros, teams, and scores
                                     </Typography>
                                 </Stack>
                             </Box>
@@ -81,7 +81,7 @@ function Introduction() {
                     <Stack spacing={0.5}>
                         <Stack direction="row" spacing={1} alignItems="center">
                             <FiSearch />
-                            <Typography variant="h6">search</Typography>
+                            <Typography variant="h6">Search</Typography>
                         </Stack>
                         <Stack direction="row" spacing={1}>
                             <Box>
@@ -94,14 +94,14 @@ function Introduction() {
                             <Box>
                                 <Stack spacing={0.8}>
                                     <Typography>
-                                        database of dances, teams, pros, and
+                                        Database of dances, teams, pros, and
                                         fans
                                     </Typography>
                                     <Typography>
-                                        filter / sort for more precise results
+                                        Filter / sort for more precise results
                                     </Typography>
                                     <Typography>
-                                        click each to view more information and
+                                        Click each to view more information and
                                         like your favorites
                                     </Typography>
                                 </Stack>
