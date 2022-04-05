@@ -127,17 +127,17 @@ export const searchTeams = (input) => async (dispatch) => {
     try {
         const { data } = await api.searchTeams(input);
 
-        Promise.resolve(dispatch(getTeamData())).then(() =>
-            dispatch({
-                type: actionType.TEAMSEARCH_SUCCESS,
-                payload: data,
-            })
-        );
+        // Promise.resolve(dispatch(getTeamData())).then(() =>
+        //     dispatch({
+        //         type: actionType.TEAMSEARCH_SUCCESS,
+        //         payload: data,
+        //     })
+        // );
 
-        // dispatch({
-        //     type: actionType.TEAMSEARCH_SUCCESS,
-        //     payload: data,
-        // });
+        dispatch({
+            type: actionType.TEAMSEARCH_SUCCESS,
+            payload: data,
+        });
     } catch (error) {
         dispatch({
             type: actionType.TEAMSEARCH_FAILURE,

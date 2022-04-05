@@ -4,7 +4,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { findDanceById } from '../../actions/dances';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 
 import { likeDance } from '../../actions/dances';
 import * as tableType from '../../constants/tableTypes';
@@ -13,11 +13,9 @@ import { LikesContainer, CardAvatar } from '../shared/regStyles.js';
 
 import {
     convertPlacement,
-    filterScoresByDance,
-    getDancersByDance,
-    getFullJudgeName,
-    getScoreByDance,
+    getFullName,
     getSeasonAndWeek,
+    getTotalScore,
 } from '../shared/functions';
 import ExtraPicUpload from '../shared/ExtraPicUpload';
 
@@ -40,32 +38,12 @@ function Dance() {
 
     const ro = convertPlacement(dance.running_order);
 
-    const loadingSelector = createLoadingSelector([
-        actionType.DANCEFIND,
-        actionType.FETCHALLDATA,
-    ]);
+    const loadingSelector = createLoadingSelector([actionType.DANCEFIND]);
     const loading = useSelector((state) => loadingSelector(state));
-
-    const scores = useSelector((state) => state.scores.scores);
-    const episodes = useSelector((state) => state.episodes.episodes);
-    const judges = useSelector((state) => state.judges.judges);
-    const dancers = useSelector((state) => state.dancers.dancers);
 
     useEffect(() => {
         dispatch(findDanceById(id));
     }, [dispatch, id]);
-
-    let seasonAndWeek = '';
-    let totalScore = 0;
-    let filteredScores,
-        filteredDancers = [];
-
-    if (!loading) {
-        seasonAndWeek = getSeasonAndWeek(dance, episodes);
-        filteredScores = filterScoresByDance(dance, scores);
-        totalScore = getScoreByDance(dance, filteredScores);
-        filteredDancers = getDancersByDance(dance, dancers);
-    }
 
     return loading || Number(dance?.id) !== Number(id) ? (
         <Progress />
@@ -88,8 +66,12 @@ function Dance() {
 
             <Stack mb={1} spacing={1}>
                 <Typography variant="h4">{dance.style}</Typography>
-                <Typography variant="h5">{seasonAndWeek}</Typography>
-                <Typography variant="h5">{totalScore}</Typography>
+                <Typography variant="h5">
+                    {getSeasonAndWeek(dance.episode)}
+                </Typography>
+                <Typography variant="h5">
+                    {getTotalScore(dance.scores)}
+                </Typography>
             </Stack>
 
             <Stack my={1}>
@@ -109,9 +91,9 @@ function Dance() {
                     <Typography my={1}>Running Order - {ro}</Typography>
                 )}
 
-                {dance?.theme && <Typography>{dance.theme} Week</Typography>}
-
-                {/* maybe getTheme ? */}
+                {dance?.episode?.theme && (
+                    <Typography>{dance.episode.theme} Night</Typography>
+                )}
             </Stack>
 
             <Stack my={1} alignItems="center">
@@ -121,14 +103,40 @@ function Dance() {
                 </Typography>
 
                 <Grid container justifyContent="center" spacing={1}>
-                    {filteredDancers.map((dancer, index) =>
+                    {dance?.dancers.map((dancer, index) =>
                         dancer.team_id ? (
                             <Grid key={index} item>
-                                <DancerPreview dancer={dancer} type={'team'} />
+                                <Link
+                                    to={{
+                                        pathname: `/teams/${dancer.team_id}`,
+                                    }}
+                                    style={{
+                                        textDecoration: 'inherit',
+                                        color: 'inherit',
+                                    }}
+                                >
+                                    <DancerPreview
+                                        dancer={dancer}
+                                        type={'team'}
+                                    />
+                                </Link>
                             </Grid>
                         ) : dancer.pro_id ? (
                             <Grid key={index} item>
-                                <DancerPreview dancer={dancer} type={'pro'} />
+                                <Link
+                                    to={{
+                                        pathname: `/pros/${dancer.pro_id}`,
+                                    }}
+                                    style={{
+                                        textDecoration: 'inherit',
+                                        color: 'inherit',
+                                    }}
+                                >
+                                    <DancerPreview
+                                        dancer={dancer}
+                                        type={'pro'}
+                                    />
+                                </Link>
                             </Grid>
                         ) : dancer.celeb_id ? (
                             <Grid key={index} item>
@@ -147,15 +155,14 @@ function Dance() {
                     <Divider />
                 </Typography>
 
-                {filteredScores.length === 0 ? (
-                    <Typography>No scores yet for this dance 💔</Typography>
+                {dance?.scores.length === 0 ? (
+                    <Typography>No scores yet for this dance</Typography>
                 ) : (
                     <>
-                        {filteredScores.map((score, index) => (
+                        {dance.scores.map((score, index) => (
                             <Box key={index}>
                                 <Typography>
-                                    {getFullJudgeName(score.judge_id, judges)} -{' '}
-                                    {score.value}
+                                    {getFullName(score.judge)} - {score.value}
                                 </Typography>
                                 {/* * or similar for guest judge */}
                             </Box>
@@ -173,7 +180,7 @@ function Dance() {
                 {dance?.link ? (
                     <DanceLink link={dance.link} />
                 ) : (
-                    <Typography>No link yet for this dance 💔</Typography>
+                    <Typography>No link yet for this dance</Typography>
                 )}
             </Stack>
 
@@ -198,7 +205,7 @@ function Dance() {
                     <PicturesGrid pictures={dance.pictures} />
                 ) : (
                     <Typography mb={1}>
-                        No pictures yet for this dance 💔
+                        No pictures yet for this dance
                     </Typography>
                 )}
 

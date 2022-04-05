@@ -1,13 +1,10 @@
 import { Box, Stack, Typography } from '@mui/material';
 import React from 'react';
-import { convertPlacement } from '../../shared/functions.js';
+import { convertPlacement, getAverageScore } from '../../shared/functions.js';
 
 function TeamPreview(props) {
     const { team, sortType } = props;
     const placement = convertPlacement(team.placement);
-
-    // notes:
-    // average score?
 
     return (
         <Stack>
@@ -21,14 +18,34 @@ function TeamPreview(props) {
             </Typography>
 
             {sortType === 'season' && (
-                <Typography variant="caption" noWrap>
-                    {placement} Place &#8226; Avg Score -
-                </Typography>
+                <Stack>
+                    <Typography variant="body2" noWrap>
+                        {placement} Place
+                    </Typography>
+                    <Typography variant="caption" noWrap>
+                        {getAverageScore(team.dances)} Avg Score{' '}
+                        {team.likes.length === 0
+                            ? ''
+                            : team.likes.length === 1
+                            ? `\u2022 1 like`
+                            : `\u2022 ${team.likes.length} likes`}
+                    </Typography>
+                </Stack>
             )}
             {sortType === 'placement' && (
-                <Typography variant="caption" noWrap>
-                    Season {team.season_id} &#8226; Avg Score -
-                </Typography>
+                <Stack>
+                    <Typography variant="body2" noWrap>
+                        Season {team.season_id}
+                    </Typography>
+                    <Typography variant="caption" noWrap>
+                        {getAverageScore(team.dances)} Avg Score{' '}
+                        {team.likes.length === 0
+                            ? ''
+                            : team.likes.length === 1
+                            ? `\u2022 1 like`
+                            : `\u2022 ${team.likes.length} likes`}
+                    </Typography>
+                </Stack>
             )}
         </Stack>
     );
