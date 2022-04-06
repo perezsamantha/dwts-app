@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { searchTeams } from '../../actions/teams';
-import { Divider, Stack, Typography } from '@mui/material';
+import { Divider, Fade, Stack, Typography } from '@mui/material';
 import { createLoadingSelector } from '../../api/selectors';
 import * as actionType from '../../constants/actionTypes';
 import { filterTeams } from './Filters/filtered';
@@ -15,6 +15,7 @@ function Teams(props) {
     const dispatch = useDispatch();
     const teams = useSelector((state) => state.teams.teams);
     const filters = useSelector((state) => state.teams.filters);
+    const [slide, setSlide] = useState(false);
 
     const loadingSelector = createLoadingSelector([
         actionType.TEAMSEARCH,
@@ -29,6 +30,7 @@ function Teams(props) {
     useEffect(() => {
         const input = { search: search };
         dispatch(searchTeams(input));
+        setSlide(true);
     }, [dispatch, search]);
 
     let filteredTeams = [];
@@ -106,29 +108,31 @@ function Teams(props) {
     return loading ? (
         <Progress />
     ) : (
-        <ResultsContainer>
-            <Stack>
-                <Typography>{filteredTeams.length} Teams</Typography>
-                <Divider />
-            </Stack>
+        <Fade in={slide} style={{ transitionDuration: '0.5s' }}>
+            <ResultsContainer>
+                <Stack>
+                    <Typography>{filteredTeams.length} Teams</Typography>
+                    <Divider />
+                </Stack>
 
-            {arr.map((item, index) => (
-                <ContentContainer key={index}>
-                    <Typography variant="h5" my={1}>
-                        {sortType === 'season'
-                            ? `Season ${item}`
-                            : sortType === 'placement'
-                            ? `${convertPlacement(item)} Place`
-                            : ''}
-                    </Typography>
-                    <TeamsSlider
-                        filteredTeams={filteredTeams}
-                        item={item}
-                        sortType={sortType}
-                    />
-                </ContentContainer>
-            ))}
-        </ResultsContainer>
+                {arr.map((item, index) => (
+                    <ContentContainer key={index}>
+                        <Typography variant="h5" my={1}>
+                            {sortType === 'season'
+                                ? `Season ${item}`
+                                : sortType === 'placement'
+                                ? `${convertPlacement(item)} Place`
+                                : ''}
+                        </Typography>
+                        <TeamsSlider
+                            filteredTeams={filteredTeams}
+                            item={item}
+                            sortType={sortType}
+                        />
+                    </ContentContainer>
+                ))}
+            </ResultsContainer>
+        </Fade>
     );
 }
 

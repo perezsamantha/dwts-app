@@ -7,46 +7,46 @@ import 'swiper/css/pagination';
 import { Box } from '@mui/material';
 import ProPreview from './ProPreview';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 function ProFavorites(props) {
     const { pros } = props;
 
     return (
-        // <Box my={2}>
         <Swiper
             slidesPerView={3}
             spaceBetween={10}
-            // pagination={{
-            //     clickable: true,
-            // }}
             navigation={true}
             breakpoints={{
-                300: {
+                0: {
                     slidesPerView: 2.5,
                     spaceBetween: 10,
                 },
-                350: {
+                450: {
                     slidesPerView: 3,
                     spaceBetween: 10,
                 },
-                640: {
-                    slidesPerView: 5,
+                600: {
+                    slidesPerView: 4,
                     spaceBetween: 10,
                 },
-                768: {
+                750: {
+                    slidesPerView: 5,
+                    spaceBetween: 15,
+                },
+                900: {
                     slidesPerView: 6,
                     spaceBetween: 15,
                 },
-                880: {
-                    slidesPerView: 7,
-                    spaceBetween: 15,
-                },
-                1024: {
+                1200: {
                     slidesPerView: 8,
                     spaceBetween: 15,
                 },
+                1536: {
+                    slidesPerView: 10,
+                    spaceBetween: 15,
+                },
             }}
-            // modules={[Pagination]}
             modules={[Navigation]}
             className="mySwiper"
         >
@@ -60,12 +60,19 @@ function ProFavorites(props) {
                             color: 'inherit',
                         }}
                     >
-                        <ProPreview pro={pro} />
+                        <Box
+                            component={motion.div}
+                            whileHover={{
+                                scale: 1.05,
+                                transition: { duration: 0.3 },
+                            }}
+                        >
+                            <ProPreview pro={pro} />
+                        </Box>
                     </Link>
                 </SwiperSlide>
             ))}
         </Swiper>
-        // </Box>
     );
 }
 

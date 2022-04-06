@@ -289,7 +289,59 @@ export const fetchAuthData = async (req, res) => {
                 SELECT dl.user_id,
                     COALESCE(JSON_AGG(ROW_TO_JSON(d)) FILTER (WHERE d.id IS NOT NULL), '[]') AS dances
                 FROM dance_likes dl
-                LEFT JOIN dances d
+                LEFT JOIN (
+                    SELECT d.*,
+                        (
+                            SELECT ROW_TO_JSON(e.*)
+                            FROM episodes e
+                            WHERE e.id = d.episode_id
+                        ) AS episode,
+                        COALESCE((ARRAY_AGG(s.scores))[1], '[]') AS scores,
+                        COALESCE(JSON_AGG(dc) FILTER (WHERE dc.id IS NOT NULL), '[]') AS dancers
+                    FROM dances d
+                    LEFT JOIN (
+                        SELECT dc2.*, 
+                            ROW_TO_JSON(t) AS team, 
+                            ROW_TO_JSON(p) AS pro, 
+                            ROW_TO_JSON(c) AS celeb 
+                        FROM dancers dc2 
+                        LEFT JOIN (
+                            SELECT t2.*, 
+                                ROW_TO_JSON(p) AS pro, 
+                                ROW_TO_JSON(c) AS celeb 
+                            FROM teams t2 
+                            LEFT JOIN pros p 
+                            ON t2.pro_id = p.id 
+                            LEFT JOIN celebs c 
+                            ON t2.celeb_id = c.id 
+                            GROUP BY t2.id, p.id, c.id
+                        ) t 
+                        ON t.id = dc2.team_id 
+                        LEFT JOIN pros p 
+                        ON p.id = dc2.pro_id 
+                        LEFT JOIN celebs c 
+                        ON c.id = dc2.celeb_id 
+                        GROUP BY dc2.id, dc2.dance_id, t.*, p.id, c.id
+                    ) dc
+                    ON d.id = dc.dance_id
+                    LEFT JOIN (
+                        SELECT s1.dance_id,
+                            COALESCE(JSON_AGG(ROW_TO_JSON(s2)) FILTER (WHERE s2.id IS NOT NULL), '[]') AS scores
+                        FROM scores s1
+                        LEFT JOIN (
+                            SELECT s.*,
+                                ROW_TO_JSON(j) AS judge
+                            FROM scores s
+                            LEFT JOIN judges j
+                            ON s.judge_id = j.id
+                            GROUP BY s.id, j.id 
+                        ) s2
+                        ON s1.id = s2.id
+                        GROUP BY s1.dance_id
+                    ) s
+                    ON d.id = s.dance_id
+                    GROUP BY d.id
+                ) d
                 ON dl.dance_id = d.id
                 WHERE dl.user_id = $1
                 GROUP BY dl.user_id
@@ -484,7 +536,59 @@ export const findUserById = async (req, res) => {
                 SELECT dl.user_id,
                     COALESCE(JSON_AGG(ROW_TO_JSON(d)) FILTER (WHERE d.id IS NOT NULL), '[]') AS dances
                 FROM dance_likes dl
-                LEFT JOIN dances d
+                LEFT JOIN (
+                    SELECT d.*,
+                        (
+                            SELECT ROW_TO_JSON(e.*)
+                            FROM episodes e
+                            WHERE e.id = d.episode_id
+                        ) AS episode,
+                        COALESCE((ARRAY_AGG(s.scores))[1], '[]') AS scores,
+                        COALESCE(JSON_AGG(dc) FILTER (WHERE dc.id IS NOT NULL), '[]') AS dancers
+                    FROM dances d
+                    LEFT JOIN (
+                        SELECT dc2.*, 
+                            ROW_TO_JSON(t) AS team, 
+                            ROW_TO_JSON(p) AS pro, 
+                            ROW_TO_JSON(c) AS celeb 
+                        FROM dancers dc2 
+                        LEFT JOIN (
+                            SELECT t2.*, 
+                                ROW_TO_JSON(p) AS pro, 
+                                ROW_TO_JSON(c) AS celeb 
+                            FROM teams t2 
+                            LEFT JOIN pros p 
+                            ON t2.pro_id = p.id 
+                            LEFT JOIN celebs c 
+                            ON t2.celeb_id = c.id 
+                            GROUP BY t2.id, p.id, c.id
+                        ) t 
+                        ON t.id = dc2.team_id 
+                        LEFT JOIN pros p 
+                        ON p.id = dc2.pro_id 
+                        LEFT JOIN celebs c 
+                        ON c.id = dc2.celeb_id 
+                        GROUP BY dc2.id, dc2.dance_id, t.*, p.id, c.id
+                    ) dc
+                    ON d.id = dc.dance_id
+                    LEFT JOIN (
+                        SELECT s1.dance_id,
+                            COALESCE(JSON_AGG(ROW_TO_JSON(s2)) FILTER (WHERE s2.id IS NOT NULL), '[]') AS scores
+                        FROM scores s1
+                        LEFT JOIN (
+                            SELECT s.*,
+                                ROW_TO_JSON(j) AS judge
+                            FROM scores s
+                            LEFT JOIN judges j
+                            ON s.judge_id = j.id
+                            GROUP BY s.id, j.id 
+                        ) s2
+                        ON s1.id = s2.id
+                        GROUP BY s1.dance_id
+                    ) s
+                    ON d.id = s.dance_id
+                    GROUP BY d.id
+                ) d
                 ON dl.dance_id = d.id
                 WHERE dl.user_id = $1
                 GROUP BY dl.user_id

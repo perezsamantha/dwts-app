@@ -5,7 +5,7 @@ import Teams from '../components/Search/Teams';
 import Fans from '../components/Search/Fans';
 import Pros from '../components/Search/Pros';
 
-import { Box, InputAdornment, Tab, Tabs, Typography } from '@mui/material';
+import { InputAdornment, Tab, Tabs, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import {
@@ -20,7 +20,6 @@ import DanceFilters from '../components/Search/Filters/DanceFilters';
 import TeamFilters from '../components/Search/Filters/TeamFilters';
 import ProFilters from '../components/Search/Filters/ProFilters';
 import FanFilters from '../components/Search/Filters/FanFilters';
-import { AnimatePresence, motion } from 'framer-motion';
 
 function Search(props) {
     const [type, setType] = useState(props.type);
@@ -79,7 +78,6 @@ function Search(props) {
     };
 
     const SearchComponent = () => {
-        // TODO: recap of filters above component, maybe number of results too
         switch (type) {
             case searchType.DANCES:
                 return <Dances key={1} search={searchVal} />;

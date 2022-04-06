@@ -6,6 +6,8 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Link } from 'react-router-dom';
 import TeamPreview from './Previews/TeamPreview';
+import { Box } from '@mui/material';
+import { motion } from 'framer-motion';
 
 function TeamsSlider(props) {
     const { filteredTeams, item, sortType } = props;
@@ -64,11 +66,19 @@ function TeamsSlider(props) {
                                 color: 'inherit',
                             }}
                         >
-                            <TeamPreview
-                                key={index}
-                                team={team}
-                                sortType={sortType}
-                            />
+                            <Box
+                                component={motion.div}
+                                whileHover={{
+                                    scale: 1.05,
+                                    transition: { duration: 0.3 },
+                                }}
+                            >
+                                <TeamPreview
+                                    key={index}
+                                    team={team}
+                                    sortType={sortType}
+                                />
+                            </Box>
                         </Link>
                     </SwiperSlide>
                 ))}

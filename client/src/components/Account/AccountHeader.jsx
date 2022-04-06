@@ -94,7 +94,7 @@ function AccountHeader(props) {
                             />
                         </Stack>
                     ) : (
-                        <Typography>No linked socials 💔</Typography>
+                        <Typography>No linked socials</Typography>
                     )}
                 </Stack>
 

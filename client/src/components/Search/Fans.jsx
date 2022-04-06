@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import FanPreview from './Previews/FanPreview';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { searchUsers } from '../../actions/users';
-import { Divider, Grid, Stack, Typography } from '@mui/material';
+import { Box, Divider, Fade, Grid, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { createLoadingSelector } from '../../api/selectors';
 
@@ -11,12 +11,14 @@ import * as actionType from '../../constants/actionTypes';
 import { ResultsContainer } from '../shared/muiStyles';
 import Progress from '../shared/Progress';
 import { filterFans } from './Filters/filtered';
+import { motion } from 'framer-motion';
 
 function Fans(props) {
     const { search } = props;
     const dispatch = useDispatch();
     const fans = useSelector((state) => state.users.users);
     const filters = useSelector((state) => state.users.filters);
+    const [slide, setSlide] = useState(false);
 
     const loadingSelector = createLoadingSelector([actionType.USERSEARCH]);
     const loading = useSelector((state) => loadingSelector(state));
@@ -24,6 +26,7 @@ function Fans(props) {
     useEffect(() => {
         const input = { search: search };
         dispatch(searchUsers(input));
+        setSlide(true);
     }, [dispatch, search]);
 
     let filteredFans = [];
@@ -35,32 +38,48 @@ function Fans(props) {
     return loading || !Array.isArray(fans) ? (
         <Progress />
     ) : (
-        <ResultsContainer>
-            <Stack mb={1}>
-                <Typography>{filteredFans.length} Fans</Typography>
-                <Divider />
-            </Stack>
+        <Fade in={slide} style={{ transitionDuration: '0.5s' }}>
+            <ResultsContainer>
+                <Stack mb={1}>
+                    <Typography>{filteredFans.length} Fans</Typography>
+                    <Divider />
+                </Stack>
 
-            <Grid container justifyContent="center" spacing={1}>
-                {filteredFans.map((fan, index) => (
-                    <Grid
-                        item
-                        key={index}
-                        width={{ xs: 1, sm: '30%', lg: '20%' }}
-                    >
-                        <Link
-                            to={{ pathname: `/fans/${fan.id}` }}
-                            style={{
-                                textDecoration: 'inherit',
-                                color: 'inherit',
+                <Grid container justifyContent="center" spacing={1}>
+                    {filteredFans.map((fan, index) => (
+                        <Grid
+                            item
+                            key={index}
+                            width={{
+                                xs: 1,
+                                sm: 1 / 2,
+                                md: 1 / 3,
+                                lg: 1 / 4,
+                                xl: 1 / 5,
                             }}
                         >
-                            <FanPreview fan={fan} />
-                        </Link>
-                    </Grid>
-                ))}
-            </Grid>
-        </ResultsContainer>
+                            <Link
+                                to={{ pathname: `/fans/${fan.id}` }}
+                                style={{
+                                    textDecoration: 'inherit',
+                                    color: 'inherit',
+                                }}
+                            >
+                                <Box
+                                    component={motion.div}
+                                    whileHover={{
+                                        scale: 1.025,
+                                        transition: { duration: 0.3 },
+                                    }}
+                                >
+                                    <FanPreview fan={fan} />
+                                </Box>
+                            </Link>
+                        </Grid>
+                    ))}
+                </Grid>
+            </ResultsContainer>
+        </Fade>
     );
 }
 

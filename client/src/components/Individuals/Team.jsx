@@ -33,6 +33,7 @@ import { IndividualsContainer } from '../shared/muiStyles';
 import Progress from '../shared/Progress';
 import Likes from '../shared/Likes';
 import PicturesGrid from './Supporting/PicturesGrid';
+import { motion } from 'framer-motion';
 
 function Team() {
     const navigate = useNavigate();
@@ -58,7 +59,19 @@ function Team() {
     ) : (
         <IndividualsContainer>
             <Stack direction="row">
-                <Button onClick={() => navigate(-1)}>
+                <Button
+                    sx={{
+                        '&.MuiButtonBase-root:hover': {
+                            bgcolor: 'transparent',
+                        },
+                    }}
+                    component={motion.div}
+                    whileHover={{
+                        scale: 1.2,
+                        transition: { duration: 0.3 },
+                    }}
+                    onClick={() => navigate(-1)}
+                >
                     <ArrowBackIosIcon />
                 </Button>
                 <CardAvatar
@@ -66,7 +79,20 @@ function Team() {
                 />
                 <LikesContainer>
                     <Button
-                        disableRipple
+                        sx={{
+                            '&.MuiButtonBase-root:hover': {
+                                bgcolor: 'transparent',
+                            },
+                        }}
+                        component={motion.div}
+                        whileHover={{
+                            scale: 1.05,
+                            transition: { duration: 0.3 },
+                        }}
+                        whileTap={{
+                            scale: 1.5,
+                            transition: { duration: 0.3 },
+                        }}
                         onClick={() => dispatch(likeTeam(id))}
                     >
                         <Likes user={user} likes={likes} />
