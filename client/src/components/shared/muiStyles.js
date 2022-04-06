@@ -27,6 +27,7 @@ export const Page = styled(Box)(() => ({
 export const MainContainer = styled(Box)`
     //height: 100vh;
     padding: 1rem;
+    //margin: 1rem;
     /* display: flex;
     flex-direction: column;
     align-items: center; */

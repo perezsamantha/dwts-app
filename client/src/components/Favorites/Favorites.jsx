@@ -22,28 +22,34 @@ function FavoritesWrapper(props) {
             likes?.dances.length !== 0 ? (
                 <>
                     {likes.pros.length !== 0 && (
-                        <>
-                            <Typography variant="h6">Pros</Typography>
+                        <Box mb={1}>
+                            <Typography variant="h6" align="left">
+                                Pros
+                            </Typography>
                             <ProFavorites pros={likes.pros} />
-                        </>
+                        </Box>
                     )}
 
                     {likes.teams.length !== 0 && (
-                        <>
-                            <Typography variant="h6">Teams</Typography>
+                        <Box mb={1}>
+                            <Typography variant="h6" align="left">
+                                Teams
+                            </Typography>
                             <TeamFavorites teams={likes.teams} />
-                        </>
+                        </Box>
                     )}
 
                     {likes.dances.length !== 0 && (
-                        <>
-                            <Typography variant="h6">Dances</Typography>
+                        <Box mb={1}>
+                            <Typography variant="h6" align="left" mb={1}>
+                                Dances
+                            </Typography>
                             <DanceFavorites dances={likes.dances} />
-                        </>
+                        </Box>
                     )}
                 </>
             ) : (
-                <Typography>No favorites yet 💔</Typography>
+                <Typography>No favorites yet</Typography>
             )}
         </Box>
     );

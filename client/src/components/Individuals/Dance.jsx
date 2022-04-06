@@ -28,6 +28,7 @@ import Likes from '../shared/Likes';
 import DanceLink from '../shared/DanceLink';
 import PicturesGrid from './Supporting/PicturesGrid';
 import DancerPreview from './Supporting/DancerPreview';
+import { motion } from 'framer-motion';
 
 function Dance() {
     const navigate = useNavigate();
@@ -50,12 +51,40 @@ function Dance() {
     ) : (
         <IndividualsContainer>
             <Stack direction="row">
-                <Button onClick={() => navigate(-1)}>
+                <Button
+                    sx={{
+                        '&.MuiButtonBase-root:hover': {
+                            bgcolor: 'transparent',
+                        },
+                    }}
+                    component={motion.div}
+                    whileHover={{
+                        scale: 1.2,
+                        transition: { duration: 0.3 },
+                    }}
+                    onClick={() => navigate(-1)}
+                >
                     <ArrowBackIosIcon />
                 </Button>
                 <CardAvatar src={'/defaultPic.jpeg'} />
                 <LikesContainer>
-                    <Button onClick={() => dispatch(likeDance(id))}>
+                    <Button
+                        sx={{
+                            '&.MuiButtonBase-root:hover': {
+                                bgcolor: 'transparent',
+                            },
+                        }}
+                        component={motion.div}
+                        whileHover={{
+                            scale: 1.05,
+                            transition: { duration: 0.3 },
+                        }}
+                        whileTap={{
+                            scale: 1.5,
+                            transition: { duration: 0.3 },
+                        }}
+                        onClick={() => dispatch(likeDance(id))}
+                    >
                         <Likes user={user} likes={dance.likes} />
                     </Button>
                     <Typography variant="subtitle1">

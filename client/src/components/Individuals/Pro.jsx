@@ -27,6 +27,7 @@ import Likes from '../shared/Likes';
 import PicturesGrid from './Supporting/PicturesGrid';
 import { Link } from 'react-router-dom';
 import { FaBirthdayCake } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 
 function Pro() {
     const navigate = useNavigate();
@@ -61,14 +62,42 @@ function Pro() {
     ) : (
         <IndividualsContainer>
             <Stack direction="row">
-                <Button onClick={() => navigate(-1)}>
+                <Button
+                    sx={{
+                        '&.MuiButtonBase-root:hover': {
+                            bgcolor: 'transparent',
+                        },
+                    }}
+                    component={motion.div}
+                    whileHover={{
+                        scale: 1.2,
+                        transition: { duration: 0.3 },
+                    }}
+                    onClick={() => navigate(-1)}
+                >
                     <ArrowBackIosIcon />
                 </Button>
                 <CardAvatar
                     src={pro.cover_pic ? pro.cover_pic : '/defaultPic.jpeg'}
                 />
                 <LikesContainer>
-                    <Button disableRipple onClick={() => dispatch(likePro(id))}>
+                    <Button
+                        sx={{
+                            '&.MuiButtonBase-root:hover': {
+                                bgcolor: 'transparent',
+                            },
+                        }}
+                        component={motion.div}
+                        whileHover={{
+                            scale: 1.05,
+                            transition: { duration: 0.3 },
+                        }}
+                        whileTap={{
+                            scale: 1.5,
+                            transition: { duration: 0.3 },
+                        }}
+                        onClick={() => dispatch(likePro(id))}
+                    >
                         <Likes user={user} likes={pro.likes} />
                     </Button>
                     <Typography variant="subtitle1">
@@ -159,7 +188,7 @@ function Pro() {
                         />
                     </Stack>
                 ) : (
-                    <Typography>Pro has no linked socials 💔</Typography>
+                    <Typography>No linked socials</Typography>
                 )}
             </Stack>
 
@@ -194,9 +223,7 @@ function Pro() {
                 {pro?.pictures ? (
                     <PicturesGrid pictures={pro.pictures} />
                 ) : (
-                    <Typography mb={1}>
-                        No pictures yet for this pro 💔
-                    </Typography>
+                    <Typography mb={1}>No pictures yet</Typography>
                 )}
 
                 <ExtraPicUpload id={pro.id} type={tableType.PRO} />

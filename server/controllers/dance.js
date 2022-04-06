@@ -187,7 +187,6 @@ export const findDanceById = async (req, res) => {
             `,
             [id]
         );
-        // TODO: join with likes
 
         res.status(200).json(dance.rows[0]);
     } catch (error) {

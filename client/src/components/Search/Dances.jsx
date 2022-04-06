@@ -12,6 +12,7 @@ import * as actionType from '../../constants/actionTypes';
 import { ResultsContainer } from '../shared/muiStyles';
 import { filterDances } from './Filters/filtered';
 import Progress from '../shared/Progress';
+import { motion } from 'framer-motion';
 
 function Dances(props) {
     const { search } = props;
@@ -55,7 +56,7 @@ function Dances(props) {
                     <Divider />
                 </Stack>
 
-                <Grid container justifyContent="center" spacing={1}>
+                <Grid container justifyContent="center" spacing={1.5}>
                     {filteredDances.map((dance, index) => (
                         <Grid
                             item
@@ -76,7 +77,15 @@ function Dances(props) {
                                     color: 'inherit',
                                 }}
                             >
-                                <DancePreview dance={dance} />
+                                <Box
+                                    component={motion.div}
+                                    whileHover={{
+                                        scale: 1.025,
+                                        transition: { duration: 0.3 },
+                                    }}
+                                >
+                                    <DancePreview dance={dance} />
+                                </Box>
                             </Link>
                         </Grid>
                     ))}

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Box, Button, Divider, Stack, Typography } from '@mui/material';
+import { Button, Divider, Stack, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { findUserById } from '../../actions/users';
@@ -90,7 +90,7 @@ function Fan() {
                         />
                     </Stack>
                 ) : (
-                    <Typography>User has no linked socials 💔</Typography>
+                    <Typography>No linked socials</Typography>
                 )}
             </Stack>
 
