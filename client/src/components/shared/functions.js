@@ -449,3 +449,21 @@ export const organizeDancers = (dancers) => {
 
     return organized;
 };
+
+export const getAverageUserScore = (scores) => {
+    let avgScore = 0;
+
+    let numScores = 0;
+    let totalScores = [];
+
+    scores.forEach((score) => {
+        totalScores.push(score.value);
+    });
+
+    numScores = totalScores.length;
+    if (totalScores.length !== 0) {
+        avgScore = totalScores.reduce((a, b) => a + b) / numScores;
+    }
+
+    return avgScore;
+};

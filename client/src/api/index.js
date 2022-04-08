@@ -34,7 +34,6 @@ export const findFanById = (id) => API.get(`/fans/${id}`);
 export const addDance = (dance) => API.post('/dances/add', dance);
 export const updateDance = (id, dance) =>
     API.patch(`/dances/update/${id}`, dance);
-//export const setDancePic = (id, image) => API.patch(`/dances/setPic/${id}`, image)
 export const findDanceById = (id) => API.get(`/dances/${id}`);
 export const fetchDances = () => API.get('/dances/');
 export const searchDances = (input) => API.post('/dances/search', input);
@@ -128,7 +127,7 @@ export const findTourCastById = (id) => API.get(`/tour_cast/${id}`);
 export const fetchTourCast = () => API.get('/tour_cast/');
 export const deleteTourCast = (id) => API.delete(`/tour_cast/delete/${id}`);
 
-export const findDailyDance = () => API.get(`/dances/daily/`);
+export const findDailyDance = (day) => API.post(`/dances/daily/`, day);
 
 export const setUserScore = (id, value) =>
     API.patch(`/scores/user/${id}`, value);
