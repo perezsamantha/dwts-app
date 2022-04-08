@@ -20,7 +20,7 @@ import auth from '../middleware/auth.js';
 const router = express.Router();
 
 router.post('/add', auth, grantAccess('createAny', 'dance'), addDance);
-router.get('/daily/', findDailyDance);
+router.post('/daily/', auth, grantAccess('readAny', 'dance'), findDailyDance);
 router.get('/', auth, grantAccess('readAny', 'dance'), fetchAllDances);
 router.post('/search', auth, grantAccess('readAny', 'dance'), searchDances);
 router.get('/:id', auth, grantAccess('readAny', 'dance'), findDanceById);

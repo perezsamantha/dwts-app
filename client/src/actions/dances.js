@@ -182,11 +182,11 @@ export const likeDance = (id) => async (dispatch) => {
     }
 };
 
-export const findDailyDance = () => async (dispatch) => {
+export const findDailyDance = (day) => async (dispatch) => {
     dispatch({ type: actionType.DANCEFIND_REQUEST });
 
     try {
-        const { data } = await api.findDailyDance();
+        const { data } = await api.findDailyDance(day);
 
         dispatch({
             type: actionType.DANCEFIND_SUCCESS,

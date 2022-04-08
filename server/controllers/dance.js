@@ -638,7 +638,7 @@ export const likeDance = async (req, res, next) => {
 };
 
 export const findDailyDance = async (req, res) => {
-    //const { date } = req.params;
+    let { day } = req.body;
 
     try {
         const dance = await pool.query(
@@ -651,13 +651,13 @@ export const findDailyDance = async (req, res) => {
                 ) AS episode,
                 COALESCE((ARRAY_AGG(s.scores))[1], '[]') AS scores,
                 COALESCE(JSON_AGG(dc) FILTER (WHERE dc.id IS NOT NULL), '[]') AS dancers,
-                COALESCE((ARRAY_AGG(l.users))[1], '[]') AS likes,
                 (
                     SELECT value
                     FROM user_scores us
                     WHERE us.dance_id = d.id
                         AND us.user_id = 1
-                ) as user_score
+                ) as user_score,
+                COALESCE((ARRAY_AGG(us.scores))[1], '[]') AS user_scores
             FROM dances d
             LEFT JOIN (
                 SELECT dc2.*, 
@@ -701,17 +701,28 @@ export const findDailyDance = async (req, res) => {
             ) s
             ON d.id = s.dance_id
             LEFT JOIN (
-                SELECT dl.dance_id,
-                    COALESCE(JSON_AGG(JSON_BUILD_OBJECT('id', u.id, 'username', u.username)) FILTER (WHERE u.id IS NOT NULL), '[]') AS users
-                FROM dance_likes dl
-                LEFT JOIN users u
-                ON dl.user_id = u.id
-                GROUP BY dl.dance_id
-            ) l
-            ON d.id = l.dance_id
-            WHERE daily_date = now()::date
+                SELECT us1.dance_id,
+                    COALESCE(JSON_AGG(ROW_TO_JSON(us2)) FILTER (WHERE us2.dance_id IS NOT NULL), '[]') AS scores
+                FROM user_scores us1
+                LEFT JOIN (
+                    SELECT us.*,
+                        ROW_TO_JSON(u) AS user
+                    FROM user_scores us
+                    LEFT JOIN users u
+                    ON us.user_id = u.id
+                    GROUP BY us.dance_id, us.user_id, us.value, u.id 
+                ) us2
+                ON us1.dance_id = us2.dance_id
+                GROUP BY us1.dance_id
+            ) us
+            ON d.id = us.dance_id
+            WHERE daily_date = 
+                CASE WHEN $1='today' THEN now()::date
+                ELSE now()::date - 1
+                END
             GROUP BY d.id
-            `
+            `,
+            [day]
         );
 
         res.status(200).json(dance.rows[0]);
