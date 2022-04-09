@@ -15,7 +15,11 @@ export const addTeam = async (req, res) => {
         } = req.body;
 
         const result = await pool.query(
-            `INSERT INTO teams (celeb_id, pro_id, mentor_id, season_id, placement, team_name, extra) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+            `
+            INSERT INTO teams (celeb_id, pro_id, mentor_id, season_id, placement, team_name, extra) 
+            VALUES($1, $2, $3, $4, $5, $6, $7) 
+            RETURNING *
+            `,
             [
                 celeb_id,
                 pro_id,
@@ -27,7 +31,26 @@ export const addTeam = async (req, res) => {
             ]
         );
 
-        res.status(200).json(result.rows[0]);
+        const team = await pool.query(
+            `
+            SELECT t.*,
+                ROW_TO_JSON(p) AS pro,
+                ROW_TO_JSON(c) AS celeb,
+                ROW_TO_JSON(m) AS mentor
+            FROM teams t
+            LEFT JOIN pros p
+            ON t.pro_id = p.id
+            LEFT JOIN celebs c
+            ON t.celeb_id = c.id
+            LEFT JOIN pros m
+            ON t.mentor_id = m.id
+            WHERE t.id = $1
+            GROUP BY t.id, p.id, c.id, m.id
+            `,
+            [result.rows[0].id]
+        );
+
+        res.status(200).json(team.rows[0]);
     } catch (error) {
         res.status(500).json({ message: error });
     }
@@ -40,6 +63,7 @@ export const fetchAllTeams = async (req, res) => {
             SELECT t.*,
                 ROW_TO_JSON(p) AS pro,
                 ROW_TO_JSON(c) AS celeb,
+                ROW_TO_JSON(m) AS mentor,
                 COALESCE((ARRAY_AGG(d.dances))[1], '[]') AS dances,
                 COALESCE((ARRAY_AGG(l.users))[1], '[]') AS likes
             FROM teams t
@@ -47,6 +71,8 @@ export const fetchAllTeams = async (req, res) => {
             ON t.pro_id = p.id
             LEFT JOIN celebs c
             ON t.celeb_id = c.id
+            LEFT JOIN pros m
+            ON t.mentor_id = m.id
             LEFT JOIN (
                 SELECT d1.team_id,
                     COALESCE(JSON_AGG(d2) FILTER (WHERE d2.id IS NOT NULL), '[]') AS dances
@@ -72,7 +98,7 @@ export const fetchAllTeams = async (req, res) => {
                 GROUP BY tl.team_id
             ) l
             ON t.id = l.team_id
-            GROUP BY t.id, p.id, c.id
+            GROUP BY t.id, p.id, c.id, m.id
             `
         );
 
@@ -91,6 +117,7 @@ export const findTeamById = async (req, res) => {
             SELECT t.*,
                 ROW_TO_JSON(p) AS pro,
                 ROW_TO_JSON(c) AS celeb,
+                ROW_TO_JSON(m) AS mentor,
                 COALESCE((ARRAY_AGG(d.dances))[1], '[]') AS dances,
                 COALESCE((ARRAY_AGG(l.users))[1], '[]') AS likes
             FROM teams t
@@ -98,6 +125,8 @@ export const findTeamById = async (req, res) => {
             ON t.pro_id = p.id
             LEFT JOIN celebs c
             ON t.celeb_id = c.id
+            LEFT JOIN pros m
+            ON t.mentor_id = m.id
             LEFT JOIN (
                 SELECT d1.team_id,
                     COALESCE(JSON_AGG(d2) FILTER (WHERE d2.id IS NOT NULL), '[]') AS dances
@@ -130,7 +159,7 @@ export const findTeamById = async (req, res) => {
             ) l
             ON t.id = l.team_id
             WHERE t.id = $1
-            GROUP BY t.id, p.id, c.id
+            GROUP BY t.id, p.id, c.id, m.id
             `,
             [id]
         );
@@ -150,6 +179,7 @@ export const searchTeams = async (req, res) => {
             SELECT t.*,
                 ROW_TO_JSON(p) AS pro,
                 ROW_TO_JSON(c) AS celeb,
+                ROW_TO_JSON(m) AS mentor,
                 COALESCE((ARRAY_AGG(d.dances))[1], '[]') AS dances,
                 COALESCE((ARRAY_AGG(l.users))[1], '[]') AS likes
             FROM teams t
@@ -157,6 +187,8 @@ export const searchTeams = async (req, res) => {
             ON t.pro_id = p.id
             LEFT JOIN celebs c
             ON t.celeb_id = c.id
+            LEFT JOIN pros m
+            ON t.mentor_id = m.id
             LEFT JOIN (
                 SELECT d1.team_id,
                     COALESCE(JSON_AGG(d2) FILTER (WHERE d2.id IS NOT NULL), '[]') AS dances
@@ -191,7 +223,7 @@ export const searchTeams = async (req, res) => {
                 FROM pros
                 WHERE first_name || ' ' || last_name ILIKE $1
             )
-            GROUP BY t.id, p.id, c.id
+            GROUP BY t.id, p.id, c.id, m.id
             `,
             [`%${search}%`]
         );
@@ -207,7 +239,6 @@ export const updateTeam = async (req, res) => {
 
     try {
         const {
-            cover_pic,
             celeb_id,
             pro_id,
             mentor_id,
@@ -218,7 +249,17 @@ export const updateTeam = async (req, res) => {
         } = req.body;
 
         await pool.query(
-            `UPDATE teams SET celeb_id = $1, pro_id = $2, mentor_id = $3, season_id = $4, placement = $5, team_name = $6, extra = $7 WHERE id = $8`,
+            `
+            UPDATE teams 
+            SET celeb_id = $1, 
+                pro_id = $2, 
+                mentor_id = $3, 
+                season_id = $4, 
+                placement = $5, 
+                team_name = $6, 
+                extra = $7 
+            WHERE id = $8
+            `,
             [
                 celeb_id,
                 pro_id,
@@ -236,6 +277,7 @@ export const updateTeam = async (req, res) => {
             SELECT t.*,
                 ROW_TO_JSON(p) AS pro,
                 ROW_TO_JSON(c) AS celeb,
+                ROW_TO_JSON(m) AS mentor,
                 COALESCE((ARRAY_AGG(d.dances))[1], '[]') AS dances,
                 COALESCE((ARRAY_AGG(l.users))[1], '[]') AS likes
             FROM teams t
@@ -243,6 +285,8 @@ export const updateTeam = async (req, res) => {
             ON t.pro_id = p.id
             LEFT JOIN celebs c
             ON t.celeb_id = c.id
+            LEFT JOIN pros m
+            ON t.mentor_id = m.id
             LEFT JOIN (
                 SELECT d1.team_id,
                     COALESCE(JSON_AGG(d2) FILTER (WHERE d2.id IS NOT NULL), '[]') AS dances
@@ -269,7 +313,7 @@ export const updateTeam = async (req, res) => {
             ) l
             ON t.id = l.team_id
             WHERE t.id = $1
-            GROUP BY t.id, p.id, c.id
+            GROUP BY t.id, p.id, c.id, m.id
             `,
             [id]
         );
@@ -308,7 +352,12 @@ export const setTeamPic = async (req, res) => {
             }/o/${encodeURI(blob.name)}?alt=media`;
 
             const result = await pool.query(
-                'UPDATE teams SET cover_pic = $1 WHERE id = $2 RETURNING *',
+                `
+                UPDATE teams 
+                SET cover_pic = $1 
+                WHERE id = $2 
+                RETURNING *
+                `,
                 [publicUrl, req.params.id]
             );
 
@@ -325,7 +374,13 @@ export const deleteTeam = async (req, res) => {
     const { id } = req.params;
 
     try {
-        await pool.query('DELETE FROM teams WHERE id = $1', [id]);
+        await pool.query(
+            `
+            DELETE FROM teams 
+            WHERE id = $1
+            `,
+            [id]
+        );
 
         res.status(200).json({ message: 'Team successfully deleted.' });
     } catch (error) {
@@ -363,7 +418,12 @@ export const addPic = async (req, res) => {
             }/o/${encodeURI(blob.name)}?alt=media`;
 
             await pool.query(
-                'UPDATE teams SET pictures = array_append(pictures, $1) WHERE id = $2 RETURNING *',
+                `
+                UPDATE teams 
+                SET pictures = array_append(pictures, $1) 
+                WHERE id = $2 
+                RETURNING *
+                `,
                 [publicUrl, id]
             );
 
@@ -372,6 +432,7 @@ export const addPic = async (req, res) => {
                 SELECT t.*,
                     ROW_TO_JSON(p) AS pro,
                     ROW_TO_JSON(c) AS celeb,
+                    ROW_TO_JSON(m) AS mentor,
                     COALESCE((ARRAY_AGG(d.dances))[1], '[]') AS dances,
                     COALESCE((ARRAY_AGG(l.users))[1], '[]') AS likes
                 FROM teams t
@@ -379,6 +440,8 @@ export const addPic = async (req, res) => {
                 ON t.pro_id = p.id
                 LEFT JOIN celebs c
                 ON t.celeb_id = c.id
+                LEFT JOIN pros m
+                ON t.mentor_id = m.id
                 LEFT JOIN (
                     SELECT d1.team_id,
                         COALESCE(JSON_AGG(d2) FILTER (WHERE d2.id IS NOT NULL), '[]') AS dances
@@ -405,7 +468,7 @@ export const addPic = async (req, res) => {
                 ) l
                 ON t.id = l.team_id
                 WHERE t.id = $1
-                GROUP BY t.id, p.id, c.id
+                GROUP BY t.id, p.id, c.id, m.id
                 `,
                 [id]
             );
@@ -428,7 +491,13 @@ export const likeTeam = async (req, res, next) => {
         }
 
         const query = await pool.query(
-            'select exists(SELECT 1 FROM team_likes WHERE team_id = $1 AND user_id = $2)',
+            `SELECT EXISTS(
+                SELECT 1 
+                FROM team_likes 
+                WHERE team_id = $1 
+                    AND user_id = $2
+            )
+            `,
             [id, req.userId]
         );
 
@@ -443,13 +512,23 @@ export const likeTeam = async (req, res, next) => {
 
         if (query.rows[0].exists) {
             await pool.query(
-                'DELETE FROM team_likes WHERE team_id = $1 AND user_id = $2',
+                `
+                DELETE FROM team_likes 
+                WHERE team_id = $1 
+                    AND user_id = $2
+                `,
                 [id, req.userId]
             );
             res.status(200).json({ user: user.rows[0], type: 'unlike' });
         } else {
             await pool.query(
-                'INSERT INTO team_likes (team_id, user_id) VALUES($1, $2)',
+                `
+                INSERT INTO team_likes (
+                    team_id, 
+                    user_id
+                ) 
+                VALUES($1, $2)
+                `,
                 [id, req.userId]
             );
             res.status(200).json({ user: user.rows[0], type: 'like' });

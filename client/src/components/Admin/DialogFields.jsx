@@ -6,6 +6,11 @@ import {
     InputAdornment,
     Autocomplete,
     Box,
+    FormControl,
+    FormLabel,
+    RadioGroup,
+    FormControlLabel,
+    Radio,
 } from '@mui/material';
 import { MobileDatePicker } from '@mui/lab';
 
@@ -17,16 +22,28 @@ import {
     styles,
     themes,
     runningOrders,
+    seasonNumbers,
     scores,
     scoreOrders,
     roles,
     heightsInInches,
+    hosts,
+    cohosts,
+    monthNames,
+    days,
+    months,
 } from '../../constants/dropdowns';
 import CoverPicUpload from '../shared/CoverPicUpload';
 import { PhotoContainer } from '../shared/regStyles';
 import { useSelector } from 'react-redux';
-import DataGetter from '../shared/DataGetter';
-import { convertHeight, getFullName } from '../shared/functions';
+import {
+    convertHeight,
+    convertPlacement,
+    getDanceName,
+    getFullName,
+    getFullTeamName,
+    getSeasonAndWeek,
+} from '../shared/functions';
 
 function DialogFields(props) {
     const {
@@ -49,10 +66,35 @@ function DialogFields(props) {
     const [autoValues, setAutoValues] = useState({
         celeb: null,
         pro: null,
+        team: null,
         mentor: null,
+        dance: null,
     });
 
-    useEffect(() => {}, []);
+    const [filters, setFilters] = useState({
+        dancer: 'team',
+    });
+
+    useEffect(() => {
+        setFilters({
+            dancer: formData.team_id
+                ? 'team'
+                : formData.pro_id
+                ? 'pro'
+                : formData.celeb_id
+                ? 'celeb'
+                : tableType.TOURCAST === table
+                ? 'pro'
+                : 'team',
+        });
+        setAutoValues({
+            celeb: celebs.find((celeb) => celeb.id === formData.celeb_id),
+            pro: pros.find((pro) => pro.id === formData.pro_id),
+            mentor: pros.find((pro) => pro.id === formData.mentor_id),
+            team: teams.find((team) => team.id === formData.team_id),
+            dance: dances.find((dance) => dance.id === formData.dance_id),
+        });
+    }, [formData, celebs, pros, teams, dances, table]);
 
     return (
         <>
@@ -81,6 +123,44 @@ function DialogFields(props) {
                     </PhotoContainer>
                 )}
 
+            {Array.of(tableType.DANCER, tableType.TOURCAST).includes(table) && (
+                <Box>
+                    <FormControl>
+                        <FormLabel id="dancer-type">Dancer Type</FormLabel>
+                        <RadioGroup
+                            row
+                            aria-labelledby="dancer-type"
+                            name="dancer"
+                            value={filters.dancer}
+                            onChange={(e) =>
+                                setFilters({
+                                    ...filters,
+                                    dancer: e.target.value,
+                                })
+                            }
+                        >
+                            {tableType.DANCER === table && (
+                                <FormControlLabel
+                                    value="team"
+                                    control={<Radio />}
+                                    label="Team"
+                                />
+                            )}
+                            <FormControlLabel
+                                value="pro"
+                                control={<Radio />}
+                                label="Pro"
+                            />
+                            <FormControlLabel
+                                value="celeb"
+                                control={<Radio />}
+                                label="Celeb"
+                            />
+                        </RadioGroup>
+                    </FormControl>
+                </Box>
+            )}
+
             {Array.of(tableType.CELEB, tableType.PRO, tableType.JUDGE).includes(
                 table
             ) && (
@@ -107,27 +187,58 @@ function DialogFields(props) {
                 />
             )}
 
-            {/* change to dropdown of constants */}
-            {/* {Array.of(tableType.SEASON).includes(table) &&
-                <TextField
-                    margin="dense"
-                    name="number"
-                    label="Number"
-                    type="text"
-                    value={formData.number || ''}
-                    onChange={handleChange}
-                />
-            } */}
-
             {Array.of(tableType.SEASON).includes(table) && (
                 <TextField
                     margin="dense"
                     name="id"
                     label="Number"
                     type="text"
+                    select
                     value={formData.id || ''}
                     onChange={handleChange}
-                />
+                >
+                    {seasonNumbers.map((season, index) => (
+                        <MenuItem key={index} value={season}>
+                            {season}
+                        </MenuItem>
+                    ))}
+                </TextField>
+            )}
+
+            {Array.of(tableType.SEASON).includes(table) && (
+                <TextField
+                    margin="dense"
+                    name="host"
+                    label="Host"
+                    type="text"
+                    select
+                    value={formData.host || ''}
+                    onChange={handleChange}
+                >
+                    {hosts.map((host, index) => (
+                        <MenuItem key={index} value={host}>
+                            {host}
+                        </MenuItem>
+                    ))}
+                </TextField>
+            )}
+
+            {Array.of(tableType.SEASON).includes(table) && (
+                <TextField
+                    margin="dense"
+                    name="cohost"
+                    label="Co-host"
+                    type="text"
+                    select
+                    value={formData.cohost || ''}
+                    onChange={handleChange}
+                >
+                    {cohosts.map((host, index) => (
+                        <MenuItem key={index} value={host}>
+                            {host}
+                        </MenuItem>
+                    ))}
+                </TextField>
             )}
 
             {Array.of(tableType.TOUR).includes(table) && (
@@ -142,49 +253,31 @@ function DialogFields(props) {
             )}
 
             {Array.of(tableType.SCORE, tableType.DANCER).includes(table) && (
-                <TextField
-                    margin="dense"
+                <Autocomplete
                     name="dance_id"
-                    label="Dance"
-                    type="text"
-                    select
-                    value={formData.dance_id || ''}
-                    onChange={handleChange}
-                >
-                    {dances.map((dance, index) => {
-                        return (
-                            <MenuItem key={index} value={dance.id}>
-                                <DataGetter
-                                    id={dance.id}
-                                    type={tableType.DANCE}
-                                />
-                            </MenuItem>
-                        );
-                    })}
-                </TextField>
-            )}
-
-            {Array.of(tableType.DANCER).includes(table) && (
-                <TextField
-                    margin="dense"
-                    name="team_id"
-                    label="Team"
-                    type="text"
-                    select
-                    value={formData.team_id || ''}
-                    onChange={handleChange}
-                >
-                    {teams.map((team, index) => {
-                        return (
-                            <MenuItem key={index} value={team.id}>
-                                <DataGetter
-                                    id={team.id}
-                                    type={tableType.TEAM}
-                                />
-                            </MenuItem>
-                        );
-                    })}
-                </TextField>
+                    options={dances}
+                    autoHighlight
+                    value={autoValues.dance || null}
+                    getOptionLabel={(option) => getDanceName(option)}
+                    renderOption={(props, option) => (
+                        <Box component="li" {...props}>
+                            {getDanceName(option)}
+                        </Box>
+                    )}
+                    renderInput={(params) => (
+                        <TextField margin="dense" {...params} label="Dance" />
+                    )}
+                    onChange={(e, newValue) => {
+                        setFormData({
+                            ...formData,
+                            dance_id: newValue?.id,
+                        });
+                        setAutoValues({
+                            ...autoValues,
+                            dance: newValue,
+                        });
+                    }}
+                />
             )}
 
             {Array.of(tableType.TOURCAST).includes(table) && (
@@ -197,29 +290,137 @@ function DialogFields(props) {
                     value={formData.tour_id || ''}
                     onChange={handleChange}
                 >
-                    {tours.map((tour, index) => {
-                        return (
-                            <MenuItem key={index} value={tour.id}>
-                                <DataGetter
-                                    id={tour.id}
-                                    type={tableType.TOUR}
-                                />
-                            </MenuItem>
-                        );
-                    })}
+                    {tours.map((tour, index) => (
+                        <MenuItem key={index} value={tour.id}>
+                            {tour.name}
+                        </MenuItem>
+                    ))}
                 </TextField>
             )}
 
-            {Array.of(
-                tableType.TEAM,
-                tableType.DANCER,
-                tableType.TOURCAST
-            ).includes(table) && (
+            {Array.of(tableType.DANCER, tableType.TOURCAST).includes(table) && (
+                <>
+                    {filters.dancer === 'team' && (
+                        <Autocomplete
+                            name="team_id"
+                            options={teams}
+                            autoHighlight
+                            value={autoValues.team || null}
+                            getOptionLabel={(option) =>
+                                getFullTeamName(option.celeb, option.pro)
+                            }
+                            renderOption={(props, option) => (
+                                <Box component="li" {...props}>
+                                    {getFullTeamName(option.celeb, option.pro)}
+                                </Box>
+                            )}
+                            renderInput={(params) => (
+                                <TextField
+                                    margin="dense"
+                                    {...params}
+                                    label="Team"
+                                />
+                            )}
+                            onChange={(e, newValue) => {
+                                setAutoValues({
+                                    ...autoValues,
+                                    team: newValue,
+                                });
+                                setFormData({
+                                    ...formData,
+                                    team_id: newValue?.id,
+                                    celeb_id: null,
+                                    pro_id: null,
+                                });
+                            }}
+                        />
+                    )}
+
+                    {filters.dancer === 'celeb' && (
+                        <Autocomplete
+                            name="celeb_id"
+                            options={celebs}
+                            autoHighlight
+                            value={autoValues.celeb || null}
+                            getOptionLabel={(option) =>
+                                option?.last_name
+                                    ? `${option.first_name} ${option.last_name}`
+                                    : option?.first_name
+                                    ? `${option.first_name}`
+                                    : ''
+                            }
+                            renderOption={(props, option) => (
+                                <Box component="li" {...props}>
+                                    {option.first_name} {option.last_name}
+                                </Box>
+                            )}
+                            renderInput={(params) => (
+                                <TextField
+                                    margin="dense"
+                                    {...params}
+                                    label="Celeb"
+                                />
+                            )}
+                            onChange={(e, newValue) => {
+                                setAutoValues({
+                                    ...autoValues,
+                                    celeb: newValue,
+                                });
+                                setFormData({
+                                    ...formData,
+                                    celeb_id: newValue?.id,
+                                    team_id: null,
+                                    pro_id: null,
+                                });
+                            }}
+                        />
+                    )}
+
+                    {filters.dancer === 'pro' && (
+                        <Autocomplete
+                            name="pro_id"
+                            options={pros}
+                            autoHighlight
+                            value={autoValues.pro || null}
+                            getOptionLabel={(option) =>
+                                option?.last_name
+                                    ? `${option.first_name} ${option.last_name}`
+                                    : option?.first_name
+                                    ? `${option.first_name}`
+                                    : ''
+                            }
+                            renderOption={(props, option) => (
+                                <Box component="li" {...props}>
+                                    {option.first_name} {option.last_name}
+                                </Box>
+                            )}
+                            renderInput={(params) => (
+                                <TextField
+                                    margin="dense"
+                                    {...params}
+                                    label="Pro"
+                                />
+                            )}
+                            onChange={(e, newValue) => {
+                                setFormData({
+                                    ...formData,
+                                    pro_id: newValue?.id,
+                                    team_id: null,
+                                    celeb_id: null,
+                                });
+                                setAutoValues({ ...autoValues, pro: newValue });
+                            }}
+                        />
+                    )}
+                </>
+            )}
+
+            {Array.of(tableType.TEAM).includes(table) && (
                 <Autocomplete
                     name="celeb_id"
                     options={celebs}
                     autoHighlight
-                    value={autoValues.celeb}
+                    value={autoValues.celeb || null}
                     getOptionLabel={(option) =>
                         option?.last_name
                             ? `${option.first_name} ${option.last_name}`
@@ -245,16 +446,12 @@ function DialogFields(props) {
                 />
             )}
 
-            {Array.of(
-                tableType.TEAM,
-                tableType.DANCER,
-                tableType.TOURCAST
-            ).includes(table) && (
+            {Array.of(tableType.TEAM).includes(table) && (
                 <Autocomplete
                     name="pro_id"
                     options={pros}
                     autoHighlight
-                    value={autoValues.pro}
+                    value={autoValues.pro || null}
                     getOptionLabel={(option) =>
                         option?.last_name
                             ? `${option.first_name} ${option.last_name}`
@@ -285,7 +482,7 @@ function DialogFields(props) {
                     name="mentor_id"
                     options={pros}
                     autoHighlight
-                    value={autoValues.mentor}
+                    value={autoValues.mentor || null}
                     getOptionLabel={(option) =>
                         option?.last_name
                             ? `${option.first_name} ${option.last_name}`
@@ -306,10 +503,7 @@ function DialogFields(props) {
                             ...formData,
                             mentor_id: newValue?.id,
                         });
-                        setAutoValues({
-                            ...autoValues,
-                            mentor: newValue,
-                        });
+                        setAutoValues({ ...autoValues, mentor: newValue });
                     }}
                 />
             )}
@@ -325,19 +519,14 @@ function DialogFields(props) {
                     label="Season"
                     type="text"
                     select
-                    value={formData.season_id || ''}
+                    value={formData?.season_id || ''}
                     onChange={handleChange}
                 >
-                    {seasons.map((season, index) => {
-                        return (
-                            <MenuItem key={index} value={season.id}>
-                                <DataGetter
-                                    id={season.id}
-                                    type={tableType.SEASON}
-                                />
-                            </MenuItem>
-                        );
-                    })}
+                    {seasons.map((season, index) => (
+                        <MenuItem key={index} value={season.id}>
+                            {season.id}
+                        </MenuItem>
+                    ))}
                 </TextField>
             )}
 
@@ -353,7 +542,7 @@ function DialogFields(props) {
                 >
                     {placements.map((placement, index) => (
                         <MenuItem key={index} value={placement}>
-                            {placement}
+                            {convertPlacement(placement)}
                         </MenuItem>
                     ))}
                 </TextField>
@@ -377,7 +566,6 @@ function DialogFields(props) {
                 />
             )}
 
-            {/* share getEp# function? */}
             {Array.of(tableType.DANCE).includes(table) && (
                 <TextField
                     margin="dense"
@@ -391,10 +579,7 @@ function DialogFields(props) {
                     {episodes.map((episode, index) => {
                         return (
                             <MenuItem key={index} value={episode.id}>
-                                <DataGetter
-                                    id={episode.id}
-                                    type={tableType.EPISODE}
-                                />
+                                {getSeasonAndWeek(episode)}
                             </MenuItem>
                         );
                     })}
@@ -402,21 +587,21 @@ function DialogFields(props) {
             )}
 
             {Array.of(tableType.DANCE).includes(table) && (
-                <TextField
-                    margin="dense"
+                <Autocomplete
                     name="style"
-                    label="Style"
-                    type="text"
-                    select
-                    value={formData.style || ''}
-                    onChange={handleChange}
-                >
-                    {styles.map((style, index) => (
-                        <MenuItem key={index} value={style}>
-                            {style}
-                        </MenuItem>
-                    ))}
-                </TextField>
+                    options={styles}
+                    autoHighlight
+                    value={formData.style || null}
+                    renderInput={(params) => (
+                        <TextField margin="dense" {...params} label="Style" />
+                    )}
+                    onChange={(e, newValue) => {
+                        setFormData({
+                            ...formData,
+                            style: newValue,
+                        });
+                    }}
+                />
             )}
 
             {Array.of(tableType.DANCE).includes(table) && (
@@ -453,7 +638,7 @@ function DialogFields(props) {
                 >
                     {runningOrders.map((ro, index) => (
                         <MenuItem key={index} value={ro}>
-                            {ro}
+                            {convertPlacement(ro)}
                         </MenuItem>
                     ))}
                 </TextField>
@@ -545,17 +730,6 @@ function DialogFields(props) {
                 />
             )}
 
-            {Array.of(tableType.TOUR).includes(table) && (
-                <TextField
-                    margin="dense"
-                    name="num_shows"
-                    label="# Shows"
-                    type="text"
-                    value={formData.num_shows || ''}
-                    onChange={handleChange}
-                />
-            )}
-
             {Array.of(tableType.TOURCAST).includes(table) && (
                 <TextField
                     margin="dense"
@@ -572,25 +746,6 @@ function DialogFields(props) {
                         No
                     </MenuItem>
                 </TextField>
-            )}
-
-            {/* EXTRA */}
-            {Array.of(
-                tableType.SEASON,
-                tableType.TEAM,
-                tableType.DANCE,
-                tableType.DANCER,
-                tableType.TOUR,
-                tableType.TOURCAST
-            ).includes(table) && (
-                <TextField
-                    margin="dense"
-                    name="extra"
-                    label="Extra"
-                    type="text"
-                    value={formData.extra || ''}
-                    onChange={handleChange}
-                />
             )}
 
             {Array.of(tableType.CELEB, tableType.PRO, tableType.JUDGE).includes(
@@ -643,21 +798,21 @@ function DialogFields(props) {
             )}
 
             {Array.of(tableType.EPISODE).includes(table) && (
-                <TextField
-                    margin="dense"
+                <Autocomplete
                     name="theme"
-                    label="Theme"
-                    type="text"
-                    select
-                    value={formData.theme || ''}
-                    onChange={handleChange}
-                >
-                    {themes.map((theme, index) => (
-                        <MenuItem key={index} value={theme}>
-                            {theme}
-                        </MenuItem>
-                    ))}
-                </TextField>
+                    options={themes}
+                    autoHighlight
+                    value={formData.theme || null}
+                    renderInput={(params) => (
+                        <TextField margin="dense" {...params} label="Theme" />
+                    )}
+                    onChange={(e, newValue) => {
+                        setFormData({
+                            ...formData,
+                            theme: newValue,
+                        });
+                    }}
+                />
             )}
 
             {Array.of(tableType.EPISODE).includes(table) && (
@@ -729,24 +884,24 @@ function DialogFields(props) {
                 />
             )}
 
-            {/* checkbox? */}
-            {Array.of(tableType.USER).includes(table) && (
-                <TextField
-                    margin="dense"
-                    name="email_verified"
-                    select
-                    label="Email Verified?"
-                    value={formData.email_verified}
-                    onChange={handleChange}
-                >
-                    <MenuItem key={1} value={true}>
-                        Yes
-                    </MenuItem>
-                    <MenuItem key={2} value={false}>
-                        No
-                    </MenuItem>
-                </TextField>
-            )}
+            {Array.of(tableType.USER).includes(table) &&
+                props.dialog === 'Edit' && (
+                    <TextField
+                        margin="dense"
+                        name="email_verified"
+                        select
+                        label="Email Verified?"
+                        value={formData.email_verified}
+                        onChange={handleChange}
+                    >
+                        <MenuItem key={1} value={true}>
+                            Yes
+                        </MenuItem>
+                        <MenuItem key={2} value={false}>
+                            No
+                        </MenuItem>
+                    </TextField>
+                )}
 
             {Array.of(tableType.AUTH).includes(table) && (
                 <TextField
@@ -780,10 +935,10 @@ function DialogFields(props) {
                     value={formData.watching_since || ''}
                     onChange={handleChange}
                 >
-                    {seasons.map((season, index) => {
+                    {seasonNumbers.map((season, index) => {
                         return (
-                            <MenuItem key={index} value={season.id}>
-                                {season.id}
+                            <MenuItem key={index} value={season}>
+                                {season}
                             </MenuItem>
                         );
                     })}
@@ -903,7 +1058,7 @@ function DialogFields(props) {
                 >
                     {scoreOrders.map((so, index) => (
                         <MenuItem key={index} value={so}>
-                            {so}
+                            {convertPlacement(so)}
                         </MenuItem>
                     ))}
                 </TextField>
@@ -928,24 +1083,49 @@ function DialogFields(props) {
             )}
 
             {Array.of(tableType.USER).includes(table) && (
-                <MobileDatePicker
+                <TextField
                     margin="dense"
-                    label="Birthday"
-                    inputFormat="MM/dd/yyyy"
-                    value={formData.birthday || null}
-                    onChange={handleBirthday}
-                    renderInput={(params) => <TextField {...params} />}
-                />
+                    name="birthday_month"
+                    label="Birthday Month"
+                    type="text"
+                    select
+                    value={formData.birthday_month || ''}
+                    onChange={handleChange}
+                >
+                    {months.map((month, index) => (
+                        <MenuItem key={index} value={month}>
+                            {monthNames[month - 1]}
+                        </MenuItem>
+                    ))}
+                </TextField>
             )}
 
             {Array.of(tableType.USER).includes(table) && (
                 <TextField
                     margin="dense"
-                    name="user_role"
+                    name="birthday_day"
+                    label="Birthday Day"
+                    type="text"
+                    select
+                    value={formData.birthday_day || ''}
+                    onChange={handleChange}
+                >
+                    {days.map((day, index) => (
+                        <MenuItem key={index} value={day}>
+                            {day}
+                        </MenuItem>
+                    ))}
+                </TextField>
+            )}
+
+            {Array.of(tableType.USER).includes(table) && (
+                <TextField
+                    margin="dense"
+                    name="role"
                     label="Role"
                     type="text"
                     select
-                    value={formData.user_role || ''}
+                    value={formData.role || ''}
                     onChange={handleChange}
                 >
                     {roles.map((role, index) => (
@@ -968,17 +1148,25 @@ function DialogFields(props) {
                     />
                 )}
 
-            {Array.of(tableType.USER).includes(table) &&
-                props.dialog === 'Add' && (
-                    <TextField
-                        margin="dense"
-                        name="confirm_password"
-                        label="Confirm Password"
-                        type="text"
-                        value={formData.confirm_password || ''}
-                        onChange={handleChange}
-                    />
-                )}
+            {/* EXTRA */}
+            {Array.of(
+                tableType.SEASON,
+                tableType.TEAM,
+                tableType.EPISODE,
+                tableType.DANCE,
+                tableType.DANCER,
+                tableType.TOUR,
+                tableType.TOURCAST
+            ).includes(table) && (
+                <TextField
+                    margin="dense"
+                    name="extra"
+                    label="Extra"
+                    type="text"
+                    value={formData.extra || ''}
+                    onChange={handleChange}
+                />
+            )}
         </>
     );
 }

@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS teams(
     celeb_id INT NOT NULL,
     pro_id INT NOT NULL, 
     mentor_id INT,
-    season_id INT NOT NULL,
+    season_id REAL NOT NULL,
     placement SMALLINT,
     team_name VARCHAR(30),
     pictures TEXT[],

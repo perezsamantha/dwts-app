@@ -5,11 +5,18 @@ import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
-import { Avatar, Box, Stack, Typography } from '@mui/material';
+import { Avatar, Box, Snackbar, Stack, Typography } from '@mui/material';
 import { LocalizationProvider } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterDateFns';
 
-import { convertDate, convertHeight, getFullName } from '../shared/functions';
+import {
+    convertDate,
+    convertHeight,
+    convertPlacement,
+    getFullName,
+    getFullTeamName,
+    getUserBirthday,
+} from '../shared/functions';
 import AddDialog from './AddDialog';
 import EditDialog from './EditDialog';
 import DeleteDialog from './DeleteDialog';
@@ -45,11 +52,22 @@ import {
     findTourCastById,
 } from '../../actions/tours';
 import { deleteUser, fetchUsers, findUserById } from '../../actions/users';
-import DataGetter from '../shared/DataGetter';
+import { createErrorMessageSelector } from '../../api/selectors';
+import * as actionType from '../../constants/actionTypes';
 
 function Table(props) {
     const table = props.type;
     const dispatch = useDispatch();
+
+    const [open, setOpen] = useState({
+        edit: false,
+        delete: false,
+        id: null,
+        error: false,
+    });
+
+    const errorSelector = createErrorMessageSelector([actionType.TEAMADD]);
+    const errors = useSelector((state) => errorSelector(state));
 
     const items = useSelector((state) => {
         switch (table) {
@@ -181,13 +199,9 @@ function Table(props) {
                 break;
             default:
         }
-    }, [dispatch, table]);
-
-    const [open, setOpen] = useState({
-        edit: false,
-        delete: false,
-        id: null,
-    });
+        // TODO: move :((
+        setOpen({ error: errors !== '' });
+    }, [dispatch, table, errors]);
 
     const handleClose = () => {
         setOpen({ edit: false, delete: false, id: null });
@@ -355,12 +369,12 @@ function Table(props) {
                 {
                     field: 'is_junior',
                     headerName: 'Junior?',
-                    width: 75,
+                    minWidth: 75,
+                    flex: 1,
                     renderCell: (params) => (params.value ? 'Yes' : 'No'),
                 },
                 {
                     field: 'actions',
-                    //headerName: 'Actions',
                     type: 'actions',
                     width: 50,
                     getActions: (params) => [
@@ -390,47 +404,9 @@ function Table(props) {
                     width: 60,
                     renderCell: (params) => <Avatar src={params.value} />,
                 },
+                { field: 'host', headerName: 'Host', width: 125 },
+                { field: 'cohost', headerName: 'Co-host', width: 125 },
                 { field: 'extra', headerName: 'Extra', minWidth: 150, flex: 1 },
-                {
-                    field: 'actions',
-                    type: 'actions',
-                    width: 50,
-                    getActions: (params) => [
-                        <GridActionsCellItem
-                            icon={<EditIcon />}
-                            label="Edit"
-                            onClick={() => handleEdit(params.id)}
-                            showInMenu
-                        />,
-                        <GridActionsCellItem
-                            icon={<DeleteIcon />}
-                            label="Delete"
-                            onClick={() => handleDelete(params.id)}
-                            showInMenu
-                        />,
-                    ],
-                },
-            ];
-            break;
-
-        case tableType.EPISODE:
-            columns = [
-                { field: 'id', headerName: 'ID', width: 40 },
-                {
-                    field: 'season_id',
-                    headerName: 'Season',
-                    width: 75,
-                },
-                { field: 'week', headerName: 'Week', width: 75 },
-                { field: 'night', headerName: 'Night', width: 75 },
-                { field: 'theme', headerName: 'Theme', width: 150 },
-                {
-                    field: 'date',
-                    headerName: 'Date',
-                    minWidth: 100,
-                    flex: 1,
-                    valueGetter: (params) => convertDate(params.value),
-                },
                 {
                     field: 'actions',
                     type: 'actions',
@@ -475,19 +451,63 @@ function Table(props) {
                     valueGetter: (params) => getFullName(params.row?.pro),
                 },
                 {
+                    field: 'season_id',
+                    headerName: 'Season',
+                    width: 75,
+                },
+                {
+                    field: 'placement',
+                    headerName: 'Place',
+                    width: 50,
+                    valueGetter: (params) => convertPlacement(params.value),
+                },
+                { field: 'team_name', headerName: 'Team Name', width: 150 },
+                {
                     field: 'mentor_id',
                     headerName: 'Mentor',
                     width: 100,
-                    //valueGetter: (params) => getFullName(params.row?.mentor)
-                    // TODO: once mentor is left joined
+                    valueGetter: (params) => getFullName(params.row?.mentor),
                 },
+                { field: 'extra', headerName: 'Extra', minWidth: 150, flex: 1 },
+                {
+                    field: 'actions',
+                    type: 'actions',
+                    width: 50,
+                    getActions: (params) => [
+                        <GridActionsCellItem
+                            icon={<EditIcon />}
+                            label="Edit"
+                            onClick={() => handleEdit(params.id)}
+                            showInMenu
+                        />,
+                        <GridActionsCellItem
+                            icon={<DeleteIcon />}
+                            label="Delete"
+                            onClick={() => handleDelete(params.id)}
+                            showInMenu
+                        />,
+                    ],
+                },
+            ];
+            break;
+
+        case tableType.EPISODE:
+            columns = [
+                { field: 'id', headerName: 'ID', width: 40 },
                 {
                     field: 'season_id',
                     headerName: 'Season',
                     width: 75,
                 },
-                { field: 'placement', headerName: 'Place', width: 100 },
-                { field: 'team_name', headerName: 'Team Name', width: 150 },
+                { field: 'week', headerName: 'Week', width: 75 },
+                { field: 'night', headerName: 'Night', width: 75 },
+                { field: 'theme', headerName: 'Theme', width: 150 },
+                {
+                    field: 'date',
+                    headerName: 'Date',
+                    width: 100,
+                    valueGetter: (params) => convertDate(params.value),
+                },
                 { field: 'extra', headerName: 'Extra', minWidth: 150, flex: 1 },
                 {
                     field: 'actions',
@@ -546,7 +566,6 @@ function Table(props) {
                 { field: 'extra', headerName: 'Extra', minWidth: 150, flex: 1 },
                 {
                     field: 'actions',
-                    //headerName: 'Actions',
                     type: 'actions',
                     width: 50,
                     getActions: (params) => [
@@ -575,12 +594,12 @@ function Table(props) {
                 {
                     field: 'birthday',
                     headerName: 'Birthday',
-                    width: 100,
+                    minWidth: 100,
+                    flex: 1,
                     valueGetter: (params) => convertDate(params.value),
                 },
                 {
                     field: 'actions',
-                    //headerName: 'Actions',
                     type: 'actions',
                     width: 50,
                     getActions: (params) => [
@@ -605,31 +624,53 @@ function Table(props) {
             columns = [
                 { field: 'id', headerName: 'ID', width: 40 },
                 {
-                    field: 'dance_id',
-                    headerName: 'Dance',
-                    width: 450,
-                    renderCell: (params) => (
-                        <DataGetter id={params.value} type={tableType.DANCE} />
-                    ),
+                    field: 'season',
+                    headerName: 'Season',
+                    width: 75,
+                    valueGetter: (params) =>
+                        params.row?.dance?.episode?.season_id,
+                },
+                {
+                    field: 'week',
+                    headerName: 'Week',
+                    width: 50,
+                    valueGetter: (params) => params.row?.dance?.episode?.week,
+                },
+                {
+                    field: 'style',
+                    headerName: 'Style',
+                    width: 75,
+                    valueGetter: (params) => params.row?.dance?.style,
+                },
+                {
+                    field: 'song',
+                    headerName: 'Song',
+                    width: 200,
+                    valueGetter: (params) =>
+                        `${params.row?.dance?.song_title} by ${params.row?.dance?.song_artist}`,
                 },
                 {
                     field: 'judge_id',
                     headerName: 'Judge',
                     width: 150,
-                    //valueGetter: (params) => getFullName(params.row?.judge)
-                    // TODO: once left join with judges
+                    valueGetter: (params) => getFullName(params.row?.judge),
                 },
                 { field: 'value', headerName: 'Value', width: 100 },
-                { field: 'order', headerName: 'Order', width: 100 },
+                {
+                    field: 'order',
+                    headerName: 'Order',
+                    width: 100,
+                    valueGetter: (params) => convertPlacement(params.value),
+                },
                 {
                     field: 'is_guest',
                     headerName: 'Guest?',
-                    width: 100,
+                    minWidth: 100,
+                    flex: 1,
                     renderCell: (params) => (params.value ? 'Yes' : 'No'),
                 },
                 {
                     field: 'actions',
-                    //headerName: 'Actions',
                     type: 'actions',
                     width: 50,
                     getActions: (params) => [
@@ -654,36 +695,52 @@ function Table(props) {
             columns = [
                 { field: 'id', headerName: 'ID', width: 40 },
                 {
-                    field: 'dance_id',
-                    headerName: 'Dance',
-                    width: 450,
-                    renderCell: (params) => (
-                        <DataGetter id={params.value} type={tableType.DANCE} />
-                    ),
+                    field: 'season',
+                    headerName: 'Season',
+                    width: 75,
+                    valueGetter: (params) =>
+                        params.row?.dance?.episode?.season_id,
+                },
+                {
+                    field: 'week',
+                    headerName: 'Week',
+                    width: 50,
+                    valueGetter: (params) => params.row?.dance?.episode?.week,
+                },
+                {
+                    field: 'style',
+                    headerName: 'Style',
+                    width: 75,
+                    valueGetter: (params) => params.row?.dance?.style,
+                },
+                {
+                    field: 'song',
+                    headerName: 'Song',
+                    width: 200,
+                    valueGetter: (params) =>
+                        `${params.row?.dance?.song_title} by ${params.row?.dance?.song_artist}`,
                 },
                 {
                     field: 'team_id',
                     headerName: 'Team',
                     width: 100,
-                    renderCell: (params) => (
-                        <DataGetter id={params.value} type={tableType.TEAM} />
-                    ),
+                    valueGetter: (params) =>
+                        getFullTeamName(
+                            params.row?.team?.celeb,
+                            params.row?.team?.pro
+                        ),
                 },
                 {
                     field: 'pro_id',
                     headerName: 'Pro',
                     width: 100,
-                    renderCell: (params) => (
-                        <DataGetter id={params.value} type={tableType.PRO} />
-                    ),
+                    valueGetter: (params) => getFullName(params.row?.pro),
                 },
                 {
                     field: 'celeb_id',
                     headerName: 'Celeb',
                     width: 100,
-                    renderCell: (params) => (
-                        <DataGetter id={params.value} type={tableType.CELEB} />
-                    ),
+                    valueGetter: (params) => getFullName(params.row?.celeb),
                 },
                 {
                     field: 'is_background',
@@ -694,7 +751,6 @@ function Table(props) {
                 { field: 'extra', headerName: 'Extra', minWidth: 150, flex: 1 },
                 {
                     field: 'actions',
-                    //headerName: 'Actions',
                     type: 'actions',
                     width: 50,
                     getActions: (params) => [
@@ -738,11 +794,9 @@ function Table(props) {
                     width: 100,
                     valueGetter: (params) => convertDate(params.value),
                 },
-                { field: 'num_shows', headerName: '# Shows', width: 90 },
                 { field: 'extra', headerName: 'Extra', minWidth: 150, flex: 1 },
                 {
                     field: 'actions',
-                    //headerName: 'Actions',
                     type: 'actions',
                     width: 50,
                     getActions: (params) => [
@@ -770,26 +824,20 @@ function Table(props) {
                     field: 'tour_id',
                     headerName: 'Tour',
                     width: 250,
-                    renderCell: (params) => (
-                        <DataGetter id={params.value} type={tableType.TOUR} />
-                    ),
+                    valueGetter: (params) =>
+                        `${params.row?.tour?.name} - Season ${params.row?.tour?.season_id}`,
                 },
-                { field: 'season_id', headerName: 'Season', width: 100 },
                 {
                     field: 'pro_id',
                     headerName: 'Pro',
                     width: 150,
-                    renderCell: (params) => (
-                        <DataGetter id={params.value} type={tableType.PRO} />
-                    ),
+                    valueGetter: (params) => getFullName(params.row?.pro),
                 },
                 {
                     field: 'celeb_id',
                     headerName: 'Celeb',
                     width: 150,
-                    renderCell: (params) => (
-                        <DataGetter id={params.value} type={tableType.CELEB} />
-                    ),
+                    valueGetter: (params) => getFullName(params.row?.celeb),
                 },
                 {
                     field: 'is_swing',
@@ -800,7 +848,6 @@ function Table(props) {
                 { field: 'extra', headerName: 'Extra', minWidth: 150, flex: 1 },
                 {
                     field: 'actions',
-                    //headerName: 'Actions',
                     type: 'actions',
                     width: 50,
                     getActions: (params) => [
@@ -853,12 +900,15 @@ function Table(props) {
                     field: 'birthday',
                     headerName: 'Birthday',
                     width: 100,
-                    valueGetter: (params) => convertDate(params.value),
+                    valueGetter: (params) =>
+                        getUserBirthday(
+                            params.row.birthday_month,
+                            params.row.birthday_day
+                        ),
                 },
-                { field: 'user_role', headerName: 'Role', width: 80 },
+                { field: 'role', headerName: 'Role', minWidth: 80, flex: 1 },
                 {
                     field: 'actions',
-                    //headerName: 'Actions',
                     type: 'actions',
                     width: 50,
                     getActions: (params) => [
@@ -887,7 +937,7 @@ function Table(props) {
 
     return (
         <LocalizationProvider dateAdapter={DateAdapter}>
-            <Box sx={{ height: 700, minWidth: '100%' }}>
+            <Box sx={{ height: 635, minWidth: '100%' }}>
                 <Stack direction="row" justifyContent="space-between" mb={2}>
                     <Typography variant="h4">{table}s Table</Typography>
                     <AddDialog table={table} />
@@ -902,14 +952,6 @@ function Table(props) {
                     rowsPerPageOptions={[10, 25, 50]}
                     pagination
                 />
-                {/* <DataGridContainer>
-                            <DataGrid
-                                rows={items}
-                                columns={columns}
-                                loading={loading}
-                                //checkboxSelection
-                            />
-                        </DataGridContainer> */}
 
                 {open.edit && (
                     <EditDialog
@@ -929,6 +971,13 @@ function Table(props) {
                         confirmDelete={confirmDelete}
                     />
                 )}
+
+                <Snackbar
+                    open={open.error}
+                    autoHideDuration={6000}
+                    message="Unable to complete action"
+                    onClose={() => setOpen({ error: false })}
+                />
             </Box>
         </LocalizationProvider>
     );

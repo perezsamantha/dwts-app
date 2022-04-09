@@ -13,7 +13,9 @@ const danceReducer = (state = initialDanceState, action) => {
                         dance.id === action.payload.id ? action.payload : dance
                     ),
                 ],
-                dance: action.payload.dance,
+                dance: action.payload.dance
+                    ? action.payload.dance
+                    : state.dance,
             };
         case actionType.DANCESEARCH_SUCCESS:
             return {

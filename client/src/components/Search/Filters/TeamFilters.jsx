@@ -17,7 +17,7 @@ import {
     Stack,
     Typography,
 } from '@mui/material';
-import { placements, seasons } from '../../../constants/dropdowns';
+import { placements, seasonNumbers } from '../../../constants/dropdowns';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionType from '../../../constants/actionTypes';
 import { initialTeamState } from '../../../reducers/initialState';
@@ -217,7 +217,7 @@ function TeamFilters() {
                                         <MenuItem disabled value="">
                                             All Seasons
                                         </MenuItem>
-                                        {seasons.map((season) => (
+                                        {seasonNumbers.map((season) => (
                                             <MenuItem
                                                 key={season}
                                                 value={season}

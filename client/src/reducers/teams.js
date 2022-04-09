@@ -13,7 +13,7 @@ const teamReducer = (state = initialTeamState, action) => {
                         team.id === action.payload.id ? action.payload : team
                     ),
                 ],
-                team: action.payload.team,
+                team: action.payload.team ? action.payload.team : state.team,
             };
         case actionType.TEAMSEARCH_SUCCESS:
             return {

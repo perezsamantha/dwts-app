@@ -44,7 +44,6 @@ function TourOverview() {
                                     <TableCell>Season</TableCell>
                                     <TableCell>Name</TableCell>
                                     <TableCell>Duration</TableCell>
-                                    <TableCell>Shows</TableCell>
                                     <TableCell>Pros</TableCell>
                                     <TableCell>Celebs</TableCell>
                                 </TableRow>
@@ -63,13 +62,12 @@ function TourOverview() {
                                         </TableCell>
                                         <TableCell>{tour.name}</TableCell>
                                         <TableCell>
-                                            <Typography variant="caption">
+                                            <Typography variant="body2">
                                                 {getShortDate(tour?.first_show)}{' '}
                                                 -{' '}
                                                 {getShortDate(tour?.last_show)}
                                             </Typography>
                                         </TableCell>
-                                        <TableCell>{tour.num_shows}</TableCell>
                                         <TableCell>
                                             <Stack direction="row" spacing={1}>
                                                 {tour?.pros?.map(

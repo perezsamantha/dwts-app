@@ -1,11 +1,12 @@
 
 CREATE TABLE IF NOT EXISTS episodes(
     id SERIAL NOT NULL,
-    season_id INT NOT NULL,
+    season_id REAL NOT NULL,
     week SMALLINT NOT NULL,
     night SMALLINT,
     theme VARCHAR(30),
     date DATE,
+    extra VARCHAR(250),
     PRIMARY KEY(id),
     UNIQUE (season_id, week, night),
     CONSTRAINT fk_season
@@ -13,6 +14,3 @@ CREATE TABLE IF NOT EXISTS episodes(
             REFERENCES seasons(id)
             ON DELETE CASCADE
 );
-
--- extra?
--- viewership?

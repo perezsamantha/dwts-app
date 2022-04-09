@@ -115,7 +115,6 @@ function EditDialog(props) {
                     case tableType.USER:
                         dispatch(setUserPic(id, data));
                         break;
-                    // not judge, score, dance ?
                     default:
                 }
             });
@@ -163,54 +162,46 @@ function EditDialog(props) {
         props.handleClose();
     };
 
-    return loading ? (
-        <Progress />
-    ) : (
-        <div>
-            <LocalizationProvider dateAdapter={DateAdapter}>
-                {
-                    <Dialog
-                        fullWidth
-                        maxWidth={'lg'}
-                        open={open}
-                        onClose={props.handleClose}
-                    >
-                        <DialogTitle>Update {table}</DialogTitle>
-                        <DialogContent>
-                            <DialogFields
-                                formData={formData}
-                                setFormData={setFormData}
-                                table={table}
-                                handleChange={handleChange}
-                                handleBirthday={handleBirthday}
-                                handleDate={handleDate}
-                                editor={editor}
-                                setEditor={setEditor}
-                                fileData={fileData}
-                                setFileData={setFileData}
-                                dialog={'Edit'}
-                            />
-                        </DialogContent>
-                        <DialogActions>
-                            <Button
-                                onClick={props.handleClose}
-                                variant="contained"
-                                color="error"
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                onClick={handleSubmit}
-                                variant="contained"
-                                color="primary"
-                            >
-                                Update {table}
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
-                }
-            </LocalizationProvider>
-        </div>
+    return (
+        <LocalizationProvider dateAdapter={DateAdapter}>
+            <Dialog
+                fullWidth
+                maxWidth={'lg'}
+                open={open}
+                onClose={props.handleClose}
+            >
+                <DialogTitle>Update {table}</DialogTitle>
+
+                {loading ? (
+                    <Progress />
+                ) : (
+                    <DialogContent>
+                        <DialogFields
+                            formData={formData}
+                            setFormData={setFormData}
+                            table={table}
+                            handleChange={handleChange}
+                            handleBirthday={handleBirthday}
+                            handleDate={handleDate}
+                            editor={editor}
+                            setEditor={setEditor}
+                            fileData={fileData}
+                            setFileData={setFileData}
+                            dialog={'Edit'}
+                        />
+                    </DialogContent>
+                )}
+
+                <DialogActions>
+                    <Button onClick={props.handleClose} color="error">
+                        Cancel
+                    </Button>
+                    <Button onClick={handleSubmit} color="primary">
+                        Update {table}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </LocalizationProvider>
     );
 }
 

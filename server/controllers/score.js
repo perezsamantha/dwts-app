@@ -5,11 +5,43 @@ export const addScore = async (req, res) => {
         const { dance_id, judge_id, value, order, is_guest } = req.body;
 
         const result = await pool.query(
-            `INSERT INTO scores (dance_id, judge_id, value, "order", is_guest) VALUES($1, $2, $3, $4, $5) RETURNING *`,
+            `
+            INSERT INTO scores (
+                dance_id, 
+                judge_id, 
+                value, 
+                "order", 
+                is_guest) 
+            VALUES($1, $2, $3, $4, $5) 
+            RETURNING *
+            `,
             [dance_id, judge_id, value, order, is_guest]
         );
 
-        res.status(200).json(result.rows[0]);
+        const score = await pool.query(
+            `
+            SELECT s.*,
+                ROW_TO_JSON(j) AS judge,
+                COALESCE((ARRAY_AGG(ROW_TO_JSON(d)))[1], '[]') AS dance 
+            FROM scores s
+            LEFT JOIN judges j
+            ON s.judge_id = j.id
+            LEFT JOIN (
+                SELECT d.*,
+                        ROW_TO_JSON(e) AS episode
+                    FROM dances d
+                    LEFT JOIN episodes e
+                    ON d.episode_id = e.id
+                    GROUP BY d.id, e.id
+            ) d
+            ON s.dance_id = d.id
+            WHERE s.id = $1
+            GROUP BY s.id, j.id
+            `,
+            [result.rows[0].id]
+        );
+
+        res.status(200).json(score.rows[0]);
     } catch (error) {
         res.status(500).json({ message: error });
     }
@@ -17,10 +49,28 @@ export const addScore = async (req, res) => {
 
 export const fetchScores = async (req, res) => {
     try {
-        const scores = await pool.query('SELECT * FROM scores');
+        const scores = await pool.query(`
+        SELECT s.*,
+            ROW_TO_JSON(j) AS judge,
+            COALESCE((ARRAY_AGG(ROW_TO_JSON(d)))[1], '[]') AS dance 
+        FROM scores s
+        LEFT JOIN judges j
+        ON s.judge_id = j.id
+        LEFT JOIN (
+            SELECT d.*,
+                    ROW_TO_JSON(e) AS episode
+                FROM dances d
+                LEFT JOIN episodes e
+                ON d.episode_id = e.id
+                GROUP BY d.id, e.id
+        ) d
+        ON s.dance_id = d.id
+        GROUP BY s.id, j.id
+        `);
 
         res.status(200).json(scores.rows);
     } catch (error) {
+        console.log(error.message);
         res.status(500).json({ message: error.message });
     }
 };
@@ -29,27 +79,34 @@ export const findScoreById = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const score = await pool.query('SELECT * FROM scores WHERE id = $1', [
-            id,
-        ]);
+        const score = await pool.query(
+            `
+            SELECT s.*,
+                ROW_TO_JSON(j) AS judge,
+                COALESCE((ARRAY_AGG(ROW_TO_JSON(d)))[1], '[]') AS dance 
+            FROM scores s
+            LEFT JOIN judges j
+            ON s.judge_id = j.id
+            LEFT JOIN (
+                SELECT d.*,
+                        ROW_TO_JSON(e) AS episode
+                    FROM dances d
+                    LEFT JOIN episodes e
+                    ON d.episode_id = e.id
+                    GROUP BY d.id, e.id
+            ) d
+            ON s.dance_id = d.id
+            WHERE s.id = $1
+            GROUP BY s.id, j.id
+            `,
+            [id]
+        );
 
         res.status(200).json(score.rows[0]);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
-
-// export const findScoresByDance = async (req, res) => {
-//     const { id } = req.params;
-
-//     try {
-//         const score = await pool.query('SELECT * FROM scores WHERE dance_id = $1', [id]);
-
-//         res.status(200).json(score.rows);
-//     } catch (error) {
-//         res.status(500).json({ message: error.message })
-//     }
-// }
 
 export const updateScore = async (req, res) => {
     const { id } = req.params;
@@ -58,11 +115,42 @@ export const updateScore = async (req, res) => {
         const { dance_id, judge_id, value, order, is_guest } = req.body;
 
         const result = await pool.query(
-            'UPDATE scores SET dance_id = $1, judge_id = $2, value = $3, "order" = $4, is_guest = $5 WHERE id = $6 RETURNING *',
+            `
+            UPDATE scores 
+            SET dance_id = $1, 
+                judge_id = $2, 
+                value = $3, 
+                "order" = $4, 
+                is_guest = $5 
+            WHERE id = $6 
+            RETURNING *`,
             [dance_id, judge_id, value, order, is_guest, id]
         );
 
-        res.status(200).json(result.rows[0]);
+        const score = await pool.query(
+            `
+            SELECT s.*,
+                ROW_TO_JSON(j) AS judge,
+                COALESCE((ARRAY_AGG(ROW_TO_JSON(d)))[1], '[]') AS dance 
+            FROM scores s
+            LEFT JOIN judges j
+            ON s.judge_id = j.id
+            LEFT JOIN (
+                SELECT d.*,
+                        ROW_TO_JSON(e) AS episode
+                    FROM dances d
+                    LEFT JOIN episodes e
+                    ON d.episode_id = e.id
+                    GROUP BY d.id, e.id
+            ) d
+            ON s.dance_id = d.id
+            WHERE s.id = $1
+            GROUP BY s.id, j.id
+            `,
+            [result.rows[0].id]
+        );
+
+        res.status(200).json(score.rows[0]);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -72,7 +160,13 @@ export const deleteScore = async (req, res) => {
     const { id } = req.params;
 
     try {
-        await pool.query('DELETE FROM scores WHERE id = $1', [id]);
+        await pool.query(
+            `
+            DELETE FROM scores 
+            WHERE id = $1
+            `,
+            [id]
+        );
 
         res.status(200).json({ message: 'Score successfully deleted.' });
     } catch (error) {
@@ -100,15 +194,6 @@ export const setUserScore = async (req, res) => {
             `,
             [id, req.userId]
         );
-
-        // const user = await pool.query(
-        //     `
-        //     SELECT id, username
-        //     FROM users u
-        //     WHERE id = $1
-        //     `,
-        //     [req.userId]
-        // );
 
         if (query.rows[0].exists) {
             await pool.query(

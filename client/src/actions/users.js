@@ -1,6 +1,6 @@
 import * as actionType from '../constants/actionTypes';
 import * as api from '../api/index.js';
-import { getUserData } from './multipleActions';
+//import { getUserData } from './multipleActions';
 
 export const addUser = (user) => async (dispatch) => {
     dispatch({ type: actionType.USERADD_REQUEST });
@@ -40,17 +40,17 @@ export const fetchUsers = () => async (dispatch) => {
     try {
         const { data } = await api.fetchUsers();
 
-        Promise.resolve(dispatch(getUserData())).then(() =>
-            dispatch({
-                type: actionType.USERSEARCH_SUCCESS,
-                payload: data,
-            })
-        );
+        // Promise.resolve(dispatch(getUserData())).then(() =>
+        //     dispatch({
+        //         type: actionType.USERSEARCH_SUCCESS,
+        //         payload: data,
+        //     })
+        // );
 
-        // dispatch({
-        //     type: actionType.USERSEARCH_SUCCESS,
-        //     payload: data,
-        // });
+        dispatch({
+            type: actionType.USERSEARCH_SUCCESS,
+            payload: data,
+        });
     } catch (error) {
         dispatch({
             type: actionType.USERSEARCH_FAILURE,

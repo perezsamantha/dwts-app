@@ -13,7 +13,7 @@ const proReducer = (state = initialProState, action) => {
                         pro.id === action.payload.id ? action.payload : pro
                     ),
                 ],
-                pro: action.payload.pro,
+                pro: action.payload.pro ? action.payload.pro : state.pro,
             };
         case actionType.PROSEARCH_SUCCESS:
             return { ...state, pros: action.payload };

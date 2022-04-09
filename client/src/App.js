@@ -37,7 +37,7 @@ function App() {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const role = useSelector((state) => state.auth.authData?.user_role);
+    const role = useSelector((state) => state.auth.authData?.role);
     const fetching = useSelector((state) => state.auth.fetching);
     const authError = useSelector((state) => state.errors.AUTHFETCH);
 

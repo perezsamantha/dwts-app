@@ -59,6 +59,36 @@ export const getMonthAndDay = (val) => {
     return monthStr + ' ' + dateStr;
 };
 
+export const getUserBirthday = (month, day) => {
+    if (month === null && day === null) {
+        return '';
+    }
+
+    const i = day;
+    let monthStr,
+        dateStr = '';
+
+    if (month) {
+        monthStr = monthNames[month - 1];
+    }
+
+    if (day) {
+        var j = i % 10,
+            k = i % 100;
+        if (j === 1 && k !== 11) {
+            dateStr = i + 'st';
+        } else if (j === 2 && k !== 12) {
+            dateStr = i + 'nd';
+        } else if (j === 3 && k !== 13) {
+            dateStr = i + 'rd';
+        } else {
+            dateStr = i + 'th';
+        }
+    }
+
+    return monthStr + ' ' + dateStr;
+};
+
 export const getMonthDayAndYear = (val) => {
     const date = new Date(val);
     const month = date.getMonth();
@@ -160,6 +190,10 @@ export const getFullCelebName = (id, celebs) => {
 };
 
 export const getFullName = (person) => {
+    if (!person) {
+        return '';
+    }
+
     let str = '';
 
     if (person?.last_name) {
@@ -172,6 +206,10 @@ export const getFullName = (person) => {
 };
 
 export const getFullTeamName = (celeb, pro) => {
+    if (!celeb || !pro) {
+        return '';
+    }
+
     const celebName = celeb?.last_name
         ? celeb.first_name + ' ' + celeb.last_name
         : celeb.first_name;
@@ -422,6 +460,20 @@ export const getDanceName = (dance) => {
         : `${dance.song_title}`;
 
     str = ep + ' | ' + style + ' - ' + song;
+
+    return str;
+};
+
+export const getShortDanceName = (dance) => {
+    let str = '';
+
+    const style = `${dance.style}`;
+
+    const song = dance?.song_artist
+        ? `${dance.song_title} by ${dance.song_artist}`
+        : `${dance.song_title}`;
+
+    str = style + ' - ' + song;
 
     return str;
 };

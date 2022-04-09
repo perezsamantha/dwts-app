@@ -29,6 +29,11 @@ router.delete(
     deleteScore
 );
 
-router.patch('/user/:id', auth, setUserScore);
+router.patch(
+    '/user/:id',
+    auth,
+    grantAccess('updateOwn', 'user_score'),
+    setUserScore
+);
 
 export default router;

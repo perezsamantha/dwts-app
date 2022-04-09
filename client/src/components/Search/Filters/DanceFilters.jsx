@@ -17,7 +17,12 @@ import {
     Stack,
     Typography,
 } from '@mui/material';
-import { seasons, styles, themes, weeks } from '../../../constants/dropdowns';
+import {
+    seasonNumbers,
+    styles,
+    themes,
+    weeks,
+} from '../../../constants/dropdowns';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionType from '../../../constants/actionTypes';
 import { createLoadingSelector } from '../../../api/selectors';
@@ -356,7 +361,7 @@ function DanceFilters() {
                                         <MenuItem disabled value="">
                                             All Seasons
                                         </MenuItem>
-                                        {seasons.map((season) => (
+                                        {seasonNumbers.map((season) => (
                                             <MenuItem
                                                 key={season}
                                                 value={season}

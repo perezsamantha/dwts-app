@@ -25,78 +25,24 @@ export const styles = [
     'Lindy Hop',
     'Fusion',
     'Team',
-];
+].sort((a, b) => a.localeCompare(b));
 
-export const seasons = Array.from({ length: 30 }, (_, i) => i + 1);
-// juniors?
+let seasons = Array.from({ length: 30 }, (_, i) => i + 1);
+seasons.splice(27, 0, 27.5);
+
+export const seasonNumbers = seasons;
 
 export const weeks = Array.from({ length: 11 }, (_, i) => i + 1);
 
-// export const placements = Array.from({ length: 16 }, (_, i) => i + 1);
+export const placements = Array.from({ length: 16 }, (_, i) => i + 1);
 
-// turn into array of objects?
-export const placements = [
-    // "1st",
-    // "2nd",
-    // "3rd",
-    // "4th",
-    // "5th",
-    // "6th",
-    // "7th",
-    // "8th",
-    // "9th",
-    // "10th",
-    // "11th",
-    // "12th",
-    // "13th",
-    // "14th",
-    // "15th",
-    // "16th",
-    //null,
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
-];
+export const runningOrders = Array.from({ length: 16 }, (_, i) => i + 1);
 
-export const themes = ['No theme', 'Disney', 'Switch-Up', 'Halloween', 'Trio'];
+export const scores = Array.from({ length: 10 }, (_, i) => i + 1);
 
-export const guestDancers = [];
-
-export const scores = [null, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-export const runningOrders = [
-    // "1st",
-    // "2nd",
-    // "3rd",
-    // "4th",
-    // "5th",
-    // "6th",
-    // "7th",
-    // "8th",
-    // "9th",
-    // "10th",
-    // "11th",
-    // "12th",
-    // "13th",
-    // "14th",
-    // "15th",
-    // "16th",
-    null,
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '10',
-    '11',
-    '12',
-    '13',
-    '14',
-    '15',
-    '16',
-];
+export const themes = ['Disney', 'Switch-Up', 'Halloween', 'Trio'].sort(
+    (a, b) => a.localeCompare(b)
+);
 
 // 4'0 to 7'3
 // lower it if doing juniors by height during season ??
@@ -104,22 +50,24 @@ export const heightsInInches = Array.from({ length: 40 }, (_, i) => i + 48);
 
 export const agesInYears = Array.from({ length: 101 }, (_, i) => i);
 
-export const hosts = [];
-export const judges = [];
+export const hosts = ['Tom Bergeron', 'Tyra Banks'];
 
-export const guestJudges = [];
+export const cohosts = [
+    'Lisa Canning',
+    'Samantha Harris',
+    'Brooke Burke',
+    'Erin Andrews',
+];
 
 export const genders = [
-    //null,
     'Male',
     'Female',
     //'Other',
-    // more inclusive?
 ];
 
 export const scoreOrders = Array.from({ length: 5 }, (_, i) => i + 1);
 
-export const roles = ['fan', 'pro', 'admin'];
+export const roles = ['fan', 'pro', 'moderator', 'admin'];
 
 export const monthNames = [
     'January',
@@ -135,3 +83,7 @@ export const monthNames = [
     'November',
     'December',
 ];
+
+export const months = Array.from({ length: 12 }, (_, i) => i + 1);
+
+export const days = Array.from({ length: 31 }, (_, i) => i + 1);
