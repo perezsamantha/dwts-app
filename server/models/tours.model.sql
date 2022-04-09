@@ -6,8 +6,7 @@ CREATE TABLE IF NOT EXISTS tours(
     season_id INT NOT NULL,
     first_show DATE,
     last_show DATE,
-    num_shows SMALLINT,
-    extra VARCHAR(100),
+    extra VARCHAR(250),
     PRIMARY KEY(id),
     UNIQUE (season_id),
     CONSTRAINT fk_season

@@ -1,7 +1,7 @@
 
 CREATE TABLE IF NOT EXISTS season_likes(
     id SERIAL NOT NULL,
-    season_id INT,
+    season_id REAL,
     user_id INT,
     PRIMARY KEY(id),
     CONSTRAINT fk_season

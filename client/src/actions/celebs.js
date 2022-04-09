@@ -9,9 +9,13 @@ export const addCeleb = (celeb) => async (dispatch) => {
 
         dispatch({ type: actionType.CELEBADD_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: actionType.CELEBADD_FAILURE, payload: error, error: true });
+        dispatch({
+            type: actionType.CELEBADD_FAILURE,
+            payload: error,
+            error: true,
+        });
     }
-}
+};
 
 export const updateCeleb = (id, celeb) => async (dispatch) => {
     dispatch({ type: actionType.CELEBUPDATE_REQUEST });
@@ -21,9 +25,13 @@ export const updateCeleb = (id, celeb) => async (dispatch) => {
 
         dispatch({ type: actionType.CELEBUPDATE_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: actionType.CELEBUPDATE_FAILURE, payload: error, error: true });
+        dispatch({
+            type: actionType.CELEBUPDATE_FAILURE,
+            payload: error,
+            error: true,
+        });
     }
-}
+};
 
 export const setCelebPic = (id, image) => async (dispatch) => {
     dispatch({ type: actionType.CELEBUPDATE_REQUEST });
@@ -33,9 +41,13 @@ export const setCelebPic = (id, image) => async (dispatch) => {
 
         dispatch({ type: actionType.CELEBUPDATE_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: actionType.CELEBUPDATE_FAILURE, payload: error, error: true });
+        dispatch({
+            type: actionType.CELEBUPDATE_FAILURE,
+            payload: error,
+            error: true,
+        });
     }
-}
+};
 
 export const findCelebById = (id) => async (dispatch) => {
     dispatch({ type: actionType.CELEBFIND_REQUEST });
@@ -45,9 +57,13 @@ export const findCelebById = (id) => async (dispatch) => {
 
         dispatch({ type: actionType.CELEBFIND_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: actionType.CELEBFIND_FAILURE, payload: error, error: true });
+        dispatch({
+            type: actionType.CELEBFIND_FAILURE,
+            payload: error,
+            error: true,
+        });
     }
-}
+};
 
 export const fetchCelebs = () => async (dispatch) => {
     dispatch({ type: actionType.CELEBSEARCH_REQUEST });
@@ -57,9 +73,13 @@ export const fetchCelebs = () => async (dispatch) => {
 
         dispatch({ type: actionType.CELEBSEARCH_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: actionType.CELEBSEARCH_FAILURE, payload: error, error: true });
+        dispatch({
+            type: actionType.CELEBSEARCH_FAILURE,
+            payload: error,
+            error: true,
+        });
     }
-}
+};
 
 export const deleteCeleb = (id) => async (dispatch) => {
     dispatch({ type: actionType.CELEBDELETE_REQUEST });
@@ -69,6 +89,10 @@ export const deleteCeleb = (id) => async (dispatch) => {
 
         dispatch({ type: actionType.CELEBDELETE_SUCCESS, payload: id });
     } catch (error) {
-        dispatch({ type: actionType.CELEBDELETE_FAILURE, payload: error, error: true });
+        dispatch({
+            type: actionType.CELEBDELETE_FAILURE,
+            payload: error,
+            error: true,
+        });
     }
-}
+};

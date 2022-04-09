@@ -14,6 +14,7 @@ import {
     verifyEmail,
     fetchAuthData,
     logout,
+    findUserByUsername,
 } from '../controllers/user.js';
 
 import uploadCoverPicture from '../middleware/uploadCoverPicture.js';
@@ -27,8 +28,14 @@ router.post('/signUp', signUp);
 router.get('/authData', auth, fetchAuthData);
 router.post('/logout', logout);
 router.post('/add', auth, grantAccess('createAny', 'user'), addUser);
-router.get('/', auth, grantAccess('readAny', 'user'), fetchUsers);
-router.get('/:id', auth, grantAccess('readAny', 'user'), findUserById);
+router.get('/', auth, grantAccess('readAny', 'user_admin'), fetchUsers);
+router.get('/:id', auth, grantAccess('readAny', 'user_admin'), findUserById);
+router.get(
+    '/:username',
+    auth,
+    grantAccess('readAny', 'user'),
+    findUserByUsername
+);
 router.post('/search', auth, grantAccess('readAny', 'user'), searchUsers);
 router.patch('/update/:id', auth, grantAccess('updateAny', 'user'), updateUser);
 router.patch(

@@ -4,7 +4,7 @@ import { initialUserState } from './initialState';
 const userReducer = (state = initialUserState, action) => {
     switch (action.type) {
         case actionType.USERADD_SUCCESS:
-            return { ...state, users: [...state.users, action.payload.result] };
+            return { ...state, users: [...state.users, action.payload] };
         case actionType.USERUPDATE_SUCCESS:
             return {
                 ...state,

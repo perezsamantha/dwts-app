@@ -18,7 +18,21 @@ export const addPro = async (req, res) => {
         } = req.body;
 
         const result = await pool.query(
-            `INSERT INTO pros (first_name, last_name, birthday, height, gender, twitter, instagram, tiktok, is_junior) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
+            `
+            INSERT INTO pros (
+                first_name, 
+                last_name, 
+                birthday, 
+                height, 
+                gender, 
+                twitter, 
+                instagram, 
+                tiktok, 
+                is_junior
+            ) 
+            VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) 
+            RETURNING *
+            `,
             [
                 first_name,
                 last_name,
@@ -140,22 +154,6 @@ export const updatePro = async (req, res) => {
             is_junior,
         } = req.body;
 
-        // const result = await pool.query(
-        //     'UPDATE pros SET first_name = $1, last_name = $2, birthday = $3, height = $4, gender = $5, twitter = $6, instagram = $7, tiktok = $8, is_junior = $9 WHERE id = $10 RETURNING *',
-        //     [
-        //         first_name,
-        //         last_name,
-        //         birthday,
-        //         height,
-        //         gender,
-        //         twitter,
-        //         instagram,
-        //         tiktok,
-        //         is_junior,
-        //         id,
-        //     ]
-        // );
-
         await pool.query(
             'UPDATE pros SET first_name = $1, last_name = $2, birthday = $3, height = $4, gender = $5, twitter = $6, instagram = $7, tiktok = $8, is_junior = $9 WHERE id = $10 RETURNING *',
             [
@@ -226,7 +224,12 @@ export const setProPic = async (req, res) => {
             }/o/${encodeURI(blob.name)}?alt=media`;
 
             const result = await pool.query(
-                'UPDATE pros SET cover_pic = $1 WHERE id = $2 RETURNING *',
+                `
+                UPDATE pros 
+                SET cover_pic = $1 
+                WHERE id = $2 
+                RETURNING *
+                `,
                 [publicUrl, req.params.id]
             );
 
@@ -243,7 +246,13 @@ export const deletePro = async (req, res) => {
     const { id } = req.params;
 
     try {
-        await pool.query('DELETE FROM pros WHERE id = $1', [id]);
+        await pool.query(
+            `
+            DELETE FROM pros 
+            WHERE id = $1
+            `,
+            [id]
+        );
 
         res.status(200).json({ message: 'Pro successfully deleted.' });
     } catch (error) {
@@ -280,13 +289,12 @@ export const addPic = async (req, res) => {
                 bucket.name
             }/o/${encodeURI(blob.name)}?alt=media`;
 
-            // const result = await pool.query(
-            //     'UPDATE pros SET pictures = array_append(pictures, $1) WHERE id = $2 RETURNING *',
-            //     [publicUrl, req.params.id]
-            // );
-
             await pool.query(
-                'UPDATE pros SET pictures = array_append(pictures, $1) WHERE id = $2',
+                `
+                UPDATE pros 
+                SET pictures = array_append(pictures, $1) 
+                WHERE id = $2
+                `,
                 [publicUrl, id]
             );
 
@@ -319,7 +327,6 @@ export const addPic = async (req, res) => {
     }
 };
 
-// TODO
 export const likePro = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -329,7 +336,13 @@ export const likePro = async (req, res, next) => {
         }
 
         const query = await pool.query(
-            'select exists(SELECT 1 FROM pro_likes WHERE pro_id = $1 AND user_id = $2)',
+            `
+            SELECT EXISTS(
+                SELECT 1 
+                FROM pro_likes 
+                WHERE pro_id = $1 
+                    AND user_id = $2
+            )`,
             [id, req.userId]
         );
 
@@ -344,13 +357,22 @@ export const likePro = async (req, res, next) => {
 
         if (query.rows[0].exists) {
             await pool.query(
-                'DELETE FROM pro_likes WHERE pro_id = $1 AND user_id = $2',
+                `
+                DELETE FROM pro_likes 
+                WHERE pro_id = $1 
+                    AND user_id = $2
+                `,
                 [id, req.userId]
             );
             res.status(200).json({ user: user.rows[0], type: 'unlike' });
         } else {
             await pool.query(
-                'INSERT INTO pro_likes (pro_id, user_id) VALUES($1, $2)',
+                `
+                INSERT INTO pro_likes (
+                    pro_id, 
+                    user_id
+                ) 
+                VALUES($1, $2)`,
                 [id, req.userId]
             );
             res.status(200).json({ user: user.rows[0], type: 'like' });

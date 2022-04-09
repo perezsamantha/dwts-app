@@ -22,7 +22,17 @@ export const signUp = async (req, res) => {
         const hashed_password = await bcrypt.hash(password, 12);
 
         const result = await pool.query(
-            `INSERT INTO users (username, email, password, email_verified, user_role) VALUES($1, $2, $3, default, default) RETURNING *`,
+            `
+            INSERT INTO users (
+                username, 
+                email, 
+                password, 
+                email_verified, 
+                "role"
+            ) 
+            VALUES($1, $2, $3, default, default) 
+            RETURNING *
+            `,
             [username, email, hashed_password]
         );
 
@@ -30,7 +40,7 @@ export const signUp = async (req, res) => {
 
         res.status(200).json({ message: messages.verify });
     } catch (error) {
-        res.status(500).json({ message: error });
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -39,7 +49,11 @@ export const signIn = async (req, res) => {
         const { username, password } = req.body;
 
         const existing_user = await pool.query(
-            'SELECT * FROM users WHERE username = $1',
+            `
+            SELECT * 
+            FROM users 
+            WHERE username = $1
+            `,
             [username]
         );
 
@@ -114,10 +128,14 @@ export const signIn = async (req, res) => {
 
             const new_login = new Date();
 
-            await pool.query('UPDATE users SET last_login = $1 WHERE id = $2', [
-                new_login,
-                user.rows[0].id,
-            ]);
+            await pool.query(
+                `
+                UPDATE users 
+                SET last_login = $1 
+                WHERE id = $2
+                `,
+                [new_login, user.rows[0].id]
+            );
 
             const token = jwt.sign(
                 {
@@ -151,7 +169,7 @@ export const signIn = async (req, res) => {
 
         // res.status(200).json({ result: existing_user.rows[0], token });
     } catch (error) {
-        res.status(500).json({ message: error });
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -159,9 +177,14 @@ export const verifyEmail = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const user = await pool.query('SELECT * FROM users WHERE id = $1', [
-            id,
-        ]);
+        const user = await pool.query(
+            `
+            SELECT * 
+            FROM users 
+            WHERE id = $1
+            `,
+            [id]
+        );
 
         if (user.rows.length === 0)
             return res.status(404).json({ message: 'User does not exist.' });
@@ -195,7 +218,12 @@ export const verifyEmail = async (req, res) => {
         }
 
         const result = await pool.query(
-            'UPDATE users SET email_verified = $1 WHERE id = $2 RETURNING *',
+            `
+            UPDATE users 
+            SET email_verified = $1 
+            WHERE id = $2 
+            RETURNING *
+            `,
             [true, id]
         );
 
@@ -222,19 +250,14 @@ export const verifyEmail = async (req, res) => {
             .status(200)
             .json({ message: messages.verified });
     } catch (error) {
-        res.status(500).json({ message: error });
+        res.status(500).json({ message: error.message });
     }
 };
 
 export const fetchAuthData = async (req, res) => {
-    //const { id } = req.params;
     const id = req.userId;
 
     try {
-        // const user = await pool.query('SELECT * FROM users WHERE id = $1', [
-        //     id,
-        // ]);
-
         const user = await pool.query(
             `
             SELECT u.id, 
@@ -245,8 +268,9 @@ export const fetchAuthData = async (req, res) => {
                 u.watching_since, 
                 u.twitter, 
                 u.instagram, 
-                u.birthday,
-                u.user_role,
+                u.birthday_month,
+                u.birthday_day,
+                u.role,
                 JSON_BUILD_OBJECT('pros', 
                     COALESCE((ARRAY_AGG(pl.pros))[1], '[]'), 
                     'teams', 
@@ -381,24 +405,38 @@ export const addUser = async (req, res) => {
             username,
             email,
             password,
-            confirm_password,
             nickname,
             watching_since,
             twitter,
             instagram,
             tiktok,
-            birthday,
+            birthday_month,
+            birthday_day,
         } = req.body;
 
-        // return message if email and/or username already exists in database
-
-        if (password != confirm_password)
-            return res.status(400).json({ message: 'Passwords do not match.' });
+        // TODO: return message if email and/or username already exists in database
 
         const hashed_password = await bcrypt.hash(password, 12);
 
         const result = await pool.query(
-            `INSERT INTO users (username, email, password, nickname, email_verified, watching_since, twitter, instagram, tiktok, birthday, user_role) VALUES($1, $2, $3, $4, default, $5, $6, $7, $8, $9, default) RETURNING *`,
+            `
+            INSERT INTO users (
+                username, 
+                email, 
+                password, 
+                nickname, 
+                email_verified, 
+                watching_since, 
+                twitter, 
+                instagram, 
+                tiktok, 
+                birthday_month,
+                birthday_day, 
+                "role"
+            ) 
+            VALUES($1, $2, $3, $4, default, $5, $6, $7, $8, $9, $10, default) 
+            RETURNING *
+            `,
             [
                 username,
                 email,
@@ -408,25 +446,26 @@ export const addUser = async (req, res) => {
                 twitter,
                 instagram,
                 tiktok,
-                birthday,
+                birthday_month,
+                birthday_day,
             ]
         );
 
-        sendEmail(email, verify(result.rows[0].id));
+        //sendEmail(email, verify(result.rows[0].id));
 
-        res.status(200).json({
-            result: result.rows[0],
-            message: messages.verify,
-        });
+        // res.status(200).json({
+        //     result: result.rows[0],
+        //     message: messages.verify,
+        // });
+
+        res.status(200).json(result.rows[0]);
     } catch (error) {
-        res.status(500).json({ message: error });
+        res.status(500).json({ message: error.message });
     }
 };
 
 export const fetchUsers = async (req, res) => {
     try {
-        // const users = await pool.query('SELECT * FROM users');
-
         const users = await pool.query(
             `
             SELECT u.*, 
@@ -475,15 +514,42 @@ export const fetchUsers = async (req, res) => {
     }
 };
 
-// TODO: find by username in addition?
 export const findUserById = async (req, res) => {
     const { id } = req.params;
 
     try {
-        // const user = await pool.query('SELECT * FROM users WHERE id = $1', [
-        //     id,
-        // ]);
+        const user = await pool.query(
+            `
+            SELECT u.id, 
+                u.cover_pic, 
+                u.username, 
+                u.email,
+                u.email_verified,
+                u.nickname, 
+                u.watching_since, 
+                u.twitter, 
+                u.instagram, 
+                u.tiktok,
+                u.birthday_month,
+                u.birthday_day,
+                u.role
+            FROM users u 
+            WHERE u.id = $1
+            GROUP BY u.id
+            `,
+            [id]
+        );
 
+        res.status(200).json(user.rows[0]);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const findUserByUsername = async (req, res) => {
+    const { username } = req.params;
+
+    try {
         const user = await pool.query(
             `
             SELECT u.id, 
@@ -493,7 +559,10 @@ export const findUserById = async (req, res) => {
                 u.watching_since, 
                 u.twitter, 
                 u.instagram, 
-                u.birthday,
+                u.tiktok,
+                u.birthday_month,
+                u.birthday_day,
+                u.role,
                 JSON_BUILD_OBJECT('pros', 
                     COALESCE((ARRAY_AGG(pl.pros))[1], '[]'), 
                     'teams', 
@@ -508,7 +577,6 @@ export const findUserById = async (req, res) => {
                 FROM pro_likes pl
                 LEFT JOIN pros p
                 ON pl.pro_id = p.id
-                WHERE pl.user_id = $1
                 GROUP BY pl.user_id
             ) pl 
             ON u.id = pl.user_id
@@ -528,7 +596,6 @@ export const findUserById = async (req, res) => {
                     GROUP BY t.id, p.id, c.id 
                 ) t
                 ON tl.team_id = t.id
-                WHERE tl.user_id = $1
                 GROUP BY tl.user_id
             ) tl 
             ON u.id = tl.user_id
@@ -590,14 +657,13 @@ export const findUserById = async (req, res) => {
                     GROUP BY d.id
                 ) d
                 ON dl.dance_id = d.id
-                WHERE dl.user_id = $1
                 GROUP BY dl.user_id
             ) dl 
             ON u.id = dl.user_id
-            WHERE u.id = $1
+            WHERE u.username = $1
             GROUP BY u.id
             `,
-            [id]
+            [username]
         );
 
         res.status(200).json(user.rows[0]);
@@ -611,14 +677,19 @@ export const searchUsers = async (req, res) => {
     const { search } = req.body;
 
     try {
-        // const users = await pool.query(
-        //     `SELECT * FROM users WHERE username || ' ' || nickname ILIKE $1 OR nickname IS NULL ORDER BY username`,
-        //     [`%${search}%`]
-        // );
-
         const users = await pool.query(
             `
-            SELECT u.*, 
+            SELECT u.id, 
+                u.cover_pic, 
+                u.username, 
+                u.nickname, 
+                u.watching_since, 
+                u.twitter, 
+                u.instagram, 
+                u.tiktok,
+                u.birthday_month,
+                u.birthday_day, 
+                u.role,
                 JSON_BUILD_OBJECT('pros', 
                     COALESCE((ARRAY_AGG(pl.pros))[1], '[]'), 
                     'teams', 
@@ -672,23 +743,36 @@ export const updateUser = async (req, res) => {
 
     try {
         const {
-            cover_pic,
             username,
             email,
-            password,
-            confirm_password,
             nickname,
             email_verified,
             watching_since,
             twitter,
             instagram,
             tiktok,
-            birthday,
-            user_role,
+            birthday_month,
+            birthday_day,
+            role,
         } = req.body;
 
         const result = await pool.query(
-            `UPDATE users SET username = $1, email = $2, nickname = $3, email_verified = $4, watching_since = $5, twitter = $6, instagram = $7, tiktok = $8, birthday = $9, user_role = $10 WHERE id = $11 RETURNING *`,
+            `
+            UPDATE users 
+            SET username = $1, 
+                email = $2, 
+                nickname = $3, 
+                email_verified = $4, 
+                watching_since = $5, 
+                twitter = $6, 
+                instagram = $7, 
+                tiktok = $8, 
+                birthday_month = $9, 
+                birthday_day = $10,
+                "role" = $11 
+            WHERE id = $12
+            RETURNING *
+            `,
             [
                 username,
                 email,
@@ -698,8 +782,9 @@ export const updateUser = async (req, res) => {
                 twitter,
                 instagram,
                 tiktok,
-                birthday,
-                user_role,
+                birthday_month,
+                birthday_day,
+                role,
                 id,
             ]
         );
@@ -739,7 +824,12 @@ export const setUserPic = async (req, res) => {
             }/o/${encodeURI(blob.name)}?alt=media`;
 
             const result = await pool.query(
-                'UPDATE users SET cover_pic = $1 WHERE id = $2 RETURNING *',
+                `
+                UPDATE users 
+                SET cover_pic = $1 
+                WHERE id = $2 
+                RETURNING *
+                `,
                 [publicUrl, req.params.id]
             );
 
@@ -756,7 +846,13 @@ export const deleteUser = async (req, res) => {
     const { id } = req.params;
 
     try {
-        await pool.query('DELETE FROM users WHERE id = $1', [id]);
+        await pool.query(
+            `
+            DELETE FROM users 
+            WHERE id = $1
+            `,
+            [id]
+        );
 
         res.status(200).json({ message: 'User successfully deleted.' });
     } catch (error) {
@@ -767,18 +863,23 @@ export const deleteUser = async (req, res) => {
 export const grantAccess = function (action, resource) {
     return async (req, res, next) => {
         try {
-            const user = await pool.query('SELECT * FROM users WHERE id = $1', [
-                req.userId,
-            ]);
+            const user = await pool.query(
+                `
+                SELECT role 
+                FROM users 
+                WHERE id = $1
+                `,
+                [req.userId]
+            );
 
-            const permission = ac.can(user.rows[0].user_role)[action](resource);
+            const permission = ac.can(user.rows[0].role)[action](resource);
 
             if (!permission.granted) {
                 return res.status(401).json({ message: 'Invalid permission' });
             }
             next();
         } catch (error) {
-            res.status(500).json({ message: error });
+            res.status(500).json({ message: error.message });
         }
     };
 };

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
     Dialog,
-    DialogTitle,
     DialogContent,
     DialogActions,
     Button,
@@ -11,12 +10,10 @@ import {
     Switch,
 } from '@mui/material';
 import EditAccountFields from './EditAccountFields';
-import * as actionType from '../../constants/actionTypes';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RiInformationLine, RiUserSettingsLine } from 'react-icons/ri';
 import CloseIcon from '@mui/icons-material/Close';
-import LogoutIcon from '@mui/icons-material/Logout';
 import { BsBookmarkStar } from 'react-icons/bs';
 import styled from '@emotion/styled';
 import AppInfo from './AppInfo';
@@ -79,7 +76,7 @@ function AccountInfo(props) {
                         />
                     </Box>
 
-                    {user.user_role === 'admin' && (
+                    {user.role === 'admin' && (
                         <Box>
                             <Button
                                 color="inherit"

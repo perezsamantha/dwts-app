@@ -50,9 +50,9 @@ export const getTourCastData = () => async (dispatch) => {
         .then(() => dispatch(fetchCelebs()));
 };
 
-export const getUserData = () => async (dispatch) => {
-    Promise.resolve(dispatch(fetchSeasons()));
-};
+// export const getUserData = () => async (dispatch) => {
+//     Promise.resolve(dispatch(fetchSeasons()));
+// };
 
 // not the most efficient
 export const getAllData = () => async (dispatch) => {

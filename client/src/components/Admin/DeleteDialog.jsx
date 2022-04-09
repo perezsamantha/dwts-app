@@ -9,8 +9,13 @@ import {
     Button,
 } from '@mui/material';
 import * as tableType from '../../constants/tableTypes';
-import DataGetter from '../shared/DataGetter';
 import Progress from '../shared/Progress';
+import {
+    getDanceName,
+    getFullName,
+    getFullTeamName,
+    getSeasonAndWeek,
+} from '../shared/functions';
 
 function DeleteDialog(props) {
     const item = props.item;
@@ -19,12 +24,30 @@ function DeleteDialog(props) {
 
     const loading = useSelector((state) => {
         switch (table) {
-            case 'Celeb':
+            case tableType.CELEB:
                 return state.loading.CELEBFIND;
-            case 'Pro':
+            case tableType.PRO:
                 return state.loading.PROFIND;
+            case tableType.SEASON:
+                return state.loading.SEASONFIND;
+            case tableType.EPISODE:
+                return state.loading.EPISODEFIND;
             case tableType.TEAM:
                 return state.loading.TEAMFIND;
+            case tableType.DANCE:
+                return state.loading.DANCEFIND;
+            case tableType.JUDGE:
+                return state.loading.JUDGEFIND;
+            case tableType.SCORE:
+                return state.loading.SCOREFIND;
+            case tableType.DANCER:
+                return state.loading.DANCERFIND;
+            case tableType.TOUR:
+                return state.loading.TOURFIND;
+            case tableType.TOURCAST:
+                return state.loading.TOURCASTFIND;
+            case tableType.USER:
+                return state.loading.USERFIND;
             default:
         }
     });
@@ -32,58 +55,53 @@ function DeleteDialog(props) {
     const deleteMessage = () => {
         switch (table) {
             case tableType.CELEB:
-                return <DataGetter id={item.id} type={tableType.CELEB} />;
+                return getFullName(item);
             case tableType.PRO:
-                return <DataGetter id={item.id} type={tableType.PRO} />;
+                return getFullName(item);
             case tableType.TEAM:
-                return <DataGetter id={item.id} type={tableType.TEAM} />;
+                return getFullTeamName(item.celeb, item.pro);
             case tableType.SEASON:
-                return (
-                    <>
-                        Season{' '}
-                        <DataGetter id={item.id} type={tableType.SEASON} />
-                    </>
-                );
+                return `Season ${item.id}`;
             case tableType.EPISODE:
-                return <DataGetter id={item.id} type={tableType.EPISODE} />;
+                return getSeasonAndWeek(item);
             case tableType.JUDGE:
-                return <DataGetter id={item.id} type={tableType.JUDGE} />;
+                return getFullName(item);
             case tableType.DANCE:
-                return <DataGetter id={item.id} type={tableType.DANCE} />;
+                return getDanceName(item);
             case tableType.SCORE:
-                return `this score`;
+                return `${getFullName(item.judge)}'s score of ${item.value}`;
             case tableType.DANCER:
                 return `this dancer`;
+            case tableType.TOUR:
+                return item.name;
+            case tableType.TOURCAST:
+                return `this cast member`;
             case tableType.USER:
-                return `this user`;
+                return item.username;
             default:
         }
     };
 
-    return loading ? (
-        <Progress />
-    ) : (
+    return (
         <Dialog open={open} onClose={props.handleClose}>
             <DialogTitle>{'Confirm Deletion'}</DialogTitle>
-            <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                    Are you sure you want to delete {deleteMessage()} from the{' '}
-                    {table}s table?
-                </DialogContentText>
-            </DialogContent>
+
+            {loading ? (
+                <Progress />
+            ) : (
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to delete {deleteMessage()} from
+                        the {table}s table?
+                    </DialogContentText>
+                </DialogContent>
+            )}
+
             <DialogActions>
-                <Button
-                    onClick={props.handleClose}
-                    variant="contained"
-                    color="error"
-                >
+                <Button onClick={props.handleClose} color="error">
                     CANCEL
                 </Button>
-                <Button
-                    onClick={props.confirmDelete}
-                    variant="contained"
-                    color="primary"
-                >
+                <Button onClick={props.confirmDelete} color="primary">
                     DELETE
                 </Button>
             </DialogActions>

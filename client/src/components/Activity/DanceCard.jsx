@@ -97,7 +97,7 @@ function DanceCard() {
                                 <BsClipboardCheck />
                                 {dance.user_score ? (
                                     <Typography variant="subtitle1">
-                                        Your Score: {dance.user_score.value}
+                                        Your Score: {dance.user_score}
                                     </Typography>
                                 ) : (
                                     <Typography variant="subtitle1">

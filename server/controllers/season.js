@@ -2,34 +2,16 @@ import pool from '../api/pool.js';
 import { Storage } from '@google-cloud/storage';
 import UUID from 'uuid-v4';
 
-// export const getSeasons = () => {
-//     return new Promise(function(resolve, reject) {
-//         pool.query('SELECT * FROM seasons ORDER BY id ASC', (error, results) => {
-//             if (error)  {
-//                 reject(error)
-//             }
-//             resolve(results.rows);
-//         })
-//     })
-// }
-
-// export const addSeason = async (req, res) => {
-//     try {
-//         const { cover_pic, number, extra } = req.body;
-//         const result = await pool.query('INSERT INTO seasons (number, extra) VALUES($1, $2) RETURNING *', [number, extra]);
-
-//         res.status(200).json(result.rows[0]);
-//     } catch (error) {
-//         res.status(500).json({ message: error });
-//     }
-// }
-
 export const addSeason = async (req, res) => {
     try {
-        const { id, extra } = req.body;
+        const { id, host, cohost, extra } = req.body;
         const result = await pool.query(
-            'INSERT INTO seasons (id, extra) VALUES($1, $2) RETURNING *',
-            [id, extra]
+            `
+            INSERT INTO seasons (id, host, cohost, extra) 
+            VALUES($1, $2, $3, $4) 
+            RETURNING *
+            `,
+            [id, host, cohost, extra]
         );
 
         res.status(200).json(result.rows[0]);
@@ -40,14 +22,6 @@ export const addSeason = async (req, res) => {
 
 export const fetchAllSeasons = async (req, res) => {
     try {
-        // const seasons = await pool.query(
-        //     'SELECT * FROM seasons ORDER BY id DESC'
-        // );
-
-        // const seasons = await pool.query(
-        //     `SELECT s.*, COALESCE(ARRAY_AGG(t.id) FILTER (WHERE t.id IS NOT NULL), '{}') AS teams FROM seasons s LEFT JOIN teams t ON s.id = t.season_id GROUP BY s.id ORDER BY s.id DESC`
-        // );
-
         const seasons = await pool.query(
             `
             SELECT s.*, 
@@ -81,9 +55,14 @@ export const findSeasonById = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const season = await pool.query('SELECT * FROM seasons WHERE id = $1', [
-            id,
-        ]);
+        const season = await pool.query(
+            `
+            SELECT * 
+            FROM seasons 
+            WHERE id = $1
+            `,
+            [id]
+        );
 
         res.status(200).json(season.rows[0]);
     } catch (error) {
@@ -91,18 +70,18 @@ export const findSeasonById = async (req, res) => {
     }
 };
 
-export const searchSeasons = async (req, res) => {
-    //
-};
-
 export const updateSeason = async (req, res) => {
     const { id } = req.params;
-    const { cover_pic, extra } = req.body;
+    const { host, cohost, extra } = req.body;
 
     try {
         const result = await pool.query(
-            'UPDATE seasons SET id = $1, extra = $2 WHERE id = $3 RETURNING *',
-            [req.body.id, extra, id]
+            `UPDATE seasons 
+            SET id = $1, host = $2, cohost = $3, extra = $4 
+            WHERE id = $5 
+            RETURNING * 
+            `,
+            [req.body.id, host, cohost, extra, id]
         );
 
         res.status(200).json(result.rows[0]);
@@ -139,7 +118,12 @@ export const setSeasonPic = async (req, res) => {
             }/o/${encodeURI(blob.name)}?alt=media`;
 
             const result = await pool.query(
-                'UPDATE seasons SET cover_pic = $1 WHERE id = $2 RETURNING *',
+                `
+                UPDATE seasons 
+                SET cover_pic = $1 
+                WHERE id = $2 
+                RETURNING *
+                `,
                 [publicUrl, req.params.id]
             );
 
@@ -156,7 +140,13 @@ export const deleteSeason = async (req, res) => {
     const { id } = req.params;
 
     try {
-        await pool.query('DELETE FROM seasons WHERE id = $1', [id]);
+        await pool.query(
+            `
+            DELETE FROM seasons 
+            WHERE id = $1
+            `,
+            [id]
+        );
 
         res.status(200).json({ message: 'Season successfully deleted.' });
     } catch (error) {

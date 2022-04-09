@@ -4,12 +4,21 @@ import UUID from 'uuid-v4';
 
 export const addTour = async (req, res) => {
     try {
-        const { name, season_id, first_show, last_show, num_shows, extra } =
-            req.body;
+        const { name, season_id, first_show, last_show, extra } = req.body;
 
         const result = await pool.query(
-            `INSERT INTO tours (name, season_id, first_show, last_show, num_shows, extra) VALUES($1, $2, $3, $4, $5, $6) RETURNING *`,
-            [name, season_id, first_show, last_show, num_shows, extra]
+            `
+            INSERT INTO tours (
+                name, 
+                season_id, 
+                first_show, 
+                last_show, 
+                extra
+            ) 
+            VALUES($1, $2, $3, $4, $5) 
+            RETURNING *
+            `,
+            [name, season_id, first_show, last_show, extra]
         );
 
         res.status(200).json(result.rows[0]);
@@ -20,14 +29,6 @@ export const addTour = async (req, res) => {
 
 export const fetchAllTours = async (req, res) => {
     try {
-        // const tours = await pool.query(
-        //     'SELECT * FROM tours ORDER BY season_id'
-        // );
-
-        // const tours = await pool.query(
-        //     `SELECT t.*, COALESCE(ARRAY_AGG(pro_id) filter (where pro_id is not null), '{}') as pros, COALESCE(ARRAY_AGG(celeb_id) filter (where celeb_id is not null), '{}') AS celebs FROM tours t LEFT JOIN tour_cast tc ON t.id = tc.tour_id GROUP BY t.id ORDER BY t.season_id`
-        // );
-
         const tours = await pool.query(
             `
             SELECT t.*, 
@@ -61,9 +62,14 @@ export const findTourById = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const tour = await pool.query('SELECT * FROM tours WHERE id = $1', [
-            id,
-        ]);
+        const tour = await pool.query(
+            `
+            SELECT * 
+            FROM tours 
+            WHERE id = $1
+            `,
+            [id]
+        );
 
         res.status(200).json(tour.rows[0]);
     } catch (error) {
@@ -75,12 +81,20 @@ export const updateTour = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const { name, season_id, first_show, last_show, num_shows, extra } =
-            req.body;
+        const { name, season_id, first_show, last_show, extra } = req.body;
 
         const result = await pool.query(
-            'UPDATE tours SET name = $1, season_id = $2, first_show = $3, last_show = $4, num_shows = $5, extra = $6 WHERE id = $7 RETURNING *',
-            [name, season_id, first_show, last_show, num_shows, extra, id]
+            `
+            UPDATE tours 
+            SET name = $1, 
+                season_id = $2, 
+                first_show = $3, 
+                last_show = $4, 
+                extra = $5 
+            WHERE id = $6 
+            RETURNING *
+            `,
+            [name, season_id, first_show, last_show, extra, id]
         );
 
         res.status(200).json(result.rows[0]);
@@ -118,7 +132,12 @@ export const setTourPic = async (req, res) => {
             }/o/${encodeURI(blob.name)}?alt=media`;
 
             const result = await pool.query(
-                'UPDATE tours SET cover_pic = $1 WHERE id = $2 RETURNING *',
+                `
+                UPDATE tours 
+                SET cover_pic = $1 
+                WHERE id = $2 
+                RETURNING *
+                `,
                 [publicUrl, id]
             );
 
@@ -135,7 +154,13 @@ export const deleteTour = async (req, res) => {
     const { id } = req.params;
 
     try {
-        await pool.query('DELETE FROM tours WHERE id = $1', [id]);
+        await pool.query(
+            `
+            DELETE FROM tours 
+            WHERE id = $1
+            `,
+            [id]
+        );
 
         res.status(200).json({ message: 'Tour successfully deleted.' });
     } catch (error) {
@@ -150,19 +175,63 @@ export const addCast = async (req, res) => {
         const { tour_id, pro_id, celeb_id, is_swing, extra } = req.body;
 
         const result = await pool.query(
-            `INSERT INTO tour_cast (tour_id, pro_id, celeb_id, is_swing, extra) VALUES($1, $2, $3, $4, $5) RETURNING *`,
+            `
+            INSERT INTO tour_cast (
+                tour_id, 
+                pro_id, 
+                celeb_id, 
+                is_swing, 
+                extra
+            ) 
+            VALUES($1, $2, $3, $4, $5) 
+            RETURNING *`,
             [tour_id, pro_id, celeb_id, is_swing, extra]
         );
 
-        res.status(200).json(result.rows[0]);
+        const cast = await pool.query(
+            `
+            SELECT tc.*,
+                ROW_TO_JSON(p) AS pro,
+                ROW_TO_JSON(c) AS celeb,
+                ROW_TO_JSON(t) AS tour 
+            FROM tour_cast tc
+            LEFT JOIN pros p
+            ON tc.pro_id = p.id
+            LEFT JOIN celebs c
+            ON tc.celeb_id = c.id
+            LEFT JOIN tours t
+            ON tc.tour_id = t.id
+            WHERE tc.id = $1
+            GROUP BY tc.id, p.id, c.id, t.id
+            `,
+            [result.rows[0].id]
+        );
+
+        res.status(200).json(cast.rows[0]);
     } catch (error) {
+        console.log(error);
         res.status(500).json({ message: error });
     }
 };
 
 export const fetchAllCast = async (req, res) => {
     try {
-        const cast = await pool.query('SELECT * FROM tour_cast');
+        const cast = await pool.query(
+            `
+            SELECT tc.*,
+                ROW_TO_JSON(p) AS pro,
+                ROW_TO_JSON(c) AS celeb,
+                ROW_TO_JSON(t) AS tour 
+            FROM tour_cast tc
+            LEFT JOIN pros p
+            ON tc.pro_id = p.id
+            LEFT JOIN celebs c
+            ON tc.celeb_id = c.id
+            LEFT JOIN tours t
+            ON tc.tour_id = t.id
+            GROUP BY tc.id, p.id, c.id, t.id
+            `
+        );
 
         res.status(200).json(cast.rows);
     } catch (error) {
@@ -173,9 +242,24 @@ export const findCastById = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const cast = await pool.query('SELECT * FROM tour_cast WHERE id = $1', [
-            id,
-        ]);
+        const cast = await pool.query(
+            `
+            SELECT tc.*,
+                ROW_TO_JSON(p) AS pro,
+                ROW_TO_JSON(c) AS celeb,
+                ROW_TO_JSON(t) AS tour 
+            FROM tour_cast tc
+            LEFT JOIN pros p
+            ON tc.pro_id = p.id
+            LEFT JOIN celebs c
+            ON tc.celeb_id = c.id
+            LEFT JOIN tours t
+            ON tc.tour_id = t.id
+            WHERE tc.id = $1
+            GROUP BY tc.id, p.id, c.id, t.id
+            `,
+            [id]
+        );
 
         res.status(200).json(cast.rows[0]);
     } catch (error) {
@@ -190,11 +274,39 @@ export const updateCast = async (req, res) => {
         const { tour_id, pro_id, celeb_id, is_swing, extra } = req.body;
 
         const result = await pool.query(
-            'UPDATE tour_cast SET tour_id = $1, pro_id = $2, celeb_id = $3, is_swing = $4, extra = $5 WHERE id = $6 RETURNING *',
+            `
+            UPDATE tour_cast 
+            SET tour_id = $1, 
+                pro_id = $2, 
+                celeb_id = $3, 
+                is_swing = $4, 
+                extra = $5 
+            WHERE id = $6 
+            RETURNING *
+            `,
             [tour_id, pro_id, celeb_id, is_swing, extra, id]
         );
 
-        res.status(200).json(result.rows[0]);
+        const cast = await pool.query(
+            `
+            SELECT tc.*,
+                ROW_TO_JSON(p) AS pro,
+                ROW_TO_JSON(c) AS celeb,
+                ROW_TO_JSON(t) AS tour 
+            FROM tour_cast tc
+            LEFT JOIN pros p
+            ON tc.pro_id = p.id
+            LEFT JOIN celebs c
+            ON tc.celeb_id = c.id
+            LEFT JOIN tours t
+            ON tc.tour_id = t.id
+            WHERE tc.id = $1
+            GROUP BY tc.id, p.id, c.id, t.id
+            `,
+            [result.rows[0].id]
+        );
+
+        res.status(200).json(cast.rows[0]);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -204,7 +316,13 @@ export const deleteCast = async (req, res) => {
     const { id } = req.params;
 
     try {
-        await pool.query('DELETE FROM tour_cast WHERE id = $1', [id]);
+        await pool.query(
+            `
+            DELETE FROM tour_cast 
+            WHERE id = $1
+            `,
+            [id]
+        );
 
         res.status(200).json({ message: 'Cast member successfully deleted.' });
     } catch (error) {
