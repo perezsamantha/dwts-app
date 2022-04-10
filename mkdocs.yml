@@ -1,4 +1,11 @@
 site_name: DWTS App Docs
+# site_url: https://samantha238.github.io/dwts-app/
+site_author: Samantha Perez
+site_description: >-
+    Overview of development process that went into
+    making the DWTS App
+
+copyright: Copyright &copy; 2022 Samantha Perez
 
 theme:
     name: material
@@ -13,3 +20,16 @@ theme:
           toggle:
               icon: material/weather-night
               name: Switch to light mode
+
+nav:
+    - Home: index.md
+    - App Overview:
+          - Overview: overview/overview.md
+          - Features: overview/features.md
+    - Development:
+          - Overview: dev/overview.md
+          - Background: dev/background.md
+          - Challenges: dev/challenges.md
+    - Credit:
+          - Content: credit/content.md
+          - Shoutouts: credit/shoutout.md
