@@ -14,7 +14,7 @@ const authReducer = (state = { authData: {}, fetching: true }, action) => {
         case actionType.AUTHUPDATE_SUCCESS:
             return {
                 ...state,
-                authData: { ...state.authData, result: action.payload },
+                authData: action.payload,
             };
         case actionType.AUTHDELETE_SUCCESS:
         case actionType.LOGOUT:

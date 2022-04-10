@@ -5,18 +5,12 @@ import Pro from '../components/Individuals/Pro';
 import Fan from '../components/Individuals/Fan';
 import Dance from '../components/Individuals/Dance';
 import { MainContainer, Page } from '../components/shared/muiStyles';
-import { useDispatch } from 'react-redux';
-import { getAllData } from '../actions/multipleActions';
 
 function Individuals() {
     const pathname = window.location.pathname;
     const category = pathname.split('/')[1];
 
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(getAllData());
-    }, [dispatch]);
+    useEffect(() => {}, []);
 
     const Individual = () => {
         switch (category) {

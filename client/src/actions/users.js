@@ -34,6 +34,22 @@ export const findUserById = (id) => async (dispatch) => {
     }
 };
 
+export const findUserByUsername = (username) => async (dispatch) => {
+    dispatch({ type: actionType.USERFIND_REQUEST });
+
+    try {
+        const { data } = await api.findUserByUsername(username);
+
+        dispatch({ type: actionType.USERFIND_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: actionType.USERFIND_FAILURE,
+            payload: error,
+            error: true,
+        });
+    }
+};
+
 export const fetchUsers = () => async (dispatch) => {
     dispatch({ type: actionType.USERSEARCH_REQUEST });
 

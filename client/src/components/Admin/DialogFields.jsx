@@ -11,6 +11,7 @@ import {
     RadioGroup,
     FormControlLabel,
     Radio,
+    IconButton,
 } from '@mui/material';
 import { MobileDatePicker } from '@mui/lab';
 
@@ -44,6 +45,8 @@ import {
     getFullTeamName,
     getSeasonAndWeek,
 } from '../shared/functions';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 function DialogFields(props) {
     const {
@@ -62,6 +65,8 @@ function DialogFields(props) {
     const dances = useSelector((state) => state.dances.dances);
     const teams = useSelector((state) => state.teams.teams);
     const tours = useSelector((state) => state.tours.tours);
+
+    const [showPass, setShowPass] = useState(false);
 
     const [autoValues, setAutoValues] = useState({
         celeb: null,
@@ -96,6 +101,8 @@ function DialogFields(props) {
         });
     }, [formData, celebs, pros, teams, dances, table]);
 
+    const handleShowPass = () => setShowPass((prevShowPass) => !prevShowPass);
+
     return (
         <>
             {Array.of(
@@ -104,8 +111,7 @@ function DialogFields(props) {
                 tableType.SEASON,
                 tableType.TEAM,
                 tableType.TOUR,
-                tableType.USER,
-                tableType.AUTH
+                tableType.USER
             ).includes(table) &&
                 props.dialog === 'Edit' && (
                     <PhotoContainer>
@@ -903,18 +909,7 @@ function DialogFields(props) {
                     </TextField>
                 )}
 
-            {Array.of(tableType.AUTH).includes(table) && (
-                <TextField
-                    margin="dense"
-                    name="username"
-                    label="Username"
-                    type="text"
-                    value={formData.username || ''}
-                    onChange={handleChange}
-                />
-            )}
-
-            {Array.of(tableType.USER, tableType.AUTH).includes(table) && (
+            {Array.of(tableType.USER).includes(table) && (
                 <TextField
                     margin="dense"
                     name="nickname"
@@ -925,7 +920,7 @@ function DialogFields(props) {
                 />
             )}
 
-            {Array.of(tableType.USER, tableType.AUTH).includes(table) && (
+            {Array.of(tableType.USER).includes(table) && (
                 <TextField
                     margin="dense"
                     name="watching_since"
@@ -938,19 +933,16 @@ function DialogFields(props) {
                     {seasonNumbers.map((season, index) => {
                         return (
                             <MenuItem key={index} value={season}>
-                                {season}
+                                Season {season}
                             </MenuItem>
                         );
                     })}
                 </TextField>
             )}
 
-            {Array.of(
-                tableType.CELEB,
-                tableType.PRO,
-                tableType.USER,
-                tableType.AUTH
-            ).includes(table) && (
+            {Array.of(tableType.CELEB, tableType.PRO, tableType.USER).includes(
+                table
+            ) && (
                 <TextField
                     margin="dense"
                     name="instagram"
@@ -961,12 +953,9 @@ function DialogFields(props) {
                 />
             )}
 
-            {Array.of(
-                tableType.CELEB,
-                tableType.PRO,
-                tableType.USER,
-                tableType.AUTH
-            ).includes(table) && (
+            {Array.of(tableType.CELEB, tableType.PRO, tableType.USER).includes(
+                table
+            ) && (
                 <TextField
                     margin="dense"
                     name="twitter"
@@ -1138,13 +1127,33 @@ function DialogFields(props) {
 
             {Array.of(tableType.USER).includes(table) &&
                 props.dialog === 'Add' && (
+                    // <TextField
+                    //     margin="dense"
+                    //     name="password"
+                    //     label="Password"
+                    //     type="text"
+                    //     value={formData.password || ''}
+                    //     onChange={handleChange}
+                    // />
                     <TextField
-                        margin="dense"
                         name="password"
                         label="Password"
-                        type="text"
-                        value={formData.password || ''}
+                        type={showPass ? 'text' : 'password'}
                         onChange={handleChange}
+                        margin="dense"
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton onClick={handleShowPass}>
+                                        {showPass ? (
+                                            <Visibility />
+                                        ) : (
+                                            <VisibilityOff />
+                                        )}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
                     />
                 )}
 

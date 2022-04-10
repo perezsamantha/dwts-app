@@ -6,6 +6,7 @@ import {
     AccordionSummary,
     Box,
     Chip,
+    Paper,
     TextField,
 } from '@mui/material';
 
@@ -67,7 +68,12 @@ export const SearchTextField = styled(TextField)(({ theme }) => ({
     width: '100%',
     '& .MuiOutlinedInput-root': {
         background:
-            theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.04)' : 'white',
+            theme.palette.mode === 'light'
+                ? 'rgba(0, 0, 0, 0.04)'
+                : 'rgba(250, 250, 250, 0.1)',
+        '& .MuiOutlinedInput-input': {
+            color: theme.palette.mode === 'light' ? 'inherit' : 'white',
+        },
         '&.Mui-focused': {
             color: theme.palette.mode === 'light' ? 'black' : 'black',
         },
@@ -75,10 +81,29 @@ export const SearchTextField = styled(TextField)(({ theme }) => ({
             border: 'none',
         },
         '& .MuiSvgIcon-root': {
-            color: theme.palette.mode === 'light' ? 'black' : 'black',
+            color: theme.palette.mode === 'light' ? 'black' : 'white',
         },
     },
 }));
+
+// account
+
+export const AccountWrapper = styled(Box)({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    textAlign: 'center',
+});
+
+export const AccountContainer = styled(Paper)({
+    width: '95%',
+    marginTop: 50,
+    padding: 15,
+    borderRadius: 25,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+});
 
 // individuals
 

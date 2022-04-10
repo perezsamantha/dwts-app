@@ -1,6 +1,6 @@
 import { monthNames } from '../../../constants/dropdowns';
 
-export const getBirthdays = (arr, today) => {
+export const getCastBirthdays = (arr, today) => {
     const isToday = (date) => {
         return (
             date.getDate() === today.getDate() &&
@@ -12,6 +12,16 @@ export const getBirthdays = (arr, today) => {
         const birthday = new Date(item.birthday);
 
         return isToday(birthday);
+    });
+};
+
+export const getFanBirthdays = (arr, today) => {
+    const isToday = (month, day) => {
+        return day === today.getDate() && month - 1 === today.getMonth();
+    };
+
+    return arr.filter((item) => {
+        return isToday(item.birthday_month, item.birthday_day);
     });
 };
 

@@ -12,7 +12,7 @@ import {
     fetchTours,
     fetchToursWithoutData,
 } from './tours';
-import { fetchUsersWithoutData } from './users';
+import { searchUsers } from './users';
 import * as actionType from '../constants/actionTypes';
 
 export const getTeamData = () => async (dispatch) => {
@@ -88,7 +88,7 @@ export const getBirthdayData = () => async (dispatch) => {
     try {
         Promise.resolve(dispatch(fetchCelebs()))
             .then(() => dispatch(fetchPros()))
-            .then(() => dispatch(fetchUsersWithoutData()))
+            .then(() => dispatch(searchUsers({ search: '' })))
             .then(() =>
                 dispatch({ type: actionType.FETCHBIRTHDAYDATA_SUCCESS })
             );

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import {
     Avatar,
     Box,
     Button,
+    Chip,
     Divider,
-    Paper,
     Stack,
     Typography,
 } from '@mui/material';
@@ -16,6 +15,9 @@ import SocialsLink from '../shared/SocialsLink';
 import FavoritesWrapper from '../Favorites/Favorites';
 import AccountInfo from './AccountInfo';
 import Progress from '../shared/Progress';
+import { getUserBirthday } from '../shared/functions';
+import { FaBirthdayCake } from 'react-icons/fa';
+import { AccountContainer, AccountWrapper } from '../shared/muiStyles';
 
 function AccountHeader(props) {
     const user = useSelector((state) => state.auth.authData);
@@ -31,7 +33,7 @@ function AccountHeader(props) {
     return !Object.keys(user).includes('id') ? (
         <Progress />
     ) : (
-        <Container>
+        <AccountWrapper>
             <AccountContainer elevation={4} sx={{ borderRadius: 10 }}>
                 <Box
                     sx={{
@@ -63,13 +65,55 @@ function AccountHeader(props) {
                 <Typography variant="h4">{user.nickname}</Typography>
                 <Typography variant="h5">@{user.username}</Typography>
 
-                {user.watching_since > 0 && (
-                    <Typography variant="subtitle1">
-                        Watching since season {user.watching_since}
-                    </Typography>
-                )}
+                <Box my={1}>
+                    <Chip
+                        label={user.role}
+                        variant="outlined"
+                        sx={{
+                            color: (theme) =>
+                                theme.palette.mode === 'light'
+                                    ? 'primary.dark'
+                                    : 'primary.main',
+                            borderColor: (theme) =>
+                                theme.palette.mode === 'light'
+                                    ? 'primary.dark'
+                                    : 'primary.main',
+                        }}
+                    ></Chip>
+                </Box>
 
-                <Divider />
+                {(user?.watching_since || user?.birthday_month) && (
+                    <Stack my={1}>
+                        <Typography variant="h5">
+                            Overview
+                            <Divider />
+                        </Typography>
+                        <Stack spacing={1}>
+                            {user?.watching_since && (
+                                <Typography variant="h6">
+                                    Watching since Season {user.watching_since}
+                                </Typography>
+                            )}
+
+                            {user?.birthday_month && (
+                                <Stack
+                                    direction="row"
+                                    spacing={1}
+                                    justifyContent="center"
+                                    alignItems="center"
+                                >
+                                    <FaBirthdayCake />
+                                    <Typography variant="h6">
+                                        {getUserBirthday(
+                                            user.birthday_month,
+                                            user.birthday_day
+                                        )}
+                                    </Typography>
+                                </Stack>
+                            )}
+                        </Stack>
+                    </Stack>
+                )}
 
                 <Stack my={1}>
                     <Typography variant="h5">Socials</Typography>
@@ -110,34 +154,8 @@ function AccountHeader(props) {
                     handleDarkMode={props.handleDarkMode}
                 />
             )}
-        </Container>
+        </AccountWrapper>
     );
 }
-
-const Container = styled(Box)`
-    /* width: 100%;
-    min-height: 100vh; */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;
-
-const AccountContainer = styled(Paper)({
-    width: '90%',
-    marginTop: 50,
-    padding: 15,
-    borderRadius: 15,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-});
-// width: 90%;
-// margin: 4rem auto 0 auto;
-// //border-radius: 50%;
-// display: flex;
-// flex-direction: column;
-// //box-shadow: 0px 0px 5px rgba(250, 250, 250, 0.1);
-// align-items: center;
-// padding: 1rem;
 
 export default AccountHeader;

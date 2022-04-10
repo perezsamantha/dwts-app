@@ -1,5 +1,4 @@
 import { Link } from '@mui/material';
-
 import { BsInstagram, BsTwitter } from 'react-icons/bs';
 import { FaTiktok } from 'react-icons/fa';
 
@@ -37,7 +36,7 @@ function SocialsLink(props) {
         case 'tiktok':
             return (
                 <Link
-                    href={'https://www.' + platform + '.com/' + username}
+                    href={'https://www.' + platform + '.com/@' + username}
                     target="_blank"
                     rel="noopener"
                     underline="none"
