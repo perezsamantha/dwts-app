@@ -31,7 +31,7 @@ export const signUp = async (req, res) => {
                 "role"
             ) 
             VALUES($1, $2, $3, default, default) 
-            RETURNING *
+            RETURNING id
             `,
             [username, email, hashed_password]
         );
@@ -50,7 +50,9 @@ export const signIn = async (req, res) => {
 
         const existing_user = await pool.query(
             `
-            SELECT * 
+            SELECT id,
+                password, 
+                email_verified 
             FROM users 
             WHERE username = $1
             `,
@@ -71,7 +73,19 @@ export const signIn = async (req, res) => {
         if (existing_user.rows[0].email_verified) {
             const user = await pool.query(
                 `
-                SELECT u.*,
+                SELECT u.id, 
+                    u.cover_pic, 
+                    u.username, 
+                    u.email,
+                    u.email_verified,
+                    u.nickname, 
+                    u.watching_since, 
+                    u.twitter, 
+                    u.instagram, 
+                    u.tiktok,
+                    u.birthday_month,
+                    u.birthday_day,
+                    u.role,
                     JSON_BUILD_OBJECT('pros', 
                         COALESCE((ARRAY_AGG(pl.pros))[1], '[]'), 
                         'teams', 
@@ -139,7 +153,6 @@ export const signIn = async (req, res) => {
 
             const token = jwt.sign(
                 {
-                    username: user.rows[0].username,
                     id: user.rows[0].id,
                 },
                 process.env.SECRET_STRING,
@@ -155,12 +168,11 @@ export const signIn = async (req, res) => {
                 .status(200)
                 .json({ message: 'Login successful' });
         } else {
-            res.status(200).json({ message: messages.notVerified });
+            res.status(401).json({ message: messages.notVerified });
         }
 
         // const token = jwt.sign(
         //     {
-        //         username: existing_user.rows[0].username,
         //         id: existing_user.rows[0].id,
         //     },
         //     process.env.SECRET_STRING,
@@ -179,7 +191,19 @@ export const verifyEmail = async (req, res) => {
     try {
         const user = await pool.query(
             `
-            SELECT * 
+            SELECT id, 
+                cover_pic, 
+                username, 
+                email,
+                email_verified,
+                nickname, 
+                watching_since, 
+                twitter, 
+                instagram, 
+                tiktok,
+                birthday_month,
+                birthday_day,
+                role 
             FROM users 
             WHERE id = $1
             `,
@@ -193,7 +217,6 @@ export const verifyEmail = async (req, res) => {
             // email already verified
             const token = jwt.sign(
                 {
-                    username: user.rows[0].username,
                     id: user.rows[0].id,
                 },
                 process.env.SECRET_STRING,
@@ -222,14 +245,24 @@ export const verifyEmail = async (req, res) => {
             UPDATE users 
             SET email_verified = $1 
             WHERE id = $2 
-            RETURNING *
+            RETURNING id, 
+                cover_pic, 
+                username, 
+                email,
+                nickname, 
+                watching_since, 
+                twitter, 
+                instagram, 
+                tiktok,
+                birthday_month,
+                birthday_day,
+                role
             `,
             [true, id]
         );
 
         const token = jwt.sign(
             {
-                username: result.rows[0].username,
                 id: result.rows[0].id,
             },
             process.env.SECRET_STRING,
@@ -268,6 +301,7 @@ export const fetchAuthData = async (req, res) => {
                 u.watching_since, 
                 u.twitter, 
                 u.instagram, 
+                u.tiktok,
                 u.birthday_month,
                 u.birthday_day,
                 u.role,
@@ -435,7 +469,19 @@ export const addUser = async (req, res) => {
                 "role"
             ) 
             VALUES($1, $2, $3, $4, default, $5, $6, $7, $8, $9, $10, default) 
-            RETURNING *
+            RETURNING id, 
+                cover_pic, 
+                username, 
+                email,
+                email_verified,
+                nickname, 
+                watching_since, 
+                twitter, 
+                instagram, 
+                tiktok,
+                birthday_month,
+                birthday_day,
+                role
             `,
             [
                 username,
@@ -468,7 +514,19 @@ export const fetchUsers = async (req, res) => {
     try {
         const users = await pool.query(
             `
-            SELECT u.*, 
+            SELECT u.id, 
+                u.cover_pic, 
+                u.username, 
+                u.email,
+                u.email_verified,
+                u.nickname, 
+                u.watching_since, 
+                u.twitter, 
+                u.instagram, 
+                u.tiktok,
+                u.birthday_month,
+                u.birthday_day,
+                u.role, 
                 JSON_BUILD_OBJECT('pros', 
                     COALESCE((ARRAY_AGG(pl.pros))[1], '[]'), 
                     'teams', 
@@ -683,13 +741,8 @@ export const searchUsers = async (req, res) => {
                 u.cover_pic, 
                 u.username, 
                 u.nickname, 
-                u.watching_since, 
-                u.twitter, 
-                u.instagram, 
-                u.tiktok,
                 u.birthday_month,
                 u.birthday_day, 
-                u.role,
                 JSON_BUILD_OBJECT('pros', 
                     COALESCE((ARRAY_AGG(pl.pros))[1], '[]'), 
                     'teams', 
@@ -725,7 +778,8 @@ export const searchUsers = async (req, res) => {
                 GROUP BY dl.user_id
             ) dl 
             ON u.id = dl.user_id
-            WHERE username || ' ' || nickname ILIKE $1 OR nickname IS NULL
+            WHERE email_verified = true AND username || ' ' || nickname ILIKE $1 
+                OR nickname IS NULL
             GROUP BY u.id
             ORDER BY username
             `,
@@ -734,6 +788,178 @@ export const searchUsers = async (req, res) => {
 
         res.status(200).json(users.rows);
     } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const updateAuth = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const {
+            username,
+            email,
+            nickname,
+            watching_since,
+            twitter,
+            instagram,
+            tiktok,
+            birthday_month,
+            birthday_day,
+        } = req.body;
+
+        const result = await pool.query(
+            `
+            UPDATE users 
+            SET username = $1, 
+                email = $2, 
+                nickname = $3, 
+                watching_since = $4, 
+                twitter = $5, 
+                instagram = $6, 
+                tiktok = $7, 
+                birthday_month = $8, 
+                birthday_day = $9
+            WHERE id = $10
+            RETURNING id
+            `,
+            [
+                username,
+                email,
+                nickname,
+                watching_since,
+                twitter,
+                instagram,
+                tiktok,
+                birthday_month,
+                birthday_day,
+                id,
+            ]
+        );
+
+        const user = await pool.query(
+            `
+            SELECT u.id, 
+                u.cover_pic, 
+                u.username, 
+                u.email,
+                u.nickname, 
+                u.watching_since, 
+                u.twitter, 
+                u.instagram, 
+                u.tiktok,
+                u.birthday_month,
+                u.birthday_day,
+                u.role,
+                JSON_BUILD_OBJECT('pros', 
+                    COALESCE((ARRAY_AGG(pl.pros))[1], '[]'), 
+                    'teams', 
+                    COALESCE((ARRAY_AGG(tl.teams))[1], '[]'),
+                    'dances', 
+                    COALESCE((ARRAY_AGG(dl.dances))[1], '[]')) 
+                AS likes
+            FROM users u 
+            LEFT JOIN (
+                SELECT pl.user_id,
+                    COALESCE(JSON_AGG(ROW_TO_JSON(p)) FILTER (WHERE p.id IS NOT NULL), '[]') AS pros
+                FROM pro_likes pl
+                LEFT JOIN pros p
+                ON pl.pro_id = p.id
+                WHERE pl.user_id = $1
+                GROUP BY pl.user_id
+            ) pl 
+            ON u.id = pl.user_id
+            LEFT JOIN (
+                SELECT tl.user_id,
+                    COALESCE(JSON_AGG(ROW_TO_JSON(t)) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams
+                FROM team_likes tl
+                LEFT JOIN (
+                    SELECT t.*, 
+                        ROW_TO_JSON(p) AS pro, 
+                        ROW_TO_JSON(c) AS celeb 
+                    FROM teams t 
+                    LEFT JOIN pros p 
+                    ON t.pro_id = p.id 
+                    LEFT JOIN celebs c 
+                    ON t.celeb_id = c.id 
+                    GROUP BY t.id, p.id, c.id 
+                ) t
+                ON tl.team_id = t.id
+                WHERE tl.user_id = $1
+                GROUP BY tl.user_id
+            ) tl 
+            ON u.id = tl.user_id
+            LEFT JOIN (
+                SELECT dl.user_id,
+                    COALESCE(JSON_AGG(ROW_TO_JSON(d)) FILTER (WHERE d.id IS NOT NULL), '[]') AS dances
+                FROM dance_likes dl
+                LEFT JOIN (
+                    SELECT d.*,
+                        (
+                            SELECT ROW_TO_JSON(e.*)
+                            FROM episodes e
+                            WHERE e.id = d.episode_id
+                        ) AS episode,
+                        COALESCE((ARRAY_AGG(s.scores))[1], '[]') AS scores,
+                        COALESCE(JSON_AGG(dc) FILTER (WHERE dc.id IS NOT NULL), '[]') AS dancers
+                    FROM dances d
+                    LEFT JOIN (
+                        SELECT dc2.*, 
+                            ROW_TO_JSON(t) AS team, 
+                            ROW_TO_JSON(p) AS pro, 
+                            ROW_TO_JSON(c) AS celeb 
+                        FROM dancers dc2 
+                        LEFT JOIN (
+                            SELECT t2.*, 
+                                ROW_TO_JSON(p) AS pro, 
+                                ROW_TO_JSON(c) AS celeb 
+                            FROM teams t2 
+                            LEFT JOIN pros p 
+                            ON t2.pro_id = p.id 
+                            LEFT JOIN celebs c 
+                            ON t2.celeb_id = c.id 
+                            GROUP BY t2.id, p.id, c.id
+                        ) t 
+                        ON t.id = dc2.team_id 
+                        LEFT JOIN pros p 
+                        ON p.id = dc2.pro_id 
+                        LEFT JOIN celebs c 
+                        ON c.id = dc2.celeb_id 
+                        GROUP BY dc2.id, dc2.dance_id, t.*, p.id, c.id
+                    ) dc
+                    ON d.id = dc.dance_id
+                    LEFT JOIN (
+                        SELECT s1.dance_id,
+                            COALESCE(JSON_AGG(ROW_TO_JSON(s2)) FILTER (WHERE s2.id IS NOT NULL), '[]') AS scores
+                        FROM scores s1
+                        LEFT JOIN (
+                            SELECT s.*,
+                                ROW_TO_JSON(j) AS judge
+                            FROM scores s
+                            LEFT JOIN judges j
+                            ON s.judge_id = j.id
+                            GROUP BY s.id, j.id 
+                        ) s2
+                        ON s1.id = s2.id
+                        GROUP BY s1.dance_id
+                    ) s
+                    ON d.id = s.dance_id
+                    GROUP BY d.id
+                ) d
+                ON dl.dance_id = d.id
+                WHERE dl.user_id = $1
+                GROUP BY dl.user_id
+            ) dl 
+            ON u.id = dl.user_id
+            WHERE u.id = $1
+            GROUP BY u.id
+            `,
+            [result.rows[0].id]
+        );
+
+        res.status(200).json(user.rows[0]);
+    } catch (error) {
+        console.log(error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -771,7 +997,19 @@ export const updateUser = async (req, res) => {
                 birthday_day = $10,
                 "role" = $11 
             WHERE id = $12
-            RETURNING *
+            RETURNING id, 
+                cover_pic, 
+                username, 
+                email,
+                email_verified,
+                nickname, 
+                watching_since, 
+                twitter, 
+                instagram, 
+                tiktok,
+                birthday_month,
+                birthday_day,
+                role
             `,
             [
                 username,
@@ -828,7 +1066,19 @@ export const setUserPic = async (req, res) => {
                 UPDATE users 
                 SET cover_pic = $1 
                 WHERE id = $2 
-                RETURNING *
+                RETURNING id, 
+                    cover_pic, 
+                    username, 
+                    email,
+                    email_verified,
+                    nickname, 
+                    watching_since, 
+                    twitter, 
+                    instagram, 
+                    tiktok,
+                    birthday_month,
+                    birthday_day,
+                    role
                 `,
                 [publicUrl, req.params.id]
             );
@@ -865,20 +1115,32 @@ export const grantAccess = function (action, resource) {
         try {
             const user = await pool.query(
                 `
-                SELECT role 
+                SELECT username, role 
                 FROM users 
                 WHERE id = $1
                 `,
                 [req.userId]
             );
 
-            const permission = ac.can(user.rows[0].role)[action](resource);
+            let modifiedAction = action;
+
+            // if (
+            //     req.userId === Number(req.params.id) &&
+            //     user.rows[0].role === 'fan'
+            // ) {
+            //     modifiedAction = action.replace('Any', 'Own');
+            // }
+
+            const permission = ac
+                .can(user.rows[0].role)
+                [modifiedAction](resource);
 
             if (!permission.granted) {
-                return res.status(401).json({ message: 'Invalid permission' });
+                return res.status(403).json({ message: 'Invalid permission' });
             }
             next();
         } catch (error) {
+            console.log(error.message);
             res.status(500).json({ message: error.message });
         }
     };

@@ -49,7 +49,7 @@ function FavoritesWrapper(props) {
                     )}
                 </>
             ) : (
-                <Typography>No favorites yet</Typography>
+                <Typography align="center">No favorites yet</Typography>
             )}
         </Box>
     );

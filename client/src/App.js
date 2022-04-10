@@ -37,10 +37,12 @@ function App() {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const role = useSelector((state) => state.auth.authData?.role);
+    const user = useSelector((state) => state.auth.authData);
     const fetching = useSelector((state) => state.auth.fetching);
     const authError = useSelector((state) => state.errors.AUTHFETCH);
-
+    if (window.location.pathname !== '/' && authError) {
+        dispatch(logout(navigate));
+    }
     useEffect(() => {
         setToggleDark(
             localStorage.getItem('theme')
@@ -56,7 +58,7 @@ function App() {
 
         dispatch(fetchAuthData());
 
-        if (authError) {
+        if (window.location.pathname !== '/' && authError) {
             dispatch(logout(navigate));
         }
     }, [dispatch, navigate, prefersDarkMode, authError]);
@@ -64,7 +66,7 @@ function App() {
     const PrivateRoute = () => {
         return fetching ? (
             <Progress />
-        ) : role === 'admin' ? (
+        ) : user.role === 'admin' ? (
             <Outlet />
         ) : (
             <Navigate to="/" />
@@ -232,7 +234,16 @@ function App() {
                 main: '#FAE27A',
                 dark: '#DDBE35',
             },
+            background: {
+                default: 'rgb(249, 249, 249)',
+                paper: 'rgb(249, 249, 249)',
+            },
         },
+        // typography: {
+        //     allVariants: {
+        //         textShadow: '2px 2px 5px rgba(255, 255, 255, 0.2)',
+        //     },
+        // },
     });
 
     let darkTheme = createTheme({
@@ -315,7 +326,7 @@ function App() {
                         />
                         <Route
                             exact
-                            path="fans/:id/*"
+                            path="fans/:username/*"
                             element={<Individuals />}
                         />
                         <Route

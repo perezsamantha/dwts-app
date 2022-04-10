@@ -1,4 +1,3 @@
-//import { AUTH } from '../constants/actionTypes';
 import * as actionType from '../constants/actionTypes';
 import * as api from '../api/index.js';
 
@@ -70,7 +69,7 @@ export const updateUser = (id, user) => async (dispatch) => {
     dispatch({ type: actionType.AUTHUPDATE_REQUEST });
 
     try {
-        const { data } = await api.updateUser(id, user);
+        const { data } = await api.updateAuth(id, user);
 
         dispatch({ type: actionType.AUTHUPDATE_SUCCESS, payload: data });
     } catch (error) {

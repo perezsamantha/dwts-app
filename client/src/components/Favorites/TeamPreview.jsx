@@ -9,7 +9,15 @@ function TeamPreview(props) {
         <Box>
             <Box
                 component="img"
-                sx={{ height: '100%', width: '100%', borderRadius: 2 }}
+                sx={{
+                    height: '100%',
+                    width: '100%',
+                    borderRadius: 2,
+                    boxShadow: (theme) =>
+                        theme.palette.mode === 'light'
+                            ? '1px 3px 10px lightgrey'
+                            : 'none',
+                }}
                 src={team.cover_pic ? team.cover_pic : '/defaultPic.jpeg'}
             />
             <Typography variant="body1" align="left" noWrap>

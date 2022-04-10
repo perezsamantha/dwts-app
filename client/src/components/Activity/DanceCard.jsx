@@ -33,7 +33,7 @@ function DanceCard() {
 
             {loading ? (
                 <Progress />
-            ) : Object.keys(dance).length === 0 ? (
+            ) : dance.id === null || Object.keys(dance).length === 0 ? (
                 <Typography>No dance yesterday</Typography>
             ) : (
                 <Box>

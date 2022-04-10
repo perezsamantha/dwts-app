@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { Button, Divider, Stack, Typography } from '@mui/material';
+import { Box, Button, Chip, Divider, Stack, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { findUserById } from '../../actions/users';
+import { findUserByUsername } from '../../actions/users';
 
 import { CardAvatar } from '../shared/regStyles.js';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -12,59 +12,115 @@ import SocialsLink from '../shared/SocialsLink';
 import { IndividualsContainer } from '../shared/muiStyles';
 import Progress from '../shared/Progress';
 import { FaBirthdayCake } from 'react-icons/fa';
-import { getMonthAndDay } from '../shared/functions';
+import { getUserBirthday } from '../shared/functions';
 import FavoritesWrapper from '../Favorites/Favorites';
+import { motion } from 'framer-motion';
 
 function Fan() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const fan = useSelector((state) => state.users.user);
-    const { id } = useParams();
+    const { username } = useParams();
     const loadingSelector = createLoadingSelector([actionType.USERFIND]);
     const loading = useSelector((state) => loadingSelector(state));
 
     useEffect(() => {
-        dispatch(findUserById(id));
-    }, [dispatch, id]);
+        dispatch(findUserByUsername(username));
+    }, [dispatch, username]);
 
     return loading ? (
         <Progress />
     ) : (
         <IndividualsContainer>
-            <Stack direction="row">
-                <Button onClick={() => navigate(-1)}>
+            <Stack direction="row" alignItems="center" spacing={3}>
+                <Button
+                    sx={{
+                        '&.MuiButtonBase-root:hover': {
+                            bgcolor: 'transparent',
+                        },
+                    }}
+                    component={motion.div}
+                    whileHover={{
+                        scale: 1.2,
+                        transition: { duration: 0.3 },
+                    }}
+                    onClick={() => navigate(-1)}
+                >
                     <ArrowBackIosIcon />
                 </Button>
                 <CardAvatar
                     src={fan.cover_pic ? fan.cover_pic : '/defaultPic.jpeg'}
                 />
-                <Button disabled></Button>
+                {/* <Button disabled></Button> */}
+                <Box my={1}>
+                    <Chip
+                        label={fan.role}
+                        variant="outlined"
+                        sx={{
+                            color: (theme) =>
+                                theme.palette.mode === 'light'
+                                    ? 'primary.dark'
+                                    : 'primary.main',
+                            borderColor: (theme) =>
+                                theme.palette.mode === 'light'
+                                    ? 'primary.dark'
+                                    : 'primary.main',
+                        }}
+                    ></Chip>
+                </Box>
             </Stack>
 
-            <Stack mt={1} mb={2}>
+            <Stack my={1}>
                 <Typography variant="h3">{fan?.nickname}</Typography>
                 <Typography variant="h5">@{fan.username}</Typography>
             </Stack>
 
-            {(fan?.watching_since || fan?.birthday) && (
+            <Box my={1}>
+                <Chip
+                    label={fan.role}
+                    variant="outlined"
+                    sx={{
+                        color: (theme) =>
+                            theme.palette.mode === 'light'
+                                ? 'primary.dark'
+                                : 'primary.main',
+                        borderColor: (theme) =>
+                            theme.palette.mode === 'light'
+                                ? 'primary.dark'
+                                : 'primary.main',
+                    }}
+                ></Chip>
+            </Box>
+
+            {(fan?.watching_since || fan?.birthday_month) && (
                 <Stack my={1}>
                     <Typography variant="h5">
                         Overview
                         <Divider />
                     </Typography>
                     <Stack spacing={1}>
-                        <Typography variant="h6">Watching since S1</Typography>
-                        <Stack
-                            direction="row"
-                            spacing={1}
-                            justifyContent="center"
-                            alignItems="center"
-                        >
-                            <FaBirthdayCake />
+                        {fan?.watching_since && (
                             <Typography variant="h6">
-                                {getMonthAndDay(fan?.birthday)}
+                                Watching since Season {fan.watching_since}
                             </Typography>
-                        </Stack>
+                        )}
+
+                        {fan?.birthday_month && (
+                            <Stack
+                                direction="row"
+                                spacing={1}
+                                justifyContent="center"
+                                alignItems="center"
+                            >
+                                <FaBirthdayCake />
+                                <Typography variant="h6">
+                                    {getUserBirthday(
+                                        fan.birthday_month,
+                                        fan.birthday_day
+                                    )}
+                                </Typography>
+                            </Stack>
+                        )}
                     </Stack>
                 </Stack>
             )}

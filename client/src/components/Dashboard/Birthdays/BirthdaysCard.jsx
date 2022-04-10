@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Card, Divider, Grid, Typography } from '@mui/material';
-import { getBirthdays } from './birthdayFunctions';
+import { getCastBirthdays, getFanBirthdays } from './birthdayFunctions';
 import ProPreview from './ProPreview';
 import CelebPreview from './CelebPreview';
 import FanPreview from './FanPreview';
@@ -40,9 +40,9 @@ function BirthdaysCard() {
     let proBirthdays, celebBirthdays, fanBirthdays, noBirthdays;
 
     if (!loading) {
-        proBirthdays = getBirthdays(pros, today);
-        celebBirthdays = getBirthdays(celebs, today);
-        fanBirthdays = getBirthdays(fans, today);
+        proBirthdays = getCastBirthdays(pros, today);
+        celebBirthdays = getCastBirthdays(celebs, today);
+        fanBirthdays = getFanBirthdays(fans, today);
 
         noBirthdays =
             proBirthdays.length === 0 &&
@@ -116,7 +116,7 @@ function BirthdaysCard() {
                                             <Grid item key={index}>
                                                 <Link
                                                     to={{
-                                                        pathname: `/fans/${fan.id}`,
+                                                        pathname: `/fans/${fan.username}`,
                                                     }}
                                                     style={{
                                                         textDecoration:

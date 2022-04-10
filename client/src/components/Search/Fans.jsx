@@ -59,7 +59,7 @@ function Fans(props) {
                             }}
                         >
                             <Link
-                                to={{ pathname: `/fans/${fan.id}` }}
+                                to={{ pathname: `/fans/${fan.username}` }}
                                 style={{
                                     textDecoration: 'inherit',
                                     color: 'inherit',

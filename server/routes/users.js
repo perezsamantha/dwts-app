@@ -15,6 +15,7 @@ import {
     fetchAuthData,
     logout,
     findUserByUsername,
+    updateAuth,
 } from '../controllers/user.js';
 
 import uploadCoverPicture from '../middleware/uploadCoverPicture.js';
@@ -29,7 +30,12 @@ router.get('/authData', auth, fetchAuthData);
 router.post('/logout', logout);
 router.post('/add', auth, grantAccess('createAny', 'user'), addUser);
 router.get('/', auth, grantAccess('readAny', 'user_admin'), fetchUsers);
-router.get('/:id', auth, grantAccess('readAny', 'user_admin'), findUserById);
+router.get(
+    '/admin/:id',
+    auth,
+    grantAccess('readAny', 'user_admin'),
+    findUserById
+);
 router.get(
     '/:username',
     auth,
@@ -37,7 +43,13 @@ router.get(
     findUserByUsername
 );
 router.post('/search', auth, grantAccess('readAny', 'user'), searchUsers);
-router.patch('/update/:id', auth, grantAccess('updateAny', 'user'), updateUser);
+router.patch(
+    '/update/admin/:id',
+    auth,
+    grantAccess('updateAny', 'user_admin'),
+    updateUser
+);
+router.patch('/update/:id', auth, grantAccess('updateOwn', 'user'), updateAuth);
 router.patch(
     '/setPic/:id',
     auth,
@@ -51,13 +63,6 @@ router.delete(
     grantAccess('deleteAny', 'user'),
     deleteUser
 );
-router.get(
-    '/verify/:id',
-    auth,
-    grantAccess('updateOwn', 'profile'),
-    verifyEmail
-);
-
-//router.get('/:id', auth, grantAccess("readAny", "profile"), findFanById);
+router.get('/verify/:id', auth, grantAccess('updateAny', 'user'), verifyEmail);
 
 export default router;
