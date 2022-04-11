@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Button, Divider, Grid, Stack, Typography } from '@mui/material';
+import { Box, Button, Divider, Grid, Stack, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { findProById, likePro } from '../../actions/pros';
@@ -13,9 +13,12 @@ import * as actionType from '../../constants/actionTypes';
 import {
     convertHeight,
     getAge,
-    getFullCelebName,
+    getAveragePlacement,
+    getFullName,
     getMonthDayAndYear,
-    getTeamsByPro,
+    getNumberOfPerfects,
+    getNumberOfTens,
+    getNumberOfWins,
 } from '../shared/functions';
 
 import ExtraPicUpload from '../shared/ExtraPicUpload';
@@ -34,8 +37,6 @@ function Pro() {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.authData);
     const pro = useSelector((state) => state.pros.pro);
-    const celebs = useSelector((state) => state.celebs.celebs);
-    const teams = useSelector((state) => state.teams.teams);
     const { id } = useParams();
 
     const loadingSelector = createLoadingSelector([
@@ -50,12 +51,6 @@ function Pro() {
     useEffect(() => {
         dispatch(findProById(id));
     }, [dispatch, id]);
-
-    let teamsByPro = [];
-
-    if (!loading) {
-        teamsByPro = getTeamsByPro(pro, teams);
-    }
 
     return loading || Number(pro?.id) !== Number(id) ? (
         <Progress />
@@ -148,21 +143,29 @@ function Pro() {
                 <Grid container justifyContent="center" spacing={2}>
                     <Grid item>
                         <Typography variant="subtitle1">Wins</Typography>
-                        <Typography variant="subtitle1">10</Typography>
+                        <Typography variant="subtitle1">
+                            {getNumberOfWins(pro.teams)}
+                        </Typography>
                     </Grid>
                     <Grid item>
                         <Typography variant="subtitle1">
                             Avg Placement
                         </Typography>
-                        <Typography variant="subtitle1">10</Typography>
+                        <Typography variant="subtitle1">
+                            {getAveragePlacement(pro.teams)}
+                        </Typography>
                     </Grid>
                     <Grid item>
-                        <Typography variant="subtitle1">Dances</Typography>
-                        <Typography variant="subtitle1">10</Typography>
+                        <Typography variant="subtitle1">Tens</Typography>
+                        <Typography variant="subtitle1">
+                            {getNumberOfTens(pro.dances)}
+                        </Typography>
                     </Grid>
                     <Grid item>
                         <Typography variant="subtitle1">Perfects</Typography>
-                        <Typography variant="subtitle1">10</Typography>
+                        <Typography variant="subtitle1">
+                            {getNumberOfPerfects(pro.dances)}
+                        </Typography>
                     </Grid>
                 </Grid>
             </Stack>
@@ -192,13 +195,13 @@ function Pro() {
                 )}
             </Stack>
 
-            {teamsByPro.length !== 0 && (
+            {pro.teams.length !== 0 && (
                 <Stack my={1}>
                     <Typography variant="h5">
                         Teams (In Order)
                         <Divider />
                     </Typography>
-                    {teamsByPro.map((team, index) => (
+                    {pro.teams.map((team, index) => (
                         <Link
                             key={index}
                             to={{ pathname: `/teams/${team.id}` }}
@@ -207,8 +210,16 @@ function Pro() {
                                 color: 'inherit',
                             }}
                         >
-                            Season {team.season_id} w/{' '}
-                            {getFullCelebName(team.celeb_id, celebs)}
+                            <Box
+                                component={motion.div}
+                                whileHover={{
+                                    scale: 1.05,
+                                    transition: { duration: 0.3 },
+                                }}
+                            >
+                                Season {team.season_id} w/{' '}
+                                {getFullName(team.celeb)}
+                            </Box>
                         </Link>
                     ))}
                 </Stack>

@@ -10,7 +10,7 @@ import { Box } from '@mui/material';
 import { motion } from 'framer-motion';
 
 function TeamsSlider(props) {
-    const { filteredTeams, item, sortType } = props;
+    const { teams, sortType } = props;
 
     return (
         <Swiper
@@ -46,42 +46,34 @@ function TeamsSlider(props) {
             modules={[Navigation]}
             className="mySwiper"
         >
-            {filteredTeams
-                .filter((team) =>
-                    sortType === 'season'
-                        ? Number(team.season_id) === Number(item)
-                        : sortType === 'placement'
-                        ? Number(team.placement) === Number(item)
-                        : ''
-                )
-                .map((team, index) => (
-                    <SwiperSlide key={index}>
-                        <Link
-                            key={index}
-                            to={{
-                                pathname: `/teams/${team.id}`,
-                            }}
-                            style={{
-                                textDecoration: 'inherit',
-                                color: 'inherit',
+            {teams.map((team, index) => (
+                <SwiperSlide key={index}>
+                    <Link
+                        key={index}
+                        to={{
+                            pathname: `/teams/${team.id}`,
+                        }}
+                        style={{
+                            textDecoration: 'inherit',
+                            color: 'inherit',
+                        }}
+                    >
+                        <Box
+                            component={motion.div}
+                            whileHover={{
+                                scale: 1.05,
+                                transition: { duration: 0.3 },
                             }}
                         >
-                            <Box
-                                component={motion.div}
-                                whileHover={{
-                                    scale: 1.05,
-                                    transition: { duration: 0.3 },
-                                }}
-                            >
-                                <TeamPreview
-                                    key={index}
-                                    team={team}
-                                    sortType={sortType}
-                                />
-                            </Box>
-                        </Link>
-                    </SwiperSlide>
-                ))}
+                            <TeamPreview
+                                key={index}
+                                team={team}
+                                sortType={sortType}
+                            />
+                        </Box>
+                    </Link>
+                </SwiperSlide>
+            ))}
         </Swiper>
     );
 }

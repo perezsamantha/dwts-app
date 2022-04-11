@@ -111,17 +111,17 @@ export const searchDances = (input) => async (dispatch) => {
     try {
         const { data } = await api.searchDances(input);
 
-        Promise.resolve(dispatch(getDanceData())).then(() =>
-            dispatch({
-                type: actionType.DANCESEARCH_SUCCESS,
-                payload: data,
-            })
-        );
+        // Promise.resolve(dispatch(getDanceData())).then(() =>
+        //     dispatch({
+        //         type: actionType.DANCESEARCH_SUCCESS,
+        //         payload: data,
+        //     })
+        // );
 
-        // dispatch({
-        //     type: actionType.DANCESEARCH_SUCCESS,
-        //     payload: data,
-        // });
+        dispatch({
+            type: actionType.DANCESEARCH_SUCCESS,
+            payload: data,
+        });
     } catch (error) {
         dispatch({
             type: actionType.DANCESEARCH_FAILURE,

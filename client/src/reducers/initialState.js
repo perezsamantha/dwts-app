@@ -40,7 +40,7 @@ export const initialProState = {
             heightsInInches[heightsInInches.length - 1],
         ],
         gender: ['Male', 'Female'],
-        showJuniors: false,
+        showJuniors: 'false',
     },
 };
 
@@ -74,7 +74,6 @@ export const initialTeamState = {
         placements: [],
         hasPictures: 'false',
         pros: [],
-        // averageScore: []
     },
 };
 
@@ -113,10 +112,10 @@ export const initialDanceState = {
         pros: [],
         hasPictures: 'false',
         weeks: [],
-        // score,
         themes: [],
         hasLink: 'false',
-        //scores: []
+        isPerfect: 'false',
+        isMain: 'false',
     },
 };
 
@@ -199,6 +198,5 @@ export const initialUserState = {
         sortBy: 'username',
         pros: [],
         teams: [],
-        // birthdayMonth ??
     },
 };

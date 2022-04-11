@@ -1,6 +1,7 @@
-import { Link } from '@mui/material';
+import { Box, Link } from '@mui/material';
 import { BsInstagram, BsTwitter } from 'react-icons/bs';
 import { FaTiktok } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 
 function SocialsLink(props) {
     const { platform, username } = props;
@@ -18,7 +19,15 @@ function SocialsLink(props) {
                     underline="none"
                     color="inherit"
                 >
-                    <BsInstagram />
+                    <Box
+                        component={motion.div}
+                        whileHover={{
+                            scale: 1.2,
+                            transition: { duration: 0.3 },
+                        }}
+                    >
+                        <BsInstagram />
+                    </Box>
                 </Link>
             );
         case 'twitter':
@@ -30,7 +39,15 @@ function SocialsLink(props) {
                     underline="none"
                     color="inherit"
                 >
-                    <BsTwitter />
+                    <Box
+                        component={motion.div}
+                        whileHover={{
+                            scale: 1.2,
+                            transition: { duration: 0.3 },
+                        }}
+                    >
+                        <BsTwitter />
+                    </Box>
                 </Link>
             );
         case 'tiktok':
@@ -42,7 +59,15 @@ function SocialsLink(props) {
                     underline="none"
                     color="inherit"
                 >
-                    <FaTiktok />
+                    <Box
+                        component={motion.div}
+                        whileHover={{
+                            scale: 1.2,
+                            transition: { duration: 0.3 },
+                        }}
+                    >
+                        <FaTiktok />
+                    </Box>
                 </Link>
             );
         default:

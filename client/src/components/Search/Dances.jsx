@@ -21,17 +21,7 @@ function Dances(props) {
     const filters = useSelector((state) => state.dances.filters);
     const [slide, setSlide] = useState(false);
 
-    const loadingSelector = createLoadingSelector([
-        actionType.DANCESEARCH,
-        actionType.CELEBSEARCH,
-        actionType.PROSEARCH,
-        actionType.TEAMSEARCH,
-        actionType.SEASONSEARCH,
-        actionType.EPISODESEARCH,
-        actionType.DANCERSEARCH,
-        actionType.JUDGESEARCH,
-        actionType.SCORESEARCH,
-    ]);
+    const loadingSelector = createLoadingSelector([actionType.DANCESEARCH]);
     const loading = useSelector((state) => loadingSelector(state));
 
     useEffect(() => {

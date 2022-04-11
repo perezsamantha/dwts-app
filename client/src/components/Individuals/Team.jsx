@@ -201,7 +201,15 @@ function Team() {
                             color: 'inherit',
                         }}
                     >
-                        {dance.style} - {getTotalScore(dance.scores)}
+                        <Box
+                            component={motion.div}
+                            whileHover={{
+                                scale: 1.05,
+                                transition: { duration: 0.3 },
+                            }}
+                        >
+                            {dance.style} - {getTotalScore(dance.scores)}
+                        </Box>
                     </Link>
                 ))}
             </Stack>

@@ -20,7 +20,9 @@ function TeamPreview(props) {
             {sortType === 'season' && (
                 <Stack>
                     <Typography variant="body2" noWrap>
-                        {placement} Place
+                        {placement
+                            ? `${placement} Place`
+                            : `Currently Competing`}
                     </Typography>
                     <Typography variant="caption" noWrap>
                         {getAverageScore(team.dances)} Avg Score{' '}
@@ -35,7 +37,9 @@ function TeamPreview(props) {
             {sortType === 'placement' && (
                 <Stack>
                     <Typography variant="body2" noWrap>
-                        Season {team.season_id}
+                        {team.season_id === 27.5
+                            ? `Juniors`
+                            : `Season ${team.season_id}`}
                     </Typography>
                     <Typography variant="caption" noWrap>
                         {getAverageScore(team.dances)} Avg Score{' '}
