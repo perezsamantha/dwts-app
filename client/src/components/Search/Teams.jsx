@@ -17,24 +17,18 @@ function Teams(props) {
     const filters = useSelector((state) => state.teams.filters);
     const [slide, setSlide] = useState(false);
 
-    const loadingSelector = createLoadingSelector([
-        actionType.TEAMSEARCH,
-        actionType.PROSEARCH,
-        actionType.CELEBSEARCH,
-        actionType.SEASONSEARCH,
-    ]);
+    const loadingSelector = createLoadingSelector([actionType.TEAMSEARCH]);
     const loading = useSelector((state) => loadingSelector(state));
 
-    let arr = [];
+    let filteredTeams,
+        arr = [];
+    let sortType = '';
 
     useEffect(() => {
         const input = { search: search };
         dispatch(searchTeams(input));
         setSlide(true);
     }, [dispatch, search]);
-
-    let filteredTeams = [];
-    let sortType = '';
 
     if (!loading) {
         filteredTeams = filterTeams(teams, filters);
@@ -52,21 +46,38 @@ function Teams(props) {
                 }
             });
 
-            const categorizeBySeason = filteredTeams.reduce((acc, item) => {
-                if (!acc[item.season_id]) {
-                    acc[item.season_id] = [];
+            arr = filteredTeams.reduce((acc, item) => {
+                const found = acc.find((a) => a.key === item.season_id);
+
+                if (found) {
+                    found.data.push(item);
+                } else {
+                    acc.push({ key: item.season_id, data: [item] });
                 }
 
-                acc[item.season_id].push(item);
                 return acc;
-            }, {});
-
-            for (let [season_id] of Object.entries(categorizeBySeason)) {
-                arr.push(season_id);
-            }
+            }, []);
 
             if (filters.sortBy === 'seasonDesc') {
-                arr.reverse();
+                arr.sort((a, b) => {
+                    if (a.key > b.key) {
+                        return -1;
+                    } else if (a.key < b.key) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+            } else if (filters.sortBy === 'seasonAsc') {
+                arr.sort((a, b) => {
+                    if (a.key < b.key) {
+                        return -1;
+                    } else if (a.key > b.key) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
             }
         }
 
@@ -86,24 +97,59 @@ function Teams(props) {
                 }
             });
 
-            const categorizeByPlacement = filteredTeams.reduce((acc, item) => {
-                if (!acc[item.placement]) {
-                    acc[item.placement] = [];
+            arr = teams.reduce((acc, item) => {
+                const found = acc.find((a) => a.key === item.placement);
+
+                if (found) {
+                    found.data.push(item);
+                } else {
+                    acc.push({ key: item.placement, data: [item] });
                 }
 
-                acc[item.placement].push(item);
                 return acc;
-            }, {});
-
-            for (let [placement] of Object.entries(categorizeByPlacement)) {
-                arr.push(placement);
-            }
+            }, []);
 
             if (filters.sortBy === 'placementDesc') {
-                arr.reverse();
+                arr.sort((a, b) => {
+                    if (a.key > b.key) {
+                        return -1;
+                    } else if (a.key < b.key) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+            } else if (filters.sortBy === 'placementAsc') {
+                arr.sort((a, b) => {
+                    if (a.key < b.key) {
+                        return -1;
+                    } else if (a.key > b.key) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
             }
         }
     }
+
+    const sliderTitle = (item, sortType) => {
+        if (sortType === 'season') {
+            if (item.key === 27.5) {
+                return `Juniors`;
+            } else {
+                return `Season ${item.key}`;
+            }
+        } else if (sortType === 'placement') {
+            const placement = convertPlacement(item.key);
+
+            if (placement) {
+                return `${placement} Place`;
+            } else {
+                return `Currently Competing`;
+            }
+        }
+    };
 
     return loading ? (
         <Progress />
@@ -118,17 +164,9 @@ function Teams(props) {
                 {arr.map((item, index) => (
                     <ContentContainer key={index}>
                         <Typography variant="h5" my={1}>
-                            {sortType === 'season'
-                                ? `Season ${item}`
-                                : sortType === 'placement'
-                                ? `${convertPlacement(item)} Place`
-                                : ''}
+                            {sliderTitle(item, sortType)}
                         </Typography>
-                        <TeamsSlider
-                            filteredTeams={filteredTeams}
-                            item={item}
-                            sortType={sortType}
-                        />
+                        <TeamsSlider teams={item.data} sortType={sortType} />
                     </ContentContainer>
                 ))}
             </ResultsContainer>

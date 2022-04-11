@@ -38,11 +38,10 @@ function FanFilters() {
     ]);
     const loading = useSelector((state) => loadingSelector(state));
 
-    useEffect(() => {
-        dispatch(fetchTeams());
-    }, [dispatch]);
+    useEffect(() => {}, []);
 
     const handleOpen = () => {
+        dispatch(fetchTeams());
         setFilters(initialFilters);
         setOpen(true);
     };
@@ -71,170 +70,159 @@ function FanFilters() {
             </Button>
 
             <Dialog open={open} onClose={handleClose} fullWidth>
-                {loading ? (
-                    <Progress />
-                ) : (
-                    <>
-                        <DialogContent>
+                <DialogContent>
+                    <FormControl>
+                        <Typography variant="h5">Sort By</Typography>
+                        <RadioGroup
+                            name="sortBy"
+                            value={filters.sortBy}
+                            onChange={handleChange}
+                            row
+                        >
+                            <FormControlLabel
+                                value="username"
+                                control={<Radio />}
+                                label="Username"
+                            />
+                            <FormControlLabel
+                                value="nickname"
+                                control={<Radio />}
+                                label="Nickname"
+                            />
+                        </RadioGroup>
+
+                        <Stack
+                            direction="row"
+                            spacing={1}
+                            mb={1}
+                            alignItems="center"
+                        >
+                            <Typography variant="h5">Filter By</Typography>
+                            <Chip
+                                size="small"
+                                label="Reset Filters"
+                                onClick={handleClear}
+                            />
+                        </Stack>
+
+                        <Typography>Favorite Pros</Typography>
+                        {loading ? (
+                            <Progress />
+                        ) : (
                             <FormControl>
-                                <Typography variant="h5">Sort By</Typography>
-                                <RadioGroup
-                                    name="sortBy"
-                                    value={filters.sortBy}
+                                <Select
+                                    multiple
+                                    displayEmpty
+                                    name="pros"
+                                    value={filters.pros}
                                     onChange={handleChange}
-                                    row
-                                >
-                                    <FormControlLabel
-                                        value="username"
-                                        control={<Radio />}
-                                        label="Username"
-                                    />
-                                    <FormControlLabel
-                                        value="nickname"
-                                        control={<Radio />}
-                                        label="Nickname"
-                                    />
-                                </RadioGroup>
-
-                                <Stack
-                                    direction="row"
-                                    spacing={1}
-                                    mb={1}
-                                    alignItems="center"
-                                >
-                                    <Typography variant="h5">
-                                        Filter By
-                                    </Typography>
-                                    <Button onClick={handleClear} size="small">
-                                        Clear Filters
-                                    </Button>
-                                </Stack>
-
-                                <Typography>Favorite Pros</Typography>
-                                <FormControl>
-                                    <Select
-                                        multiple
-                                        displayEmpty
-                                        name="pros"
-                                        value={filters.pros}
-                                        onChange={handleChange}
-                                        input={<OutlinedInput />}
-                                        renderValue={(selected) => {
-                                            if (selected.length === 0) {
-                                                return <em>Any Pro</em>;
-                                            }
-                                            return (
-                                                <Box
-                                                    sx={{
-                                                        display: 'flex',
-                                                        flexWrap: 'wrap',
-                                                        gap: 0.5,
-                                                    }}
-                                                >
-                                                    {selected.map((value) => {
-                                                        const pro = pros.find(
-                                                            (pro) =>
-                                                                pro.id === value
-                                                        );
-                                                        const name =
-                                                            pro.first_name +
-                                                            ' ' +
-                                                            pro?.last_name;
-                                                        return (
-                                                            <Chip
-                                                                key={value}
-                                                                label={name}
-                                                            />
-                                                        );
-                                                    })}
-                                                </Box>
-                                            );
-                                        }}
-                                    >
-                                        <MenuItem disabled value="">
-                                            Any Pro
-                                        </MenuItem>
-                                        {pros.map((pro, index) => (
-                                            <MenuItem
-                                                key={index}
-                                                value={pro.id}
+                                    input={<OutlinedInput />}
+                                    renderValue={(selected) => {
+                                        if (selected.length === 0) {
+                                            return <em>Any Pro</em>;
+                                        }
+                                        return (
+                                            <Box
+                                                sx={{
+                                                    display: 'flex',
+                                                    flexWrap: 'wrap',
+                                                    gap: 0.5,
+                                                }}
                                             >
-                                                {pro.first_name}{' '}
-                                                {pro?.last_name}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-
-                                <Typography>Favorite Teams</Typography>
-                                <FormControl>
-                                    <Select
-                                        multiple
-                                        displayEmpty
-                                        name="teams"
-                                        value={filters.teams}
-                                        onChange={handleChange}
-                                        input={<OutlinedInput />}
-                                        renderValue={(selected) => {
-                                            if (selected.length === 0) {
-                                                return <em>Any Team</em>;
-                                            }
-                                            return (
-                                                <Box
-                                                    sx={{
-                                                        display: 'flex',
-                                                        flexWrap: 'wrap',
-                                                        gap: 0.5,
-                                                    }}
-                                                >
-                                                    {selected.map((value) => {
-                                                        const team = teams.find(
-                                                            (team) =>
-                                                                team.id ===
-                                                                value
-                                                        );
-                                                        const name =
-                                                            team.celeb
-                                                                .first_name +
-                                                            ' & ' +
-                                                            team.pro.first_name;
-                                                        return (
-                                                            <Chip
-                                                                key={value}
-                                                                label={name}
-                                                            />
-                                                        );
-                                                    })}
-                                                </Box>
-                                            );
-                                        }}
-                                    >
-                                        <MenuItem disabled value="">
-                                            Any Team
+                                                {selected.map((value) => {
+                                                    const pro = pros.find(
+                                                        (pro) =>
+                                                            pro.id === value
+                                                    );
+                                                    const name =
+                                                        pro.first_name +
+                                                        ' ' +
+                                                        pro?.last_name;
+                                                    return (
+                                                        <Chip
+                                                            key={value}
+                                                            label={name}
+                                                        />
+                                                    );
+                                                })}
+                                            </Box>
+                                        );
+                                    }}
+                                >
+                                    <MenuItem disabled value="">
+                                        Any Pro
+                                    </MenuItem>
+                                    {pros.map((pro, index) => (
+                                        <MenuItem key={index} value={pro.id}>
+                                            {pro.first_name} {pro?.last_name}
                                         </MenuItem>
-                                        {teams.map((team, index) => (
-                                            <MenuItem
-                                                key={index}
-                                                value={team.id}
-                                            >
-                                                {team.celeb.first_name} &{' '}
-                                                {team.pro.first_name}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
+                                    ))}
+                                </Select>
                             </FormControl>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button variant="contained" onClick={handleClose}>
-                                Cancel
-                            </Button>
-                            <Button variant="contained" onClick={handleSubmit}>
-                                Apply
-                            </Button>
-                        </DialogActions>{' '}
-                    </>
-                )}
+                        )}
+
+                        <Typography>Favorite Teams</Typography>
+                        {loading ? (
+                            <Progress />
+                        ) : (
+                            <FormControl>
+                                <Select
+                                    multiple
+                                    displayEmpty
+                                    name="teams"
+                                    value={filters.teams}
+                                    onChange={handleChange}
+                                    input={<OutlinedInput />}
+                                    renderValue={(selected) => {
+                                        if (selected.length === 0) {
+                                            return <em>Any Team</em>;
+                                        }
+                                        return (
+                                            <Box
+                                                sx={{
+                                                    display: 'flex',
+                                                    flexWrap: 'wrap',
+                                                    gap: 0.5,
+                                                }}
+                                            >
+                                                {selected.map((value) => {
+                                                    const team = teams.find(
+                                                        (team) =>
+                                                            team.id === value
+                                                    );
+                                                    const name =
+                                                        team.celeb.first_name +
+                                                        ' & ' +
+                                                        team.pro.first_name;
+                                                    return (
+                                                        <Chip
+                                                            key={value}
+                                                            label={name}
+                                                        />
+                                                    );
+                                                })}
+                                            </Box>
+                                        );
+                                    }}
+                                >
+                                    <MenuItem disabled value="">
+                                        Any Team
+                                    </MenuItem>
+                                    {teams.map((team, index) => (
+                                        <MenuItem key={index} value={team.id}>
+                                            {team.celeb.first_name} &{' '}
+                                            {team.pro.first_name}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        )}
+                    </FormControl>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={handleSubmit}>Apply</Button>
+                </DialogActions>
             </Dialog>
         </>
     );

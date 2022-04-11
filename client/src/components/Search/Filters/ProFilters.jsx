@@ -104,21 +104,6 @@ function ProFilters() {
                                 control={<Radio />}
                                 label="Height"
                             />
-                            {/* <FormControlLabel
-                                value="avgPlacement"
-                                control={<Radio />}
-                                label="Average Placement"
-                            />
-                            <FormControlLabel
-                                value="numPerfects"
-                                control={<Radio />}
-                                label="Perfect Scores"
-                            />
-                            <FormControlLabel
-                                value="numWins"
-                                control={<Radio />}
-                                label="Wins"
-                            /> */}
                         </RadioGroup>
 
                         <Stack
@@ -128,9 +113,11 @@ function ProFilters() {
                             alignItems="center"
                         >
                             <Typography variant="h5">Filter By</Typography>
-                            <Button onClick={handleClear} size="small">
-                                Clear Filters
-                            </Button>
+                            <Chip
+                                size="small"
+                                label="Reset Filters"
+                                onClick={handleClear}
+                            />
                         </Stack>
 
                         <Typography>Gender</Typography>
@@ -166,24 +153,6 @@ function ProFilters() {
                             })}
                         </Select>
 
-                        <Typography>Show Junior Pros?</Typography>
-                        <RadioGroup
-                            name="showJuniors"
-                            value={filters.showJuniors}
-                            onChange={handleChange}
-                            row
-                        >
-                            <FormControlLabel
-                                value={true}
-                                control={<Radio />}
-                                label="Yes"
-                            />
-                            <FormControlLabel
-                                value={false}
-                                control={<Radio />}
-                                label="No"
-                            />
-                        </RadioGroup>
                         <Typography>Height</Typography>
                         <Stack direction="row">
                             <TextField
@@ -257,6 +226,25 @@ function ProFilters() {
                                 })}
                             </TextField>
                         </Stack>
+
+                        <Typography>Show Junior Pros?</Typography>
+                        <RadioGroup
+                            name="showJuniors"
+                            value={filters.showJuniors}
+                            onChange={handleChange}
+                            row
+                        >
+                            <FormControlLabel
+                                value={true}
+                                control={<Radio />}
+                                label="Yes"
+                            />
+                            <FormControlLabel
+                                value={false}
+                                control={<Radio />}
+                                label="No"
+                            />
+                        </RadioGroup>
                     </FormControl>
                 </DialogContent>
                 <DialogActions>

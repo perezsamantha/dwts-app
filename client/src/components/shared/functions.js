@@ -1,10 +1,12 @@
 import { monthNames } from '../../constants/dropdowns';
-//TODO: separate into separate files under functions folder?
+
 export const convertDate = (val) => {
     if (val === null) {
         return '';
     }
+
     const date = new Date(val);
+
     return (
         (date.getMonth() > 8
             ? date.getMonth() + 1
@@ -20,7 +22,9 @@ export const getShortDate = (val) => {
     if (val === null) {
         return '';
     }
+
     const date = new Date(val);
+
     return (
         date.getMonth() +
         1 +
@@ -133,6 +137,7 @@ export const convertPlacement = (i) => {
     if (i === null) {
         return '';
     }
+
     var j = i % 10,
         k = i % 100;
     if (j === 1 && k !== 11) {
@@ -144,6 +149,7 @@ export const convertPlacement = (i) => {
     if (j === 3 && k !== 13) {
         return i + 'rd';
     }
+
     return i + 'th';
 };
 
@@ -157,19 +163,11 @@ export const convertHeight = (heightInInches) => {
     return feet + `'` + inches;
 };
 
-export const getPro = (id, pros) => {
-    return pros.find((pro) => pro.id === id);
-};
-
-export const getCeleb = (id, celebs) => {
-    return celebs.find((pro) => pro.id === id);
-};
-
-export const getTeam = (id, teams) => {
-    return teams.find((team) => team.id === id);
-};
-
 export const getSeasonAndWeek = (episode) => {
+    if (!episode) {
+        return '';
+    }
+
     let str = '';
 
     if (episode?.night) {
@@ -179,14 +177,6 @@ export const getSeasonAndWeek = (episode) => {
     }
 
     return str;
-};
-
-export const getFullCelebName = (id, celebs) => {
-    const celeb = celebs.find((celeb) => celeb.id === id);
-    const celebName = celeb?.last_name
-        ? celeb.first_name + ' ' + celeb.last_name
-        : celeb.first_name;
-    return celebName;
 };
 
 export const getFullName = (person) => {
@@ -220,67 +210,20 @@ export const getFullTeamName = (celeb, pro) => {
 };
 
 export const getShortTeamName = (celeb, pro) => {
+    if (!celeb || !pro) {
+        return '';
+    }
+
     const celebName = celeb.first_name;
     const proName = pro.first_name;
     return celebName + ' & ' + proName;
 };
 
-export const getFullJudgeName = (id, judges) => {
-    const judge = judges.find((judge) => judge.id === id);
-
-    const judgeName = judge?.last_name
-        ? judge.first_name + ' ' + judge.last_name
-        : judge.first_name;
-    return judgeName;
-};
-
-export const getTeamsByPro = (pro, teams) => {
-    const teamsByPro = teams.filter((team) => team.pro_id === pro.id);
-
-    // sort by season (ascending)
-    teamsByPro.sort((a, b) => {
-        if (a.season_id < b.season_id) {
-            return -1;
-        } else if (a.season_id > b.season_id) {
-            return 1;
-        }
-        return 0;
-    });
-
-    return teamsByPro;
-};
-
-// export const getDancesByTeam = (team, dances, dancers, episodes) => {
-//     const filteredDancers = dancers.filter(
-//         (dancer) => dancer.team_id === team.id
-//     );
-
-//     const filteredDances = dances.reduce(function (filtered, dance) {
-//         filteredDancers.map((dancer) =>
-//             dancer.dance_id === dance.id ? filtered.push(dance) : null
-//         );
-//         return filtered;
-//     }, []);
-
-//     return filteredDances;
-// };
-
-// export const sortTeamDancesByWeek = (dances, episodes) => {
-//     const sorted = dances.sort((a, b) => {
-//         let episodeA = episodes.find((episode) => episode.id === a.episode_id);
-//         let episodeB = episodes.find((episode) => episode.id === b.episode_id);
-//         if (episodeA.week < episodeB.week) {
-//             return -1;
-//         } else if (episodeA.week > episodeB.week) {
-//             return 1;
-//         }
-//         return 0;
-//     });
-
-//     return sorted;
-// };
-
 export const getAverageScore = (dances) => {
+    if (!dances || typeof dances === 'undefined' || dances.length === 0) {
+        return 0;
+    }
+
     let avgScore = 0;
 
     let scoresByDance;
@@ -288,7 +231,7 @@ export const getAverageScore = (dances) => {
     let numScores = 0;
     let allScores = [];
 
-    dances.map((dance) => {
+    dances.forEach((dance) => {
         scoresByDance = [];
         totalScore = 0;
 
@@ -301,8 +244,6 @@ export const getAverageScore = (dances) => {
 
             allScores.push(totalScore);
         }
-
-        return '';
     });
 
     numScores = allScores.length;
@@ -315,7 +256,7 @@ export const getAverageScore = (dances) => {
 
 // ✅ using array of score objects instead of array of plain values
 export const getTotalScore = (scores) => {
-    if (scores.length === 0) {
+    if (!scores || typeof scores === 'undefined' || scores.length === 0) {
         return '';
     }
 
@@ -334,46 +275,50 @@ export const getTotalScore = (scores) => {
     return totalScore + '/' + numScores * 10;
 };
 
-// export const getScoreByDance = (dance, scores) => {
-//     let scoresByDance = [];
-//     let totalScore = 0;
-//     let numScores = 0;
+export const getNumberOfWins = (teams) => {
+    if (!teams || typeof teams === 'undefined' || teams.length === 0) {
+        return 0;
+    }
 
-//     scores.map((score) => {
-//         if (score.dance_id === dance.id) {
-//             scoresByDance.push(score.value);
-//             // leave out guest judge scores??
-//         }
+    let numWins = 0;
 
-//         return '';
-//     });
+    teams.forEach((team) => {
+        if (team.placement && team.placement === 1) {
+            numWins++;
+        }
+    });
 
-//     numScores = scoresByDance.length;
+    return numWins;
+};
 
-//     if (scoresByDance.length !== 0) {
-//         totalScore = scoresByDance.reduce((a, b) => a + b);
-//     }
+export const getAveragePlacement = (teams) => {
+    if (!teams || typeof teams === 'undefined' || teams.length === 0) {
+        return 0;
+    }
 
-//     return totalScore + '/' + numScores * 10;
-// };
+    let avgPlacement = 0;
+    let numPlacements = 0;
+    let placements = [];
 
-// export const filterScoresByDance = (dance, scores) => {
-//     const arr = scores.filter((score) => score.dance_id === dance.id);
+    teams.forEach((team) => {
+        if (team.placement) {
+            placements.push(team.placement);
+        }
+    });
 
-//     arr.sort((a, b) => {
-//         if (a.order < b.order) {
-//             return -1;
-//         } else if (a.order > b.order) {
-//             return 1;
-//         } else {
-//             return 0;
-//         }
-//     });
+    if (placements.length !== 0) {
+        numPlacements = placements.length;
+        avgPlacement = placements.reduce((a, b) => a + b) / numPlacements;
+    }
 
-//     return arr;
-// };
+    return avgPlacement;
+};
 
 export const getNumberOfTens = (dances) => {
+    if (!dances || typeof dances === 'undefined' || dances.length === 0) {
+        return 0;
+    }
+
     let numTens = 0;
 
     dances.map((dance) =>
@@ -386,6 +331,10 @@ export const getNumberOfTens = (dances) => {
 };
 
 export const getNumberOfPerfects = (dances) => {
+    if (!dances || typeof dances === 'undefined') {
+        return 0;
+    }
+
     let numPerfects = 0;
 
     let scoresByDance;
@@ -416,39 +365,11 @@ export const getNumberOfPerfects = (dances) => {
     return numPerfects;
 };
 
-// one for all and one for just main dancers where not background??
-// export const getDancesByPro = (pro, teams, dances, dancers) => {
-//     const filteredDancers = dancers.filter(
-//         (dancer) =>
-//             (dancer.pro_id === pro.id ||
-//                 teams.find(
-//                     (team) =>
-//                         team.id === dancer.team_id && team.pro_id === pro.id
-//                 )) &&
-//             dancer.is_background === false
-//     );
-
-//     //let filtered = [];
-
-//     const filteredDances = dances.reduce(function (filtered, dance) {
-//         filteredDancers.map((dancer) =>
-//             dancer.dance_id === dance.id ? filtered.push(dance) : null
-//         );
-//         return filtered;
-//     }, []);
-
-//     return filteredDances;
-// };
-
-// export const getDancersByDance = (dance, dancers) => {
-//     const filteredDancers = dancers.filter(
-//         (dancer) => dancer.dance_id === dance.id
-//     );
-
-//     return filteredDancers;
-// };
-
 export const getDanceName = (dance) => {
+    if (!dance || typeof dance === 'undefined') {
+        return '';
+    }
+
     let str = '';
 
     const ep = `S${dance.episode.season_id} \u2022 W${dance.episode.week}`;
@@ -465,6 +386,10 @@ export const getDanceName = (dance) => {
 };
 
 export const getShortDanceName = (dance) => {
+    if (!dance || typeof dance === 'undefined') {
+        return '';
+    }
+
     let str = '';
 
     const style = `${dance.style}`;
@@ -503,8 +428,11 @@ export const organizeDancers = (dancers) => {
 };
 
 export const getAverageUserScore = (scores) => {
-    let avgScore = 0;
+    if (!scores || typeof scores === 'undefined' || scores.length === 0) {
+        return 0;
+    }
 
+    let avgScore = 0;
     let numScores = 0;
     let totalScores = [];
 
@@ -518,4 +446,21 @@ export const getAverageUserScore = (scores) => {
     }
 
     return avgScore;
+};
+
+export const isPerfect = (scores) => {
+    if (!scores || typeof scores === 'undefined' || scores.length === 0) {
+        return false;
+    }
+
+    let totalScore;
+    const numScores = scores.length;
+
+    totalScore = scores.reduce((a, b) => a + b.value, 0);
+
+    if (totalScore === numScores * 10 && totalScore !== 0) {
+        return true;
+    } else {
+        return false;
+    }
 };

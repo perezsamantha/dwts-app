@@ -1,4 +1,4 @@
-import { getAge } from '../../shared/functions';
+import { getAge, isPerfect } from '../../shared/functions';
 
 export const filterDances = (dances, filters) => {
     const filterKeys = Object.keys(filters);
@@ -68,6 +68,18 @@ export const filterDances = (dances, filters) => {
                         return true;
                     } else {
                         return dance.link !== null ? true : false;
+                    }
+                case 'isPerfect':
+                    if (filters.isPerfect === 'false') {
+                        return true;
+                    } else {
+                        return isPerfect(dance.scores) ? true : false;
+                    }
+                case 'isMain':
+                    if (filters.isMain === 'false') {
+                        return true;
+                    } else {
+                        return dance.isMain !== null ? true : false;
                     }
                 default:
                     return true;

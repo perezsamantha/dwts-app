@@ -118,3 +118,19 @@ export const getThrowbackData = () => async (dispatch) => {
         });
     }
 };
+
+export const getStatsData = () => async (dispatch) => {
+    dispatch({ type: actionType.FETCHSTATSDATA_REQUEST });
+
+    try {
+        Promise.resolve(dispatch(fetchPros()))
+            .then(() => dispatch(fetchTeamsWithoutData()))
+            .then(() => dispatch({ type: actionType.FETCHSTATSDATA_SUCCESS }));
+    } catch (error) {
+        dispatch({
+            type: actionType.FETCHSTATSDATA_FAILURE,
+            payload: error,
+            error: true,
+        });
+    }
+};

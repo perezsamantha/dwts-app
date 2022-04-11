@@ -57,8 +57,45 @@ export const fetchAllPros = async (req, res) => {
         const pros = await pool.query(
             `
             SELECT p.*, 
+                COALESCE((ARRAY_AGG(t.teams))[1], '[]') AS teams,
+                COALESCE((ARRAY_AGG(d.dances))[1], '[]') AS dances,
                 COALESCE((ARRAY_AGG(l.users))[1], '[]') AS likes
             FROM pros p 
+            LEFT JOIN (
+                SELECT t.pro_id,
+                    COALESCE(JSON_AGG(t) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams
+                FROM (
+                    SELECT t.*,
+                        ROW_TO_JSON(c) AS celeb
+                    FROM teams t
+                    LEFT JOIN celebs c
+                    ON t.celeb_id = c.id
+                    GROUP BY t.id, c.id
+                    ORDER BY t.season_id
+                ) t
+                GROUP BY t.pro_id
+            ) t
+            ON p.id = t.pro_id
+            LEFT JOIN (
+                SELECT d1.team_id,
+                    COALESCE(JSON_AGG(d2) FILTER (WHERE d2.id IS NOT NULL), '[]') AS dances
+                FROM dancers d1
+                LEFT JOIN (
+                    SELECT d2.*,
+                        COALESCE(JSON_AGG(s) FILTER (WHERE s.id IS NOT NULL), '[]') AS scores
+                    FROM dances d2
+                    LEFT JOIN scores s
+                    ON d2.id = s.dance_id
+                    GROUP BY d2.id
+                ) d2
+                ON d1.dance_id = d2.id
+                GROUP BY d1.team_id
+            ) d
+            ON p.id = ( 
+                SELECT pro_id 
+                FROM teams t 
+                WHERE t.id = d.team_id 
+            )
             LEFT JOIN (
                 SELECT pl.pro_id,
                     COALESCE(JSON_AGG(JSON_BUILD_OBJECT('id', u.id, 'username', u.username)) FILTER (WHERE u.id IS NOT NULL), '[]') AS users
@@ -69,11 +106,13 @@ export const fetchAllPros = async (req, res) => {
             ) l
             ON p.id = l.pro_id 
             GROUP BY p.id
+            ORDER BY first_name ASC
             `
         );
 
         res.status(200).json(pros.rows);
     } catch (error) {
+        console.log(error.message);
         res.status(500).json({ message: error.message });
     }
 };
@@ -85,8 +124,45 @@ export const findProById = async (req, res) => {
         const pro = await pool.query(
             `
             SELECT p.*, 
+                COALESCE((ARRAY_AGG(t.teams))[1], '[]') AS teams,
+                COALESCE((ARRAY_AGG(d.dances))[1], '[]') AS dances,
                 COALESCE((ARRAY_AGG(l.users))[1], '[]') AS likes
             FROM pros p 
+            LEFT JOIN (
+                SELECT t.pro_id,
+                    COALESCE(JSON_AGG(t) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams
+                FROM (
+                    SELECT t.*,
+                        ROW_TO_JSON(c) AS celeb
+                    FROM teams t
+                    LEFT JOIN celebs c
+                    ON t.celeb_id = c.id
+                    GROUP BY t.id, c.id
+                    ORDER BY t.season_id
+                ) t
+                GROUP BY t.pro_id
+            ) t
+            ON p.id = t.pro_id
+            LEFT JOIN (
+                SELECT d1.team_id,
+                    COALESCE(JSON_AGG(d2) FILTER (WHERE d2.id IS NOT NULL), '[]') AS dances
+                FROM dancers d1
+                LEFT JOIN (
+                    SELECT d2.*,
+                        COALESCE(JSON_AGG(s) FILTER (WHERE s.id IS NOT NULL), '[]') AS scores
+                    FROM dances d2
+                    LEFT JOIN scores s
+                    ON d2.id = s.dance_id
+                    GROUP BY d2.id
+                ) d2
+                ON d1.dance_id = d2.id
+                GROUP BY d1.team_id
+            ) d
+            ON p.id = ( 
+                SELECT pro_id 
+                FROM teams t 
+                WHERE t.id = d.team_id 
+            )
             LEFT JOIN (
                 SELECT pl.pro_id,
                     COALESCE(JSON_AGG(JSON_BUILD_OBJECT('id', u.id, 'username', u.username)) FILTER (WHERE u.id IS NOT NULL), '[]') AS users
@@ -104,6 +180,7 @@ export const findProById = async (req, res) => {
 
         res.status(200).json(pro.rows[0]);
     } catch (error) {
+        console.log(error.message);
         res.status(500).json({ message: error.message });
     }
 };
@@ -115,8 +192,29 @@ export const searchPros = async (req, res) => {
         const pros = await pool.query(
             `
             SELECT p.*, 
+                COALESCE((ARRAY_AGG(d.dances))[1], '[]') AS dances,
                 COALESCE((ARRAY_AGG(l.users))[1], '[]') AS likes
             FROM pros p 
+            LEFT JOIN (
+                SELECT d1.team_id,
+                    COALESCE(JSON_AGG(d2) FILTER (WHERE d2.id IS NOT NULL), '[]') AS dances
+                FROM dancers d1
+                LEFT JOIN (
+                    SELECT d2.*,
+                        COALESCE(JSON_AGG(s) FILTER (WHERE s.id IS NOT NULL), '[]') AS scores
+                    FROM dances d2
+                    LEFT JOIN scores s
+                    ON d2.id = s.dance_id
+                    GROUP BY d2.id
+                ) d2
+                ON d1.dance_id = d2.id
+                GROUP BY d1.team_id
+            ) d
+            ON p.id = ( 
+                SELECT pro_id 
+                FROM teams t 
+                WHERE t.id = d.team_id 
+            )
             LEFT JOIN (
                 SELECT pl.pro_id,
                     COALESCE(JSON_AGG(JSON_BUILD_OBJECT('id', u.id, 'username', u.username)) FILTER (WHERE u.id IS NOT NULL), '[]') AS users
@@ -301,8 +399,45 @@ export const addPic = async (req, res) => {
             const result = await pool.query(
                 `
                 SELECT p.*, 
+                    COALESCE((ARRAY_AGG(t.teams))[1], '[]') AS teams,
+                    COALESCE((ARRAY_AGG(d.dances))[1], '[]') AS dances,
                     COALESCE((ARRAY_AGG(l.users))[1], '[]') AS likes
                 FROM pros p 
+                LEFT JOIN (
+                    SELECT t.pro_id,
+                        COALESCE(JSON_AGG(t) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams
+                    FROM (
+                        SELECT t.*,
+                            ROW_TO_JSON(c) AS celeb
+                        FROM teams t
+                        LEFT JOIN celebs c
+                        ON t.celeb_id = c.id
+                        GROUP BY t.id, c.id
+                        ORDER BY t.season_id
+                    ) t
+                    GROUP BY t.pro_id
+                ) t
+                ON p.id = t.pro_id
+                LEFT JOIN (
+                    SELECT d1.team_id,
+                        COALESCE(JSON_AGG(d2) FILTER (WHERE d2.id IS NOT NULL), '[]') AS dances
+                    FROM dancers d1
+                    LEFT JOIN (
+                        SELECT d2.*,
+                            COALESCE(JSON_AGG(s) FILTER (WHERE s.id IS NOT NULL), '[]') AS scores
+                        FROM dances d2
+                        LEFT JOIN scores s
+                        ON d2.id = s.dance_id
+                        GROUP BY d2.id
+                    ) d2
+                    ON d1.dance_id = d2.id
+                    GROUP BY d1.team_id
+                ) d
+                ON p.id = ( 
+                    SELECT pro_id 
+                    FROM teams t 
+                    WHERE t.id = d.team_id 
+                )
                 LEFT JOIN (
                     SELECT pl.pro_id,
                         COALESCE(JSON_AGG(JSON_BUILD_OBJECT('id', u.id, 'username', u.username)) FILTER (WHERE u.id IS NOT NULL), '[]') AS users
