@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Card, Divider, Typography } from '@mui/material';
+import { Avatar, Box, Card, Divider, Stack, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
     StyledAccordion,
@@ -10,6 +10,11 @@ import {
 import { fetchRecentLikes } from '../../actions/activity';
 import Progress from '../shared/Progress';
 import { timeSince } from './activityFunctions';
+import {
+    getDanceName,
+    getFullName,
+    getFullTeamName,
+} from '../shared/functions';
 
 function RecentLikes() {
     const dispatch = useDispatch();
@@ -22,11 +27,11 @@ function RecentLikes() {
 
     const getType = (like) => {
         if (like.dance_id) {
-            return 'dance';
+            return getDanceName(like.dance);
         } else if (like.team_id) {
-            return 'team';
+            return getFullTeamName(like.team.celeb, like.team.pro);
         } else if (like.pro_id) {
-            return 'pro';
+            return getFullName(like.pro);
         } else {
             return '';
         }
@@ -46,10 +51,29 @@ function RecentLikes() {
                     ) : (
                         <Box>
                             {likes.map((like, index) => (
-                                <Typography key={index}>
-                                    {timeSince(like.liked_at)} ago - @
-                                    {like.user.username} liked a {getType(like)}
-                                </Typography>
+                                <Box key={index}>
+                                    <Stack direction="row" spacing={2}>
+                                        <Box>
+                                            <Avatar />
+                                        </Box>
+                                        <Box>
+                                            <Stack>
+                                                <Typography variant="body2">
+                                                    @{like.user.username} liked{' '}
+                                                    {getType(like)}
+                                                </Typography>
+                                                <Typography
+                                                    color="text.secondary"
+                                                    variant="caption"
+                                                >
+                                                    {timeSince(like.liked_at)}{' '}
+                                                    ago
+                                                </Typography>
+                                            </Stack>
+                                        </Box>
+                                    </Stack>
+                                    {index !== likes.length - 1 && <Divider />}
+                                </Box>
                             ))}
                         </Box>
                     )}

@@ -41,8 +41,6 @@ function Team() {
     const user = useSelector((state) => state.auth.authData);
     const team = useSelector((state) => state.teams.team);
 
-    // issue where on refresh because there's no loading state, data undefined
-    // temp solution by adding 'team !== null'
     const loadingSelector = createLoadingSelector([actionType.TEAMFIND]);
     const loading = useSelector((state) => loadingSelector(state));
 
@@ -68,6 +66,10 @@ function Team() {
                     component={motion.div}
                     whileHover={{
                         scale: 1.2,
+                        transition: { duration: 0.3 },
+                    }}
+                    whileTap={{
+                        scale: 1.25,
                         transition: { duration: 0.3 },
                     }}
                     onClick={() => navigate(-1)}
@@ -205,6 +207,10 @@ function Team() {
                             component={motion.div}
                             whileHover={{
                                 scale: 1.05,
+                                transition: { duration: 0.3 },
+                            }}
+                            whileTap={{
+                                scale: 1.075,
                                 transition: { duration: 0.3 },
                             }}
                         >

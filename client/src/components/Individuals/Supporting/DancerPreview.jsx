@@ -20,6 +20,10 @@ function DancerPreview(props) {
                         scale: 1.05,
                         transition: { duration: 0.3 },
                     }}
+                    whileTap={{
+                        scale: 1.075,
+                        transition: { duration: 0.3 },
+                    }}
                 >
                     <Stack alignItems="center" spacing={1}>
                         <Avatar
@@ -42,13 +46,36 @@ function DancerPreview(props) {
                         scale: 1.05,
                         transition: { duration: 0.3 },
                     }}
+                    whileTap={{
+                        scale: 1.075,
+                        transition: { duration: 0.3 },
+                    }}
                 >
                     <Stack alignItems="center" spacing={1}>
                         <Avatar
                             src={pro.cover_pic}
                             sx={{ width: 50, height: 50 }}
                         />
-                        <Typography>{pro.first_name}</Typography>
+                        <Stack>
+                            <Typography
+                                color={
+                                    dancer.is_background
+                                        ? 'text.secondary'
+                                        : 'text.primary'
+                                }
+                            >
+                                {pro.first_name}
+                            </Typography>
+                            <Typography
+                                color={
+                                    dancer.is_background
+                                        ? 'text.secondary'
+                                        : 'text.primary'
+                                }
+                            >
+                                {pro.last_name}
+                            </Typography>
+                        </Stack>
                     </Stack>
                 </Box>
             );
@@ -59,6 +86,10 @@ function DancerPreview(props) {
                     component={motion.div}
                     whileHover={{
                         scale: 1.05,
+                        transition: { duration: 0.3 },
+                    }}
+                    whileTap={{
+                        scale: 1.075,
                         transition: { duration: 0.3 },
                     }}
                 >

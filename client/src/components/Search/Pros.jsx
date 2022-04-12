@@ -69,6 +69,10 @@ function Pros(props) {
                                         scale: 1.05,
                                         transition: { duration: 0.3 },
                                     }}
+                                    whileTap={{
+                                        scale: 1.075,
+                                        transition: { duration: 0.3 },
+                                    }}
                                 >
                                     <ProPreview pro={pro} />
                                 </Box>

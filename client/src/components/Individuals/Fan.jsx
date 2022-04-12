@@ -44,6 +44,10 @@ function Fan() {
                         scale: 1.2,
                         transition: { duration: 0.3 },
                     }}
+                    whileTap={{
+                        scale: 1.25,
+                        transition: { duration: 0.3 },
+                    }}
                     onClick={() => navigate(-1)}
                 >
                     <ArrowBackIosIcon />

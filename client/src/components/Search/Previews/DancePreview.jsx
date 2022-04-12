@@ -22,7 +22,7 @@ function DancePreview(props) {
                     <BsArrowRight />
                     <Typography variant="subtitle1">
                         Season {episode.season_id} &#8226; Week {episode.week}{' '}
-                        {episode?.night && `\u2022 ${episode.night}`}{' '}
+                        {episode?.night && `\u2022 Night ${episode.night}`}{' '}
                         {scores?.length !== 0 &&
                             `\u2022 ${getTotalScore(scores)}`}
                     </Typography>
@@ -42,10 +42,12 @@ function DancePreview(props) {
                     </Typography>
                 </Stack>
 
-                <Stack direction="row" spacing={1} alignItems="center">
-                    <FiHeart />
-                    <Typography>{dance.likes.length}</Typography>
-                </Stack>
+                {dance.likes.length > 0 && (
+                    <Stack direction="row" spacing={1} alignItems="center">
+                        <FiHeart />
+                        <Typography>{dance.likes.length}</Typography>
+                    </Stack>
+                )}
             </Stack>
         </Card>
     );

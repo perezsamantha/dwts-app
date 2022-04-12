@@ -16,7 +16,7 @@ export const timeSince = (date) => {
         } else {
             interval = Math.floor(seconds / 86400);
             if (interval >= 1) {
-                intervalType = 'day';
+                intervalType = 'days';
             } else {
                 interval = Math.floor(seconds / 3600);
                 if (interval >= 1) {

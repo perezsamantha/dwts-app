@@ -6,19 +6,40 @@ export const fetchRecentLikes = async (req, res) => {
             `
             SELECT tb.*,
                 (
-                    SELECT JSON_BUILD_OBJECT('id', u.id, 'username', u.username)
+                    SELECT JSON_BUILD_OBJECT('id', u.id, 'cover_pic', u.cover_pic, 'username', u.username)
                     FROM users u
                     WHERE u.id = tb.user_id
                 ) AS user,
                 (
                     SELECT ROW_TO_JSON(d)
-                    FROM dances d
+                    FROM (
+                        SELECT d.*, 
+                        (
+                            SELECT ROW_TO_JSON(e.*)
+                            FROM episodes e
+                            WHERE e.id = d.episode_id
+                        ) AS episode
+                        FROM dances d
+                    ) d
                     WHERE d.id = tb.dance_id
                         AND tb.dance_id IS NOT NULL
                 ) AS dance,
                 (
                     SELECT ROW_TO_JSON(t)
-                    FROM teams t
+                    FROM (
+                        SELECT t.*, 
+                        (
+                            SELECT ROW_TO_JSON(c.*)
+                            FROM celebs c
+                            WHERE c.id = t.celeb_id
+                        ) AS celeb,
+                        (
+                            SELECT ROW_TO_JSON(p.*)
+                            FROM pros p
+                            WHERE p.id = t.pro_id
+                        ) AS pro
+                        FROM teams t
+                    ) t
                     WHERE t.id = tb.team_id
                         AND tb.team_id IS NOT NULL
                 ) AS team,

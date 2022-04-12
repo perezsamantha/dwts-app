@@ -68,6 +68,10 @@ function Pro() {
                         scale: 1.2,
                         transition: { duration: 0.3 },
                     }}
+                    whileTap={{
+                        scale: 1.25,
+                        transition: { duration: 0.3 },
+                    }}
                     onClick={() => navigate(-1)}
                 >
                     <ArrowBackIosIcon />
@@ -214,6 +218,10 @@ function Pro() {
                                 component={motion.div}
                                 whileHover={{
                                     scale: 1.05,
+                                    transition: { duration: 0.3 },
+                                }}
+                                whileTap={{
+                                    scale: 1.075,
                                     transition: { duration: 0.3 },
                                 }}
                             >

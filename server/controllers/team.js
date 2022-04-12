@@ -99,6 +99,7 @@ export const fetchAllTeams = async (req, res) => {
             ) l
             ON t.id = l.team_id
             GROUP BY t.id, p.id, c.id, m.id
+            ORDER BY t.season_id
             `
         );
 

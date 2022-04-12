@@ -1,10 +1,11 @@
-import { Card, Divider, Typography } from '@mui/material';
+import { Card, Divider, Stack, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
     StyledAccordion,
     StyledAccordionDetails,
     StyledAccordionSummary,
 } from '../shared/muiStyles';
+import { VscVersions } from 'react-icons/vsc';
 
 function Announcement() {
     return (
@@ -16,11 +17,14 @@ function Announcement() {
                 <StyledAccordionDetails sx={{ padding: 0 }}>
                     <Divider />
 
-                    <Typography>Version 1.0</Typography>
+                    <Stack direction="row" spacing={1} alignItems="center">
+                        <VscVersions />
+                        <Typography>Version 1.0 (as of 5/1/22)</Typography>
+                    </Stack>
                     <Typography>
                         Future development plans include individual season/tour
                         pages, incorporation of tour dances, interactive
-                        rankings amongst teams and dances, and a more detailed
+                        rankings amongst teams and dances, and an extensive
                         activity feed.
                     </Typography>
                 </StyledAccordionDetails>
