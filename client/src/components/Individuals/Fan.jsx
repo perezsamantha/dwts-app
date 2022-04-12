@@ -51,23 +51,7 @@ function Fan() {
                 <CardAvatar
                     src={fan.cover_pic ? fan.cover_pic : '/defaultPic.jpeg'}
                 />
-                {/* <Button disabled></Button> */}
-                <Box my={1}>
-                    <Chip
-                        label={fan.role}
-                        variant="outlined"
-                        sx={{
-                            color: (theme) =>
-                                theme.palette.mode === 'light'
-                                    ? 'primary.dark'
-                                    : 'primary.main',
-                            borderColor: (theme) =>
-                                theme.palette.mode === 'light'
-                                    ? 'primary.dark'
-                                    : 'primary.main',
-                        }}
-                    ></Chip>
-                </Box>
+                <Button disabled></Button>
             </Stack>
 
             <Stack my={1}>
@@ -78,17 +62,18 @@ function Fan() {
             <Box my={1}>
                 <Chip
                     label={fan.role}
-                    variant="outlined"
-                    sx={{
-                        color: (theme) =>
-                            theme.palette.mode === 'light'
-                                ? 'primary.dark'
-                                : 'primary.main',
-                        borderColor: (theme) =>
-                            theme.palette.mode === 'light'
-                                ? 'primary.dark'
-                                : 'primary.main',
-                    }}
+                    color="primary"
+                    // variant='outlined'
+                    // sx={{
+                    //     color: (theme) =>
+                    //         theme.palette.mode === 'light'
+                    //             ? 'primary.dark'
+                    //             : 'primary.main',
+                    //     borderColor: (theme) =>
+                    //         theme.palette.mode === 'light'
+                    //             ? 'primary.dark'
+                    //             : 'primary.main',
+                    // }}
                 ></Chip>
             </Box>
 
@@ -101,7 +86,7 @@ function Fan() {
                     <Stack spacing={1}>
                         {fan?.watching_since && (
                             <Typography variant="h6">
-                                Watching since Season {fan.watching_since}
+                                Watching since season {fan.watching_since}
                             </Typography>
                         )}
 

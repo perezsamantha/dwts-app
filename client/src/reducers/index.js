@@ -15,6 +15,7 @@ import scores from './scores';
 import dancers from './dancers';
 import tours from './tours';
 import users from './users';
+import activity from './activity';
 
 export const reducers = combineReducers({
     auth,
@@ -31,4 +32,5 @@ export const reducers = combineReducers({
     dancers,
     tours,
     users,
+    activity,
 });

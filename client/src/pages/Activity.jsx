@@ -3,7 +3,7 @@ import { Typography } from '@mui/material';
 import BottomNavBar from '../components/BottomNavBar/BottomNavBar';
 import { MainContainer, Page } from '../components/shared/muiStyles';
 import Announcement from '../components/Activity/Announcement';
-import Summary from '../components/Activity/Summary';
+import RecentLikes from '../components/Activity/RecentLikes';
 import DanceCard from '../components/Activity/DanceCard';
 
 function Activity() {
@@ -14,7 +14,7 @@ function Activity() {
             <MainContainer>
                 <Typography variant="h3">Activity</Typography>
 
-                <Summary />
+                <RecentLikes />
 
                 <DanceCard />
 

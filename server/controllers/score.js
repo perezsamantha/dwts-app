@@ -195,20 +195,23 @@ export const setUserScore = async (req, res) => {
             [id, req.userId]
         );
 
+        const scored_at = new Date();
+
         if (query.rows[0].exists) {
             await pool.query(
                 `UPDATE user_scores
-                SET value = $1
-                WHERE dance_id = $2
-                    AND user_id = $3`,
-                [value, id, req.userId]
+                SET value = $1, 
+                    scored_at = $2
+                WHERE dance_id = $3
+                    AND user_id = $4`,
+                [value, scored_at, id, req.userId]
             );
         } else {
             await pool.query(
                 `INSERT INTO user_scores 
-                    (dance_id, user_id, value) 
-                VALUES($1, $2, $3)`,
-                [id, req.userId, value]
+                    (dance_id, user_id, value, scored_at) 
+                VALUES($1, $2, $3, $4)`,
+                [id, req.userId, value, scored_at]
             );
         }
 

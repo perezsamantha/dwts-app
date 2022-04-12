@@ -87,7 +87,7 @@ function DanceCard() {
                         </Stack>
                     )}
 
-                    {dance.user_scores.length > 0 && (
+                    {dance?.user_scores?.length > 0 && (
                         <Box>
                             <Stack
                                 direction="row"

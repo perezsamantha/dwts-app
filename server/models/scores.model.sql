@@ -18,5 +18,4 @@ CREATE TABLE IF NOT EXISTS scores(
             ON DELETE CASCADE
 );
 
--- add order to unique constraint?
 -- bool if score counts?

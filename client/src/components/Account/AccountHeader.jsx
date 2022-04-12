@@ -66,20 +66,7 @@ function AccountHeader(props) {
                 <Typography variant="h5">@{user.username}</Typography>
 
                 <Box my={1}>
-                    <Chip
-                        label={user.role}
-                        variant="outlined"
-                        sx={{
-                            color: (theme) =>
-                                theme.palette.mode === 'light'
-                                    ? 'primary.dark'
-                                    : 'primary.main',
-                            borderColor: (theme) =>
-                                theme.palette.mode === 'light'
-                                    ? 'primary.dark'
-                                    : 'primary.main',
-                        }}
-                    ></Chip>
+                    <Chip label={user.role} color="primary"></Chip>
                 </Box>
 
                 {(user?.watching_since || user?.birthday_month) && (
@@ -91,7 +78,7 @@ function AccountHeader(props) {
                         <Stack spacing={1}>
                             {user?.watching_since && (
                                 <Typography variant="h6">
-                                    Watching since Season {user.watching_since}
+                                    Watching since season {user.watching_since}
                                 </Typography>
                             )}
 

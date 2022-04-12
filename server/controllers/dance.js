@@ -1,5 +1,5 @@
 import { Storage } from '@google-cloud/storage';
-import UUID from 'uuid-v4';
+import { v4 as uuidv4 } from 'uuid';
 
 import pool from '../api/pool.js';
 
@@ -582,7 +582,7 @@ export const addPic = async (req, res) => {
     try {
         const blob = bucket.file(req.file.originalname);
 
-        let uuid = UUID();
+        let uuid = uuidv4();
 
         const blobWriter = blob.createWriteStream({
             metadata: {
@@ -727,15 +727,18 @@ export const likeDance = async (req, res, next) => {
             );
             res.status(200).json({ user: user.rows[0], type: 'unlike' });
         } else {
+            const liked_at = new Date();
+
             await pool.query(
                 `
                 INSERT INTO dance_likes (
                     dance_id, 
-                    user_id
+                    user_id,
+                    liked_at
                 ) 
-                VALUES($1, $2)
+                VALUES($1, $2, $3)
                 `,
-                [id, req.userId]
+                [id, req.userId, liked_at]
             );
             res.status(200).json({ user: user.rows[0], type: 'like' });
         }
