@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS users(
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(60) NOT NULL,
     nickname VARCHAR(30),
-    email_verified BOOLEAN DEFAULT FALSE,
+    email_verified BOOLEAN DEFAULT FALSE NOT NULL,
     watching_since REAL,
     twitter VARCHAR(30),
     instagram VARCHAR(30),
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS users(
     birthday_day SMALLINT,
     "role" user_roles DEFAULT 'fan',
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    last_login TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    last_active TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     PRIMARY KEY(id),
     CONSTRAINT fk_watching_since
         FOREIGN KEY(watching_since)

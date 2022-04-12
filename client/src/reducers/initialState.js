@@ -200,3 +200,7 @@ export const initialUserState = {
         teams: [],
     },
 };
+
+export const initialActivityState = {
+    likes: [],
+};

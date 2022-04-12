@@ -134,3 +134,5 @@ export const findDailyDance = (day) => API.post(`/dances/daily/`, day);
 
 export const setUserScore = (id, value) =>
     API.patch(`/scores/user/${id}`, value);
+
+export const fetchRecentLikes = () => API.get(`/activity/likes`);

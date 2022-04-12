@@ -1,6 +1,6 @@
 import pool from '../api/pool.js';
 import { Storage } from '@google-cloud/storage';
-import UUID from 'uuid-v4';
+import { v4 as uuidv4 } from 'uuid';
 
 export const addCeleb = async (req, res) => {
     try {
@@ -147,7 +147,7 @@ export const setCelebPic = async (req, res) => {
     try {
         const blob = bucket.file(req.file.originalname);
 
-        let uuid = UUID();
+        let uuid = uuidv4();
 
         const blobWriter = blob.createWriteStream({
             metadata: {

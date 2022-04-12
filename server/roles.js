@@ -17,10 +17,11 @@ ac.grant('fan')
     .readAny('dance')
     .updateAny('dance_like')
     .readAny('score')
-    .updateOwn('user_score')
+    .updateAny('user_score')
     .readAny('dancer')
     .readAny('tour')
-    .readAny('tour_cast');
+    .readAny('tour_cast')
+    .readAny('like');
 
 ac.grant('pro')
     .extend('fan')

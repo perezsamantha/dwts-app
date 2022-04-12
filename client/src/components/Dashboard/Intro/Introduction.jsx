@@ -71,7 +71,7 @@ function Introduction() {
                                         All seasons and tours at a glance
                                     </Typography>
                                     <Typography>
-                                        Statistics about pros, teams, and scores
+                                        Statistics about teams and pros
                                     </Typography>
                                 </Stack>
                             </Box>
@@ -101,8 +101,8 @@ function Introduction() {
                                         Filter / sort for more precise results
                                     </Typography>
                                     <Typography>
-                                        Click each to view more information and
-                                        like your favorites
+                                        Click each dance/team/pro for more
+                                        information and like your favorites
                                     </Typography>
                                 </Stack>
                             </Box>
@@ -125,10 +125,12 @@ function Introduction() {
                             <Box>
                                 <Stack spacing={0.8}>
                                     <Typography>
-                                        Recent activity on likes and pictures by
-                                        pros
+                                        Recent likes by fans
                                     </Typography>
-                                </Stack>{' '}
+                                    <Typography>
+                                        Results from previous day's daily dance
+                                    </Typography>
+                                </Stack>
                             </Box>
                         </Stack>
                     </Stack>
@@ -156,7 +158,7 @@ function Introduction() {
                                         Account settings (including dark mode
                                         toggle)
                                     </Typography>
-                                </Stack>{' '}
+                                </Stack>
                             </Box>
                         </Stack>
                     </Stack>

@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 import { Storage } from '@google-cloud/storage';
-import UUID from 'uuid-v4';
+import { v4 as uuidv4 } from 'uuid';
 import pool from '../api/pool.js';
 import ac from '../roles.js';
 
@@ -138,17 +138,6 @@ export const signIn = async (req, res) => {
                 GROUP BY u.id
                 `,
                 [existing_user.rows[0].id]
-            );
-
-            const new_login = new Date();
-
-            await pool.query(
-                `
-                UPDATE users 
-                SET last_login = $1 
-                WHERE id = $2
-                `,
-                [new_login, user.rows[0].id]
             );
 
             const token = jwt.sign(
@@ -409,6 +398,17 @@ export const fetchAuthData = async (req, res) => {
             GROUP BY u.id
             `,
             [id]
+        );
+
+        const new_activity = new Date();
+
+        await pool.query(
+            `
+            UPDATE users 
+            SET last_active = $1 
+            WHERE id = $2
+            `,
+            [new_activity, id]
         );
 
         res.status(200).json(user.rows[0]);
@@ -1045,7 +1045,7 @@ export const setUserPic = async (req, res) => {
     try {
         const blob = bucket.file(req.file.originalname);
 
-        let uuid = UUID();
+        let uuid = uuidv4();
 
         const blobWriter = blob.createWriteStream({
             metadata: {
