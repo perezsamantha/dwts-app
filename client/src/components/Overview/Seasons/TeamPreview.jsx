@@ -7,7 +7,7 @@ function TeamPreview(props) {
         <Box>
             <Stack alignItems="center">
                 <Avatar
-                    sx={{ height: 30, width: 30 }}
+                    sx={{ height: 35, width: 35 }}
                     src={team.cover_pic}
                 ></Avatar>
                 <Typography sx={{ fontSize: 12 }}>

@@ -25,6 +25,10 @@ function SocialsLink(props) {
                             scale: 1.2,
                             transition: { duration: 0.3 },
                         }}
+                        whileTap={{
+                            scale: 1.25,
+                            transition: { duration: 0.3 },
+                        }}
                     >
                         <BsInstagram />
                     </Box>
@@ -45,6 +49,10 @@ function SocialsLink(props) {
                             scale: 1.2,
                             transition: { duration: 0.3 },
                         }}
+                        whileTap={{
+                            scale: 1.25,
+                            transition: { duration: 0.3 },
+                        }}
                     >
                         <BsTwitter />
                     </Box>
@@ -63,6 +71,10 @@ function SocialsLink(props) {
                         component={motion.div}
                         whileHover={{
                             scale: 1.2,
+                            transition: { duration: 0.3 },
+                        }}
+                        whileTap={{
+                            scale: 1.25,
                             transition: { duration: 0.3 },
                         }}
                     >

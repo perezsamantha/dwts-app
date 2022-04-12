@@ -96,7 +96,7 @@ export const signIn = async (req, res) => {
                 FROM users u 
                 LEFT JOIN (
                     SELECT pl.user_id,
-                        COALESCE(JSON_AGG(ROW_TO_JSON(p)) FILTER (WHERE p.id IS NOT NULL), '[]') AS pros
+                        COALESCE(JSON_AGG(ROW_TO_JSON(p) ORDER BY pl.liked_at ASC) FILTER (WHERE p.id IS NOT NULL), '[]') AS pros
                     FROM pro_likes pl
                     LEFT JOIN pros p
                     ON pl.pro_id = p.id
@@ -106,7 +106,7 @@ export const signIn = async (req, res) => {
                 ON u.id = pl.user_id
                 LEFT JOIN (
                     SELECT tl.user_id,
-                        COALESCE(JSON_AGG(ROW_TO_JSON(t)) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams
+                        COALESCE(JSON_AGG(ROW_TO_JSON(t) ORDER BY tl.liked_at ASC) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams
                     FROM team_likes tl
                     LEFT JOIN (
                         SELECT t.*, 
@@ -126,7 +126,7 @@ export const signIn = async (req, res) => {
                 ON u.id = tl.user_id
                 LEFT JOIN (
                     SELECT dl.user_id,
-                        COALESCE(JSON_AGG(ROW_TO_JSON(d)) FILTER (WHERE d.id IS NOT NULL), '[]') AS dances
+                        COALESCE(JSON_AGG(ROW_TO_JSON(d) ORDER BY dl.liked_at ASC) FILTER (WHERE d.id IS NOT NULL), '[]') AS dances
                     FROM dance_likes dl
                     LEFT JOIN dances d
                     ON dl.dance_id = d.id
@@ -170,6 +170,7 @@ export const signIn = async (req, res) => {
 
         // res.status(200).json({ result: existing_user.rows[0], token });
     } catch (error) {
+        console.log(error.message);
         res.status(500).json({ message: error.message });
     }
 };
@@ -304,8 +305,13 @@ export const fetchAuthData = async (req, res) => {
             FROM users u 
             LEFT JOIN (
                 SELECT pl.user_id,
-                    COALESCE(JSON_AGG(ROW_TO_JSON(p)) FILTER (WHERE p.id IS NOT NULL), '[]') AS pros
-                FROM pro_likes pl
+                    COALESCE(JSON_AGG(ROW_TO_JSON(p) ORDER BY pl.liked_at ASC) FILTER (WHERE p.id IS NOT NULL), '[]') AS pros
+                FROM (
+                    SELECT *
+                    FROM pro_likes
+                    WHERE user_id = $1
+                    ORDER BY liked_at ASC
+                ) pl
                 LEFT JOIN pros p
                 ON pl.pro_id = p.id
                 WHERE pl.user_id = $1
@@ -314,8 +320,13 @@ export const fetchAuthData = async (req, res) => {
             ON u.id = pl.user_id
             LEFT JOIN (
                 SELECT tl.user_id,
-                    COALESCE(JSON_AGG(ROW_TO_JSON(t)) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams
-                FROM team_likes tl
+                    COALESCE(JSON_AGG(ROW_TO_JSON(t) ORDER BY tl.liked_at ASC) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams
+                FROM (
+                    SELECT *
+                    FROM team_likes
+                    WHERE user_id = $1
+                    ORDER BY liked_at ASC
+                ) tl
                 LEFT JOIN (
                     SELECT t.*, 
                         ROW_TO_JSON(p) AS pro, 
@@ -334,7 +345,7 @@ export const fetchAuthData = async (req, res) => {
             ON u.id = tl.user_id
             LEFT JOIN (
                 SELECT dl.user_id,
-                    COALESCE(JSON_AGG(ROW_TO_JSON(d)) FILTER (WHERE d.id IS NOT NULL), '[]') AS dances
+                    COALESCE(JSON_AGG(ROW_TO_JSON(d) ORDER BY dl.liked_at ASC) FILTER (WHERE d.id IS NOT NULL), '[]') AS dances
                 FROM dance_likes dl
                 LEFT JOIN (
                     SELECT d.*,
@@ -537,7 +548,7 @@ export const fetchUsers = async (req, res) => {
             FROM users u 
             LEFT JOIN (
                 SELECT pl.user_id,
-                    COALESCE(JSON_AGG(ROW_TO_JSON(p)) FILTER (WHERE p.id IS NOT NULL), '[]') AS pros
+                    COALESCE(JSON_AGG(ROW_TO_JSON(p) ORDER BY pl.liked_at ASC) FILTER (WHERE p.id IS NOT NULL), '[]') AS pros
                 FROM pro_likes pl
                 LEFT JOIN pros p
                 ON pl.pro_id = p.id
@@ -546,7 +557,7 @@ export const fetchUsers = async (req, res) => {
             ON u.id = pl.user_id
             LEFT JOIN (
                 SELECT tl.user_id,
-                    COALESCE(JSON_AGG(ROW_TO_JSON(t)) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams
+                    COALESCE(JSON_AGG(ROW_TO_JSON(t) ORDER BY tl.liked_at ASC) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams
                 FROM team_likes tl
                 LEFT JOIN teams t
                 ON tl.team_id = t.id
@@ -555,7 +566,7 @@ export const fetchUsers = async (req, res) => {
             ON u.id = tl.user_id
             LEFT JOIN (
                 SELECT dl.user_id,
-                    COALESCE(JSON_AGG(ROW_TO_JSON(d)) FILTER (WHERE d.id IS NOT NULL), '[]') AS dances
+                    COALESCE(JSON_AGG(ROW_TO_JSON(d) ORDER BY dl.liked_at ASC) FILTER (WHERE d.id IS NOT NULL), '[]') AS dances
                 FROM dance_likes dl
                 LEFT JOIN dances d
                 ON dl.dance_id = d.id
@@ -631,7 +642,7 @@ export const findUserByUsername = async (req, res) => {
             FROM users u 
             LEFT JOIN (
                 SELECT pl.user_id,
-                    COALESCE(JSON_AGG(ROW_TO_JSON(p)) FILTER (WHERE p.id IS NOT NULL), '[]') AS pros
+                    COALESCE(JSON_AGG(ROW_TO_JSON(p) ORDER BY pl.liked_at ASC) FILTER (WHERE p.id IS NOT NULL), '[]') AS pros
                 FROM pro_likes pl
                 LEFT JOIN pros p
                 ON pl.pro_id = p.id
@@ -640,7 +651,7 @@ export const findUserByUsername = async (req, res) => {
             ON u.id = pl.user_id
             LEFT JOIN (
                 SELECT tl.user_id,
-                    COALESCE(JSON_AGG(ROW_TO_JSON(t)) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams
+                    COALESCE(JSON_AGG(ROW_TO_JSON(t) ORDER BY tl.liked_at ASC) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams
                 FROM team_likes tl
                 LEFT JOIN (
                     SELECT t.*, 
@@ -659,7 +670,7 @@ export const findUserByUsername = async (req, res) => {
             ON u.id = tl.user_id
             LEFT JOIN (
                 SELECT dl.user_id,
-                    COALESCE(JSON_AGG(ROW_TO_JSON(d)) FILTER (WHERE d.id IS NOT NULL), '[]') AS dances
+                    COALESCE(JSON_AGG(ROW_TO_JSON(d) ORDER BY dl.liked_at ASC) FILTER (WHERE d.id IS NOT NULL), '[]') AS dances
                 FROM dance_likes dl
                 LEFT JOIN (
                     SELECT d.*,
@@ -753,7 +764,7 @@ export const searchUsers = async (req, res) => {
             FROM users u 
             LEFT JOIN (
                 SELECT pl.user_id,
-                    COALESCE(JSON_AGG(ROW_TO_JSON(p)) FILTER (WHERE p.id IS NOT NULL), '[]') AS pros
+                    COALESCE(JSON_AGG(ROW_TO_JSON(p) ORDER BY pl.liked_at ASC) FILTER (WHERE p.id IS NOT NULL), '[]') AS pros
                 FROM pro_likes pl
                 LEFT JOIN pros p
                 ON pl.pro_id = p.id
@@ -762,7 +773,7 @@ export const searchUsers = async (req, res) => {
             ON u.id = pl.user_id
             LEFT JOIN (
                 SELECT tl.user_id,
-                    COALESCE(JSON_AGG(ROW_TO_JSON(t)) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams
+                    COALESCE(JSON_AGG(ROW_TO_JSON(t) ORDER BY tl.liked_at ASC) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams
                 FROM team_likes tl
                 LEFT JOIN teams t
                 ON tl.team_id = t.id
@@ -771,7 +782,7 @@ export const searchUsers = async (req, res) => {
             ON u.id = tl.user_id
             LEFT JOIN (
                 SELECT dl.user_id,
-                    COALESCE(JSON_AGG(ROW_TO_JSON(d)) FILTER (WHERE d.id IS NOT NULL), '[]') AS dances
+                    COALESCE(JSON_AGG(ROW_TO_JSON(d) ORDER BY dl.liked_at ASC) FILTER (WHERE d.id IS NOT NULL), '[]') AS dances
                 FROM dance_likes dl
                 LEFT JOIN dances d
                 ON dl.dance_id = d.id
@@ -861,7 +872,7 @@ export const updateAuth = async (req, res) => {
             FROM users u 
             LEFT JOIN (
                 SELECT pl.user_id,
-                    COALESCE(JSON_AGG(ROW_TO_JSON(p)) FILTER (WHERE p.id IS NOT NULL), '[]') AS pros
+                    COALESCE(JSON_AGG(ROW_TO_JSON(p) ORDER BY pl.liked_at ASC) FILTER (WHERE p.id IS NOT NULL), '[]') AS pros
                 FROM pro_likes pl
                 LEFT JOIN pros p
                 ON pl.pro_id = p.id
@@ -871,7 +882,7 @@ export const updateAuth = async (req, res) => {
             ON u.id = pl.user_id
             LEFT JOIN (
                 SELECT tl.user_id,
-                    COALESCE(JSON_AGG(ROW_TO_JSON(t)) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams
+                    COALESCE(JSON_AGG(ROW_TO_JSON(t) ORDER BY tl.liked_at ASC) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams
                 FROM team_likes tl
                 LEFT JOIN (
                     SELECT t.*, 
@@ -891,7 +902,7 @@ export const updateAuth = async (req, res) => {
             ON u.id = tl.user_id
             LEFT JOIN (
                 SELECT dl.user_id,
-                    COALESCE(JSON_AGG(ROW_TO_JSON(d)) FILTER (WHERE d.id IS NOT NULL), '[]') AS dances
+                    COALESCE(JSON_AGG(ROW_TO_JSON(d) ORDER BY tl.liked_at ASC) FILTER (WHERE d.id IS NOT NULL), '[]') AS dances
                 FROM dance_likes dl
                 LEFT JOIN (
                     SELECT d.*,

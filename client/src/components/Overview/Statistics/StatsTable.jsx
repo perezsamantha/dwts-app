@@ -32,7 +32,7 @@ function StatsTable(props) {
                                 },
                             }}
                         >
-                            <TableCell>{item.key}</TableCell>
+                            <TableCell width={1}>{item.key}</TableCell>
                             <TableCell>
                                 {item.data
                                     .map((item) =>

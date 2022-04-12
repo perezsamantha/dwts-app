@@ -47,7 +47,9 @@ function TourOverview() {
                     ) : (
                         <TableContainer
                             component={Paper}
-                            sx={{ backgroundColor: 'transparent' }}
+                            sx={{
+                                backgroundColor: 'transparent',
+                            }}
                             elevation={0}
                         >
                             <Table size="small">
@@ -77,7 +79,7 @@ function TourOverview() {
                                             </TableCell>
                                             <TableCell>{tour.name}</TableCell>
                                             <TableCell>
-                                                <Typography variant="body2">
+                                                <Typography variant="caption">
                                                     {getShortDate(
                                                         tour?.first_show
                                                     )}{' '}

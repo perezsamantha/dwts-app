@@ -35,6 +35,10 @@ function DanceFavorites(props) {
                                     scale: 1.025,
                                     transition: { duration: 0.3 },
                                 }}
+                                whileTap={{
+                                    scale: 1.05,
+                                    transition: { duration: 0.3 },
+                                }}
                             >
                                 <DancePreview dance={dance} />
                             </Box>

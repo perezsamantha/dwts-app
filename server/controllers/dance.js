@@ -687,7 +687,7 @@ export const addPic = async (req, res) => {
     }
 };
 
-export const likeDance = async (req, res, next) => {
+export const likeDance = async (req, res) => {
     try {
         const { id } = req.params;
 
