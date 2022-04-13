@@ -7,7 +7,6 @@ import { Navigate, Outlet, Route, Routes, useNavigate } from 'react-router-dom';
 import Individuals from './pages/Individuals';
 import Admin from './pages/Admin';
 import styled from 'styled-components';
-//import { AnimatePresence } from 'framer-motion';
 import {
     ThemeProvider,
     createTheme,
@@ -24,8 +23,10 @@ import 'swiper/css/bundle';
 import { fetchAuthData, logout } from './actions/auth';
 import Activity from './pages/Activity';
 import Progress from './components/shared/Progress';
+//import useAuth, { AuthProvider } from './useAuth';
 
-function App() {
+function App(props) {
+    //const { user, fetching } = useAuth();
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark');
     const [toggleDark, setToggleDark] = useState(
         localStorage.getItem('theme')
@@ -38,11 +39,13 @@ function App() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.authData);
-    const fetching = useSelector((state) => state.auth.fetching);
+    const fetching = useSelector((state) => state.loading.AUTHFETCH);
     const authError = useSelector((state) => state.errors.AUTHFETCH);
+
     if (window.location.pathname !== '/' && authError) {
         dispatch(logout(navigate));
     }
+
     useEffect(() => {
         setToggleDark(
             localStorage.getItem('theme')
@@ -61,7 +64,7 @@ function App() {
         if (window.location.pathname !== '/' && authError) {
             dispatch(logout(navigate));
         }
-    }, [dispatch, navigate, prefersDarkMode, authError]);
+    }, [dispatch, navigate, prefersDarkMode, authError, props]);
 
     const PrivateRoute = () => {
         return fetching ? (
@@ -313,7 +316,6 @@ function App() {
                         <Route path="admin" element={<PrivateRoute />}>
                             <Route path="" element={<Admin />} />
                         </Route>
-                        {/* eventually move function to account */}
                         <Route
                             exact
                             path="teams/:id/*"
@@ -345,5 +347,13 @@ function App() {
 const AppContainer = styled(Paper)`
     min-height: 100vh;
 `;
+
+// export default function App() {
+//     return (
+//         <AuthProvider>
+//             <InnerApp />
+//         </AuthProvider>
+//     );
+// }
 
 export default App;

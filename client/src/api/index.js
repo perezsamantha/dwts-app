@@ -1,18 +1,32 @@
 import axios from 'axios';
 
+const isSameOrigin = (url) => {
+    return new URL(window.location.href).origin === new URL(url).origin;
+};
+
 const API = axios.create({
     baseURL: 'http://localhost:5000',
     withCredentials: true,
 });
 
 API.interceptors.request.use((req) => {
-    // if (localStorage.getItem('profile')) {
-    //     req.headers.authorization = `Bearer ${
-    //         JSON.parse(localStorage.getItem('profile')).token
-    //     }`; // lowercase a ??
-    // }
     return req;
-}); // for future auth actions (liking cards)
+});
+
+API.interceptors.response.use(
+    (res) => {
+        return res;
+    },
+    (error) => {
+        if (
+            isSameOrigin(error.response.request.responseURL) &&
+            error.response.status === 401
+        ) {
+            window.location.reload(true);
+        }
+        return Promise.reject(error);
+    }
+);
 
 export const signIn = (formData) => API.post('/users/signIn', formData);
 export const signUp = (formData) => API.post('/users/signUp', formData);

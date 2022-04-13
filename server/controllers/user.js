@@ -155,7 +155,7 @@ export const signIn = async (req, res) => {
                 sameSite: 'Strict',
             })
                 .status(200)
-                .json({ message: 'Login successful' });
+                .json(user.rows[0]);
         } else {
             res.status(401).json({ message: messages.notVerified });
         }

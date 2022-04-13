@@ -937,7 +937,7 @@ function Table(props) {
 
     return (
         <LocalizationProvider dateAdapter={DateAdapter}>
-            <Box sx={{ height: 635, minWidth: '100%' }}>
+            <Box sx={{ height: 650, minWidth: '100%' }}>
                 <Stack direction="row" justifyContent="space-between" mb={2}>
                     <Typography variant="h4">{table}s Table</Typography>
                     <AddDialog table={table} />
