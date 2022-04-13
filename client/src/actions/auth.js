@@ -44,7 +44,6 @@ export const verifyUser = (id, navigate) => async (dispatch) => {
         dispatch({
             type: actionType.AUTHVERIFY_FAILURE,
             payload: error,
-            error: true,
         });
     }
 };
@@ -60,7 +59,6 @@ export const fetchAuthData = () => async (dispatch) => {
         dispatch({
             type: actionType.AUTHFETCH_FAILURE,
             payload: error,
-            error: true,
         });
     }
 };
@@ -76,7 +74,6 @@ export const updateUser = (id, user) => async (dispatch) => {
         dispatch({
             type: actionType.AUTHUPDATE_FAILURE,
             payload: error,
-            error: true,
         });
     }
 };
@@ -92,7 +89,6 @@ export const setUserPic = (id, image) => async (dispatch) => {
         dispatch({
             type: actionType.AUTHUPDATE_FAILURE,
             payload: error,
-            error: true,
         });
     }
 };
@@ -108,7 +104,6 @@ export const deleteUser = (id) => async (dispatch) => {
         dispatch({
             type: actionType.AUTHDELETE_FAILURE,
             payload: error,
-            error: true,
         });
     }
 };
