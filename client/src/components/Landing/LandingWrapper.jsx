@@ -3,10 +3,8 @@ import React, { useEffect, useState } from 'react';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 
-import { AccountContext } from './AccountContext';
-
 import { motion } from 'framer-motion';
-import { Box, Paper, Stack, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Paper, Tab, Tabs } from '@mui/material';
 import styled from '@emotion/styled';
 import { HeaderText } from './common';
 import useWindowDimensions from '../shared/useWindowDimensions';
@@ -99,66 +97,62 @@ const LandingWrapper = (props) => {
         }, 400);
     };
 
-    const contextValue = { switchToSignup, switchToSignin };
-
     return (
-        <AccountContext.Provider value={contextValue}>
-            <Container elevation={3}>
-                <ShapeContainer>
-                    <Shape
-                        width="100%"
-                        height="100vh"
-                        //viewBox="0 0 500 500"
-                        preserveAspectRatio="xMinYMin meet"
-                    >
-                        <NewShapeBack
-                            // d="M0,100 C150,200 350,0 500,100 L500,00 L0,0 Z"
-                            // d="M 0 0 L 0 300 C 200 320 200 200 440 200 C 600 200 720 160 800 80 L 800 0 Z"
-                            //d="M 0 0 L 400 0 L 400 150 C 325 200 250 125 200 225 C 175 275 100 300 0 300 Z"
-                            d={wave}
-                            transition={expandingTransition}
-                            //initial={!isExpanded ? 'expanded' : 'collapsed'}
-                            animate={isExpanded ? 'expanded' : 'collapsed'}
-                            variants={backdropVariants}
+        <Container elevation={3}>
+            <ShapeContainer>
+                <Shape
+                    width="100%"
+                    height="100vh"
+                    //viewBox="0 0 500 500"
+                    preserveAspectRatio="xMinYMin meet"
+                >
+                    <NewShapeBack
+                        // d="M0,100 C150,200 350,0 500,100 L500,00 L0,0 Z"
+                        // d="M 0 0 L 0 300 C 200 320 200 200 440 200 C 600 200 720 160 800 80 L 800 0 Z"
+                        //d="M 0 0 L 400 0 L 400 150 C 325 200 250 125 200 225 C 175 275 100 300 0 300 Z"
+                        d={wave}
+                        transition={expandingTransition}
+                        //initial={!isExpanded ? 'expanded' : 'collapsed'}
+                        animate={isExpanded ? 'expanded' : 'collapsed'}
+                        variants={backdropVariants}
+                    />
+                </Shape>
+            </ShapeContainer>
+            <TabBox>
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <StyledTabs value={active}>
+                        <StyledTab
+                            label="Sign In"
+                            value="signin"
+                            onClick={switchToSignin}
                         />
-                    </Shape>
-                </ShapeContainer>
-                <TabBox>
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                        <StyledTabs value={active}>
-                            <StyledTab
-                                label="Sign In"
-                                value="signin"
-                                onClick={switchToSignin}
-                            />
-                            <StyledTab
-                                label="Sign Up"
-                                value="signup"
-                                onClick={switchToSignup}
-                            />
-                        </StyledTabs>
-                    </Box>
-                </TabBox>
-                <NewTop>
-                    {active === 'signin' && (
-                        <>
-                            <HeaderText variant="h3">Welcome</HeaderText>
-                            <HeaderText variant="h3">Back</HeaderText>
-                        </>
-                    )}
-                    {active === 'signup' && (
-                        <>
-                            <HeaderText variant="h3">Create</HeaderText>
-                            <HeaderText variant="h3">Account</HeaderText>
-                        </>
-                    )}
-                </NewTop>
-                <InnerContainer>
-                    {active === 'signin' && <SignIn />}
-                    {active === 'signup' && <SignUp />}
-                </InnerContainer>
-            </Container>
-        </AccountContext.Provider>
+                        <StyledTab
+                            label="Sign Up"
+                            value="signup"
+                            onClick={switchToSignup}
+                        />
+                    </StyledTabs>
+                </Box>
+            </TabBox>
+            <NewTop>
+                {active === 'signin' && (
+                    <>
+                        <HeaderText variant="h3">Welcome</HeaderText>
+                        <HeaderText variant="h3">Back</HeaderText>
+                    </>
+                )}
+                {active === 'signup' && (
+                    <>
+                        <HeaderText variant="h3">Create</HeaderText>
+                        <HeaderText variant="h3">Account</HeaderText>
+                    </>
+                )}
+            </NewTop>
+            <InnerContainer>
+                {active === 'signin' && <SignIn />}
+                {active === 'signup' && <SignUp />}
+            </InnerContainer>
+        </Container>
     );
 };
 
@@ -261,20 +255,20 @@ const NewTop = styled(Box)({
 });
 
 // TODO: convert to star and possibly change from px
-const NewBack = styled(motion.div)`
-    width: 200px;
-    height: 200px;
-    position: absolute;
-    border-radius: 50%;
-    transform: rotate(50deg);
-    background: rgb(236, 220, 141);
-    background: radial-gradient(
-        circle,
-        rgba(236, 220, 141, 1) 0%,
-        rgba(208, 174, 87, 1) 100%
-    );
-    z-index: 5;
-`;
+// const NewBack = styled(motion.div)`
+//     width: 200px;
+//     height: 200px;
+//     position: absolute;
+//     border-radius: 50%;
+//     transform: rotate(50deg);
+//     background: rgb(236, 220, 141);
+//     background: radial-gradient(
+//         circle,
+//         rgba(236, 220, 141, 1) 0%,
+//         rgba(208, 174, 87, 1) 100%
+//     );
+//     z-index: 5;
+// `;
 
 // const NewBack = styled(motion.div)`
 //     width: 500px;

@@ -28,6 +28,7 @@ const router = express.Router();
 router.post('/signIn', signIn);
 router.post('/signUp', signUp);
 router.post('/googleAuth', googleAuth);
+router.get('/verify/:id', verifyEmail);
 router.get('/authData', auth, fetchAuthData);
 router.post('/logout', logout);
 router.post('/add', auth, grantAccess('createAny', 'user'), addUser);
@@ -65,6 +66,5 @@ router.delete(
     grantAccess('deleteAny', 'user'),
     deleteUser
 );
-router.get('/verify/:id', auth, grantAccess('updateAny', 'user'), verifyEmail);
 
 export default router;
