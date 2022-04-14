@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS users(
     cover_pic TEXT,
     username VARCHAR(30) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(60) NOT NULL,
+    password VARCHAR(60),
     nickname VARCHAR(30),
     email_verified BOOLEAN DEFAULT FALSE NOT NULL,
     watching_since REAL,

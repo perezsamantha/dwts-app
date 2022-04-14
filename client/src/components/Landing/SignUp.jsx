@@ -1,19 +1,14 @@
-import React, { useContext, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import GoogleLogin from 'react-google-login';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { googleAuth, signUp } from '../../actions/auth';
 
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-// import GoogleLogin from 'react-google-login';
-
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faGoogle } from '@fortawesome/free-brands-svg-icons';
-
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { signUp } from '../../actions/auth';
-
-import { SubmitButton } from './common';
-import { AccountContext } from './AccountContext';
+import { Line, SubmitButton } from './common';
 import {
     Box,
     Typography,
@@ -21,17 +16,24 @@ import {
     InputAdornment,
     TextField,
     Stack,
+    Dialog,
+    DialogTitle,
+    Button,
+    DialogActions,
+    DialogContent,
+    Alert,
 } from '@mui/material';
-import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
+import { SiGoogle } from 'react-icons/si';
 
 const initialState = {
-    username: '',
-    email: '',
-    password: '',
-    confirm_password: '',
+    username: null,
+    email: null,
+    password: null,
+    confirm_password: null,
+    oauth_username: null,
 };
 
 function SignUp() {
@@ -42,7 +44,17 @@ function SignUp() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const message = useSelector((state) => state.auth?.authData?.message);
+    const authMsg = useSelector((state) => state.auth?.authData?.message);
+    const errorMsg = useSelector((state) => state.errors.AUTH);
+    const [token, setToken] = useState(null);
+    const [creating, setCreating] = useState(false);
+    const [pageSwitch, setPageSwitch] = useState(true);
+
+    useEffect(() => {
+        if (errorMsg === 'OAuth user') {
+            setCreating(true);
+        }
+    }, [errorMsg]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -51,160 +63,236 @@ function SignUp() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        dispatch(signUp(formData, navigate));
+        dispatch(signUp(formData));
+        setPageSwitch(false);
+    };
+
+    const handleOAuth = async (googleData) => {
+        setFormData(initialState);
+        setCreating(false);
+
+        dispatch(
+            googleAuth(
+                { token: googleData.tokenId, username: null, signup: true },
+                navigate
+            )
+        );
+        setToken(googleData.tokenId);
+        setPageSwitch(false);
+    };
+
+    const handleOAuthNew = (e) => {
+        e.preventDefault();
+
+        if (formData.oauth_username) {
+            dispatch(
+                googleAuth(
+                    {
+                        token: token,
+                        username: formData.oauth_username,
+                        signup: true,
+                    },
+                    navigate
+                )
+            );
+            setPageSwitch(false);
+        }
+    };
+
+    const handleClose = (e) => {
+        setToken(null);
+        setCreating(false);
     };
 
     const handleShowPass = () => setShowPass((prevShowPass) => !prevShowPass);
 
-    // const googleSuccess = async (res) => {
-    //     const result = res?.profileObj;
-    //     const token = res?.tokenId;
-
-    //     try {
-    //         dispatch({ type: 'AUTH', data: { result, token } });
-
-    //         // history.push("/")
-    //         // around 1:10:00 in vid, has logout right after
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
-
-    // const googleFailure = () => {
-    //     console.log('Google Sign In was unsuccessful');
-    // }
-
-    const { switchToSignin } = useContext(AccountContext);
-
     return (
-        <Box>
+        <Stack width={1} alignItems="center" spacing={2}>
+            {errorMsg &&
+                errorMsg !== 'OAuth user' &&
+                errorMsg !== 'OAuth username' &&
+                !pageSwitch && (
+                    <Box width={1}>
+                        <Alert sx={{ borderRadius: 15 }} severity="error">
+                            {errorMsg}
+                        </Alert>
+                    </Box>
+                )}
+            {authMsg && !errorMsg && (
+                <Box width={1}>
+                    <Alert sx={{ borderRadius: 15 }} severity="info">
+                        {authMsg}
+                    </Alert>
+                </Box>
+            )}
             <Box component="form" noValidate autoComplete="off">
-                <div>
-                    <TextField
-                        fullWidth
-                        name="username"
-                        type="text"
-                        onChange={handleChange}
-                        margin="dense"
-                        placeholder="username"
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <AlternateEmailIcon />
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                    <TextField
-                        fullWidth
-                        id="email"
-                        name="email"
-                        placeholder="email"
-                        type="email"
-                        onChange={handleChange}
-                        margin="dense"
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <EmailIcon />
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                    <TextField
-                        fullWidth
-                        autoComplete="off"
-                        name="password"
-                        placeholder="password"
-                        type={showPass ? 'text' : 'password'}
-                        onChange={handleChange}
-                        margin="dense"
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <LockIcon />
-                                </InputAdornment>
-                            ),
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton onClick={handleShowPass}>
-                                        {showPass ? (
-                                            <Visibility />
-                                        ) : (
-                                            <VisibilityOff />
-                                        )}
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                    <TextField
-                        fullWidth
-                        autoComplete="off"
-                        id="confirmPass"
-                        name="confirm_password"
-                        placeholder="confirm password"
-                        type="password"
-                        onChange={handleChange}
-                        margin="dense"
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <LockIcon />
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                </div>
+                <TextField
+                    fullWidth
+                    name="username"
+                    type="text"
+                    value={formData.username || ''}
+                    onChange={handleChange}
+                    placeholder="username"
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <AlternateEmailIcon />
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+                <TextField
+                    fullWidth
+                    id="email"
+                    name="email"
+                    placeholder="email"
+                    type="email"
+                    value={formData.email || ''}
+                    onChange={handleChange}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <EmailIcon />
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+                <TextField
+                    fullWidth
+                    autoComplete="off"
+                    name="password"
+                    placeholder="password"
+                    type={showPass ? 'text' : 'password'}
+                    value={formData.password || ''}
+                    onChange={handleChange}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <LockIcon />
+                            </InputAdornment>
+                        ),
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton onClick={handleShowPass}>
+                                    {showPass ? (
+                                        <Visibility />
+                                    ) : (
+                                        <VisibilityOff />
+                                    )}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+                <TextField
+                    fullWidth
+                    autoComplete="off"
+                    id="confirmPass"
+                    name="confirm_password"
+                    placeholder="confirm password"
+                    type="password"
+                    value={formData.confirm_password || ''}
+                    onChange={handleChange}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <LockIcon />
+                            </InputAdornment>
+                        ),
+                    }}
+                    onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                            handleSubmit(e);
+                        }
+                    }}
+                />
             </Box>
 
-            {message && <Typography>{message}</Typography>}
-
-            <Stack
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-                //width={0.9}
-                my={2}
-            >
-                <Typography
-                    variant="h4"
-                    color="primary"
-                    sx={{ fontWeight: 500 }}
-                >
-                    Sign Up
-                </Typography>
-                <SubmitButton type="submit" onClick={handleSubmit}>
-                    <ArrowRightAltIcon
-                        sx={{
-                            width: 0.8,
-                            height: 0.8,
-                            color: 'rgba(255, 255, 255, 0.9)',
-                            textShadow: '150px 250px 100px green',
-                        }}
-                    />
+            <Stack width={1} spacing={3} alignItems="center">
+                <SubmitButton variant="contained" onClick={handleSubmit}>
+                    <Typography>Sign Up</Typography>
                 </SubmitButton>
-            </Stack>
-        </Box>
-        /*
-        <form autoComplete="off" onSubmit={handleSubmit}>
-                <TextField required id="standard-basic" name="email" label="email" type="email" onChange={handleChange}/>
-                <TextField required id="standard-password-input" name="password" label="password" type={showPass ? "text" : "password"} onChange={handleChange} handleShowPass={handleShowPass} />
-                <Button type="submit" variant="contained" color="primary">sign in</Button>
+
+                <Stack
+                    width={0.95}
+                    direction="row"
+                    spacing={1}
+                    alignItems="center"
+                >
+                    <Line />
+                    <Typography>OR</Typography>
+                    <Line />
+                </Stack>
 
                 <GoogleLogin
-                    clientId="728282315077-4l2arbte54183f2cmgiopkdh51o797cm.apps.googleusercontent.com"
+                    clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
                     render={(renderProps) => (
-                        <Button onClick={renderProps.onClick} disabled={renderProps.disabled}>
-                            <FontAwesomeIcon icon={faGoogle} />
+                        <Button
+                            onClick={renderProps.onClick}
+                            disabled={renderProps.disabled}
+                            variant="contained"
+                            color="secondary"
+                            sx={{
+                                width: '100%',
+                                padding: 1,
+                                textTransform: 'none',
+                            }}
+                        >
+                            <Stack
+                                direction="row"
+                                spacing={1}
+                                alignItems="center"
+                            >
+                                <SiGoogle style={{ width: 20, height: 20 }} />
+                                <Typography color="inherit">
+                                    Sign up with Google
+                                </Typography>
+                            </Stack>
                         </Button>
                     )}
-                    onSuccess={googleSuccess}
-                    onFailure={googleFailure}
+                    onSuccess={handleOAuth}
+                    onFailure={handleOAuth}
                     cookiePolicy="single_host_origin"
                 />
-            </form>
-            */
+            </Stack>
+
+            <Box>
+                <Dialog open={creating} onClose={handleClose}>
+                    <DialogTitle>Choose Username</DialogTitle>
+                    <DialogContent alignContent="center">
+                        <TextField
+                            name="oauth_username"
+                            type="text"
+                            required
+                            value={formData.oauth_username || ''}
+                            onChange={handleChange}
+                            placeholder="username"
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <AlternateEmailIcon />
+                                    </InputAdornment>
+                                ),
+                            }}
+                            helperText={
+                                errorMsg === 'OAuth username'
+                                    ? 'Username already taken'
+                                    : ''
+                            }
+                            onKeyPress={(e) => {
+                                if (e.key === 'Enter') {
+                                    handleSubmit(e);
+                                }
+                            }}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose}>Cancel</Button>
+                        <Button onClick={handleOAuthNew}>Submit</Button>
+                    </DialogActions>
+                </Dialog>
+            </Box>
+        </Stack>
     );
 }
 

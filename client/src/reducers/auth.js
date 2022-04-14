@@ -1,12 +1,9 @@
 import * as actionType from '../constants/actionTypes';
-//let user = JSON.parse(localStorage.getItem('profile'));
-//const initialState = user ? { authData: user } : {};
-// TODO: convert to AUTH REQUEST, SUCCESS, FAILURE
 
 const authReducer = (state = { authData: {}, fetching: true }, action) => {
     switch (action.type) {
-        case actionType.AUTH:
-            return { ...state, authData: action.data };
+        case actionType.AUTH_SUCCESS:
+            return { ...state, authData: action.payload };
         case actionType.AUTHVERIFY_SUCCESS:
             return { ...state, authData: action.payload };
         case actionType.AUTHFETCH_SUCCESS:
@@ -18,7 +15,7 @@ const authReducer = (state = { authData: {}, fetching: true }, action) => {
             };
         case actionType.AUTHDELETE_SUCCESS:
         case actionType.LOGOUT:
-            localStorage.clear();
+            //localStorage.clear();
             return { authData: {} };
         default:
             return state;

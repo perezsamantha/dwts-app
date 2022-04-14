@@ -2,30 +2,42 @@ import * as actionType from '../constants/actionTypes';
 import * as api from '../api/index.js';
 
 export const signIn = (formData, navigate) => async (dispatch) => {
+    dispatch({ type: actionType.AUTH_REQUEST });
+
     try {
         const { data } = await api.signIn(formData);
 
-        dispatch({ type: actionType.AUTH, data });
-
-        // if (data.message) {
-        //     return;
-        // }
+        dispatch({ type: actionType.AUTH_SUCCESS, payload: data });
 
         navigate('/dashboard');
     } catch (error) {
-        console.log(error);
+        dispatch({ type: actionType.AUTH_FAILURE, payload: error });
     }
 };
 
-export const signUp = (formData, navigate) => async (dispatch) => {
+export const signUp = (formData) => async (dispatch) => {
+    dispatch({ type: actionType.AUTH_REQUEST });
+
     try {
         const { data } = await api.signUp(formData);
 
-        dispatch({ type: actionType.AUTH, data });
-
-        //navigate('/dashboard');
+        dispatch({ type: actionType.AUTH_SUCCESS, payload: data });
     } catch (error) {
-        console.log(error);
+        dispatch({ type: actionType.AUTH_FAILURE, payload: error });
+    }
+};
+
+export const googleAuth = (formData, navigate) => async (dispatch) => {
+    dispatch({ type: actionType.AUTH_REQUEST });
+
+    try {
+        const { data } = await api.googleAuth(formData);
+
+        dispatch({ type: actionType.AUTH_SUCCESS, payload: data });
+
+        navigate('/dashboard');
+    } catch (error) {
+        dispatch({ type: actionType.AUTH_FAILURE, payload: error });
     }
 };
 

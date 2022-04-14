@@ -1,10 +1,5 @@
 import styled from '@emotion/styled';
-import { TextField, Typography } from '@mui/material';
-
-export const FullTextField = styled(TextField)({
-    width: '100%',
-    //padding: 10,
-});
+import { Button, Typography } from '@mui/material';
 
 export const HeaderText = styled(Typography)(({ theme }) => ({
     color: 'white',
@@ -66,15 +61,27 @@ export const BoldLink = styled.a`
 //     }
 // `;
 
-export const SubmitButton = styled('button')({
-    height: 60,
-    width: 60,
-    borderRadius: '50%',
-    border: 'none',
-    backgroundColor: '#fae27a',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    transition: 'all, 240ms ease-in-out',
-    cursor: 'pointer',
+export const SubmitButton = styled(Button)({
+    width: '100%',
+    padding: 7,
+    textTransform: 'none',
+});
+
+// export const SubmitButton = styled('button')({
+//     height: 60,
+//     width: 60,
+//     borderRadius: '50%',
+//     border: 'none',
+//     backgroundColor: '#fae27a',
+//     display: 'flex',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     transition: 'all, 240ms ease-in-out',
+//     cursor: 'pointer',
+// });
+
+export const Line = styled('hr')({
+    width: '100%',
+    opacity: '35%',
+    borderWidth: 0.5,
 });

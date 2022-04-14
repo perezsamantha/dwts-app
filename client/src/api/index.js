@@ -24,12 +24,13 @@ API.interceptors.response.use(
         ) {
             window.location.reload(true);
         }
-        return Promise.reject(error);
+        return Promise.reject(error.response.data);
     }
 );
 
 export const signIn = (formData) => API.post('/users/signIn', formData);
 export const signUp = (formData) => API.post('/users/signUp', formData);
+export const googleAuth = (formData) => API.post('/users/googleAuth', formData);
 export const verifyUser = (id) => API.get(`/users/verify/${id}`);
 export const fetchAuthData = () => API.get('/users/authData');
 export const logout = () => API.post('/users/logout');

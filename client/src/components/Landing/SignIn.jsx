@@ -1,19 +1,10 @@
-import React, { useState, useContext } from 'react';
-
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-
-// import GoogleLogin from 'react-google-login';
-
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import React, { useState } from 'react';
+import GoogleLogin from 'react-google-login';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { signIn } from '../../actions/auth';
+import { googleAuth, signIn } from '../../actions/auth';
 
-import { MutedLink, SubmitButton } from './common';
-import { AccountContext } from './AccountContext';
 import {
     Typography,
     IconButton,
@@ -21,14 +12,19 @@ import {
     Stack,
     Box,
     TextField,
+    Button,
+    Alert,
 } from '@mui/material';
-import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import LockIcon from '@mui/icons-material/Lock';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { SiGoogle } from 'react-icons/si';
+import { Line, SubmitButton } from './common';
 
 const initialState = { username: '', password: '' };
 
-function SignIn(props) {
+function SignIn() {
     const [showPass, setShowPass] = useState(false);
 
     const [formData, setFormData] = useState(initialState);
@@ -36,7 +32,8 @@ function SignIn(props) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const message = useSelector((state) => state.auth?.authData?.message);
+    const errorMsg = useSelector((state) => state.errors.AUTH);
+    const [pageSwitch, setPageSwitch] = useState(true);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -46,129 +43,129 @@ function SignIn(props) {
         e.preventDefault();
 
         dispatch(signIn(formData, navigate));
+        setPageSwitch(false);
+    };
+
+    const handleOAuth = async (googleData) => {
+        dispatch(googleAuth({ token: googleData.tokenId }, navigate));
+        setPageSwitch(false);
     };
 
     const handleShowPass = () => setShowPass((prevShowPass) => !prevShowPass);
 
-    // const googleSuccess = async (res) => {
-    //     const result = res?.profileObj;
-    //     const token = res?.tokenId;
-
-    //     try {
-    //         dispatch({ type: 'AUTH', data: { result, token } });
-
-    //         // history.push("/")
-    //         // around 1:10:00 in vid, has logout right after
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
-
-    // const googleFailure = () => {
-    //     console.log('Google Sign In was unsuccessful');
-    // }
-
-    const { switchToSignup } = useContext(AccountContext);
-
     return (
-        <Box>
+        <Stack width={1} alignItems="center" spacing={2}>
+            {errorMsg && !pageSwitch && (
+                <Box sx={{ width: 1 }}>
+                    <Alert sx={{ borderRadius: 15 }} severity="error">
+                        {errorMsg}
+                    </Alert>
+                </Box>
+            )}
             <Box component="form" noValidate autoComplete="off">
-                <div>
-                    <TextField
-                        fullWidth
-                        name="username"
-                        //label="Username"
-                        type="text"
-                        onChange={handleChange}
-                        margin="dense"
-                        placeholder="username"
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <AlternateEmailIcon />
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                    <TextField
-                        fullWidth
-                        autoComplete="off"
-                        name="password"
-                        //label="Password"
-                        placeholder="password"
-                        type={showPass ? 'text' : 'password'}
-                        onChange={handleChange}
-                        margin="dense"
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <LockIcon />
-                                </InputAdornment>
-                            ),
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton onClick={handleShowPass}>
-                                        {showPass ? (
-                                            <Visibility />
-                                        ) : (
-                                            <VisibilityOff />
-                                        )}
-                                    </IconButton>
-                                </InputAdornment>
-                            ),
-                        }}
-                    />
-                </div>
+                <TextField
+                    fullWidth
+                    name="username"
+                    type="text"
+                    onChange={handleChange}
+                    placeholder="username"
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <AlternateEmailIcon />
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+                <TextField
+                    fullWidth
+                    autoComplete="off"
+                    name="password"
+                    placeholder="password"
+                    type={showPass ? 'text' : 'password'}
+                    onChange={handleChange}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <LockIcon />
+                            </InputAdornment>
+                        ),
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton onClick={handleShowPass}>
+                                    {showPass ? (
+                                        <Visibility />
+                                    ) : (
+                                        <VisibilityOff />
+                                    )}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                    onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                            handleSubmit(e);
+                        }
+                    }}
+                />
+                <Typography
+                    align="left"
+                    variant="body2"
+                    mb={1}
+                    sx={{ color: 'text.secondary' }}
+                >
+                    Forgot your password?
+                </Typography>
             </Box>
 
-            {message && <Typography>{message}</Typography>}
-
-            <Stack
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-                //width={0.9}
-                my={2}
-            >
-                <Typography
-                    variant="h4"
-                    color="primary"
-                    sx={{ fontWeight: 500 }}
-                >
-                    Sign In
-                </Typography>
-                <SubmitButton type="submit" onClick={handleSubmit}>
-                    <ArrowRightAltIcon
-                        sx={{
-                            width: 0.8,
-                            height: 0.8,
-                            color: 'rgba(255, 255, 255, 0.9)',
-                            textShadow: '150px 250px 100px green',
-                        }}
-                    />
+            <Stack width={1} spacing={3} alignItems="center">
+                <SubmitButton variant="contained" onClick={handleSubmit}>
+                    <Typography>Sign In</Typography>
                 </SubmitButton>
-            </Stack>
-            <MutedLink href="#">Forgot your password?</MutedLink>
-        </Box>
-        /* keep for when implementing google oauth
-        <form autoComplete="off" onSubmit={handleSubmit}>
-                <TextField required id="standard-basic" name="email" label="email" type="email" onChange={handleChange}/>
-                <TextField required id="standard-password-input" name="password" label="password" type={showPass ? "text" : "password"} onChange={handleChange} handleShowPass={handleShowPass} />
-                <Button type="submit" variant="contained" color="primary">sign in</Button>
+
+                <Stack
+                    width={0.95}
+                    direction="row"
+                    spacing={1}
+                    alignItems="center"
+                >
+                    <Line />
+                    <Typography>OR</Typography>
+                    <Line />
+                </Stack>
 
                 <GoogleLogin
-                    clientId="728282315077-4l2arbte54183f2cmgiopkdh51o797cm.apps.googleusercontent.com"
+                    clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
                     render={(renderProps) => (
-                        <Button onClick={renderProps.onClick} disabled={renderProps.disabled}>
-                            <FontAwesomeIcon icon={faGoogle} />
+                        <Button
+                            onClick={renderProps.onClick}
+                            disabled={renderProps.disabled}
+                            variant="contained"
+                            color="secondary"
+                            sx={{
+                                width: '100%',
+                                padding: 1,
+                                textTransform: 'none',
+                            }}
+                        >
+                            <Stack
+                                direction="row"
+                                spacing={1}
+                                alignItems="center"
+                            >
+                                <SiGoogle style={{ width: 20, height: 20 }} />
+                                <Typography color="inherit">
+                                    Sign in with Google
+                                </Typography>
+                            </Stack>
                         </Button>
                     )}
-                    onSuccess={googleSuccess}
-                    onFailure={googleFailure}
+                    onSuccess={handleOAuth}
+                    onFailure={handleOAuth}
                     cookiePolicy="single_host_origin"
                 />
-            </form>
-            */
+            </Stack>
+        </Stack>
     );
 }
 

@@ -7,17 +7,47 @@ import pool from '../api/pool.js';
 import ac from '../roles.js';
 
 import { sendEmail } from '../email/sendEmail.js';
-import { messages } from '../email/messages.js';
+import { messages } from '../messages.js';
 import { verify } from '../email/emailTemplate.js';
+
+import { OAuth2Client } from 'google-auth-library';
+const client = new OAuth2Client(process.env.OAUTH_CLIENT_ID2);
 
 export const signUp = async (req, res) => {
     try {
         const { username, email, password, confirm_password } = req.body;
 
-        // return message if email and/or username already exists in database
+        if (!username || !email || !password || !confirm_password)
+            return res.status(404).json({ message: messages.missingFields });
+
+        const existing_username = await pool.query(
+            `
+            SELECT username
+            FROM users 
+            WHERE username = $1
+            `,
+            [username]
+        );
+
+        if (existing_username.rows.length !== 0) {
+            return res.status(409).json({ message: messages.existingUsername });
+        }
+
+        const existing_email = await pool.query(
+            `
+            SELECT email
+            FROM users 
+            WHERE email = $1
+            `,
+            [email]
+        );
+
+        if (existing_email.rows.length !== 0) {
+            return res.status(409).json({ message: messages.existingEmail });
+        }
 
         if (password != confirm_password)
-            return res.status(400).json({ message: 'Passwords do not match.' });
+            return res.status(400).json({ message: messages.passwordMismatch });
 
         const hashed_password = await bcrypt.hash(password, 12);
 
@@ -48,6 +78,9 @@ export const signIn = async (req, res) => {
     try {
         const { username, password } = req.body;
 
+        if (!username || !password)
+            return res.status(404).json({ message: messages.missingFields });
+
         const existing_user = await pool.query(
             `
             SELECT id,
@@ -60,7 +93,9 @@ export const signIn = async (req, res) => {
         );
 
         if (existing_user.rows.length === 0)
-            return res.status(404).json({ message: 'User does not exist.' });
+            return res
+                .status(404)
+                .json({ message: messages.invalidCredentials });
 
         const isPasswordCorrect = await bcrypt.compare(
             password,
@@ -68,7 +103,9 @@ export const signIn = async (req, res) => {
         );
 
         if (!isPasswordCorrect)
-            return res.status(400).json({ message: 'Incorrect password.' });
+            return res
+                .status(400)
+                .json({ message: messages.invalidCredentials });
 
         if (existing_user.rows[0].email_verified) {
             const user = await pool.query(
@@ -148,7 +185,6 @@ export const signIn = async (req, res) => {
                 { expiresIn: '1h' }
             );
 
-            //res.status(200).json({ result: user.rows[0], token });
             res.cookie('da_jwt', token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
@@ -159,18 +195,167 @@ export const signIn = async (req, res) => {
         } else {
             res.status(401).json({ message: messages.notVerified });
         }
-
-        // const token = jwt.sign(
-        //     {
-        //         id: existing_user.rows[0].id,
-        //     },
-        //     process.env.SECRET_STRING,
-        //     { expiresIn: '1h' }
-        // );
-
-        // res.status(200).json({ result: existing_user.rows[0], token });
     } catch (error) {
-        console.log(error.message);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const googleAuth = async (req, res) => {
+    try {
+        const { token, username, signup } = req.body;
+
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: process.env.OAUTH_CLIENT_ID2,
+        });
+
+        const { email } = ticket.getPayload();
+
+        const existing_user = await pool.query(
+            `
+            SELECT id
+            FROM users 
+            WHERE email = $1
+            `,
+            [email]
+        );
+
+        let user_id;
+
+        if (signup) {
+            if (existing_user.rows.length !== 0)
+                return res.status(404).json({
+                    message: messages.existingEmail,
+                });
+
+            if (!username)
+                return res.status(404).json({
+                    message: messages.oauthUser,
+                });
+
+            const username_available = await pool.query(
+                `
+                SELECT id
+                FROM users 
+                WHERE username = $1
+                `,
+                [username]
+            );
+
+            if (username_available.rows.length !== 0)
+                return res
+                    .status(404)
+                    .json({ message: messages.oauthUsername });
+
+            // create user
+            const result = await pool.query(
+                `
+                INSERT INTO users (
+                    username, 
+                    email, 
+                    email_verified, 
+                    "role"
+                ) 
+                VALUES($1, $2, true, default) 
+                RETURNING id
+                `,
+                [username, email]
+            );
+
+            user_id = result.rows[0].id;
+        } else {
+            if (existing_user.rows.length == 0)
+                return res.status(404).json({
+                    message: messages.oauthEmail,
+                });
+            user_id = existing_user.rows[0].id;
+        }
+
+        const user = await pool.query(
+            `
+                SELECT u.id, 
+                    u.cover_pic, 
+                    u.username, 
+                    u.email,
+                    u.email_verified,
+                    u.nickname, 
+                    u.watching_since, 
+                    u.twitter, 
+                    u.instagram, 
+                    u.tiktok,
+                    u.birthday_month,
+                    u.birthday_day,
+                    u.role,
+                    JSON_BUILD_OBJECT('pros', 
+                        COALESCE((ARRAY_AGG(pl.pros))[1], '[]'), 
+                        'teams', 
+                        COALESCE((ARRAY_AGG(tl.teams))[1], '[]'),
+                        'dances', 
+                        COALESCE((ARRAY_AGG(dl.dances))[1], '[]')) 
+                    AS likes
+                FROM users u 
+                LEFT JOIN (
+                    SELECT pl.user_id,
+                        COALESCE(JSON_AGG(ROW_TO_JSON(p) ORDER BY pl.liked_at ASC) FILTER (WHERE p.id IS NOT NULL), '[]') AS pros
+                    FROM pro_likes pl
+                    LEFT JOIN pros p
+                    ON pl.pro_id = p.id
+                    WHERE pl.user_id = $1
+                    GROUP BY pl.user_id
+                ) pl 
+                ON u.id = pl.user_id
+                LEFT JOIN (
+                    SELECT tl.user_id,
+                        COALESCE(JSON_AGG(ROW_TO_JSON(t) ORDER BY tl.liked_at ASC) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams
+                    FROM team_likes tl
+                    LEFT JOIN (
+                        SELECT t.*, 
+                            ROW_TO_JSON(p) AS pro, 
+                            ROW_TO_JSON(c) AS celeb 
+                        FROM teams t 
+                        LEFT JOIN pros p 
+                        ON t.pro_id = p.id 
+                        LEFT JOIN celebs c 
+                        ON t.celeb_id = c.id 
+                        GROUP BY t.id, p.id, c.id 
+                    ) t
+                    ON tl.team_id = t.id
+                    WHERE tl.user_id = $1
+                    GROUP BY tl.user_id
+                ) tl 
+                ON u.id = tl.user_id
+                LEFT JOIN (
+                    SELECT dl.user_id,
+                        COALESCE(JSON_AGG(ROW_TO_JSON(d) ORDER BY dl.liked_at ASC) FILTER (WHERE d.id IS NOT NULL), '[]') AS dances
+                    FROM dance_likes dl
+                    LEFT JOIN dances d
+                    ON dl.dance_id = d.id
+                    WHERE dl.user_id = $1
+                    GROUP BY dl.user_id
+                ) dl 
+                ON u.id = dl.user_id
+                WHERE u.id = $1
+                GROUP BY u.id
+                `,
+            [user_id]
+        );
+
+        const new_token = jwt.sign(
+            {
+                id: user.rows[0].id,
+            },
+            process.env.SECRET_STRING,
+            { expiresIn: '1h' }
+        );
+
+        res.cookie('da_jwt', new_token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Strict',
+        })
+            .status(200)
+            .json(user.rows[0]);
+    } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
@@ -201,10 +386,9 @@ export const verifyEmail = async (req, res) => {
         );
 
         if (user.rows.length === 0)
-            return res.status(404).json({ message: 'User does not exist.' });
+            return res.status(404).json({ message: messages.invalidUser });
 
         if (user.rows[0].email_verified === true) {
-            // email already verified
             const token = jwt.sign(
                 {
                     id: user.rows[0].id,
@@ -212,12 +396,6 @@ export const verifyEmail = async (req, res) => {
                 process.env.SECRET_STRING,
                 { expiresIn: '1h' }
             );
-
-            // res.status(200).json({
-            //     result: user.rows[0],
-            //     token,
-            //     message: messages.alreadyVerified,
-            // });
 
             res.cookie('da_jwt', token, {
                 httpOnly: true,
@@ -436,7 +614,7 @@ export const logout = async (req, res) => {
             sameSite: 'Strict',
         })
             .status(200)
-            .json({ message: 'Logout Successful' });
+            .json({ message: messages.logoutSuccess });
     } catch (error) {
         res.status(500).json({ message: error });
     }
@@ -459,7 +637,31 @@ export const addUser = async (req, res) => {
             birthday_day,
         } = req.body;
 
-        // TODO: return message if email and/or username already exists in database
+        const existing_email = await pool.query(
+            `
+            SELECT id
+            FROM users 
+            WHERE email = $1
+            `,
+            [email]
+        );
+
+        if (existing_email.rows.length !== 0) {
+            return res.status(409).json({ message: messages.existingEmail });
+        }
+
+        const existing_username = await pool.query(
+            `
+            SELECT id
+            FROM users 
+            WHERE username = $1
+            `,
+            [username]
+        );
+
+        if (existing_username.rows.length !== 0) {
+            return res.status(409).json({ message: messages.existingUsername });
+        }
 
         const hashed_password = await bcrypt.hash(password, 12);
 
@@ -507,13 +709,6 @@ export const addUser = async (req, res) => {
                 birthday_day,
             ]
         );
-
-        //sendEmail(email, verify(result.rows[0].id));
-
-        // res.status(200).json({
-        //     result: result.rows[0],
-        //     message: messages.verify,
-        // });
 
         res.status(200).json(result.rows[0]);
     } catch (error) {
@@ -741,7 +936,6 @@ export const findUserByUsername = async (req, res) => {
     }
 };
 
-// TODO: remove is null if you end up requiring nicknames
 export const searchUsers = async (req, res) => {
     const { search } = req.body;
 
