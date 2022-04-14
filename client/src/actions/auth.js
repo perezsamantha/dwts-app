@@ -105,13 +105,15 @@ export const setUserPic = (id, image) => async (dispatch) => {
     }
 };
 
-export const deleteUser = (id) => async (dispatch) => {
+export const deleteUser = (navigate) => async (dispatch) => {
     dispatch({ type: actionType.AUTHDELETE_REQUEST });
 
     try {
-        await await api.deleteUser(id);
+        await await api.deleteAuth();
 
-        dispatch({ type: actionType.AUTHDELETE_SUCCESS, payload: id });
+        dispatch({ type: actionType.AUTHDELETE_SUCCESS });
+
+        navigate('/');
     } catch (error) {
         dispatch({
             type: actionType.AUTHDELETE_FAILURE,

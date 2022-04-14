@@ -15,6 +15,7 @@ export const messages = {
     oauthUser: 'OAuth user',
     oauthUsername: 'OAuth username',
     oauthEmail: 'No account associated with this email',
+    needOAuth: 'Please sign in with Google',
 
     loginSuccess: 'Login successful',
     logoutSuccess: 'Logout successful',

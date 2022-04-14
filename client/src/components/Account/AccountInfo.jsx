@@ -9,7 +9,7 @@ import {
     Box,
     Switch,
 } from '@mui/material';
-import EditAccountFields from './EditAccountFields';
+import AccountSettings from './AccountSettings';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RiInformationLine, RiUserSettingsLine } from 'react-icons/ri';
@@ -151,7 +151,7 @@ function AccountInfo(props) {
                 {/* TODO: delete account button with confirmation dialog */}
 
                 {settingsOpen && (
-                    <EditAccountFields
+                    <AccountSettings
                         user={user}
                         open={settingsOpen}
                         close={closeSettings}

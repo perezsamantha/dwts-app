@@ -9,14 +9,13 @@ import {
     DialogTitle,
     DialogContent,
     Grid,
+    Stack,
+    Box,
 } from '@mui/material';
-import { LocalizationProvider } from '@mui/lab';
-
 import CoverPicUpload from '../shared/CoverPicUpload';
 import { PhotoContainer } from '../shared/regStyles';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setUserPic, updateUser } from '../../actions/auth';
-import DateAdapter from '@mui/lab/AdapterDateFns';
 import {
     days,
     monthNames,
@@ -24,17 +23,20 @@ import {
     seasonNumbers,
 } from '../../constants/dropdowns';
 import { convertPlacement } from '../shared/functions';
+import DeleteDialog from './DeleteDialog';
 
-function EditAccountFields(props) {
-    const [formData, setFormData] = useState(props.user);
+function AccountSettings(props) {
+    const user = useSelector((state) => state.auth.authData);
+    const [formData, setFormData] = useState(user);
     const [fileData, setFileData] = useState(null);
     const [editor, setEditor] = useState(null);
     const id = props.user?.id;
     const dispatch = useDispatch();
+    const [deleteOpen, setDeleteOpen] = useState(false);
 
     useEffect(() => {
-        setFormData(props.user);
-    }, [props]);
+        setFormData(user);
+    }, [user]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -64,16 +66,24 @@ function EditAccountFields(props) {
         props.close();
     };
 
+    const openDelete = () => {
+        setDeleteOpen(true);
+    };
+
+    const closeDelete = () => {
+        setDeleteOpen(false);
+    };
+
     return (
-        <LocalizationProvider dateAdapter={DateAdapter}>
-            <Dialog
-                fullWidth
-                maxWidth={'lg'}
-                open={props.open}
-                onClose={props.close}
-            >
-                <DialogTitle>Update Account</DialogTitle>
-                <DialogContent>
+        <Dialog
+            fullWidth
+            maxWidth={'lg'}
+            open={props.open}
+            onClose={props.close}
+        >
+            <DialogTitle>Account Settings</DialogTitle>
+            <DialogContent>
+                <Stack alignItems="center">
                     <PhotoContainer>
                         <Avatar
                             sx={{ width: 150, height: 150 }}
@@ -108,6 +118,7 @@ function EditAccountFields(props) {
                             name="email"
                             label="Email"
                             type="text"
+                            disabled
                             value={formData.email || ''}
                             onChange={handleChange}
                         />
@@ -151,7 +162,6 @@ function EditAccountFields(props) {
                         <TextField
                             margin="dense"
                             name="birthday_month"
-                            //label="Birthday Month"
                             type="text"
                             select
                             value={formData.birthday_month || ''}
@@ -168,7 +178,6 @@ function EditAccountFields(props) {
                         <TextField
                             margin="dense"
                             name="birthday_day"
-                            //label="Birthday Day"
                             type="text"
                             select
                             value={formData.birthday_day || ''}
@@ -185,7 +194,6 @@ function EditAccountFields(props) {
                         <TextField
                             margin="dense"
                             name="watching_since"
-                            //label="Watching Since"
                             type="text"
                             select
                             value={formData.watching_since || ''}
@@ -201,16 +209,30 @@ function EditAccountFields(props) {
                             })}
                         </TextField>
                     </Grid>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={props.close} color="error">
-                        Cancel
-                    </Button>
-                    <Button onClick={handleSubmit}>Update</Button>
-                </DialogActions>
-            </Dialog>
-        </LocalizationProvider>
+
+                    <Box mt={2}>
+                        <Button
+                            onClick={openDelete}
+                            color="error"
+                            variant="outlined"
+                        >
+                            Delete Account
+                        </Button>
+                    </Box>
+                </Stack>
+
+                {deleteOpen && (
+                    <DeleteDialog open={deleteOpen} close={closeDelete} />
+                )}
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={props.close} color="inherit">
+                    Cancel
+                </Button>
+                <Button onClick={handleSubmit}>Update</Button>
+            </DialogActions>
+        </Dialog>
     );
 }
 
-export default EditAccountFields;
+export default AccountSettings;
