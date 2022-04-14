@@ -10,6 +10,7 @@ import { Box, Paper, Stack, Tab, Tabs, Typography } from '@mui/material';
 import styled from '@emotion/styled';
 import { HeaderText } from './common';
 import useWindowDimensions from '../shared/useWindowDimensions';
+import { useSelector } from 'react-redux';
 
 // const backdropVariants = {
 //     expanded: {
@@ -31,6 +32,8 @@ const LandingWrapper = (props) => {
     const [active, setActive] = useState('signin');
     const [wave, setWave] = useState(null);
     const { height, width } = useWindowDimensions();
+
+    const error = useSelector((state) => state.errors.AUTH);
 
     useEffect(() => {
         setWave(
@@ -57,7 +60,7 @@ const LandingWrapper = (props) => {
         //         `M 0 0 L 0 175 C 60 180 100 80 160 100 C 260 140 260 60 300 75 L 300 0 Z`
         //     );
         // }
-    }, [height, width, wave]);
+    }, [error, height, width, wave]);
 
     const backdropVariants = {
         expanded: {
@@ -102,7 +105,7 @@ const LandingWrapper = (props) => {
         <AccountContext.Provider value={contextValue}>
             <Container elevation={3}>
                 <ShapeContainer>
-                    {/* <Shape
+                    <Shape
                         width="100%"
                         height="100vh"
                         //viewBox="0 0 500 500"
@@ -118,7 +121,7 @@ const LandingWrapper = (props) => {
                             animate={isExpanded ? 'expanded' : 'collapsed'}
                             variants={backdropVariants}
                         />
-                    </Shape> */}
+                    </Shape>
                 </ShapeContainer>
                 <TabBox>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -137,30 +140,16 @@ const LandingWrapper = (props) => {
                     </Box>
                 </TabBox>
                 <NewTop>
-                    {/* <NewBack
-                        initial={false}
-                        animate={isExpanded ? 'expanded' : 'collapsed'}
-                        variants={backdropVariants}
-                        transition={expandingTransition}
-                    /> */}
-                    {/* <NewBack
-                        //initial={false}
-                        animate={isExpanded ? 'expanded' : 'collapsed'}
-                        variants={backdropVariants}
-                        transition={expandingTransition}
-                    /> */}
                     {active === 'signin' && (
                         <>
                             <HeaderText variant="h3">Welcome</HeaderText>
                             <HeaderText variant="h3">Back</HeaderText>
-                            {/* <HeaderText>Please sign in to continue</HeaderText> */}
                         </>
                     )}
                     {active === 'signup' && (
                         <>
                             <HeaderText variant="h3">Create</HeaderText>
                             <HeaderText variant="h3">Account</HeaderText>
-                            {/* <HeaderText>Please sign up to continue</HeaderText> */}
                         </>
                     )}
                 </NewTop>
@@ -268,7 +257,7 @@ const NewTop = styled(Box)({
     display: 'flex',
     flexDirection: 'column',
     padding: '1rem 2rem',
-    marginBottom: 100,
+    marginBottom: 50,
 });
 
 // TODO: convert to star and possibly change from px

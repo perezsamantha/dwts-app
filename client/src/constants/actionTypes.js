@@ -1,8 +1,11 @@
 export const AUTH = 'AUTH';
 export const AUTHVERIFY = 'AUTHVERIFY';
 export const AUTHFETCH = 'AUTHFETCH';
-
 export const LOGOUT = 'LOGOUT';
+
+export const AUTH_REQUEST = 'AUTH_REQUEST';
+export const AUTH_SUCCESS = 'AUTH_SUCCESS';
+export const AUTH_FAILURE = 'AUTH_FAILURE';
 export const AUTHVERIFY_REQUEST = 'AUTHVERIFY_REQUEST';
 export const AUTHVERIFY_SUCCESS = 'AUTHVERIFY_SUCCESS';
 export const AUTHVERIFY_FAILURE = 'AUTHVERIFY_FAILURE';

@@ -129,9 +129,9 @@ function App(props) {
                 styleOverrides: {
                     root: {
                         '& > *': {
-                            margin: '10px',
+                            //margin: '10px',
                         },
-                        margin: '0',
+                        //margin: '0',
                         [theme.breakpoints.down('sm')]: {
                             minWidth: '50%',
                         },
@@ -237,6 +237,11 @@ function App(props) {
                 main: '#FAE27A',
                 dark: '#DDBE35',
             },
+            secondary: {
+                light: '#b0bec5',
+                main: '#607d8b',
+                dark: '#455a64',
+            },
             background: {
                 default: 'rgb(249, 249, 249)',
                 paper: 'rgb(249, 249, 249)',
@@ -257,6 +262,11 @@ function App(props) {
                 light: '#fff1b5',
                 main: '#FCE689',
                 dark: '#F6DD6E',
+            },
+            secondary: {
+                light: '#b0bec5',
+                main: '#607d8b',
+                dark: '#455a64',
             },
         },
     });
