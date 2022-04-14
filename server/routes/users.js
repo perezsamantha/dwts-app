@@ -3,6 +3,7 @@ import express from 'express';
 import {
     addUser,
     grantAccess,
+    deleteAuth,
     deleteUser,
     fetchUsers,
     findUserById,
@@ -47,12 +48,17 @@ router.get(
 );
 router.post('/search', auth, grantAccess('readAny', 'user'), searchUsers);
 router.patch(
-    '/update/admin/:id',
+    '/update/auth',
+    auth,
+    grantAccess('updateOwn', 'user'),
+    updateAuth
+);
+router.patch(
+    '/update/:id',
     auth,
     grantAccess('updateAny', 'user_admin'),
     updateUser
 );
-router.patch('/update/:id', auth, grantAccess('updateOwn', 'user'), updateAuth);
 router.patch(
     '/setPic/:id',
     auth,
@@ -61,9 +67,15 @@ router.patch(
     setUserPic
 );
 router.delete(
+    '/delete/auth',
+    auth,
+    grantAccess('deleteOwn', 'user'),
+    deleteAuth
+);
+router.delete(
     '/delete/:id',
     auth,
-    grantAccess('deleteAny', 'user'),
+    grantAccess('deleteAny', 'user_admin'),
     deleteUser
 );
 

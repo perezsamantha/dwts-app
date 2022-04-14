@@ -129,7 +129,7 @@ function App(props) {
                 styleOverrides: {
                     root: {
                         '& > *': {
-                            //margin: '10px',
+                            margin: 5,
                         },
                         //margin: '0',
                         [theme.breakpoints.down('sm')]: {
@@ -141,14 +141,14 @@ function App(props) {
                     },
                 },
             },
-            MuiOutlinedInput: {
-                styleOverrides: {
-                    root: {
-                        marginTop: 10,
-                        marginBottom: 10,
-                    },
-                },
-            },
+            // MuiOutlinedInput: {
+            //     styleOverrides: {
+            //         root: {
+            //             marginTop: 10,
+            //             marginBottom: 10,
+            //         },
+            //     },
+            // },
             MuiTabs: {
                 styleOverrides: {
                     indicator: {

@@ -35,9 +35,8 @@ export const verifyUser = (id) => API.get(`/users/verify/${id}`);
 export const fetchAuthData = () => API.get('/users/authData');
 export const logout = () => API.post('/users/logout');
 export const addUser = (formData) => API.post('/users/add', formData);
-export const updateUser = (id, user) =>
-    API.patch(`/users/update/admin/${id}`, user);
-export const updateAuth = (id, user) => API.patch(`/users/update/${id}`, user);
+export const updateUser = (id, user) => API.patch(`/users/update/${id}`, user);
+export const updateAuth = (user) => API.patch(`/users/update/auth`, user);
 export const setUserPic = (id, image) =>
     API.patch(`/users/setPic/${id}`, image);
 export const findUserById = (id) => API.get(`/users/admin/${id}`);
@@ -45,9 +44,7 @@ export const findUserByUsername = (username) => API.get(`/users/${username}`);
 export const fetchUsers = () => API.get('/users/');
 export const searchUsers = (input) => API.post('/users/search', input);
 export const deleteUser = (id) => API.delete(`/users/delete/${id}`);
-
-// export const searchFans = (input) => API.post('/fans/search', input);
-// export const findFanById = (id) => API.get(`/fans/${id}`);
+export const deleteAuth = () => API.delete(`/users/delete/auth`);
 
 export const addDance = (dance) => API.post('/dances/add', dance);
 export const updateDance = (id, dance) =>
