@@ -1,13 +1,13 @@
-import styled from '@emotion/styled';
-import { Button, Container, Paper, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { ExtraContainer, ExtraPage } from '../components/shared/muiStyles';
 
 function NotFound() {
     const navigate = useNavigate();
 
     return (
-        <NotFoundContainer>
-            <PaperContainer elevation={4}>
+        <ExtraPage>
+            <ExtraContainer elevation={4}>
                 <Typography mb={1}>Page not found</Typography>
                 <Button
                     variant="contained"
@@ -15,26 +15,9 @@ function NotFound() {
                 >
                     Return Home
                 </Button>
-            </PaperContainer>
-        </NotFoundContainer>
+            </ExtraContainer>
+        </ExtraPage>
     );
 }
-
-const NotFoundContainer = styled(Container)`
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-`;
-
-const PaperContainer = styled(Paper)`
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-`;
 
 export default NotFound;

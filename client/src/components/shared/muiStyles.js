@@ -6,6 +6,7 @@ import {
     AccordionSummary,
     Box,
     Chip,
+    Container,
     Paper,
     TextField,
 } from '@mui/material';
@@ -150,3 +151,19 @@ export const StyledAccordionSummary = styled(AccordionSummary)(({ theme }) => ({
 export const StyledAccordionDetails = styled(AccordionDetails)(({ theme }) => ({
     padding: 0,
 }));
+
+// extra pages
+
+export const ExtraPage = styled(Container)({
+    height: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+});
+
+export const ExtraContainer = styled(Paper)({
+    minWidth: 300,
+    padding: '1rem',
+    textAlign: 'center',
+    borderRadius: 15,
+});
