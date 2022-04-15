@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
-import { Box, Button, Divider, Grid, Stack, Typography } from '@mui/material';
-import { useNavigate, useParams } from 'react-router';
+import { Box, Divider, Grid, Stack, Typography } from '@mui/material';
+import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { findProById, likePro } from '../../actions/pros';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { createLoadingSelector } from '../../api/selectors';
 import * as actionType from '../../constants/actionTypes';
 import {
@@ -20,20 +19,15 @@ import {
 import ExtraPicUpload from '../shared/ExtraPicUpload';
 import * as tableType from '../../constants/tableTypes';
 import SocialsLink from '../shared/SocialsLink';
-import {
-    BackButton,
-    CoverPicture,
-    IndividualsContainer,
-} from '../shared/muiStyles';
+import { IndividualsContainer } from '../shared/muiStyles';
 import Progress from '../shared/Progress';
-import Likes from '../shared/Likes';
 import PicturesGrid from './Supporting/PicturesGrid';
 import { Link } from 'react-router-dom';
 import { IoBalloonOutline } from 'react-icons/io5';
 import { motion } from 'framer-motion';
+import IndividualsHeader from './Supporting/IndividualsHeader';
 
 function Pro() {
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.authData);
     const pro = useSelector((state) => state.pros.pro);
@@ -52,54 +46,20 @@ function Pro() {
         dispatch(findProById(id));
     }, [dispatch, id]);
 
+    const handleLike = () => {
+        dispatch(likePro(id));
+    };
+
     return loading || Number(pro?.id) !== Number(id) ? (
         <Progress />
     ) : (
         <IndividualsContainer>
-            <Stack direction="row" alignItems="center" spacing={3}>
-                <BackButton
-                    component={motion.div}
-                    whileHover={{
-                        scale: 1.2,
-                        transition: { duration: 0.3 },
-                    }}
-                    whileTap={{
-                        scale: 1.25,
-                        transition: { duration: 0.3 },
-                    }}
-                    onClick={() => navigate(-1)}
-                >
-                    <ArrowBackIosIcon />
-                </BackButton>
-                <CoverPicture
-                    component="img"
-                    src={pro.cover_pic ? pro.cover_pic : '/defaultPic.jpeg'}
-                />
-                <Box>
-                    <Button
-                        sx={{
-                            '&.MuiButtonBase-root:hover': {
-                                bgcolor: 'transparent',
-                            },
-                        }}
-                        component={motion.div}
-                        whileHover={{
-                            scale: 1.05,
-                            transition: { duration: 0.3 },
-                        }}
-                        whileTap={{
-                            scale: 1.5,
-                            transition: { duration: 0.3 },
-                        }}
-                        onClick={() => dispatch(likePro(id))}
-                    >
-                        <Likes user={user} likes={pro.likes} />
-                    </Button>
-                    <Typography variant="subtitle1">
-                        {pro.likes?.length}
-                    </Typography>
-                </Box>
-            </Stack>
+            <IndividualsHeader
+                user={user}
+                item={pro}
+                handleLike={handleLike}
+                type="pro"
+            />
 
             <Stack my={1}>
                 <Typography variant="h4" gutterBottom>

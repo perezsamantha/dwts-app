@@ -1,28 +1,20 @@
 import React, { useEffect } from 'react';
-import { Box, Button, Divider, Stack, Typography } from '@mui/material';
-import { useNavigate, useParams } from 'react-router';
+import { Box, Divider, Stack, Typography } from '@mui/material';
+import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { findUserByUsername } from '../../actions/users';
-
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import * as actionType from '../../constants/actionTypes';
 import { createLoadingSelector } from '../../api/selectors';
 import SocialsLink from '../shared/SocialsLink';
-import {
-    BackButton,
-    CoverPicture,
-    IndividualsContainer,
-    RoleChip,
-} from '../shared/muiStyles';
+import { IndividualsContainer, RoleChip } from '../shared/muiStyles';
 import Progress from '../shared/Progress';
 import { getUserBirthday } from '../shared/functions';
 import FavoritesWrapper from '../Favorites/Favorites';
-import { motion } from 'framer-motion';
 import { BsStopwatch } from 'react-icons/bs';
 import { IoBalloonOutline } from 'react-icons/io5';
+import IndividualsHeader from './Supporting/IndividualsHeader';
 
 function Fan() {
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const fan = useSelector((state) => state.users.user);
     const { username } = useParams();
@@ -37,29 +29,7 @@ function Fan() {
         <Progress />
     ) : (
         <IndividualsContainer>
-            <Stack direction="row" alignItems="center" spacing={3}>
-                <BackButton
-                    component={motion.div}
-                    whileHover={{
-                        scale: 1.2,
-                        transition: { duration: 0.3 },
-                    }}
-                    whileTap={{
-                        scale: 1.25,
-                        transition: { duration: 0.3 },
-                    }}
-                    onClick={() => navigate(-1)}
-                >
-                    <ArrowBackIosIcon />
-                </BackButton>
-                <CoverPicture
-                    component="img"
-                    src={fan.cover_pic ? fan.cover_pic : '/defaultPic.jpeg'}
-                />
-                <Button disabled sx={{ opacity: 0 }}>
-                    <ArrowBackIosIcon />
-                </Button>
-            </Stack>
+            <IndividualsHeader item={fan} type="fan" />
 
             <Stack my={1}>
                 <Typography variant="h3">{fan?.nickname}</Typography>

@@ -1,17 +1,8 @@
 import React, { useEffect } from 'react';
-import {
-    Avatar,
-    Box,
-    Button,
-    Divider,
-    Grid,
-    Stack,
-    Typography,
-} from '@mui/material';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { Avatar, Box, Divider, Grid, Stack, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { findTeamById } from '../../actions/teams';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { likeTeam } from '../../actions/teams';
 import ExtraPicUpload from '../shared/ExtraPicUpload';
 import * as tableType from '../../constants/tableTypes';
@@ -28,18 +19,13 @@ import {
 import SocialsLink from '../shared/SocialsLink';
 import { createLoadingSelector } from '../../api/selectors';
 import * as actionType from '../../constants/actionTypes';
-import {
-    BackButton,
-    CoverPicture,
-    IndividualsContainer,
-} from '../shared/muiStyles';
+import { IndividualsContainer } from '../shared/muiStyles';
 import Progress from '../shared/Progress';
-import Likes from '../shared/Likes';
 import PicturesGrid from './Supporting/PicturesGrid';
 import { motion } from 'framer-motion';
+import IndividualsHeader from './Supporting/IndividualsHeader';
 
 function Team() {
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.authData);
     const team = useSelector((state) => state.teams.team);
@@ -53,54 +39,22 @@ function Team() {
         dispatch(findTeamById(id));
     }, [dispatch, id]);
 
-    const { celeb, pro, dances, likes, pictures } = team;
+    const handleLike = () => {
+        dispatch(likeTeam(id));
+    };
+
+    const { celeb, pro, dances, pictures } = team;
 
     return loading || Number(team?.id) !== Number(id) ? (
         <Progress />
     ) : (
         <IndividualsContainer>
-            <Stack direction="row" alignItems="center" spacing={3}>
-                <BackButton
-                    component={motion.div}
-                    whileHover={{
-                        scale: 1.2,
-                        transition: { duration: 0.3 },
-                    }}
-                    whileTap={{
-                        scale: 1.25,
-                        transition: { duration: 0.3 },
-                    }}
-                    onClick={() => navigate(-1)}
-                >
-                    <ArrowBackIosIcon />
-                </BackButton>
-                <CoverPicture
-                    component="img"
-                    src={team.cover_pic ? team.cover_pic : '/defaultPic.jpeg'}
-                />
-                <Box>
-                    <Button
-                        sx={{
-                            '&.MuiButtonBase-root:hover': {
-                                bgcolor: 'transparent',
-                            },
-                        }}
-                        component={motion.div}
-                        whileHover={{
-                            scale: 1.05,
-                            transition: { duration: 0.3 },
-                        }}
-                        whileTap={{
-                            scale: 1.5,
-                            transition: { duration: 0.3 },
-                        }}
-                        onClick={() => dispatch(likeTeam(id))}
-                    >
-                        <Likes user={user} likes={likes} />
-                    </Button>
-                    <Typography variant="subtitle1">{likes?.length}</Typography>
-                </Box>
-            </Stack>
+            <IndividualsHeader
+                user={user}
+                item={team}
+                handleLike={handleLike}
+                type="team"
+            />
 
             <Stack my={1}>
                 <Typography variant="h4">

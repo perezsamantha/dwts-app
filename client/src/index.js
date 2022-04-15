@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './fonts/Yes-Margo.otf';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -10,9 +11,6 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 
 import { BrowserRouter } from 'react-router-dom';
-
-import './fonts/Lemon-Tea.ttf';
-import './fonts/Yes-Margo.otf';
 
 //const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 //const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));

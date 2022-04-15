@@ -8,7 +8,7 @@ import { googleAuth, signUp } from '../../actions/auth';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-import { Line, SubmitButton } from './common';
+import { GoogleButton, Line, SubmitButton } from './common';
 import {
     Box,
     Typography,
@@ -231,16 +231,11 @@ function SignUp() {
                 <GoogleLogin
                     clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
                     render={(renderProps) => (
-                        <Button
+                        <GoogleButton
                             onClick={renderProps.onClick}
                             disabled={renderProps.disabled}
                             variant="contained"
                             color="secondary"
-                            sx={{
-                                width: '100%',
-                                padding: 1,
-                                textTransform: 'none',
-                            }}
                         >
                             <Stack
                                 direction="row"
@@ -252,7 +247,7 @@ function SignUp() {
                                     Sign up with Google
                                 </Typography>
                             </Stack>
-                        </Button>
+                        </GoogleButton>
                     )}
                     onSuccess={handleOAuth}
                     onFailure={handleOAuth}

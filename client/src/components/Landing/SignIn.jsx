@@ -12,7 +12,6 @@ import {
     Stack,
     Box,
     TextField,
-    Button,
     Alert,
 } from '@mui/material';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
@@ -20,7 +19,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { SiGoogle } from 'react-icons/si';
-import { Line, SubmitButton } from './common';
+import { GoogleButton, Line, SubmitButton } from './common';
 
 const initialState = { username: '', password: '' };
 
@@ -141,16 +140,11 @@ function SignIn() {
                 <GoogleLogin
                     clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
                     render={(renderProps) => (
-                        <Button
+                        <GoogleButton
                             onClick={renderProps.onClick}
                             disabled={renderProps.disabled}
                             variant="contained"
                             color="secondary"
-                            sx={{
-                                width: '100%',
-                                padding: 1,
-                                textTransform: 'none',
-                            }}
                         >
                             <Stack
                                 direction="row"
@@ -162,7 +156,7 @@ function SignIn() {
                                     Sign in with Google
                                 </Typography>
                             </Stack>
-                        </Button>
+                        </GoogleButton>
                     )}
                     onSuccess={handleOAuth}
                     onFailure={handleOAuth}
