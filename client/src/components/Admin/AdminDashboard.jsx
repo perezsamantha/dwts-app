@@ -79,7 +79,7 @@ function AdminDashboard(props) {
                     <ListItemText>
                         <Typography
                             variant="h4"
-                            fontFamily="YesMargo"
+                            fontFamily="YesMargo, Urbanist, Roboto, Helvetica Neue, sans-serif"
                             textTransform="uppercase"
                         >
                             Overview

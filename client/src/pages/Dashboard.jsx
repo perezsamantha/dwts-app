@@ -15,7 +15,7 @@ function Dashboard() {
             <MainContainer>
                 <Typography
                     variant="h2"
-                    fontFamily="YesMargo"
+                    fontFamily="YesMargo, Urbanist, Roboto, Helvetica Neue, sans-serif"
                     textTransform="uppercase"
                 >
                     Dashboard

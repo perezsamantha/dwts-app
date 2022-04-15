@@ -92,8 +92,6 @@ function App(props) {
             fontFamily: [
                 'Urbanist',
                 'Roboto',
-                'LemonTea',
-                'YesMargo',
                 'Helvetica Neue',
                 'Arial',
                 'sans-serif',
@@ -349,7 +347,6 @@ function App(props) {
                 <Routes>
                     <Route exact path="/">
                         <Route path="" element={<Landing />} />
-                        {/* following 2 need to bypass jwt check */}
                         <Route
                             path="forgot-password"
                             element={<ForgotPassword />}

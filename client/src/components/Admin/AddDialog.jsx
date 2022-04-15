@@ -171,9 +171,7 @@ function AddDialog(props) {
                         />
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleClose} color="error">
-                            Cancel
-                        </Button>
+                        <Button onClick={handleClose}>Cancel</Button>
                         <Button onClick={handleSubmit}>Add</Button>
                     </DialogActions>
                 </Dialog>
