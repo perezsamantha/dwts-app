@@ -1,20 +1,25 @@
 import React, { useEffect } from 'react';
-import { Box, Button, Chip, Divider, Stack, Typography } from '@mui/material';
+import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { findUserByUsername } from '../../actions/users';
 
-import { CardAvatar } from '../shared/regStyles.js';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import * as actionType from '../../constants/actionTypes';
 import { createLoadingSelector } from '../../api/selectors';
 import SocialsLink from '../shared/SocialsLink';
-import { IndividualsContainer } from '../shared/muiStyles';
+import {
+    BackButton,
+    CoverPicture,
+    IndividualsContainer,
+    RoleChip,
+} from '../shared/muiStyles';
 import Progress from '../shared/Progress';
-import { FaBirthdayCake } from 'react-icons/fa';
 import { getUserBirthday } from '../shared/functions';
 import FavoritesWrapper from '../Favorites/Favorites';
 import { motion } from 'framer-motion';
+import { BsStopwatch } from 'react-icons/bs';
+import { IoBalloonOutline } from 'react-icons/io5';
 
 function Fan() {
     const navigate = useNavigate();
@@ -33,12 +38,7 @@ function Fan() {
     ) : (
         <IndividualsContainer>
             <Stack direction="row" alignItems="center" spacing={3}>
-                <Button
-                    sx={{
-                        '&.MuiButtonBase-root:hover': {
-                            bgcolor: 'transparent',
-                        },
-                    }}
+                <BackButton
                     component={motion.div}
                     whileHover={{
                         scale: 1.2,
@@ -51,11 +51,14 @@ function Fan() {
                     onClick={() => navigate(-1)}
                 >
                     <ArrowBackIosIcon />
-                </Button>
-                <CardAvatar
+                </BackButton>
+                <CoverPicture
+                    component="img"
                     src={fan.cover_pic ? fan.cover_pic : '/defaultPic.jpeg'}
                 />
-                <Button disabled></Button>
+                <Button disabled sx={{ opacity: 0 }}>
+                    <ArrowBackIosIcon />
+                </Button>
             </Stack>
 
             <Stack my={1}>
@@ -64,21 +67,7 @@ function Fan() {
             </Stack>
 
             <Box my={1}>
-                <Chip
-                    label={fan.role}
-                    color="primary"
-                    // variant='outlined'
-                    // sx={{
-                    //     color: (theme) =>
-                    //         theme.palette.mode === 'light'
-                    //             ? 'primary.dark'
-                    //             : 'primary.main',
-                    //     borderColor: (theme) =>
-                    //         theme.palette.mode === 'light'
-                    //             ? 'primary.dark'
-                    //             : 'primary.main',
-                    // }}
-                ></Chip>
+                <RoleChip label={fan.role}></RoleChip>
             </Box>
 
             {(fan?.watching_since || fan?.birthday_month) && (
@@ -89,9 +78,17 @@ function Fan() {
                     </Typography>
                     <Stack spacing={1}>
                         {fan?.watching_since && (
-                            <Typography variant="h6">
-                                Watching since season {fan.watching_since}
-                            </Typography>
+                            <Stack
+                                direction="row"
+                                spacing={1}
+                                justifyContent="center"
+                                alignItems="center"
+                            >
+                                <BsStopwatch />
+                                <Typography variant="h6">
+                                    Since Season {fan.watching_since}
+                                </Typography>
+                            </Stack>
                         )}
 
                         {fan?.birthday_month && (
@@ -101,7 +98,7 @@ function Fan() {
                                 justifyContent="center"
                                 alignItems="center"
                             >
-                                <FaBirthdayCake />
+                                <IoBalloonOutline />
                                 <Typography variant="h6">
                                     {getUserBirthday(
                                         fan.birthday_month,

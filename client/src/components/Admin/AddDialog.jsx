@@ -174,9 +174,7 @@ function AddDialog(props) {
                         <Button onClick={handleClose} color="error">
                             Cancel
                         </Button>
-                        <Button onClick={handleSubmit} color="primary">
-                            Add
-                        </Button>
+                        <Button onClick={handleSubmit}>Add</Button>
                     </DialogActions>
                 </Dialog>
             </LocalizationProvider>

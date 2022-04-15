@@ -6,7 +6,7 @@ function FanPreview(props) {
     const { fan } = props;
 
     return (
-        <Card elevation={3} sx={{ padding: 1, margin: 0 }}>
+        <Card sx={{ padding: 1, margin: 0 }}>
             <Stack direction="row" alignItems="center" spacing={1}>
                 <Avatar src={fan.cover_pic} sx={{ width: 30, height: 30 }} />
                 <Stack>

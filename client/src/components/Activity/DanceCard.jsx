@@ -27,7 +27,7 @@ function DanceCard() {
     }, [dispatch]);
 
     return (
-        <Card elevation={3}>
+        <Card>
             <Typography variant="h5">Yesterday's Dance</Typography>
             <Divider />
 
@@ -80,7 +80,11 @@ function DanceCard() {
                             <BsCameraVideo />
                             <Typography variant="subtitle1">
                                 Watch the dance{' '}
-                                <Link href={dance.link} underline="hover">
+                                <Link
+                                    href={dance.link}
+                                    color="inherit"
+                                    underline="always"
+                                >
                                     here
                                 </Link>
                             </Typography>

@@ -1,49 +1,34 @@
-//import styled from 'styled-components';
 import styled from '@emotion/styled';
 import {
     Accordion,
     AccordionDetails,
     AccordionSummary,
     Box,
+    Button,
     Chip,
     Container,
     Paper,
+    Stack,
     TextField,
 } from '@mui/material';
 
-export const ChipsWrapper = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-`;
-
-export const IndividualChip = styled(Chip)`
-    margin-right: 2px;
-`;
-
-export const Page = styled(Box)(() => ({
+// main pages
+export const Page = styled(Box)({
     paddingBottom: 60,
-}));
+});
 
-//main page container
-
-export const MainContainer = styled(Box)`
-    //height: 100vh;
-    padding: 1rem;
-    //margin: 1rem;
-    /* display: flex;
-    flex-direction: column;
-    align-items: center; */
-    //padding-bottom: 70px;
-`;
+export const MainContainer = styled(Box)({
+    padding: '1rem',
+});
 
 // search results
 
-export const ResultsContainer = styled(Box)`
-    padding: 1rem 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;
+export const ResultsContainer = styled(Box)({
+    padding: '1rem 0',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+});
 
 export const ContentContainer = styled(Box)({
     width: '100%',
@@ -55,14 +40,10 @@ export const SearchContainer = styled(Box)({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    borderBottom: '1px solid grey',
 });
 
-export const SearchBoxContainer = styled(Box)({
-    width: '98%',
-    margin: '10px auto',
-    display: 'flex',
-    flexDirection: 'row',
+export const SearchBoxContainer = styled(Stack)({
+    width: '100%',
 });
 
 export const SearchTextField = styled(TextField)(({ theme }) => ({
@@ -108,22 +89,35 @@ export const AccountContainer = styled(Paper)({
 
 // individuals
 
-export const IndividualsContainer = styled(Box)`
-    //width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    //overflow-y: auto;
-    //overflow-x: auto;
-    text-align: center;
-`;
+export const IndividualsContainer = styled(Box)({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    textAlign: 'center',
+});
+
+export const BackButton = styled(Button)({
+    '&.MuiButtonBase-root:hover': {
+        bgcolor: 'transparent',
+    },
+    height: 'fit-content',
+});
+
+export const CoverPicture = styled(Box)(({ theme }) => ({
+    height: 175,
+    width: 175,
+    borderRadius: 10,
+    margin: 10,
+    boxShadow:
+        theme.palette.mode === 'light' ? '1px 3px 5px lightgrey' : 'none',
+}));
 
 export const ExtraPic = styled(Box)(({ theme }) => ({
     width: 80,
     height: 80,
-    borderRadius: 15,
+    borderRadius: 10,
     boxShadow:
-        theme.palette.mode === 'light' ? '1px 5px 15px lightgrey' : 'none',
+        theme.palette.mode === 'light' ? '1px 3px 5px lightgrey' : 'none',
 }));
 
 // accordions
@@ -167,3 +161,24 @@ export const ExtraContainer = styled(Paper)({
     textAlign: 'center',
     borderRadius: 15,
 });
+
+// role chip
+
+export const RoleChip = styled(Chip)(({ theme }) => ({
+    color: 'black',
+    // backgroundColor:
+    //     theme.palette.mode === 'light'
+    //         ? theme.palette.primary.main
+    //         : theme.palette.primary.light,
+    backgroundColor: theme.palette.primary.main,
+}));
+
+// slider pictures
+
+export const PicturePreview = styled(Box)(({ theme }) => ({
+    height: '100%',
+    width: '100%',
+    borderRadius: 10,
+    boxShadow:
+        theme.palette.mode === 'light' ? '1px 3px 5px lightgrey' : 'none',
+}));

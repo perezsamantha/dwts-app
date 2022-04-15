@@ -40,6 +40,10 @@ function DanceCard() {
     };
 
     const handleSubmit = () => {
+        if (!score) {
+            return;
+        }
+
         dispatch(setUserScore(dance.id, { value: score }));
         setAlreadyScored(true);
     };
@@ -49,7 +53,7 @@ function DanceCard() {
     };
 
     return (
-        <Card elevation={3}>
+        <Card>
             <Typography variant="h5">Today's Dance</Typography>
             <Divider />
 
@@ -102,7 +106,11 @@ function DanceCard() {
                             <BsCameraVideo />
                             <Typography variant="subtitle1">
                                 Watch the dance{' '}
-                                <Link href={dance.link} underline="hover">
+                                <Link
+                                    href={dance.link}
+                                    color="inherit"
+                                    underline="always"
+                                >
                                     here
                                 </Link>
                             </Typography>
@@ -120,7 +128,8 @@ function DanceCard() {
                             change score{' '}
                             <Link
                                 onClick={handleRescore}
-                                underline="hover"
+                                color="inherit"
+                                underline="always"
                                 sx={{ cursor: 'pointer' }}
                             >
                                 here.
@@ -136,17 +145,10 @@ function DanceCard() {
                                     max={10}
                                     value={score}
                                     onChange={handleChange}
-                                    // icon={<HiStar />}
-                                    // emptyIcon={<HiOutlineStar />}
                                 />
                                 <Typography>{score}</Typography>
                             </Stack>
-                            <Button
-                                variant="text"
-                                size="small"
-                                color="inherit"
-                                onClick={handleSubmit}
-                            >
+                            <Button size="small" onClick={handleSubmit}>
                                 Submit Score
                             </Button>
                         </Box>

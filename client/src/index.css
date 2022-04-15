@@ -54,3 +54,13 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
         monospace;
 }
+
+@font-face {
+    font-family: 'LemonTea';
+    src: local('LemonTea'), url(./fonts/Lemon-Tea.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'YesMargo';
+    src: local('YesMargo'), url(./fonts/Yes-Margo.otf) format('truetype');
+}

@@ -51,7 +51,7 @@ function BirthdaysCard() {
     }
 
     return (
-        <Card elevation={3}>
+        <Card>
             <StyledAccordion elevation={0} defaultExpanded>
                 <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography variant="h5">Today's Birthdays</Typography>

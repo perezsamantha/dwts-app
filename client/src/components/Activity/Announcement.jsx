@@ -9,7 +9,7 @@ import { VscVersions } from 'react-icons/vsc';
 
 function Announcement() {
     return (
-        <Card elevation={3}>
+        <Card>
             <StyledAccordion elevation={0}>
                 <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography variant="h5">Announcement</Typography>

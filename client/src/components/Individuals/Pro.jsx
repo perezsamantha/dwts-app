@@ -3,12 +3,8 @@ import { Box, Button, Divider, Grid, Stack, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { findProById, likePro } from '../../actions/pros';
-
-import { CardAvatar, LikesContainer } from '../shared/regStyles.js';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-
 import { createLoadingSelector } from '../../api/selectors';
-
 import * as actionType from '../../constants/actionTypes';
 import {
     convertHeight,
@@ -24,12 +20,16 @@ import {
 import ExtraPicUpload from '../shared/ExtraPicUpload';
 import * as tableType from '../../constants/tableTypes';
 import SocialsLink from '../shared/SocialsLink';
-import { IndividualsContainer } from '../shared/muiStyles';
+import {
+    BackButton,
+    CoverPicture,
+    IndividualsContainer,
+} from '../shared/muiStyles';
 import Progress from '../shared/Progress';
 import Likes from '../shared/Likes';
 import PicturesGrid from './Supporting/PicturesGrid';
 import { Link } from 'react-router-dom';
-import { FaBirthdayCake } from 'react-icons/fa';
+import { IoBalloonOutline } from 'react-icons/io5';
 import { motion } from 'framer-motion';
 
 function Pro() {
@@ -56,13 +56,8 @@ function Pro() {
         <Progress />
     ) : (
         <IndividualsContainer>
-            <Stack direction="row">
-                <Button
-                    sx={{
-                        '&.MuiButtonBase-root:hover': {
-                            bgcolor: 'transparent',
-                        },
-                    }}
+            <Stack direction="row" alignItems="center" spacing={3}>
+                <BackButton
                     component={motion.div}
                     whileHover={{
                         scale: 1.2,
@@ -75,11 +70,12 @@ function Pro() {
                     onClick={() => navigate(-1)}
                 >
                     <ArrowBackIosIcon />
-                </Button>
-                <CardAvatar
+                </BackButton>
+                <CoverPicture
+                    component="img"
                     src={pro.cover_pic ? pro.cover_pic : '/defaultPic.jpeg'}
                 />
-                <LikesContainer>
+                <Box>
                     <Button
                         sx={{
                             '&.MuiButtonBase-root:hover': {
@@ -102,7 +98,7 @@ function Pro() {
                     <Typography variant="subtitle1">
                         {pro.likes?.length}
                     </Typography>
-                </LikesContainer>
+                </Box>
             </Stack>
 
             <Stack my={1}>
@@ -132,7 +128,7 @@ function Pro() {
                             justifyContent="center"
                             alignItems="center"
                         >
-                            <FaBirthdayCake />
+                            <IoBalloonOutline />
                             <Typography variant="h6">{birthday}</Typography>
                         </Stack>
                     </>
@@ -245,7 +241,9 @@ function Pro() {
                     <Typography mb={1}>No pictures yet</Typography>
                 )}
 
-                <ExtraPicUpload id={pro.id} type={tableType.PRO} />
+                {user?.role === 'admin' && (
+                    <ExtraPicUpload id={pro.id} type={tableType.PRO} />
+                )}
             </Stack>
         </IndividualsContainer>
     );

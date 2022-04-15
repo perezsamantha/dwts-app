@@ -119,7 +119,11 @@ function SignIn() {
             </Box>
 
             <Stack width={1} spacing={3} alignItems="center">
-                <SubmitButton variant="contained" onClick={handleSubmit}>
+                <SubmitButton
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSubmit}
+                >
                     <Typography>Sign In</Typography>
                 </SubmitButton>
 

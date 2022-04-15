@@ -75,11 +75,11 @@ export const fetchAuthData = () => async (dispatch) => {
     }
 };
 
-export const updateUser = (id, user) => async (dispatch) => {
+export const updateUser = (user) => async (dispatch) => {
     dispatch({ type: actionType.AUTHUPDATE_REQUEST });
 
     try {
-        const { data } = await api.updateAuth(id, user);
+        const { data } = await api.updateAuth(user);
 
         dispatch({ type: actionType.AUTHUPDATE_SUCCESS, payload: data });
     } catch (error) {

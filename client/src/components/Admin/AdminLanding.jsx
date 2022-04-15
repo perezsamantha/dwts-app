@@ -1,19 +1,17 @@
-import { Typography } from '@mui/material';
 import RecentLikes from '../Activity/RecentLikes';
 import DailyDancesOverview from './DailyDancesOverview';
 import AdminOverview from './AdminOverview';
+import { Box } from '@mui/material';
 
 function AdminLanding() {
     return (
-        <>
-            <Typography>Admin Dashboard Landing Component</Typography>
-
+        <Box>
             <AdminOverview />
 
             <DailyDancesOverview />
 
             <RecentLikes />
-        </>
+        </Box>
     );
 }
 

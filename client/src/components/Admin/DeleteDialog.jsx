@@ -99,11 +99,9 @@ function DeleteDialog(props) {
 
             <DialogActions>
                 <Button onClick={props.handleClose} color="error">
-                    CANCEL
+                    Cancel
                 </Button>
-                <Button onClick={props.confirmDelete} color="primary">
-                    DELETE
-                </Button>
+                <Button onClick={props.confirmDelete}>Delete</Button>
             </DialogActions>
         </Dialog>
     );

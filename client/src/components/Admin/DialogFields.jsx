@@ -12,9 +12,9 @@ import {
     FormControlLabel,
     Radio,
     IconButton,
+    Stack,
 } from '@mui/material';
 import { MobileDatePicker } from '@mui/lab';
-
 import * as tableType from '../../constants/tableTypes';
 import {
     genders,
@@ -35,7 +35,6 @@ import {
     months,
 } from '../../constants/dropdowns';
 import CoverPicUpload from '../shared/CoverPicUpload';
-import { PhotoContainer } from '../shared/regStyles';
 import { useSelector } from 'react-redux';
 import {
     convertHeight,
@@ -114,7 +113,7 @@ function DialogFields(props) {
                 tableType.USER
             ).includes(table) &&
                 props.dialog === 'Edit' && (
-                    <PhotoContainer>
+                    <Stack alignItems="center" spacing={1}>
                         <Avatar
                             sx={{ width: 150, height: 150 }}
                             src={formData?.cover_pic}
@@ -126,7 +125,7 @@ function DialogFields(props) {
                             fileData={props.fileData}
                             setFileData={props.setFileData}
                         />
-                    </PhotoContainer>
+                    </Stack>
                 )}
 
             {Array.of(tableType.DANCER, tableType.TOURCAST).includes(table) && (
@@ -171,7 +170,6 @@ function DialogFields(props) {
                 table
             ) && (
                 <TextField
-                    margin="dense"
                     name="first_name"
                     label="First Name"
                     type="text"
@@ -184,7 +182,6 @@ function DialogFields(props) {
                 table
             ) && (
                 <TextField
-                    margin="dense"
                     name="last_name"
                     label="Last Name"
                     type="text"
@@ -195,7 +192,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.SEASON).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="id"
                     label="Number"
                     type="text"
@@ -213,7 +209,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.SEASON).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="host"
                     label="Host"
                     type="text"
@@ -231,7 +226,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.SEASON).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="cohost"
                     label="Co-host"
                     type="text"
@@ -249,7 +243,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.TOUR).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="name"
                     label="Name"
                     type="text"
@@ -271,7 +264,7 @@ function DialogFields(props) {
                         </Box>
                     )}
                     renderInput={(params) => (
-                        <TextField margin="dense" {...params} label="Dance" />
+                        <TextField {...params} label="Dance" />
                     )}
                     onChange={(e, newValue) => {
                         setFormData({
@@ -288,7 +281,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.TOURCAST).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="tour_id"
                     label="Tour"
                     type="text"
@@ -321,11 +313,7 @@ function DialogFields(props) {
                                 </Box>
                             )}
                             renderInput={(params) => (
-                                <TextField
-                                    margin="dense"
-                                    {...params}
-                                    label="Team"
-                                />
+                                <TextField {...params} label="Team" />
                             )}
                             onChange={(e, newValue) => {
                                 setAutoValues({
@@ -361,11 +349,7 @@ function DialogFields(props) {
                                 </Box>
                             )}
                             renderInput={(params) => (
-                                <TextField
-                                    margin="dense"
-                                    {...params}
-                                    label="Celeb"
-                                />
+                                <TextField {...params} label="Celeb" />
                             )}
                             onChange={(e, newValue) => {
                                 setAutoValues({
@@ -401,11 +385,7 @@ function DialogFields(props) {
                                 </Box>
                             )}
                             renderInput={(params) => (
-                                <TextField
-                                    margin="dense"
-                                    {...params}
-                                    label="Pro"
-                                />
+                                <TextField {...params} label="Pro" />
                             )}
                             onChange={(e, newValue) => {
                                 setFormData({
@@ -440,7 +420,7 @@ function DialogFields(props) {
                         </Box>
                     )}
                     renderInput={(params) => (
-                        <TextField margin="dense" {...params} label="Celeb" />
+                        <TextField {...params} label="Celeb" />
                     )}
                     onChange={(e, newValue) => {
                         setFormData({
@@ -471,7 +451,7 @@ function DialogFields(props) {
                         </Box>
                     )}
                     renderInput={(params) => (
-                        <TextField margin="dense" {...params} label="Pro" />
+                        <TextField {...params} label="Pro" />
                     )}
                     onChange={(e, newValue) => {
                         setFormData({
@@ -502,7 +482,7 @@ function DialogFields(props) {
                         </Box>
                     )}
                     renderInput={(params) => (
-                        <TextField margin="dense" {...params} label="Mentor" />
+                        <TextField {...params} label="Mentor" />
                     )}
                     onChange={(e, newValue) => {
                         setFormData({
@@ -520,7 +500,6 @@ function DialogFields(props) {
                 tableType.TOUR
             ).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="season_id"
                     label="Season"
                     type="text"
@@ -538,7 +517,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.TEAM).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="placement"
                     label="Placement"
                     type="text"
@@ -556,7 +534,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.TEAM).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="team_name"
                     label="Team Name"
                     type="text"
@@ -574,7 +551,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.DANCE).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="episode_id"
                     label="Episode"
                     type="text"
@@ -599,7 +575,7 @@ function DialogFields(props) {
                     autoHighlight
                     value={formData.style || null}
                     renderInput={(params) => (
-                        <TextField margin="dense" {...params} label="Style" />
+                        <TextField {...params} label="Style" />
                     )}
                     onChange={(e, newValue) => {
                         setFormData({
@@ -612,7 +588,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.DANCE).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="song_title"
                     label="Song Title"
                     type="text"
@@ -623,7 +598,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.DANCE).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="song_artist"
                     label="Song Artist"
                     type="text"
@@ -634,7 +608,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.DANCE).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="running_order"
                     label="Running Order"
                     type="text"
@@ -652,11 +625,10 @@ function DialogFields(props) {
 
             {Array.of(tableType.DANCE).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="is_main"
                     select
                     label="Main Dance?"
-                    value={formData.is_main}
+                    value={formData.is_main || false}
                     onChange={handleChange}
                 >
                     <MenuItem key={1} value={true}>
@@ -670,7 +642,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.DANCE).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="link"
                     label="Link"
                     type="text"
@@ -681,7 +652,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.DANCE).includes(table) && (
                 <MobileDatePicker
-                    margin="dense"
                     label="Daily Date"
                     inputFormat="MM/dd/yyyy"
                     value={formData.daily_date || null}
@@ -694,11 +664,10 @@ function DialogFields(props) {
 
             {Array.of(tableType.DANCER).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="is_background"
                     select
                     label="Background Dancer?"
-                    value={formData.is_background}
+                    value={formData.is_background || false}
                     onChange={handleChange}
                 >
                     <MenuItem key={1} value={true}>
@@ -712,7 +681,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.TOUR).includes(table) && (
                 <MobileDatePicker
-                    margin="dense"
                     label="First Show"
                     inputFormat="MM/dd/yyyy"
                     value={formData.first_show || null}
@@ -725,7 +693,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.TOUR).includes(table) && (
                 <MobileDatePicker
-                    margin="dense"
                     label="Last Show"
                     inputFormat="MM/dd/yyyy"
                     value={formData.last_show || ''}
@@ -738,11 +705,10 @@ function DialogFields(props) {
 
             {Array.of(tableType.TOURCAST).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="is_swing"
                     select
                     label="Swing Dancer?"
-                    value={formData.is_swing}
+                    value={formData.is_swing || false}
                     onChange={handleChange}
                 >
                     <MenuItem key={1} value={true}>
@@ -758,7 +724,6 @@ function DialogFields(props) {
                 table
             ) && (
                 <MobileDatePicker
-                    margin="dense"
                     label="Birthday"
                     inputFormat="MM/dd/yyyy"
                     value={formData.birthday || null}
@@ -769,7 +734,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.EPISODE).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="week"
                     label="Week"
                     type="text"
@@ -787,7 +751,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.EPISODE).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="night"
                     select
                     label="Night"
@@ -810,7 +773,7 @@ function DialogFields(props) {
                     autoHighlight
                     value={formData.theme || null}
                     renderInput={(params) => (
-                        <TextField margin="dense" {...params} label="Theme" />
+                        <TextField {...params} label="Theme" />
                     )}
                     onChange={(e, newValue) => {
                         setFormData({
@@ -823,7 +786,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.EPISODE).includes(table) && (
                 <MobileDatePicker
-                    margin="dense"
                     label="Date"
                     inputFormat="MM/dd/yyyy"
                     value={formData.date || null}
@@ -834,7 +796,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.CELEB, tableType.PRO).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="height"
                     label="Height"
                     type="text"
@@ -852,7 +813,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.CELEB, tableType.PRO).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="gender"
                     label="Gender"
                     type="text"
@@ -870,7 +830,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.USER).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="username"
                     label="Username"
                     type="text"
@@ -881,7 +840,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.USER).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="email"
                     label="Email"
                     type="text"
@@ -893,7 +851,6 @@ function DialogFields(props) {
             {Array.of(tableType.USER).includes(table) &&
                 props.dialog === 'Edit' && (
                     <TextField
-                        margin="dense"
                         name="email_verified"
                         select
                         label="Email Verified?"
@@ -911,7 +868,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.USER).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="nickname"
                     label="Nickname"
                     type="text"
@@ -922,7 +878,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.USER).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="watching_since"
                     label="Watching Since"
                     type="text"
@@ -944,7 +899,6 @@ function DialogFields(props) {
                 table
             ) && (
                 <TextField
-                    margin="dense"
                     name="instagram"
                     label="Instagram Username"
                     type="text"
@@ -957,7 +911,6 @@ function DialogFields(props) {
                 table
             ) && (
                 <TextField
-                    margin="dense"
                     name="twitter"
                     label="Twitter Username"
                     type="text"
@@ -970,7 +923,6 @@ function DialogFields(props) {
                 table
             ) && (
                 <TextField
-                    margin="dense"
                     name="tiktok"
                     label="TikTok Username"
                     type="text"
@@ -981,11 +933,10 @@ function DialogFields(props) {
 
             {Array.of(tableType.CELEB, tableType.PRO).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="is_junior"
                     select
                     label="Junior?"
-                    value={formData.is_junior}
+                    value={formData.is_junior || false}
                     onChange={handleChange}
                 >
                     <MenuItem key={1} value={true}>
@@ -999,7 +950,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.SCORE).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="judge_id"
                     label="Judge"
                     type="text"
@@ -1019,7 +969,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.SCORE).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="value"
                     label="Value"
                     type="text"
@@ -1037,7 +986,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.SCORE).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="order"
                     label="Order Given"
                     type="text"
@@ -1055,11 +1003,10 @@ function DialogFields(props) {
 
             {Array.of(tableType.SCORE).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="is_guest"
                     select
                     label="Guest Judge?"
-                    value={formData.is_guest}
+                    value={formData.is_guest || false}
                     onChange={handleChange}
                 >
                     <MenuItem key={1} value={true}>
@@ -1073,7 +1020,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.USER).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="birthday_month"
                     label="Birthday Month"
                     type="text"
@@ -1091,7 +1037,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.USER).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="birthday_day"
                     label="Birthday Day"
                     type="text"
@@ -1109,7 +1054,6 @@ function DialogFields(props) {
 
             {Array.of(tableType.USER).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="role"
                     label="Role"
                     type="text"
@@ -1128,7 +1072,7 @@ function DialogFields(props) {
             {Array.of(tableType.USER).includes(table) &&
                 props.dialog === 'Add' && (
                     // <TextField
-                    //     margin="dense"
+                    //
                     //     name="password"
                     //     label="Password"
                     //     type="text"
@@ -1140,7 +1084,6 @@ function DialogFields(props) {
                         label="Password"
                         type={showPass ? 'text' : 'password'}
                         onChange={handleChange}
-                        margin="dense"
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
@@ -1168,7 +1111,6 @@ function DialogFields(props) {
                 tableType.TOURCAST
             ).includes(table) && (
                 <TextField
-                    margin="dense"
                     name="extra"
                     label="Extra"
                     type="text"

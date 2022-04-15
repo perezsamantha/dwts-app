@@ -12,7 +12,13 @@ function Overview() {
     return (
         <Page>
             <MainContainer>
-                <Typography variant="h3">Overview</Typography>
+                <Typography
+                    variant="h2"
+                    fontFamily="YesMargo"
+                    textTransform="uppercase"
+                >
+                    Overview
+                </Typography>
 
                 <SeasonsOverview />
 

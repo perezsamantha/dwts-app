@@ -95,7 +95,7 @@ function DailyDancesOverview() {
     }
 
     return (
-        <Card elevation={3} my={2}>
+        <Card my={2}>
             <Typography variant="h5">
                 Daily Dances - Week at a glance
             </Typography>

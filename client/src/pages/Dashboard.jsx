@@ -13,7 +13,11 @@ function Dashboard() {
     return (
         <Page>
             <MainContainer>
-                <Typography variant="h3" letterSpacing={-1}>
+                <Typography
+                    variant="h2"
+                    fontFamily="YesMargo"
+                    textTransform="uppercase"
+                >
                     Dashboard
                 </Typography>
 

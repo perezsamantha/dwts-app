@@ -193,12 +193,8 @@ function EditDialog(props) {
                 )}
 
                 <DialogActions>
-                    <Button onClick={props.handleClose} color="error">
-                        Cancel
-                    </Button>
-                    <Button onClick={handleSubmit} color="primary">
-                        Update {table}
-                    </Button>
+                    <Button onClick={props.handleClose}>Cancel</Button>
+                    <Button onClick={handleSubmit}>Update</Button>
                 </DialogActions>
             </Dialog>
         </LocalizationProvider>

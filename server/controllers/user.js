@@ -1092,7 +1092,12 @@ export const updateAuth = async (req, res) => {
             LEFT JOIN (
                 SELECT pl.user_id,
                     COALESCE(JSON_AGG(ROW_TO_JSON(p) ORDER BY pl.liked_at ASC) FILTER (WHERE p.id IS NOT NULL), '[]') AS pros
-                FROM pro_likes pl
+                FROM (
+                    SELECT *
+                    FROM pro_likes
+                    WHERE user_id = $1
+                    ORDER BY liked_at ASC
+                ) pl
                 LEFT JOIN pros p
                 ON pl.pro_id = p.id
                 WHERE pl.user_id = $1
@@ -1102,7 +1107,12 @@ export const updateAuth = async (req, res) => {
             LEFT JOIN (
                 SELECT tl.user_id,
                     COALESCE(JSON_AGG(ROW_TO_JSON(t) ORDER BY tl.liked_at ASC) FILTER (WHERE t.id IS NOT NULL), '[]') AS teams
-                FROM team_likes tl
+                FROM (
+                    SELECT *
+                    FROM team_likes
+                    WHERE user_id = $1
+                    ORDER BY liked_at ASC
+                ) tl
                 LEFT JOIN (
                     SELECT t.*, 
                         ROW_TO_JSON(p) AS pro, 
@@ -1121,7 +1131,7 @@ export const updateAuth = async (req, res) => {
             ON u.id = tl.user_id
             LEFT JOIN (
                 SELECT dl.user_id,
-                    COALESCE(JSON_AGG(ROW_TO_JSON(d) ORDER BY tl.liked_at ASC) FILTER (WHERE d.id IS NOT NULL), '[]') AS dances
+                    COALESCE(JSON_AGG(ROW_TO_JSON(d) ORDER BY dl.liked_at ASC) FILTER (WHERE d.id IS NOT NULL), '[]') AS dances
                 FROM dance_likes dl
                 LEFT JOIN (
                     SELECT d.*,

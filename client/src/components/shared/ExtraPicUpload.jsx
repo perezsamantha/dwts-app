@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { FileInput, HiddenInput, Label, UploadContainer } from './regStyles';
+import { FileInput, HiddenInput, Label } from './regStyles';
 import AvatarEditor from 'react-avatar-editor';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
-import { Button, Slider } from '@mui/material';
+import { Button, Slider, Stack } from '@mui/material';
 import * as tableType from '../../constants/tableTypes';
 import { addTeamPic } from '../../actions/teams';
 import { addProPic } from '../../actions/pros';
@@ -61,7 +61,7 @@ function ExtraPicUpload(props) {
     };
 
     return (
-        <UploadContainer>
+        <Stack alignItems="center" spacing={1}>
             <HiddenInput
                 type="file"
                 accept=".jpeg, .jpg, .png"
@@ -73,7 +73,7 @@ function ExtraPicUpload(props) {
             </Label>
             <FileInput>
                 {fileData != null && (
-                    <UploadContainer>
+                    <Stack alignItems="center" spacing={1}>
                         <AvatarEditor
                             image={fileData}
                             width={200}
@@ -94,10 +94,10 @@ function ExtraPicUpload(props) {
                         <Button variant="filled" onClick={handleSubmit}>
                             Submit
                         </Button>
-                    </UploadContainer>
+                    </Stack>
                 )}
             </FileInput>
-        </UploadContainer>
+        </Stack>
     );
 }
 
