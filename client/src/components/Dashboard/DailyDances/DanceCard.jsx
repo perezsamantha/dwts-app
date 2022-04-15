@@ -32,6 +32,7 @@ function DanceCard() {
     const loading = useSelector((state) => state.loading.DANCEFIND);
 
     useEffect(() => {
+        setScore(dance.user_score);
         setAlreadyScored(dance.user_score ? true : false);
     }, [dispatch, dance.user_score]);
 

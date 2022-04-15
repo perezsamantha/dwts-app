@@ -173,6 +173,7 @@ function DialogFields(props) {
                     name="first_name"
                     label="First Name"
                     type="text"
+                    required
                     value={formData.first_name || ''}
                     onChange={handleChange}
                 />
@@ -195,6 +196,7 @@ function DialogFields(props) {
                     name="id"
                     label="Number"
                     type="text"
+                    required
                     select
                     value={formData.id || ''}
                     onChange={handleChange}
@@ -264,7 +266,7 @@ function DialogFields(props) {
                         </Box>
                     )}
                     renderInput={(params) => (
-                        <TextField {...params} label="Dance" />
+                        <TextField {...params} label="Dance" required />
                     )}
                     onChange={(e, newValue) => {
                         setFormData({
@@ -284,6 +286,7 @@ function DialogFields(props) {
                     name="tour_id"
                     label="Tour"
                     type="text"
+                    required
                     select
                     value={formData.tour_id || ''}
                     onChange={handleChange}
@@ -420,7 +423,7 @@ function DialogFields(props) {
                         </Box>
                     )}
                     renderInput={(params) => (
-                        <TextField {...params} label="Celeb" />
+                        <TextField {...params} label="Celeb" required />
                     )}
                     onChange={(e, newValue) => {
                         setFormData({
@@ -451,7 +454,7 @@ function DialogFields(props) {
                         </Box>
                     )}
                     renderInput={(params) => (
-                        <TextField {...params} label="Pro" />
+                        <TextField {...params} label="Pro" required />
                     )}
                     onChange={(e, newValue) => {
                         setFormData({
@@ -503,6 +506,7 @@ function DialogFields(props) {
                     name="season_id"
                     label="Season"
                     type="text"
+                    required
                     select
                     value={formData?.season_id || ''}
                     onChange={handleChange}
@@ -575,7 +579,7 @@ function DialogFields(props) {
                     autoHighlight
                     value={formData.style || null}
                     renderInput={(params) => (
-                        <TextField {...params} label="Style" />
+                        <TextField {...params} label="Style" required />
                     )}
                     onChange={(e, newValue) => {
                         setFormData({
@@ -737,6 +741,7 @@ function DialogFields(props) {
                     name="week"
                     label="Week"
                     type="text"
+                    required
                     select
                     value={formData.week || ''}
                     onChange={handleChange}
@@ -833,6 +838,7 @@ function DialogFields(props) {
                     name="username"
                     label="Username"
                     type="text"
+                    required
                     value={formData.username || ''}
                     onChange={handleChange}
                 />
@@ -843,6 +849,7 @@ function DialogFields(props) {
                     name="email"
                     label="Email"
                     type="text"
+                    required
                     value={formData.email || ''}
                     onChange={handleChange}
                 />
@@ -953,6 +960,7 @@ function DialogFields(props) {
                     name="judge_id"
                     label="Judge"
                     type="text"
+                    required
                     select
                     value={formData.judge_id || ''}
                     onChange={handleChange}
@@ -972,6 +980,7 @@ function DialogFields(props) {
                     name="value"
                     label="Value"
                     type="text"
+                    required
                     select
                     value={formData.value || ''}
                     onChange={handleChange}

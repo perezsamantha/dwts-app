@@ -1,7 +1,7 @@
 
 CREATE TABLE IF NOT EXISTS dances(
     id SERIAL NOT NULL,
-    episode_id INT,
+    episode_id INT NOT NULL,
     style VARCHAR(30) NOT NULL,
     running_order smallint,
     song_title VARCHAR(100),
