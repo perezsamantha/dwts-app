@@ -63,7 +63,7 @@ function TeamFilters() {
 
     return (
         <>
-            <Button color="inherit" onClick={handleOpen}>
+            <Button onClick={handleOpen}>
                 <FilterListIcon />
             </Button>
             <Dialog open={open} onClose={handleClose} fullWidth>
@@ -173,8 +173,8 @@ function TeamFilters() {
                             </FormControl>
                         )}
 
+                        <Typography>Seasons</Typography>
                         <FormControl>
-                            <Typography>Seasons</Typography>
                             <Select
                                 multiple
                                 displayEmpty
@@ -215,8 +215,8 @@ function TeamFilters() {
                             </Select>
                         </FormControl>
 
+                        <Typography>Placements</Typography>
                         <FormControl>
-                            <Typography>Placements</Typography>
                             <Select
                                 multiple
                                 displayEmpty

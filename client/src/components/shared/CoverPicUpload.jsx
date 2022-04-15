@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { FileInput, HiddenInput, Label, UploadContainer } from './regStyles';
+import { FileInput, HiddenInput, Label } from './regStyles';
 import AvatarEditor from 'react-avatar-editor';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
-import { Slider } from '@mui/material';
+import { Slider, Stack } from '@mui/material';
 
 function CoverPicUpload(props) {
     const [scaleValue, setScaleValue] = useState(10);
@@ -26,7 +26,7 @@ function CoverPicUpload(props) {
     };
 
     return (
-        <UploadContainer>
+        <Stack alignItems="center" spacing={1}>
             <HiddenInput
                 type="file"
                 accept=".jpeg, .jpg, .png"
@@ -38,7 +38,7 @@ function CoverPicUpload(props) {
             </Label>
             <FileInput>
                 {fileData != null && (
-                    <UploadContainer>
+                    <Stack alignItems="center" spacing={1}>
                         <AvatarEditor
                             image={fileData}
                             width={200}
@@ -49,17 +49,17 @@ function CoverPicUpload(props) {
                             ref={setEditorRef}
                         />
                         <Slider
-                            sx={{ width: 200, marginTop: 1 }}
+                            sx={{ width: 200 }}
                             value={scaleValue}
                             onChange={handleScale}
                             min={1}
                             max={5}
                             step={0.01}
                         />
-                    </UploadContainer>
+                    </Stack>
                 )}
             </FileInput>
-        </UploadContainer>
+        </Stack>
     );
 }
 

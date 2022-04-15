@@ -27,6 +27,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionType from '../../../constants/actionTypes';
 import { initialProState } from '../../../reducers/initialState';
+import styled from '@emotion/styled';
 
 function ProFilters() {
     const [open, setOpen] = useState(false);
@@ -71,7 +72,7 @@ function ProFilters() {
 
     return (
         <>
-            <Button color="inherit" onClick={handleOpen}>
+            <Button onClick={handleOpen}>
                 <FilterListIcon />
             </Button>
             <Dialog open={open} onClose={handleClose} fullWidth>
@@ -121,110 +122,124 @@ function ProFilters() {
                         </Stack>
 
                         <Typography>Gender</Typography>
-                        <Select
-                            multiple
-                            name="gender"
-                            value={filters.gender}
-                            onChange={handleChange}
-                            input={<OutlinedInput />}
-                            renderValue={(selected) => (
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        flexWrap: 'wrap',
-                                        gap: 0.5,
-                                    }}
-                                >
-                                    {selected.map((value) => (
-                                        <Chip
-                                            key={value}
-                                            label={`${value} Pros`}
-                                        />
-                                    ))}
-                                </Box>
-                            )}
-                        >
-                            {genders.map((gender, index) => {
-                                return (
-                                    <MenuItem key={index} value={gender}>
-                                        {gender} Pros
-                                    </MenuItem>
-                                );
-                            })}
-                        </Select>
+                        <FormControl>
+                            <Select
+                                multiple
+                                name="gender"
+                                value={filters.gender}
+                                onChange={handleChange}
+                                input={<OutlinedInput />}
+                                renderValue={(selected) => (
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            flexWrap: 'wrap',
+                                            gap: 0.5,
+                                        }}
+                                    >
+                                        {selected.map((value) => (
+                                            <Chip
+                                                key={value}
+                                                label={`${value} Pros`}
+                                            />
+                                        ))}
+                                    </Box>
+                                )}
+                            >
+                                {genders.map((gender, index) => {
+                                    return (
+                                        <MenuItem key={index} value={gender}>
+                                            {gender} Pros
+                                        </MenuItem>
+                                    );
+                                })}
+                            </Select>
+                        </FormControl>
 
                         <Typography>Height</Typography>
-                        <Stack direction="row">
-                            <TextField
-                                select
-                                margin="dense"
-                                name="height"
-                                value={filters.height[0]}
-                                onChange={handleChangeFrom}
-                            >
-                                {heightsInInches.map((height, index) => {
-                                    return (
-                                        <MenuItem key={index} value={height}>
-                                            {convertHeight(height)}
-                                        </MenuItem>
-                                    );
-                                })}
-                            </TextField>
+                        <Stack direction="row" alignItems="center" spacing={1}>
+                            <Box>
+                                <ScopedTextField
+                                    select
+                                    name="height"
+                                    value={filters.height[0]}
+                                    onChange={handleChangeFrom}
+                                >
+                                    {heightsInInches.map((height, index) => {
+                                        return (
+                                            <MenuItem
+                                                key={index}
+                                                value={height}
+                                            >
+                                                {convertHeight(height)}
+                                            </MenuItem>
+                                        );
+                                    })}
+                                </ScopedTextField>
+                            </Box>
 
-                            <Typography alignSelf="center">to</Typography>
+                            <Typography>to</Typography>
 
-                            <TextField
-                                select
-                                margin="dense"
-                                name="height"
-                                value={filters.height[1]}
-                                onChange={handleChangeTo}
-                            >
-                                {heightsInInches.map((height, index) => {
-                                    return (
-                                        <MenuItem key={index} value={height}>
-                                            {convertHeight(height)}
-                                        </MenuItem>
-                                    );
-                                })}
-                            </TextField>
+                            <Box>
+                                <ScopedTextField
+                                    select
+                                    name="height"
+                                    value={filters.height[1]}
+                                    onChange={handleChangeTo}
+                                >
+                                    {heightsInInches.map((height, index) => {
+                                        return (
+                                            <MenuItem
+                                                key={index}
+                                                value={height}
+                                            >
+                                                {convertHeight(height)}
+                                            </MenuItem>
+                                        );
+                                    })}
+                                </ScopedTextField>
+                            </Box>
                         </Stack>
                         <Typography>Age</Typography>
 
-                        <Stack direction="row">
-                            <TextField
-                                select
-                                margin="dense"
-                                name="age"
-                                value={filters.age[0]}
-                                onChange={handleChangeFrom}
-                            >
-                                {agesInYears.map((age, index) => {
-                                    return (
-                                        <MenuItem key={index} value={age}>
-                                            {age}
-                                        </MenuItem>
-                                    );
-                                })}
-                            </TextField>
+                        <Stack direction="row" alignItems="center" spacing={1}>
+                            <Box>
+                                <ScopedTextField
+                                    select
+                                    name="age"
+                                    value={filters.age[0]}
+                                    onChange={handleChangeFrom}
+                                >
+                                    {agesInYears.map((age, index) => {
+                                        return (
+                                            <MenuItem key={index} value={age}>
+                                                {age}
+                                            </MenuItem>
+                                        );
+                                    })}
+                                </ScopedTextField>
+                            </Box>
 
-                            <Typography alignSelf="center">to</Typography>
+                            <Box>
+                                <Typography>to</Typography>
+                            </Box>
 
-                            <TextField
-                                select
-                                margin="dense"
-                                name="age"
-                                value={filters.age[1]}
-                                onChange={handleChangeTo}
-                            >
-                                {agesInYears.map((age, index) => {
-                                    return (
-                                        <MenuItem key={index} value={age}>
-                                            {age}
-                                        </MenuItem>
-                                    );
-                                })}
-                            </TextField>
+                            <Box>
+                                <ScopedTextField
+                                    select
+                                    name="age"
+                                    value={filters.age[1]}
+                                    onChange={handleChangeTo}
+                                >
+                                    {agesInYears.map((age, index) => {
+                                        return (
+                                            <MenuItem key={index} value={age}>
+                                                {age}
+                                            </MenuItem>
+                                        );
+                                    })}
+                                </ScopedTextField>
+                            </Box>
                         </Stack>
 
                         <Typography>Show Junior Pros?</Typography>
@@ -255,5 +270,12 @@ function ProFilters() {
         </>
     );
 }
+
+const ScopedTextField = styled(TextField)({
+    '& > *': {
+        marginLeft: 0,
+        marginRight: 0,
+    },
+});
 
 export default ProFilters;

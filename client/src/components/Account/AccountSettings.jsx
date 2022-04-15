@@ -13,7 +13,6 @@ import {
     Box,
 } from '@mui/material';
 import CoverPicUpload from '../shared/CoverPicUpload';
-import { PhotoContainer } from '../shared/regStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserPic, updateUser } from '../../actions/auth';
 import {
@@ -61,7 +60,7 @@ function AccountSettings(props) {
             });
         }
 
-        dispatch(updateUser(id, formData));
+        dispatch(updateUser(formData));
 
         props.close();
     };
@@ -84,7 +83,7 @@ function AccountSettings(props) {
             <DialogTitle>Account Settings</DialogTitle>
             <DialogContent>
                 <Stack alignItems="center">
-                    <PhotoContainer>
+                    <Stack alignItems="center" spacing={1}>
                         <Avatar
                             sx={{ width: 150, height: 150 }}
                             src={formData?.cover_pic}
@@ -96,7 +95,7 @@ function AccountSettings(props) {
                             fileData={fileData}
                             setFileData={setFileData}
                         />
-                    </PhotoContainer>
+                    </Stack>
 
                     <Grid
                         container
@@ -105,7 +104,6 @@ function AccountSettings(props) {
                         justifyContent="center"
                     >
                         <TextField
-                            margin="dense"
                             name="username"
                             label="Username"
                             type="text"
@@ -114,7 +112,6 @@ function AccountSettings(props) {
                         />
 
                         <TextField
-                            margin="dense"
                             name="email"
                             label="Email"
                             type="text"
@@ -124,7 +121,6 @@ function AccountSettings(props) {
                         />
 
                         <TextField
-                            margin="dense"
                             name="nickname"
                             label="Nickname"
                             type="text"
@@ -133,7 +129,6 @@ function AccountSettings(props) {
                         />
 
                         <TextField
-                            margin="dense"
                             name="instagram"
                             label="Instagram Username"
                             type="text"
@@ -142,7 +137,6 @@ function AccountSettings(props) {
                         />
 
                         <TextField
-                            margin="dense"
                             name="twitter"
                             label="Twitter Username"
                             type="text"
@@ -151,7 +145,6 @@ function AccountSettings(props) {
                         />
 
                         <TextField
-                            margin="dense"
                             name="tiktok"
                             label="TikTok Username"
                             type="text"
@@ -160,7 +153,6 @@ function AccountSettings(props) {
                         />
 
                         <TextField
-                            margin="dense"
                             name="birthday_month"
                             type="text"
                             select
@@ -176,7 +168,6 @@ function AccountSettings(props) {
                         </TextField>
 
                         <TextField
-                            margin="dense"
                             name="birthday_day"
                             type="text"
                             select
@@ -192,7 +183,6 @@ function AccountSettings(props) {
                         </TextField>
 
                         <TextField
-                            margin="dense"
                             name="watching_since"
                             type="text"
                             select
@@ -226,9 +216,7 @@ function AccountSettings(props) {
                 )}
             </DialogContent>
             <DialogActions>
-                <Button onClick={props.close} color="inherit">
-                    Cancel
-                </Button>
+                <Button onClick={props.close}>Cancel</Button>
                 <Button onClick={handleSubmit}>Update</Button>
             </DialogActions>
         </Dialog>

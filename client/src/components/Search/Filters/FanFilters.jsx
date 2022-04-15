@@ -65,7 +65,7 @@ function FanFilters() {
 
     return (
         <>
-            <Button color="inherit" onClick={handleOpen}>
+            <Button onClick={handleOpen}>
                 <FilterListIcon />
             </Button>
 

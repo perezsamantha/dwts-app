@@ -9,7 +9,7 @@ import { BsStarFill, BsTable } from 'react-icons/bs';
 
 function AdminOverview() {
     return (
-        <Card elevation={3}>
+        <Card>
             <StyledAccordion elevation={0}>
                 <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography variant="h5">Admin Panel Overview</Typography>

@@ -1,6 +1,7 @@
-import { Box, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import React from 'react';
 import { convertPlacement, getAverageScore } from '../../shared/functions.js';
+import { PicturePreview } from '../../shared/muiStyles.js';
 
 function TeamPreview(props) {
     const { team, sortType } = props;
@@ -8,12 +9,11 @@ function TeamPreview(props) {
 
     return (
         <Stack>
-            <Box
+            <PicturePreview
                 component="img"
-                sx={{ height: '100%', width: '100%', borderRadius: 2 }}
                 src={team.cover_pic ? team.cover_pic : '/defaultPic.jpeg'}
             />
-            <Typography variant="subtitle1" noWrap>
+            <Typography variant="subtitle1" noWrap mt={0.25}>
                 {team.celeb.first_name} & {team.pro.first_name}
             </Typography>
 

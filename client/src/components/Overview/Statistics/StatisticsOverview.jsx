@@ -39,7 +39,7 @@ function StatisticsOverview() {
     }
 
     return (
-        <Card elevation={3}>
+        <Card>
             <Typography variant="h5">Statistics</Typography>
             <Divider />
 

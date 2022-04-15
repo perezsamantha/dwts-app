@@ -11,6 +11,9 @@ import thunk from 'redux-thunk';
 
 import { BrowserRouter } from 'react-router-dom';
 
+import './fonts/Lemon-Tea.ttf';
+import './fonts/Yes-Margo.otf';
+
 //const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 //const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));
 const store = createStore(

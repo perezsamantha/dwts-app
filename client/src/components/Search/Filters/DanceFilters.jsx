@@ -71,7 +71,7 @@ function DanceFilters() {
 
     return (
         <>
-            <Button color="inherit" onClick={handleOpen}>
+            <Button onClick={handleOpen}>
                 <FilterListIcon />
             </Button>
             <Dialog open={open} onClose={handleClose} fullWidth>
@@ -115,8 +115,8 @@ function DanceFilters() {
                             />
                         </Stack>
 
+                        <Typography>Styles</Typography>
                         <FormControl>
-                            <Typography>Styles</Typography>
                             <Select
                                 multiple
                                 displayEmpty
@@ -156,8 +156,9 @@ function DanceFilters() {
                                 ))}
                             </Select>
                         </FormControl>
+
+                        <Typography>Theme Weeks</Typography>
                         <FormControl>
-                            <Typography>Theme Weeks</Typography>
                             <Select
                                 multiple
                                 displayEmpty
@@ -311,8 +312,8 @@ function DanceFilters() {
                             </FormControl>
                         )}
 
+                        <Typography>Seasons</Typography>
                         <FormControl>
-                            <Typography>Seasons</Typography>
                             <Select
                                 multiple
                                 displayEmpty
@@ -353,8 +354,8 @@ function DanceFilters() {
                             </Select>
                         </FormControl>
 
+                        <Typography>Weeks</Typography>
                         <FormControl>
-                            <Typography>Weeks</Typography>
                             <Select
                                 multiple
                                 displayEmpty

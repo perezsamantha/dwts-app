@@ -30,7 +30,7 @@ function ThrowbackCard() {
     }
 
     return (
-        <Card elevation={3}>
+        <Card>
             <Typography variant="h5">On this day...</Typography>
             <Divider />
 

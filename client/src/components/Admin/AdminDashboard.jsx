@@ -76,7 +76,15 @@ function AdminDashboard(props) {
                 <ListItemButton
                     onClick={() => handleComponent(<AdminLanding key={0} />, 0)}
                 >
-                    <ListItemText>Overview</ListItemText>
+                    <ListItemText>
+                        <Typography
+                            variant="h4"
+                            fontFamily="YesMargo"
+                            textTransform="uppercase"
+                        >
+                            Overview
+                        </Typography>
+                    </ListItemText>
                 </ListItemButton>
 
                 <Divider />
@@ -107,9 +115,15 @@ function AdminDashboard(props) {
                                             borderRadius: 0,
                                         }}
                                     />
-                                    <Typography>{type}s</Typography>
+                                    {type === tableType.TOURCAST ? (
+                                        <Typography>{type}</Typography>
+                                    ) : (
+                                        <Typography>{type}s</Typography>
+                                    )}
                                 </Stack>
                             </ListItemText>
+                        ) : type === tableType.TOURCAST ? (
+                            <ListItemText>{type}</ListItemText>
                         ) : (
                             <ListItemText>{type}s</ListItemText>
                         )}
@@ -152,7 +166,6 @@ function AdminDashboard(props) {
                 >
                     <Toolbar>
                         <IconButton
-                            color="inherit"
                             aria-label="open drawer"
                             edge="start"
                             onClick={handleDrawerToggle}
@@ -160,7 +173,7 @@ function AdminDashboard(props) {
                         >
                             <MenuIcon />
                         </IconButton>
-                        <Typography variant="h6" noWrap component="div">
+                        <Typography variant="h5" noWrap component="div">
                             Admin Dashboard
                         </Typography>
                     </Toolbar>

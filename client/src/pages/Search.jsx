@@ -5,7 +5,7 @@ import Teams from '../components/Search/Teams';
 import Fans from '../components/Search/Fans';
 import Pros from '../components/Search/Pros';
 
-import { InputAdornment, Tab, Tabs, Typography } from '@mui/material';
+import { Divider, InputAdornment, Tab, Tabs, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import {
@@ -96,10 +96,19 @@ function Search(props) {
         <Page>
             <MainContainer>
                 <SearchContainer elevation={0}>
-                    <Typography variant="h4" my={2}>
+                    <Typography
+                        variant="h2"
+                        fontFamily="YesMargo"
+                        textTransform="uppercase"
+                    >
                         Search
                     </Typography>
-                    <SearchBoxContainer>
+                    <SearchBoxContainer
+                        direction="row"
+                        spacing={1}
+                        my={1}
+                        alignItems="center"
+                    >
                         <SearchTextField
                             size="small"
                             placeholder={placeholder}
@@ -149,17 +158,8 @@ function Search(props) {
                         />
                     </Tabs>
                 </SearchContainer>
-                {/* <AnimatePresence>
-                    <Box
-                        component={motion.div}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 2.5 }}
-                    >
-                        <SearchComponent />
-                    </Box>
-                </AnimatePresence> */}
+                <Divider sx={{ margin: 0 }} />
+
                 <SearchComponent />
             </MainContainer>
 

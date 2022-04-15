@@ -11,7 +11,7 @@ function DancePreview(props) {
     const { scores, episode } = dance;
 
     return (
-        <Card elevation={3} sx={{ padding: 1, margin: 0 }}>
+        <Card sx={{ padding: 1, margin: 0 }}>
             <Stack>
                 <Stack direction="row" spacing={1} alignItems="center">
                     <BsStars />
@@ -20,7 +20,7 @@ function DancePreview(props) {
 
                 <Stack direction="row" spacing={1} alignItems="center">
                     <BsArrowRight />
-                    <Typography variant="subtitle1">
+                    <Typography variant="subtitle1" noWrap>
                         Season {episode.season_id} &#8226; Week {episode.week}{' '}
                         {episode?.night && `\u2022 Night ${episode.night}`}{' '}
                         {scores?.length !== 0 &&
@@ -42,12 +42,10 @@ function DancePreview(props) {
                     </Typography>
                 </Stack>
 
-                {dance.likes.length > 0 && (
-                    <Stack direction="row" spacing={1} alignItems="center">
-                        <FiHeart />
-                        <Typography>{dance.likes.length}</Typography>
-                    </Stack>
-                )}
+                <Stack direction="row" spacing={1} alignItems="center">
+                    <FiHeart />
+                    <Typography>{dance.likes.length}</Typography>
+                </Stack>
             </Stack>
         </Card>
     );

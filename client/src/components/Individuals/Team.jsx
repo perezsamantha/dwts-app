@@ -13,7 +13,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { findTeamById } from '../../actions/teams';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { likeTeam } from '../../actions/teams';
-import { CardAvatar, LikesContainer } from '../shared/regStyles.js';
 import ExtraPicUpload from '../shared/ExtraPicUpload';
 import * as tableType from '../../constants/tableTypes';
 import {
@@ -29,7 +28,11 @@ import {
 import SocialsLink from '../shared/SocialsLink';
 import { createLoadingSelector } from '../../api/selectors';
 import * as actionType from '../../constants/actionTypes';
-import { IndividualsContainer } from '../shared/muiStyles';
+import {
+    BackButton,
+    CoverPicture,
+    IndividualsContainer,
+} from '../shared/muiStyles';
 import Progress from '../shared/Progress';
 import Likes from '../shared/Likes';
 import PicturesGrid from './Supporting/PicturesGrid';
@@ -56,13 +59,8 @@ function Team() {
         <Progress />
     ) : (
         <IndividualsContainer>
-            <Stack direction="row">
-                <Button
-                    sx={{
-                        '&.MuiButtonBase-root:hover': {
-                            bgcolor: 'transparent',
-                        },
-                    }}
+            <Stack direction="row" alignItems="center" spacing={3}>
+                <BackButton
                     component={motion.div}
                     whileHover={{
                         scale: 1.2,
@@ -75,11 +73,12 @@ function Team() {
                     onClick={() => navigate(-1)}
                 >
                     <ArrowBackIosIcon />
-                </Button>
-                <CardAvatar
+                </BackButton>
+                <CoverPicture
+                    component="img"
                     src={team.cover_pic ? team.cover_pic : '/defaultPic.jpeg'}
                 />
-                <LikesContainer>
+                <Box>
                     <Button
                         sx={{
                             '&.MuiButtonBase-root:hover': {
@@ -100,7 +99,7 @@ function Team() {
                         <Likes user={user} likes={likes} />
                     </Button>
                     <Typography variant="subtitle1">{likes?.length}</Typography>
-                </LikesContainer>
+                </Box>
             </Stack>
 
             <Stack my={1}>
@@ -279,7 +278,9 @@ function Team() {
 
                 <PicturesGrid pictures={pictures} />
 
-                <ExtraPicUpload id={team.id} type={tableType.TEAM} />
+                {user?.role === 'admin' && (
+                    <ExtraPicUpload id={team.id} type={tableType.TEAM} />
+                )}
             </Stack>
         </IndividualsContainer>
     );

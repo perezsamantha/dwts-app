@@ -9,7 +9,7 @@ function DancePreview(props) {
     const { scores, episode } = dance;
 
     return (
-        <Card elevation={3} sx={{ padding: 1, margin: 0 }}>
+        <Card sx={{ padding: 1, margin: 0 }}>
             <Stack>
                 <Stack direction="row" spacing={1} alignItems="center">
                     <BsStars />

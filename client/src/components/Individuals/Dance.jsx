@@ -1,16 +1,11 @@
 import React, { useEffect } from 'react';
 import { Box, Button, Divider, Grid, Stack, Typography } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { findDanceById } from '../../actions/dances';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-
 import { likeDance } from '../../actions/dances';
 import * as tableType from '../../constants/tableTypes';
-
-import { LikesContainer, CardAvatar } from '../shared/regStyles.js';
-
 import {
     convertPlacement,
     getFullName,
@@ -18,11 +13,9 @@ import {
     getTotalScore,
 } from '../shared/functions';
 import ExtraPicUpload from '../shared/ExtraPicUpload';
-
 import { createLoadingSelector } from '../../api/selectors';
-
 import * as actionType from '../../constants/actionTypes';
-import { IndividualsContainer } from '../shared/muiStyles';
+import { BackButton, IndividualsContainer } from '../shared/muiStyles';
 import Progress from '../shared/Progress';
 import Likes from '../shared/Likes';
 import DanceLink from '../shared/DanceLink';
@@ -50,13 +43,8 @@ function Dance() {
         <Progress />
     ) : (
         <IndividualsContainer>
-            <Stack direction="row">
-                <Button
-                    sx={{
-                        '&.MuiButtonBase-root:hover': {
-                            bgcolor: 'transparent',
-                        },
-                    }}
+            <Stack direction="row" alignItems="center" spacing={3}>
+                <BackButton
                     component={motion.div}
                     whileHover={{
                         scale: 1.2,
@@ -69,9 +57,21 @@ function Dance() {
                     onClick={() => navigate(-1)}
                 >
                     <ArrowBackIosIcon />
-                </Button>
-                <CardAvatar src={'/defaultPic.jpeg'} />
-                <LikesContainer>
+                </BackButton>
+                <Box
+                    sx={{ width: 175, height: 125, display: 'flex' }}
+                    justifyContent="center"
+                    alignItems="center"
+                >
+                    <Typography
+                        variant="h2"
+                        fontFamily="YesMargo"
+                        textTransform="uppercase"
+                    >
+                        {dance.style}
+                    </Typography>
+                </Box>
+                <Box>
                     <Button
                         sx={{
                             '&.MuiButtonBase-root:hover': {
@@ -94,11 +94,10 @@ function Dance() {
                     <Typography variant="subtitle1">
                         {dance.likes?.length}
                     </Typography>
-                </LikesContainer>
+                </Box>
             </Stack>
 
             <Stack mb={1} spacing={1}>
-                <Typography variant="h4">{dance.style}</Typography>
                 <Typography variant="h5">
                     {getSeasonAndWeek(dance.episode)}
                 </Typography>
@@ -242,7 +241,9 @@ function Dance() {
                     </Typography>
                 )}
 
-                <ExtraPicUpload id={dance.id} type={tableType.DANCE} />
+                {user?.role === 'admin' && (
+                    <ExtraPicUpload id={dance.id} type={tableType.DANCE} />
+                )}
             </Stack>
         </IndividualsContainer>
     );
