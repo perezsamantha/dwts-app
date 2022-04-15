@@ -6,7 +6,6 @@ import Landing from './pages/Landing/Landing';
 import { Navigate, Outlet, Route, Routes, useNavigate } from 'react-router-dom';
 import Individuals from './pages/Individuals';
 import Admin from './pages/Admin';
-import styled from 'styled-components';
 import {
     ThemeProvider,
     createTheme,
@@ -23,6 +22,7 @@ import 'swiper/css/bundle';
 import { fetchAuthData, logout } from './actions/auth';
 import Activity from './pages/Activity';
 import Progress from './components/shared/Progress';
+import styled from '@emotion/styled';
 //import useAuth, { AuthProvider } from './useAuth';
 
 function App(props) {
@@ -61,10 +61,23 @@ function App(props) {
 
         dispatch(fetchAuthData());
 
-        if (window.location.pathname !== '/' && authError) {
-            dispatch(logout(navigate));
-        }
-    }, [dispatch, navigate, prefersDarkMode, authError, props]);
+        // if (
+        //     window.location.pathname !== '/' &&
+        //     Object.keys(user).length === 0
+        // ) {
+        //     dispatch(logout(navigate));
+        // }
+    }, [dispatch, navigate, prefersDarkMode]);
+
+    const PrivateRoute2 = () => {
+        return fetching ? (
+            <Progress />
+        ) : user.role === 'admin' ? (
+            <Outlet />
+        ) : (
+            <Navigate to="/" />
+        );
+    };
 
     const PrivateRoute = () => {
         return fetching ? (
@@ -95,6 +108,7 @@ function App(props) {
                 'Helvetica Neue',
                 'Arial',
                 'sans-serif',
+                'YesMargo',
             ].join(','),
         },
     });
@@ -270,7 +284,7 @@ function App(props) {
                 styleOverrides: {
                     indicator: {
                         height: 4,
-                        borderRadius: 1,
+                        borderRadius: 2,
                     },
                 },
             },

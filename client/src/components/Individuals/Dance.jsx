@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
-import { Box, Button, Divider, Grid, Stack, Typography } from '@mui/material';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { Box, Divider, Grid, Stack, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { findDanceById } from '../../actions/dances';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { likeDance } from '../../actions/dances';
 import * as tableType from '../../constants/tableTypes';
 import {
@@ -15,16 +14,14 @@ import {
 import ExtraPicUpload from '../shared/ExtraPicUpload';
 import { createLoadingSelector } from '../../api/selectors';
 import * as actionType from '../../constants/actionTypes';
-import { BackButton, IndividualsContainer } from '../shared/muiStyles';
+import { IndividualsContainer } from '../shared/muiStyles';
 import Progress from '../shared/Progress';
-import Likes from '../shared/Likes';
 import DanceLink from '../shared/DanceLink';
 import PicturesGrid from './Supporting/PicturesGrid';
 import DancerPreview from './Supporting/DancerPreview';
-import { motion } from 'framer-motion';
+import IndividualsHeader from './Supporting/IndividualsHeader';
 
 function Dance() {
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.authData);
     const dance = useSelector((state) => state.dances.dance);
@@ -39,63 +36,20 @@ function Dance() {
         dispatch(findDanceById(id));
     }, [dispatch, id]);
 
+    const handleLike = () => {
+        dispatch(likeDance(id));
+    };
+
     return loading || Number(dance?.id) !== Number(id) ? (
         <Progress />
     ) : (
         <IndividualsContainer>
-            <Stack direction="row" alignItems="center" spacing={3}>
-                <BackButton
-                    component={motion.div}
-                    whileHover={{
-                        scale: 1.2,
-                        transition: { duration: 0.3 },
-                    }}
-                    whileTap={{
-                        scale: 1.25,
-                        transition: { duration: 0.3 },
-                    }}
-                    onClick={() => navigate(-1)}
-                >
-                    <ArrowBackIosIcon />
-                </BackButton>
-                <Box
-                    sx={{ width: 175, height: 125, display: 'flex' }}
-                    justifyContent="center"
-                    alignItems="center"
-                >
-                    <Typography
-                        variant="h2"
-                        fontFamily="YesMargo, Urbanist, Roboto, Helvetica Neue, sans-serif"
-                        textTransform="uppercase"
-                    >
-                        {dance.style}
-                    </Typography>
-                </Box>
-                <Box>
-                    <Button
-                        sx={{
-                            '&.MuiButtonBase-root:hover': {
-                                bgcolor: 'transparent',
-                            },
-                        }}
-                        component={motion.div}
-                        whileHover={{
-                            scale: 1.05,
-                            transition: { duration: 0.3 },
-                        }}
-                        whileTap={{
-                            scale: 1.5,
-                            transition: { duration: 0.3 },
-                        }}
-                        onClick={() => dispatch(likeDance(id))}
-                    >
-                        <Likes user={user} likes={dance.likes} />
-                    </Button>
-                    <Typography variant="subtitle1">
-                        {dance.likes?.length}
-                    </Typography>
-                </Box>
-            </Stack>
+            <IndividualsHeader
+                user={user}
+                item={dance}
+                handleLike={handleLike}
+                type="dance"
+            />
 
             <Stack mb={1} spacing={1}>
                 <Typography variant="h5">

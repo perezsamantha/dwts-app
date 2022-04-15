@@ -1,6 +1,10 @@
 import { getNumberOfPerfects, getNumberOfWins } from '../../shared/functions';
 
 export const getPerfectsByTeam = (teams) => {
+    if (!teams || teams.length === 0) {
+        return [];
+    }
+
     const categorizeByPerfects = teams.reduce((acc, item) => {
         const numPerfects = getNumberOfPerfects(item.dances);
         const found = acc.find((a) => a.key === numPerfects);
@@ -30,6 +34,10 @@ export const getPerfectsByTeam = (teams) => {
 };
 
 export const getPerfectsByPro = (pros) => {
+    if (!pros || pros.length === 0) {
+        return [];
+    }
+
     const categorizeByPerfects = pros.reduce((acc, item) => {
         const numPerfects = getNumberOfPerfects(item.dances);
         const found = acc.find((a) => a.key === numPerfects);
@@ -59,6 +67,10 @@ export const getPerfectsByPro = (pros) => {
 };
 
 export const getWinsByPro = (pros) => {
+    if (!pros || pros.length === 0) {
+        return [];
+    }
+
     const categorizeByWins = pros.reduce((acc, item) => {
         const numWins = getNumberOfWins(item.teams);
         const found = acc.find((a) => a.key === numWins);
@@ -88,13 +100,17 @@ export const getWinsByPro = (pros) => {
 };
 
 export const getSeasonsAsPro = (pros) => {
+    if (!pros || pros.length === 0) {
+        return [];
+    }
+
     const categorizeBySeasonsAsPro = pros.reduce((acc, item) => {
-        const found = acc.find((a) => a.key === item.teams.length);
+        const found = acc.find((a) => a.key === item?.teams?.length);
 
         if (found) {
             found.data.push(item);
         } else {
-            acc.push({ key: item.teams.length, data: [item] });
+            acc.push({ key: item?.teams?.length, data: [item] });
         }
 
         return acc;
