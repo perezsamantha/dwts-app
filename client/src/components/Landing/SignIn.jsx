@@ -3,7 +3,7 @@ import GoogleLogin from 'react-google-login';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { googleAuth, signIn } from '../../actions/auth';
+import { googleAuth, resendVerification, signIn } from '../../actions/auth';
 
 import {
     Typography,
@@ -11,15 +11,15 @@ import {
     InputAdornment,
     Stack,
     Box,
-    TextField,
     Alert,
+    Link,
 } from '@mui/material';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import LockIcon from '@mui/icons-material/Lock';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { SiGoogle } from 'react-icons/si';
-import { GoogleButton, Line, SubmitButton } from './common';
+import { GoogleButton, Line, StyledTextField, SubmitButton } from './common';
 
 const initialState = { username: '', password: '' };
 
@@ -31,6 +31,7 @@ function SignIn() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const authMsg = useSelector((state) => state.auth?.authData?.message);
     const errorMsg = useSelector((state) => state.errors.AUTH);
     const [pageSwitch, setPageSwitch] = useState(true);
 
@@ -50,19 +51,39 @@ function SignIn() {
         setPageSwitch(false);
     };
 
+    const handleResend = () => {
+        dispatch(resendVerification(formData));
+    };
+
     const handleShowPass = () => setShowPass((prevShowPass) => !prevShowPass);
 
     return (
         <Stack width={1} alignItems="center" spacing={2}>
             {errorMsg && !pageSwitch && (
                 <Box sx={{ width: 1 }}>
-                    <Alert sx={{ borderRadius: 15 }} severity="error">
-                        {errorMsg}
+                    <Alert severity="error">
+                        <Typography>{errorMsg}</Typography>
+                        {errorMsg === 'Email not verified' && (
+                            <Link
+                                component="button"
+                                variant="body1"
+                                onClick={handleResend}
+                                underline="always"
+                                color="inherit"
+                            >
+                                Resend verification email
+                            </Link>
+                        )}
                     </Alert>
                 </Box>
             )}
+            {authMsg && !errorMsg && (
+                <Box width={1}>
+                    <Alert severity="info">{authMsg}</Alert>
+                </Box>
+            )}
             <Box component="form" noValidate autoComplete="off">
-                <TextField
+                <StyledTextField
                     fullWidth
                     name="username"
                     type="text"
@@ -76,7 +97,7 @@ function SignIn() {
                         ),
                     }}
                 />
-                <TextField
+                <StyledTextField
                     fullWidth
                     autoComplete="off"
                     name="password"

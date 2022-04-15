@@ -1,5 +1,12 @@
 import styled from '@emotion/styled';
-import { Button } from '@mui/material';
+import { Button, TextField } from '@mui/material';
+
+export const StyledTextField = styled(TextField)({
+    '& > *': {
+        marginLeft: 0,
+        marginRight: 0,
+    },
+});
 
 export const SubmitButton = styled(Button)(({ theme }) => ({
     width: '100%',

@@ -11,14 +11,16 @@ import { messages } from '../messages.js';
 import { verify } from '../email/emailTemplate.js';
 
 import { OAuth2Client } from 'google-auth-library';
+
 const client = new OAuth2Client(process.env.OAUTH_CLIENT_ID2);
+const { randomBytes } = await import('crypto');
 
 export const signUp = async (req, res) => {
     try {
         const { username, email, password, confirm_password } = req.body;
 
         if (!username || !email || !password || !confirm_password)
-            return res.status(404).json({ message: messages.missingFields });
+            return res.status(409).json({ message: messages.missingFields });
 
         const existing_username = await pool.query(
             `
@@ -66,10 +68,28 @@ export const signUp = async (req, res) => {
             [username, email, hashed_password]
         );
 
-        sendEmail(email, verify(result.rows[0].id));
+        const token = randomBytes(128).toString('hex');
+        let expires_at = new Date();
+        expires_at.setHours(expires_at.getHours() + 1);
+
+        await pool.query(
+            `
+            INSERT INTO tokens (
+                user_id,
+                token,
+                expires_at
+            )
+            VALUES ($1, $2, $3)
+            RETURNING token
+            `,
+            [result.rows[0].id, token, expires_at]
+        );
+
+        sendEmail(email, verify(token));
 
         res.status(200).json({ message: messages.verify });
     } catch (error) {
+        console.log(error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -79,7 +99,7 @@ export const signIn = async (req, res) => {
         const { username, password } = req.body;
 
         if (!username || !password)
-            return res.status(404).json({ message: messages.missingFields });
+            return res.status(409).json({ message: messages.missingFields });
 
         const existing_user = await pool.query(
             `
@@ -94,11 +114,11 @@ export const signIn = async (req, res) => {
 
         if (existing_user.rows.length === 0)
             return res
-                .status(404)
+                .status(409)
                 .json({ message: messages.invalidCredentials });
 
         if (!existing_user.rows[0].password)
-            return res.status(404).json({ message: messages.needOAuth });
+            return res.status(409).json({ message: messages.needOAuth });
 
         const isPasswordCorrect = await bcrypt.compare(
             password,
@@ -196,7 +216,7 @@ export const signIn = async (req, res) => {
                 .status(200)
                 .json(user.rows[0]);
         } else {
-            res.status(401).json({ message: messages.notVerified });
+            res.status(409).json({ message: messages.notVerified });
         }
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -227,12 +247,12 @@ export const googleAuth = async (req, res) => {
 
         if (signup) {
             if (existing_user.rows.length !== 0)
-                return res.status(404).json({
+                return res.status(409).json({
                     message: messages.existingEmail,
                 });
 
             if (!username)
-                return res.status(404).json({
+                return res.status(409).json({
                     message: messages.oauthUser,
                 });
 
@@ -247,7 +267,7 @@ export const googleAuth = async (req, res) => {
 
             if (username_available.rows.length !== 0)
                 return res
-                    .status(404)
+                    .status(409)
                     .json({ message: messages.oauthUsername });
 
             // create user
@@ -268,7 +288,7 @@ export const googleAuth = async (req, res) => {
             user_id = result.rows[0].id;
         } else {
             if (existing_user.rows.length == 0)
-                return res.status(404).json({
+                return res.status(409).json({
                     message: messages.oauthEmail,
                 });
             user_id = existing_user.rows[0].id;
@@ -364,9 +384,24 @@ export const googleAuth = async (req, res) => {
 };
 
 export const verifyEmail = async (req, res) => {
-    const { id } = req.params;
-
     try {
+        const existing_token = await pool.query(
+            `
+            SELECT *
+            FROM tokens 
+            WHERE token = $1
+            `,
+            [req.params.token]
+        );
+
+        if (existing_token.rows.length === 0)
+            return res.status(409).json({ message: messages.expiredToken });
+
+        const isValid = existing_token.rows[0].expires_at > new Date();
+
+        if (!isValid)
+            return res.status(409).json({ message: messages.expiredToken });
+
         const existing_user = await pool.query(
             `
             SELECT id, 
@@ -374,22 +409,23 @@ export const verifyEmail = async (req, res) => {
             FROM users 
             WHERE id = $1
             `,
-            [id]
+            [existing_token.rows[0].user_id]
         );
 
         if (existing_user.rows.length === 0)
-            return res.status(404).json({ message: messages.invalidUser });
+            return res.status(409).json({ message: messages.invalidUser });
 
-        if (existing_user.rows[0].email_verified !== true) {
-            await pool.query(
-                `
+        if (existing_user.rows[0].email_verified)
+            return res.status(409).json({ message: messages.alreadyVerified });
+
+        await pool.query(
+            `
                 UPDATE users 
                 SET email_verified = true 
                 WHERE id = $1 
                 `,
-                [id]
-            );
-        }
+            [existing_token.rows[0].user_id]
+        );
 
         const user = await pool.query(
             `
@@ -457,7 +493,15 @@ export const verifyEmail = async (req, res) => {
             WHERE u.id = $1
             GROUP BY u.id
             `,
-            [id]
+            [existing_token.rows[0].user_id]
+        );
+
+        await pool.query(
+            `
+            DELETE FROM tokens
+            WHERE user_id = $1
+            `,
+            [user.rows[0].id]
         );
 
         const token = jwt.sign(
@@ -475,6 +519,64 @@ export const verifyEmail = async (req, res) => {
         })
             .status(200)
             .json(user.rows[0]);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const resendVerificationEmail = async (req, res) => {
+    const { username } = req.body;
+
+    try {
+        const existing_user = await pool.query(
+            `
+            SELECT id, 
+                email
+            FROM users 
+            WHERE username = $1
+            `,
+            [username]
+        );
+
+        const existing_token = await pool.query(
+            `
+            SELECT *
+            FROM tokens 
+            WHERE user_id = $1
+            `,
+            [existing_user.rows[0].id]
+        );
+
+        if (existing_token.rows.length !== 0) {
+            await pool.query(
+                `
+                DELETE FROM tokens
+                WHERE user_id = $1
+                `,
+                [existing_user.rows[0].id]
+            );
+        }
+
+        const token = randomBytes(128).toString('hex');
+        let expires_at = new Date();
+        expires_at.setHours(expires_at.getHours() + 1);
+
+        await pool.query(
+            `
+            INSERT INTO tokens (
+                user_id,
+                token,
+                expires_at
+            )
+            VALUES ($1, $2, $3)
+            RETURNING token
+            `,
+            [existing_user.rows[0].id, token, expires_at]
+        );
+
+        sendEmail(existing_user.rows[0].email, verify(token));
+
+        res.status(200).json({ message: messages.resendVerify });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

@@ -1,7 +1,7 @@
 import { Stack, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { verifyUser } from '../../actions/auth';
 import { ExtraContainer, ExtraPage } from '../../components/shared/muiStyles';
 import Progress from '../../components/shared/Progress';
@@ -22,7 +22,20 @@ function Verification() {
         <ExtraPage>
             <ExtraContainer elevation={4}>
                 {error ? (
-                    <Typography>{error}</Typography>
+                    <Stack>
+                        <Typography variant="h4">{error}</Typography>
+                        <Typography sx={{ color: 'text.secondary' }}>
+                            Return to sign in page{' '}
+                            <Link
+                                to={{ pathname: `/` }}
+                                style={{
+                                    color: 'inherit',
+                                }}
+                            >
+                                here
+                            </Link>
+                        </Typography>
+                    </Stack>
                 ) : !loading ? (
                     <Stack spacing={1} alignItems="center">
                         <Progress />

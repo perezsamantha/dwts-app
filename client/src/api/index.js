@@ -31,7 +31,9 @@ API.interceptors.response.use(
 export const signIn = (formData) => API.post('/users/signIn', formData);
 export const signUp = (formData) => API.post('/users/signUp', formData);
 export const googleAuth = (formData) => API.post('/users/googleAuth', formData);
-export const verifyUser = (id) => API.get(`/users/verify/${id}`);
+export const verifyUser = (token) => API.get(`/users/verify/${token}`);
+export const resendVerification = (formData) =>
+    API.post(`/users/resendVerification`, formData);
 export const fetchAuthData = () => API.get('/users/authData');
 export const logout = () => API.post('/users/logout');
 export const addUser = (formData) => API.post('/users/add', formData);

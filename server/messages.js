@@ -3,14 +3,15 @@ export const messages = {
     passwordMismatch: 'Passwords do not match',
     invalidCredentials: 'Incorrect username or password',
     invalidUser: 'User does not exist',
+    expiredToken: 'Link has expired',
     existingEmail: 'Account with email already exists',
     existingUsername: 'Username taken',
 
     verify: 'Email sent - check your inbox to verify',
-    notVerified: 'Email not yet verified - check your inbox',
+    notVerified: 'Email not verified',
     verified: 'Email verified - sign in now',
-    resend: 'Email resent - check your inbox to verify',
-    alreadyVerified: 'Email already verified -  sign in now',
+    resendVerify: 'Email resent - check your inbox to verify',
+    alreadyVerified: 'Email already verified',
 
     oauthUser: 'OAuth user',
     oauthUsername: 'OAuth username',

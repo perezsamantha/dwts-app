@@ -8,13 +8,12 @@ import { googleAuth, signUp } from '../../actions/auth';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-import { GoogleButton, Line, SubmitButton } from './common';
+import { GoogleButton, Line, StyledTextField, SubmitButton } from './common';
 import {
     Box,
     Typography,
     IconButton,
     InputAdornment,
-    TextField,
     Stack,
     Dialog,
     DialogTitle,
@@ -113,20 +112,16 @@ function SignUp() {
                 errorMsg !== 'OAuth username' &&
                 !pageSwitch && (
                     <Box width={1}>
-                        <Alert sx={{ borderRadius: 15 }} severity="error">
-                            {errorMsg}
-                        </Alert>
+                        <Alert severity="error">{errorMsg}</Alert>
                     </Box>
                 )}
             {authMsg && !errorMsg && (
                 <Box width={1}>
-                    <Alert sx={{ borderRadius: 15 }} severity="info">
-                        {authMsg}
-                    </Alert>
+                    <Alert severity="info">{authMsg}</Alert>
                 </Box>
             )}
             <Box component="form" noValidate autoComplete="off">
-                <TextField
+                <StyledTextField
                     fullWidth
                     name="username"
                     type="text"
@@ -141,7 +136,7 @@ function SignUp() {
                         ),
                     }}
                 />
-                <TextField
+                <StyledTextField
                     fullWidth
                     id="email"
                     name="email"
@@ -157,7 +152,7 @@ function SignUp() {
                         ),
                     }}
                 />
-                <TextField
+                <StyledTextField
                     fullWidth
                     autoComplete="off"
                     name="password"
@@ -184,7 +179,7 @@ function SignUp() {
                         ),
                     }}
                 />
-                <TextField
+                <StyledTextField
                     fullWidth
                     autoComplete="off"
                     id="confirmPass"
@@ -259,7 +254,8 @@ function SignUp() {
                 <Dialog open={creating} onClose={handleClose}>
                     <DialogTitle>Choose Username</DialogTitle>
                     <DialogContent alignContent="center">
-                        <TextField
+                        <StyledTextField
+                            fullWidth
                             name="oauth_username"
                             type="text"
                             required

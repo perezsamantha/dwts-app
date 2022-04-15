@@ -41,11 +41,11 @@ export const googleAuth = (formData, navigate) => async (dispatch) => {
     }
 };
 
-export const verifyUser = (id, navigate) => async (dispatch) => {
+export const verifyUser = (token, navigate) => async (dispatch) => {
     dispatch({ type: actionType.AUTHVERIFY_REQUEST });
 
     try {
-        const { data } = await api.verifyUser(id);
+        const { data } = await api.verifyUser(token);
 
         dispatch({ type: actionType.AUTHVERIFY_SUCCESS, payload: data });
 
@@ -55,6 +55,21 @@ export const verifyUser = (id, navigate) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: actionType.AUTHVERIFY_FAILURE,
+            payload: error,
+        });
+    }
+};
+
+export const resendVerification = (formData) => async (dispatch) => {
+    dispatch({ type: actionType.AUTH_REQUEST });
+
+    try {
+        const { data } = await api.resendVerification(formData);
+
+        dispatch({ type: actionType.AUTH_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: actionType.AUTH_FAILURE,
             payload: error,
         });
     }
