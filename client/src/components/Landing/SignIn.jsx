@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
-import GoogleLogin from 'react-google-login';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { googleAuth, resendVerification, signIn } from '../../actions/auth';
-
+import {
+    forgotPassword,
+    googleAuth,
+    resendVerification,
+    signIn,
+} from '../../actions/auth';
+import EmailIcon from '@mui/icons-material/Email';
 import {
     Typography,
     IconButton,
     InputAdornment,
     Stack,
+    Dialog,
+    DialogTitle,
+    Button,
+    DialogActions,
+    DialogContent,
     Box,
     Alert,
     Link,
@@ -18,22 +26,23 @@ import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import LockIcon from '@mui/icons-material/Lock';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { SiGoogle } from 'react-icons/si';
-import { GoogleButton, Line, StyledTextField, SubmitButton } from './common';
+import { StyledTextField } from './common';
+import Submit from './Submit';
 
-const initialState = { username: '', password: '' };
+const initialState = { username: null, password: null, email: null };
 
 function SignIn() {
     const [showPass, setShowPass] = useState(false);
-
     const [formData, setFormData] = useState(initialState);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const loading = useSelector((state) => state.loading.AUTH);
     const authMsg = useSelector((state) => state.auth?.authData?.message);
     const errorMsg = useSelector((state) => state.errors.AUTH);
     const [pageSwitch, setPageSwitch] = useState(true);
+    const [openPass, setOpenPass] = useState(false);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -55,11 +64,27 @@ function SignIn() {
         dispatch(resendVerification(formData));
     };
 
+    const handleOpenPass = () => {
+        setOpenPass(true);
+    };
+
+    const handleClosePass = () => {
+        setOpenPass(false);
+    };
+
+    const handleForgotPass = () => {
+        if (formData.email) {
+            dispatch(forgotPassword(formData));
+            setOpenPass(false);
+            setPageSwitch(false);
+        }
+    };
+
     const handleShowPass = () => setShowPass((prevShowPass) => !prevShowPass);
 
     return (
         <Stack width={1} alignItems="center" spacing={2}>
-            {errorMsg && !pageSwitch && (
+            {errorMsg && !pageSwitch && !loading && (
                 <Box sx={{ width: 1 }}>
                     <Alert severity="error">
                         <Typography>{errorMsg}</Typography>
@@ -77,11 +102,13 @@ function SignIn() {
                     </Alert>
                 </Box>
             )}
-            {authMsg && !errorMsg && (
+
+            {authMsg && !errorMsg && !pageSwitch && !loading && (
                 <Box width={1}>
                     <Alert severity="info">{authMsg}</Alert>
                 </Box>
             )}
+
             <Box component="form" noValidate autoComplete="off">
                 <StyledTextField
                     fullWidth
@@ -99,7 +126,6 @@ function SignIn() {
                 />
                 <StyledTextField
                     fullWidth
-                    autoComplete="off"
                     name="password"
                     placeholder="password"
                     type={showPass ? 'text' : 'password'}
@@ -128,62 +154,60 @@ function SignIn() {
                         }
                     }}
                 />
-                <Typography
-                    align="left"
-                    variant="body2"
-                    mb={1}
-                    sx={{ color: 'text.secondary' }}
-                >
-                    Forgot your password?
-                </Typography>
             </Box>
 
-            <Stack width={1} spacing={3} alignItems="center">
-                <SubmitButton
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSubmit}
+            <Box width={1}>
+                <Link
+                    align="left"
+                    component="button"
+                    variant="body2"
+                    onClick={handleOpenPass}
+                    underline="hover"
+                    sx={{ color: 'text.secondary' }}
                 >
-                    <Typography>Sign In</Typography>
-                </SubmitButton>
+                    Forgot password?
+                </Link>
+            </Box>
 
-                <Stack
-                    width={0.95}
-                    direction="row"
-                    spacing={1}
-                    alignItems="center"
-                >
-                    <Line />
-                    <Typography>OR</Typography>
-                    <Line />
-                </Stack>
+            <Submit
+                type="signin"
+                handleSubmit={handleSubmit}
+                handleOAuth={handleOAuth}
+            />
 
-                <GoogleLogin
-                    clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
-                    render={(renderProps) => (
-                        <GoogleButton
-                            onClick={renderProps.onClick}
-                            disabled={renderProps.disabled}
-                            variant="contained"
-                            color="secondary"
-                        >
-                            <Stack
-                                direction="row"
-                                spacing={1}
-                                alignItems="center"
-                            >
-                                <SiGoogle style={{ width: 20, height: 20 }} />
-                                <Typography color="inherit">
-                                    Sign in with Google
-                                </Typography>
-                            </Stack>
-                        </GoogleButton>
-                    )}
-                    onSuccess={handleOAuth}
-                    onFailure={handleOAuth}
-                    cookiePolicy="single_host_origin"
-                />
-            </Stack>
+            <Box>
+                <Dialog open={openPass} onClose={handleClosePass}>
+                    <DialogTitle>Enter your email</DialogTitle>
+                    <DialogContent>
+                        <Box component="form" noValidate autoComplete="off">
+                            <StyledTextField
+                                fullWidth
+                                name="email"
+                                placeholder="email"
+                                type="text"
+                                value={formData.email || ''}
+                                onChange={handleChange}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <EmailIcon />
+                                        </InputAdornment>
+                                    ),
+                                }}
+                                onKeyPress={(e) => {
+                                    if (e.key === 'Enter') {
+                                        handleForgotPass(e);
+                                    }
+                                }}
+                            />
+                        </Box>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClosePass}>Cancel</Button>
+                        <Button onClick={handleForgotPass}>Submit</Button>
+                    </DialogActions>
+                </Dialog>
+            </Box>
         </Stack>
     );
 }

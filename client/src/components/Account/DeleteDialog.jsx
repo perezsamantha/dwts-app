@@ -38,7 +38,9 @@ function DeleteDialog(props) {
                 </Stack>
             </DialogContent>
             <DialogActions>
-                <Button onClick={props.close}>No, Cancel</Button>
+                <Button onClick={props.close} color="error">
+                    No, Cancel
+                </Button>
                 <Button onClick={handleSubmit}>Yes, Delete</Button>
             </DialogActions>
         </Dialog>

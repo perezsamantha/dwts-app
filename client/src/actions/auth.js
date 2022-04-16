@@ -75,6 +75,41 @@ export const resendVerification = (formData) => async (dispatch) => {
     }
 };
 
+export const forgotPassword = (formData) => async (dispatch) => {
+    dispatch({ type: actionType.AUTH_REQUEST });
+
+    try {
+        const { data } = await api.forgotPassword(formData);
+
+        dispatch({ type: actionType.AUTH_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: actionType.AUTH_FAILURE,
+            payload: error,
+        });
+    }
+};
+
+export const resetPassword =
+    (token, formData, navigate) => async (dispatch) => {
+        dispatch({ type: actionType.AUTH_REQUEST });
+
+        try {
+            const { data } = await api.resetPassword(token, formData);
+
+            dispatch({ type: actionType.AUTH_SUCCESS, payload: data });
+
+            setTimeout(function () {
+                navigate('/');
+            }, 5000); // 5 seconds
+        } catch (error) {
+            dispatch({
+                type: actionType.AUTH_FAILURE,
+                payload: error,
+            });
+        }
+    };
+
 export const fetchAuthData = () => async (dispatch) => {
     dispatch({ type: actionType.AUTHFETCH_REQUEST });
 

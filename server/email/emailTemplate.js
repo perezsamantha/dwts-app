@@ -9,3 +9,13 @@ export const verify = (token) => ({
         `,
     text: `Copy and paste this link: ${CLIENT_ORIGIN}/verify/${token}`,
 });
+
+export const reset = (token) => ({
+    subject: 'Reset Password',
+    html: `
+            <a href='${CLIENT_ORIGIN}/reset/${token}'>
+                Click to reset your password.
+            </a>
+        `,
+    text: `Copy and paste this link: ${CLIENT_ORIGIN}/reset/${token}`,
+});

@@ -12,21 +12,30 @@ export const SubmitButton = styled(Button)(({ theme }) => ({
     width: '100%',
     padding: 8,
     textTransform: 'none',
+    '&:hover': {
+        backgroundColor: theme.palette.primary.main,
+        boxShadow:
+            theme.palette.mode === 'light'
+                ? '0px 0px 15px 2px rgba(150, 150, 150, 0.2)'
+                : 'none',
+    },
     boxShadow:
         theme.palette.mode === 'light'
             ? '0px 0px 15px 2px rgba(150, 150, 150, 0.2)'
             : 'none',
-    // textShadow:
-    //     theme.palette.mode === 'light'
-    //         ? '1px 3px 10px rgba(0, 0, 0, 0.3)'
-    //         : 'none',
-    // color: theme.palette.mode === 'light' ? `white` : 'inherit',
 }));
 
 export const GoogleButton = styled(Button)(({ theme }) => ({
     width: '100%',
     padding: 8,
     textTransform: 'none',
+    '&:hover': {
+        backgroundColor: theme.palette.secondary.main,
+        boxShadow:
+            theme.palette.mode === 'light'
+                ? '0px 0px 15px 2px rgba(150, 150, 150, 0.2)'
+                : 'none',
+    },
     boxShadow:
         theme.palette.mode === 'light'
             ? '0px 0px 15px 2px rgba(150, 150, 150, 0.2)'

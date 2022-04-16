@@ -7,23 +7,23 @@ import { ExtraContainer, ExtraPage } from '../../components/shared/muiStyles';
 import Progress from '../../components/shared/Progress';
 
 function Verification() {
+    const { token } = useParams();
     const dispatch = useDispatch();
-    const { id } = useParams();
     const navigate = useNavigate();
 
     const loading = useSelector((state) => state.loading.AUTHVERIFY);
-    const error = useSelector((state) => state.errors.AUTHVERIFY);
+    const errorMsg = useSelector((state) => state.errors.AUTHVERIFY);
 
     useEffect(() => {
-        dispatch(verifyUser(id, navigate));
-    }, [dispatch, id, navigate]);
+        dispatch(verifyUser(token, navigate));
+    }, [dispatch, token, navigate]);
 
     return (
         <ExtraPage>
             <ExtraContainer elevation={4}>
-                {error ? (
+                {errorMsg ? (
                     <Stack>
-                        <Typography variant="h4">{error}</Typography>
+                        <Typography variant="h4">{errorMsg}</Typography>
                         <Typography sx={{ color: 'text.secondary' }}>
                             Return to sign in page{' '}
                             <Link

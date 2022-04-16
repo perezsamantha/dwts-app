@@ -34,6 +34,10 @@ export const googleAuth = (formData) => API.post('/users/googleAuth', formData);
 export const verifyUser = (token) => API.get(`/users/verify/${token}`);
 export const resendVerification = (formData) =>
     API.post(`/users/resendVerification`, formData);
+export const forgotPassword = (formData) =>
+    API.post(`/users/forgotPassword`, formData);
+export const resetPassword = (token, formData) =>
+    API.post(`/users/resetPassword/${token}`, formData);
 export const fetchAuthData = () => API.get('/users/authData');
 export const logout = () => API.post('/users/logout');
 export const addUser = (formData) => API.post('/users/add', formData);

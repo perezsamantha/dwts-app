@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import GoogleLogin from 'react-google-login';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { googleAuth, signUp } from '../../actions/auth';
@@ -8,10 +6,9 @@ import { googleAuth, signUp } from '../../actions/auth';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-import { GoogleButton, Line, StyledTextField, SubmitButton } from './common';
+import { StyledTextField } from './common';
 import {
     Box,
-    Typography,
     IconButton,
     InputAdornment,
     Stack,
@@ -25,7 +22,7 @@ import {
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
-import { SiGoogle } from 'react-icons/si';
+import Submit from './Submit';
 
 const initialState = {
     username: null,
@@ -37,12 +34,12 @@ const initialState = {
 
 function SignUp() {
     const [showPass, setShowPass] = useState(false);
-
     const [formData, setFormData] = useState(initialState);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const loading = useSelector((state) => state.loading.AUTH);
     const authMsg = useSelector((state) => state.auth?.authData?.message);
     const errorMsg = useSelector((state) => state.errors.AUTH);
     const [token, setToken] = useState(null);
@@ -110,12 +107,13 @@ function SignUp() {
             {errorMsg &&
                 errorMsg !== 'OAuth user' &&
                 errorMsg !== 'OAuth username' &&
-                !pageSwitch && (
+                !pageSwitch &&
+                !loading && (
                     <Box width={1}>
                         <Alert severity="error">{errorMsg}</Alert>
                     </Box>
                 )}
-            {authMsg && !errorMsg && (
+            {authMsg && !errorMsg && !pageSwitch && !loading && (
                 <Box width={1}>
                     <Alert severity="info">{authMsg}</Alert>
                 </Box>
@@ -138,7 +136,6 @@ function SignUp() {
                 />
                 <StyledTextField
                     fullWidth
-                    id="email"
                     name="email"
                     placeholder="email"
                     type="email"
@@ -182,7 +179,6 @@ function SignUp() {
                 <StyledTextField
                     fullWidth
                     autoComplete="off"
-                    id="confirmPass"
                     name="confirm_password"
                     placeholder="confirm password"
                     type="password"
@@ -203,57 +199,16 @@ function SignUp() {
                 />
             </Box>
 
-            <Stack width={1} spacing={3} alignItems="center">
-                <SubmitButton
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSubmit}
-                >
-                    <Typography>Sign Up</Typography>
-                </SubmitButton>
-
-                <Stack
-                    width={0.95}
-                    direction="row"
-                    spacing={1}
-                    alignItems="center"
-                >
-                    <Line />
-                    <Typography>OR</Typography>
-                    <Line />
-                </Stack>
-
-                <GoogleLogin
-                    clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
-                    render={(renderProps) => (
-                        <GoogleButton
-                            onClick={renderProps.onClick}
-                            disabled={renderProps.disabled}
-                            variant="contained"
-                            color="secondary"
-                        >
-                            <Stack
-                                direction="row"
-                                spacing={1}
-                                alignItems="center"
-                            >
-                                <SiGoogle style={{ width: 20, height: 20 }} />
-                                <Typography color="inherit">
-                                    Sign up with Google
-                                </Typography>
-                            </Stack>
-                        </GoogleButton>
-                    )}
-                    onSuccess={handleOAuth}
-                    onFailure={handleOAuth}
-                    cookiePolicy="single_host_origin"
-                />
-            </Stack>
+            <Submit
+                type="signup"
+                handleSubmit={handleSubmit}
+                handleOAuth={handleOAuth}
+            />
 
             <Box>
                 <Dialog open={creating} onClose={handleClose}>
                     <DialogTitle>Choose Username</DialogTitle>
-                    <DialogContent alignContent="center">
+                    <DialogContent>
                         <StyledTextField
                             fullWidth
                             name="oauth_username"
@@ -276,7 +231,7 @@ function SignUp() {
                             }
                             onKeyPress={(e) => {
                                 if (e.key === 'Enter') {
-                                    handleSubmit(e);
+                                    handleOAuthNew(e);
                                 }
                             }}
                         />

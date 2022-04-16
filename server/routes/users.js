@@ -19,6 +19,8 @@ import {
     updateAuth,
     googleAuth,
     resendVerificationEmail,
+    forgotPassword,
+    resetPassword,
 } from '../controllers/user.js';
 
 import uploadCoverPicture from '../middleware/uploadCoverPicture.js';
@@ -32,6 +34,8 @@ router.post('/signUp', signUp);
 router.post('/googleAuth', googleAuth);
 router.get('/verify/:token', verifyEmail);
 router.post('/resendVerification', resendVerificationEmail);
+router.post('/forgotPassword', forgotPassword);
+router.post('/resetPassword/:token', resetPassword);
 router.get('/authData', auth, fetchAuthData);
 router.post('/logout', logout);
 router.post('/add', auth, grantAccess('createAny', 'user'), addUser);

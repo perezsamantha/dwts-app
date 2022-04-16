@@ -8,7 +8,7 @@ import ac from '../roles.js';
 
 import { sendEmail } from '../email/sendEmail.js';
 import { messages } from '../messages.js';
-import { verify } from '../email/emailTemplate.js';
+import { reset, verify } from '../email/emailTemplate.js';
 
 import { OAuth2Client } from 'google-auth-library';
 
@@ -289,7 +289,7 @@ export const googleAuth = async (req, res) => {
         } else {
             if (existing_user.rows.length == 0)
                 return res.status(409).json({
-                    message: messages.oauthEmail,
+                    message: messages.invalidEmail,
                 });
             user_id = existing_user.rows[0].id;
         }
@@ -577,6 +577,143 @@ export const resendVerificationEmail = async (req, res) => {
         sendEmail(existing_user.rows[0].email, verify(token));
 
         res.status(200).json({ message: messages.resendVerify });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const forgotPassword = async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        if (!email)
+            return res.status(409).json({ message: messages.missingFields });
+
+        const existing_user = await pool.query(
+            `
+            SELECT id, password
+            FROM users
+            WHERE email = $1
+            `,
+            [email]
+        );
+
+        if (existing_user.rows.length == 0)
+            return res.status(409).json({
+                message: messages.invalidEmail,
+            });
+
+        if (!existing_user.rows[0].password)
+            return res.status(409).json({ message: messages.needOAuth });
+
+        const existing_token = await pool.query(
+            `
+                SELECT *
+                FROM tokens 
+                WHERE user_id = $1
+                `,
+            [existing_user.rows[0].id]
+        );
+
+        if (existing_token.rows.length !== 0) {
+            await pool.query(
+                `
+                    DELETE FROM tokens
+                    WHERE user_id = $1
+                    `,
+                [existing_user.rows[0].id]
+            );
+        }
+
+        const token = randomBytes(128).toString('hex');
+        let expires_at = new Date();
+        expires_at.setHours(expires_at.getHours() + 1);
+
+        await pool.query(
+            `
+                INSERT INTO tokens (
+                    user_id,
+                    token,
+                    expires_at
+                )
+                VALUES ($1, $2, $3)
+                RETURNING token
+                `,
+            [existing_user.rows[0].id, token, expires_at]
+        );
+
+        sendEmail(email, reset(token));
+
+        res.status(200).json({ message: messages.reset });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const resetPassword = async (req, res) => {
+    const { token } = req.params;
+    const { password, confirm_password } = req.body;
+
+    try {
+        if (!password || !confirm_password)
+            return res.status(409).json({ message: messages.missingFields });
+
+        const existing_token = await pool.query(
+            `
+            SELECT *
+            FROM tokens 
+            WHERE token = $1
+            `,
+            [token]
+        );
+
+        if (existing_token.rows.length === 0)
+            return res.status(409).json({ message: messages.expiredToken });
+
+        const isValid = existing_token.rows[0].expires_at > new Date();
+
+        if (!isValid)
+            return res.status(409).json({ message: messages.expiredToken });
+
+        const existing_user = await pool.query(
+            `
+            SELECT id, 
+                email_verified
+            FROM users 
+            WHERE id = $1
+            `,
+            [existing_token.rows[0].user_id]
+        );
+
+        if (existing_user.rows.length === 0)
+            return res.status(409).json({ message: messages.invalidUser });
+
+        if (!existing_user.rows[0].email_verified)
+            return res.status(409).json({ message: messages.notVerified });
+
+        if (password != confirm_password)
+            return res.status(400).json({ message: messages.passwordMismatch });
+
+        const hashed_password = await bcrypt.hash(password, 12);
+
+        await pool.query(
+            `
+            UPDATE users
+            SET password = $1
+            WHERE id = $2
+            `,
+            [hashed_password, existing_token.rows[0].user_id]
+        );
+
+        await pool.query(
+            `
+            DELETE FROM tokens
+            WHERE user_id = $1
+            `,
+            [existing_token.rows[0].user_id]
+        );
+
+        res.status(200).json({ message: messages.resetSuccess });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

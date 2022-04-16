@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { Navigate, Outlet, Route, Routes, useNavigate } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import Search from './pages/Search';
 import Account from './pages/Account';
 import Landing from './pages/Landing/Landing';
-import { Navigate, Outlet, Route, Routes, useNavigate } from 'react-router-dom';
 import Individuals from './pages/Individuals';
 import Admin from './pages/Admin';
+import NotFound from './pages/NotFound';
+import Overview from './pages/Overview';
+import ResetPassword from './pages/Landing/ResetPassword';
+import Verification from './pages/Landing/Verification';
+import Activity from './pages/Activity';
 import {
     ThemeProvider,
     createTheme,
@@ -14,13 +19,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import * as searchType from './constants/searchTypes';
 import { CssBaseline, Paper, useMediaQuery } from '@mui/material';
-import NotFound from './pages/NotFound';
-import Overview from './pages/Overview';
-import ForgotPassword from './pages/Landing/ForgotPassword';
-import Verification from './pages/Landing/Verification';
 import 'swiper/css/bundle';
 import { fetchAuthData, logout } from './actions/auth';
-import Activity from './pages/Activity';
 import Progress from './components/shared/Progress';
 import styled from '@emotion/styled';
 //import useAuth, { AuthProvider } from './useAuth';
@@ -362,10 +362,13 @@ function App(props) {
                     <Route exact path="/">
                         <Route path="" element={<Landing />} />
                         <Route
-                            path="forgot-password"
-                            element={<ForgotPassword />}
+                            path="reset/:token"
+                            element={<ResetPassword />}
                         />
-                        <Route path="verify/:id" element={<Verification />} />
+                        <Route
+                            path="verify/:token"
+                            element={<Verification />}
+                        />
                         <Route path="dashboard" element={<Dashboard />} />
                         <Route path="overview" element={<Overview />} />
                         <Route exact path="search">
