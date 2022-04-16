@@ -26,8 +26,9 @@ import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import LockIcon from '@mui/icons-material/Lock';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { StyledTextField } from './common';
+import { StyledTextField } from './styles';
 import Submit from './Submit';
+import useWindowDimensions from '../shared/useWindowDimensions';
 
 const initialState = { username: null, password: null, email: null };
 
@@ -43,6 +44,8 @@ function SignIn() {
     const errorMsg = useSelector((state) => state.errors.AUTH);
     const [pageSwitch, setPageSwitch] = useState(true);
     const [openPass, setOpenPass] = useState(false);
+
+    const { height } = useWindowDimensions();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -83,7 +86,7 @@ function SignIn() {
     const handleShowPass = () => setShowPass((prevShowPass) => !prevShowPass);
 
     return (
-        <Stack width={1} alignItems="center" spacing={2}>
+        <Stack width={1} alignItems="center">
             {errorMsg && !pageSwitch && !loading && (
                 <Box sx={{ width: 1 }}>
                     <Alert severity="error">
@@ -114,6 +117,7 @@ function SignIn() {
                     fullWidth
                     name="username"
                     type="text"
+                    size={height < 730 ? 'small' : 'normal'}
                     onChange={handleChange}
                     placeholder="username"
                     InputProps={{
@@ -126,10 +130,17 @@ function SignIn() {
                 />
                 <StyledTextField
                     fullWidth
+                    autoComplete="off"
                     name="password"
                     placeholder="password"
                     type={showPass ? 'text' : 'password'}
+                    size={height < 730 ? 'small' : 'normal'}
                     onChange={handleChange}
+                    sx={{
+                        '& > *': {
+                            marginBottom: 0,
+                        },
+                    }}
                     InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
@@ -156,7 +167,7 @@ function SignIn() {
                 />
             </Box>
 
-            <Box width={1}>
+            <Box width={1} mb={3}>
                 <Link
                     align="left"
                     component="button"

@@ -2,14 +2,14 @@ import React from 'react';
 import GoogleLogin from 'react-google-login';
 import { Typography, Stack, Box } from '@mui/material';
 import { SiGoogle } from 'react-icons/si';
-import { GoogleButton, Line, SubmitButton } from './common';
+import { GoogleButton, Line, SubmitButton } from './styles';
 import { motion } from 'framer-motion';
 
 function Submit(props) {
     const { type, handleSubmit, handleOAuth } = props;
 
     return (
-        <Stack width={1} spacing={3} alignItems="center">
+        <Stack width={1} spacing={2} alignItems="center">
             <Box
                 component={motion.div}
                 whileHover={{

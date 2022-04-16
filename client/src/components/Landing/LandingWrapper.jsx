@@ -5,21 +5,21 @@ import { motion } from 'framer-motion';
 import { Box, Paper, Tab, Tabs, Typography } from '@mui/material';
 import styled from '@emotion/styled';
 import useWindowDimensions from '../shared/useWindowDimensions';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 
-const LandingWrapper = (props) => {
+const LandingWrapper = () => {
     const [isExpanded, setExpanded] = useState(false);
     const [active, setActive] = useState('signin');
     const [wave, setWave] = useState(null);
     const { height, width } = useWindowDimensions();
 
-    const error = useSelector((state) => state.errors.AUTH);
+    //const error = useSelector((state) => state.errors.AUTH);
 
     useEffect(() => {
         setWave(
             `M 0 0 L 600 0 L 600 110 C 425 65 360 185 250 150 C 140 120 110 220 0 220 L 0 0`
         );
-    }, [error, height, width, wave]);
+    }, [wave]);
 
     const backdropVariants = {
         expanded: {
@@ -89,14 +89,22 @@ const LandingWrapper = (props) => {
                 <NewTop>
                     {active === 'signin' && (
                         <>
-                            <HeaderText variant="h3">Welcome</HeaderText>
-                            <HeaderText variant="h3">Back</HeaderText>
+                            <HeaderText variant={width > 400 ? 'h4' : 'h3'}>
+                                Welcome
+                            </HeaderText>
+                            <HeaderText variant={width > 400 ? 'h4' : 'h3'}>
+                                Back
+                            </HeaderText>
                         </>
                     )}
                     {active === 'signup' && (
                         <>
-                            <HeaderText variant="h3">Create</HeaderText>
-                            <HeaderText variant="h3">Account</HeaderText>
+                            <HeaderText variant={width > 400 ? 'h4' : 'h3'}>
+                                Create
+                            </HeaderText>
+                            <HeaderText variant={width > 400 ? 'h4' : 'h3'}>
+                                Account
+                            </HeaderText>
                         </>
                     )}
                 </NewTop>
@@ -121,6 +129,16 @@ const Container = styled(Paper)(({ theme }) => ({
         borderRadius: 15,
         minHeight: '95vh',
         maxHeight: '95vh',
+        overflowY: 'auto',
+        '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
+            backgroundColor: 'inherit',
+            width: 0,
+            height: 0,
+        },
+        '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
+            borderRadius: 10,
+            backgroundColor: 'darkgrey',
+        },
     },
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -210,7 +228,7 @@ const NewTop = styled(Box)(({ theme }) => ({
     },
     [theme.breakpoints.up('sm')]: {
         marginBottom: 100,
-        marginTop: -35,
+        marginTop: -25,
     },
 }));
 

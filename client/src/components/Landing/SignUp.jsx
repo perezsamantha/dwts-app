@@ -6,7 +6,7 @@ import { googleAuth, signUp } from '../../actions/auth';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-import { StyledTextField } from './common';
+import { StyledTextField } from './styles';
 import {
     Box,
     IconButton,
@@ -23,6 +23,7 @@ import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import Submit from './Submit';
+import useWindowDimensions from '../shared/useWindowDimensions';
 
 const initialState = {
     username: null,
@@ -45,6 +46,8 @@ function SignUp() {
     const [token, setToken] = useState(null);
     const [creating, setCreating] = useState(false);
     const [pageSwitch, setPageSwitch] = useState(true);
+
+    const { height } = useWindowDimensions();
 
     useEffect(() => {
         if (errorMsg === 'OAuth user') {
@@ -123,6 +126,7 @@ function SignUp() {
                     fullWidth
                     name="username"
                     type="text"
+                    size={height < 730 ? 'small' : 'normal'}
                     value={formData.username || ''}
                     onChange={handleChange}
                     placeholder="username"
@@ -139,6 +143,7 @@ function SignUp() {
                     name="email"
                     placeholder="email"
                     type="email"
+                    size={height < 730 ? 'small' : 'normal'}
                     value={formData.email || ''}
                     onChange={handleChange}
                     InputProps={{
@@ -155,6 +160,7 @@ function SignUp() {
                     name="password"
                     placeholder="password"
                     type={showPass ? 'text' : 'password'}
+                    size={height < 730 ? 'small' : 'normal'}
                     value={formData.password || ''}
                     onChange={handleChange}
                     InputProps={{
@@ -182,6 +188,7 @@ function SignUp() {
                     name="confirm_password"
                     placeholder="confirm password"
                     type="password"
+                    size={height < 730 ? 'small' : 'normal'}
                     value={formData.confirm_password || ''}
                     onChange={handleChange}
                     InputProps={{

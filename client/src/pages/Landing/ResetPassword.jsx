@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { resetPassword } from '../../actions/auth';
-import { StyledTextField } from '../../components/Landing/common';
+import { StyledTextField } from '../../components/Landing/styles';
 import { ExtraContainer, ExtraPage } from '../../components/shared/muiStyles';
 import LockIcon from '@mui/icons-material/Lock';
 import Visibility from '@mui/icons-material/Visibility';
