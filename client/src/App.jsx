@@ -20,13 +20,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as searchType from './constants/searchTypes';
 import { CssBaseline, Paper, useMediaQuery } from '@mui/material';
 import 'swiper/css/bundle';
-import { fetchAuthData, logout } from './actions/auth';
+import { fetchInitialAuthData, logout } from './actions/auth';
 import Progress from './components/shared/Progress';
 import styled from '@emotion/styled';
-//import useAuth, { AuthProvider } from './useAuth';
 
-function App(props) {
-    //const { user, fetching } = useAuth();
+function App() {
+    const navigate = useNavigate();
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark');
     const [toggleDark, setToggleDark] = useState(
         localStorage.getItem('theme')
@@ -36,15 +35,9 @@ function App(props) {
             : false
     );
 
-    const navigate = useNavigate();
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.auth.authData);
-    const fetching = useSelector((state) => state.loading.AUTHFETCH);
-    const authError = useSelector((state) => state.errors.AUTHFETCH);
-
-    if (window.location.pathname !== '/' && authError) {
-        dispatch(logout(navigate));
-    }
+    const user = useSelector((state) => state.auth.initialAuth);
+    const fetching = useSelector((state) => state.auth.initialFetching);
 
     useEffect(() => {
         setToggleDark(
@@ -55,28 +48,34 @@ function App(props) {
                 : false
         );
 
-        if (window.location.pathname.split('/')[1] === 'verify') {
-            return;
+        if (fetching) {
+            dispatch(fetchInitialAuthData());
+        }
+    }, [dispatch, prefersDarkMode, fetching]);
+
+    const AuthRoute = () => {
+        const page = window.location.pathname.split('/')[1];
+
+        if (page === 'verify' || page === 'reset') {
+            return <Outlet />;
         }
 
-        dispatch(fetchAuthData());
-
-        // if (
-        //     window.location.pathname !== '/' &&
-        //     Object.keys(user).length === 0
-        // ) {
-        //     dispatch(logout(navigate));
-        // }
-    }, [dispatch, navigate, prefersDarkMode]);
-
-    const PrivateRoute2 = () => {
-        return fetching ? (
-            <Progress />
-        ) : user.role === 'admin' ? (
-            <Outlet />
-        ) : (
-            <Navigate to="/" />
-        );
+        if (fetching) {
+            return <Progress />;
+        } else if (Object.keys(user).length !== 0) {
+            if (window.location.pathname === '/') {
+                return <Navigate to="/dashboard" />;
+            } else {
+                return <Outlet />;
+            }
+        } else {
+            if (window.location.pathname === '/') {
+                return <Outlet />;
+            } else {
+                dispatch(logout(navigate));
+                return <Navigate to="/" />;
+            }
+        }
     };
 
     const PrivateRoute = () => {
@@ -359,78 +358,82 @@ function App(props) {
             <CssBaseline />
             <AppContainer>
                 <Routes>
-                    <Route exact path="/">
-                        <Route path="" element={<Landing />} />
-                        <Route
-                            path="reset/:token"
-                            element={<ResetPassword />}
-                        />
-                        <Route
-                            path="verify/:token"
-                            element={<Verification />}
-                        />
-                        <Route path="dashboard" element={<Dashboard />} />
-                        <Route path="overview" element={<Overview />} />
-                        <Route exact path="search">
+                    <Route exact path="" element={<AuthRoute />}>
+                        <Route exact path="/">
+                            <Route path="" element={<Landing />} />
                             <Route
-                                path=""
+                                path="reset/:token"
+                                element={<ResetPassword />}
+                            />
+                            <Route
+                                path="verify/:token"
+                                element={<Verification />}
+                            />
+                            <Route path="dashboard" element={<Dashboard />} />
+                            <Route path="overview" element={<Overview />} />
+                            <Route exact path="search">
+                                <Route
+                                    path=""
+                                    element={
+                                        <Navigate to="/search/dances" replace />
+                                    }
+                                />
+                                <Route
+                                    path="dances"
+                                    element={
+                                        <Search type={searchType.DANCES} />
+                                    }
+                                />
+                                <Route
+                                    path="teams"
+                                    element={<Search type={searchType.TEAMS} />}
+                                />
+                                <Route
+                                    exact
+                                    path="pros"
+                                    element={<Search type={searchType.PROS} />}
+                                />
+                                <Route
+                                    path="fans"
+                                    element={<Search type={searchType.FANS} />}
+                                />
+                            </Route>
+                            <Route path="activity" element={<Activity />} />
+                            <Route
+                                path="account"
                                 element={
-                                    <Navigate to="/search/dances" replace />
+                                    <Account
+                                        toggleDark={toggleDark}
+                                        handleDarkMode={handleDarkMode}
+                                    />
                                 }
                             />
+                            <Route path="admin" element={<PrivateRoute />}>
+                                <Route path="" element={<Admin />} />
+                            </Route>
                             <Route
-                                path="dances"
-                                element={<Search type={searchType.DANCES} />}
-                            />
-                            <Route
-                                path="teams"
-                                element={<Search type={searchType.TEAMS} />}
+                                exact
+                                path="teams/:id/*"
+                                element={<Individuals />}
                             />
                             <Route
                                 exact
-                                path="pros"
-                                element={<Search type={searchType.PROS} />}
+                                path="pros/:id/*"
+                                element={<Individuals />}
                             />
                             <Route
-                                path="fans"
-                                element={<Search type={searchType.FANS} />}
+                                exact
+                                path="fans/:username/*"
+                                element={<Individuals />}
+                            />
+                            <Route
+                                exact
+                                path="dances/:id/*"
+                                element={<Individuals />}
                             />
                         </Route>
-                        <Route path="activity" element={<Activity />} />
-                        <Route
-                            path="account"
-                            element={
-                                <Account
-                                    toggleDark={toggleDark}
-                                    handleDarkMode={handleDarkMode}
-                                />
-                            }
-                        />
-                        <Route path="admin" element={<PrivateRoute />}>
-                            <Route path="" element={<Admin />} />
-                        </Route>
-                        <Route
-                            exact
-                            path="teams/:id/*"
-                            element={<Individuals />}
-                        />
-                        <Route
-                            exact
-                            path="pros/:id/*"
-                            element={<Individuals />}
-                        />
-                        <Route
-                            exact
-                            path="fans/:username/*"
-                            element={<Individuals />}
-                        />
-                        <Route
-                            exact
-                            path="dances/:id/*"
-                            element={<Individuals />}
-                        />
-                        <Route path="*" element={<NotFound />} />
                     </Route>
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
             </AppContainer>
         </ThemeProvider>
@@ -440,13 +443,5 @@ function App(props) {
 const AppContainer = styled(Paper)`
     min-height: 100vh;
 `;
-
-// export default function App() {
-//     return (
-//         <AuthProvider>
-//             <InnerApp />
-//         </AuthProvider>
-//     );
-// }
 
 export default App;

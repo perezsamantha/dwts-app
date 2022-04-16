@@ -7,8 +7,8 @@ import pool from '../api/pool.js';
 import ac from '../roles.js';
 
 import { sendEmail } from '../email/sendEmail.js';
-import { messages } from '../messages.js';
 import { reset, verify } from '../email/emailTemplate.js';
+import { messages } from '../messages.js';
 
 import { OAuth2Client } from 'google-auth-library';
 
@@ -208,7 +208,7 @@ export const signIn = async (req, res) => {
                 { expiresIn: '1h' }
             );
 
-            res.cookie('da_jwt', token, {
+            res.cookie('da_token', token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: 'Strict',
@@ -363,15 +363,7 @@ export const googleAuth = async (req, res) => {
             [user_id]
         );
 
-        const new_token = jwt.sign(
-            {
-                id: user.rows[0].id,
-            },
-            process.env.SECRET_STRING,
-            { expiresIn: '1h' }
-        );
-
-        res.cookie('da_jwt', new_token, {
+        res.cookie('da_token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'Strict',
@@ -512,7 +504,7 @@ export const verifyEmail = async (req, res) => {
             { expiresIn: '1h' }
         );
 
-        res.cookie('da_jwt', token, {
+        res.cookie('da_token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'Strict',
@@ -872,7 +864,7 @@ export const fetchAuthData = async (req, res) => {
 
 export const logout = async (req, res) => {
     try {
-        res.cookie('da_jwt', '', {
+        res.cookie('da_token', '', {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'Strict',

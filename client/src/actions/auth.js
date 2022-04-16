@@ -110,6 +110,21 @@ export const resetPassword =
         }
     };
 
+export const fetchInitialAuthData = () => async (dispatch) => {
+    dispatch({ type: actionType.INITIALAUTHFETCH_REQUEST });
+
+    try {
+        const { data } = await api.fetchAuthData();
+
+        dispatch({ type: actionType.INITIALAUTHFETCH_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: actionType.INITIALAUTHFETCH_FAILURE,
+            payload: error,
+        });
+    }
+};
+
 export const fetchAuthData = () => async (dispatch) => {
     dispatch({ type: actionType.AUTHFETCH_REQUEST });
 

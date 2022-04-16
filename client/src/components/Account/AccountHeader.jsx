@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Avatar, Box, Button, Divider, Stack, Typography } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { BsThreeDots } from 'react-icons/bs';
 import SocialsLink from '../shared/SocialsLink';
 import FavoritesWrapper from '../Favorites/Favorites';
@@ -14,13 +14,17 @@ import {
 } from '../shared/muiStyles';
 import { BsStopwatch } from 'react-icons/bs';
 import { IoBalloonOutline } from 'react-icons/io5';
+import { fetchAuthData } from '../../actions/auth';
 
 function AccountHeader(props) {
+    const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.authData);
     const loading = useSelector((state) => state.loading.AUTHFETCH);
     const [open, setOpen] = useState(false);
 
-    useEffect(() => {}, []);
+    useEffect(() => {
+        dispatch(fetchAuthData());
+    }, [dispatch]);
 
     const handleClose = () => {
         setOpen(false);
