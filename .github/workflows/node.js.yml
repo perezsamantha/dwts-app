@@ -32,3 +32,5 @@ jobs:
           client/package-lock.json
     - run: npm ci
       working-directory: ${{ matrix.dir }}
+    - run: npm run build --if-present
+      working-directory: ${{ matrix.dir }}
