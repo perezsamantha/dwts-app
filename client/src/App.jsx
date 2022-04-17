@@ -22,7 +22,7 @@ import { CssBaseline, Paper, useMediaQuery } from '@mui/material';
 import 'swiper/css/bundle';
 import { fetchInitialAuthData, logout } from './actions/auth';
 import Progress from './components/shared/Progress';
-import styled from '@emotion/styled';
+import { styled } from '@mui/system';
 
 function App() {
     const navigate = useNavigate();
@@ -38,8 +38,11 @@ function App() {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.initialAuth);
     const fetching = useSelector((state) => state.auth.initialFetching);
+    const page = window.location.pathname.split('/')[1];
+    //const [fetching, setFetching] = useState(true);
 
     useEffect(() => {
+        console.log('why');
         setToggleDark(
             localStorage.getItem('theme')
                 ? localStorage.getItem('theme') === 'dark'
@@ -48,21 +51,23 @@ function App() {
                 : false
         );
 
-        if (fetching) {
+        if (page === 'verify' || page === 'reset') {
+            return;
+        } else if (fetching) {
             dispatch(fetchInitialAuthData());
+            //setFetching(false);
         }
-    }, [dispatch, prefersDarkMode, fetching]);
+    }, [fetching, prefersDarkMode, page, dispatch]);
 
     const AuthRoute = () => {
-        const page = window.location.pathname.split('/')[1];
-
         if (page === 'verify' || page === 'reset') {
             return <Outlet />;
         }
+        console.log(fetching);
 
         if (fetching) {
             return <Progress />;
-        } else if (Object.keys(user).length !== 0) {
+        } else if (Object.keys(user).includes('id')) {
             if (window.location.pathname === '/') {
                 return <Navigate to="/dashboard" />;
             } else {

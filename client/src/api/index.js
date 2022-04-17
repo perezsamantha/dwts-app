@@ -45,6 +45,7 @@ export const updateUser = (id, user) => API.patch(`/users/update/${id}`, user);
 export const updateAuth = (user) => API.patch(`/users/update/auth`, user);
 export const setUserPic = (id, image) =>
     API.patch(`/users/setPic/${id}`, image);
+export const setAuthPic = (image) => API.patch(`/users/setPic/auth`, image);
 export const findUserById = (id) => API.get(`/users/admin/${id}`);
 export const findUserByUsername = (username) => API.get(`/users/${username}`);
 export const fetchUsers = () => API.get('/users/');

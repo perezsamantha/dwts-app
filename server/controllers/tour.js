@@ -209,7 +209,6 @@ export const addCast = async (req, res) => {
 
         res.status(200).json(cast.rows[0]);
     } catch (error) {
-        console.log(error);
         res.status(500).json({ message: error });
     }
 };

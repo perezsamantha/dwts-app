@@ -59,6 +59,7 @@ function SignIn() {
     };
 
     const handleOAuth = async (googleData) => {
+        setFormData(initialState);
         dispatch(googleAuth({ token: googleData.tokenId }, navigate));
         setPageSwitch(false);
     };

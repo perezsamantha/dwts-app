@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import { styled } from '@mui/system';
 import { Button, TextField } from '@mui/material';
 
 export const StyledTextField = styled(TextField)({

@@ -1,5 +1,11 @@
 import { heightsInInches } from '../constants/dropdowns';
 
+export const initialAuthState = {
+    authData: {},
+    initialAuth: {},
+    initialFetching: true,
+};
+
 export const initialCelebState = {
     celebs: [],
     celeb: {

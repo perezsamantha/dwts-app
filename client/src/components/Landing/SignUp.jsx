@@ -106,7 +106,7 @@ function SignUp() {
     const handleShowPass = () => setShowPass((prevShowPass) => !prevShowPass);
 
     return (
-        <Stack width={1} alignItems="center" spacing={2}>
+        <Stack width={1} alignItems="center">
             {errorMsg &&
                 errorMsg !== 'OAuth user' &&
                 errorMsg !== 'OAuth username' &&
@@ -121,7 +121,7 @@ function SignUp() {
                     <Alert severity="info">{authMsg}</Alert>
                 </Box>
             )}
-            <Box component="form" noValidate autoComplete="off">
+            <Box component="form" noValidate autoComplete="off" mb={1}>
                 <StyledTextField
                     fullWidth
                     name="username"

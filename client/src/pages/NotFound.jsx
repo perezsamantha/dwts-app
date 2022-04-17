@@ -1,20 +1,24 @@
-import { Button, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Stack, Typography } from '@mui/material';
 import { ExtraContainer, ExtraPage } from '../components/shared/muiStyles';
+import { Link } from 'react-router-dom';
 
 function NotFound() {
-    const navigate = useNavigate();
-
     return (
         <ExtraPage>
             <ExtraContainer elevation={4}>
-                <Typography mb={1}>Page not found</Typography>
-                <Button
-                    variant="contained"
-                    onClick={() => navigate('/dashboard')}
-                >
-                    Return Home
-                </Button>
+                <Stack spacing={1}>
+                    <Typography variant="h4">Page Not Found!</Typography>
+                    <Typography sx={{ color: 'text.secondary' }}>
+                        <Link
+                            to={{ pathname: `/` }}
+                            style={{
+                                color: 'inherit',
+                            }}
+                        >
+                            Return to sign in page
+                        </Link>
+                    </Typography>
+                </Stack>
             </ExtraContainer>
         </ExtraPage>
     );

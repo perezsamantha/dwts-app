@@ -4,6 +4,8 @@
     "private": true,
     "dependencies": {
         "@date-io/date-fns": "^2.13.1",
+        "@emotion/react": "^11.9.0",
+        "@emotion/styled": "^11.8.1",
         "@fortawesome/fontawesome-svg-core": "^1.2.36",
         "@fortawesome/free-brands-svg-icons": "^6.1.1",
         "@fortawesome/free-solid-svg-icons": "^5.15.4",

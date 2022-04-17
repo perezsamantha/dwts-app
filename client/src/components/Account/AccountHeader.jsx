@@ -34,7 +34,7 @@ function AccountHeader(props) {
         <Progress />
     ) : (
         <AccountWrapper>
-            <AccountContainer elevation={3} sx={{ borderRadius: 10 }}>
+            <AccountContainer elevation={3} sx={{ borderRadius: 5 }}>
                 <Box
                     sx={{
                         width: '100%',
@@ -43,9 +43,11 @@ function AccountHeader(props) {
                         justifyContent: 'space-between',
                     }}
                 >
-                    <Button disabled sx={{ opacity: 0 }}>
-                        <BsThreeDots style={{ width: 25, height: 25 }} />
-                    </Button>
+                    <Box sx={{ opacity: 0 }} ml={1}>
+                        <Button disabled>
+                            <BsThreeDots style={{ width: 25, height: 25 }} />
+                        </Button>
+                    </Box>
                     <Avatar
                         sx={{ width: 125, height: 125, marginTop: -8 }}
                         alt="default"
@@ -53,9 +55,11 @@ function AccountHeader(props) {
                     >
                         {user.username.charAt(0)}
                     </Avatar>
-                    <Button onClick={() => setOpen(true)}>
-                        <BsThreeDots style={{ width: 25, height: 25 }} />
-                    </Button>
+                    <Box mr={1}>
+                        <Button onClick={() => setOpen(true)}>
+                            <BsThreeDots style={{ width: 25, height: 25 }} />
+                        </Button>
+                    </Box>
                 </Box>
 
                 <Stack my={1}>

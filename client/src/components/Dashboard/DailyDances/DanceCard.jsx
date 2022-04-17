@@ -8,7 +8,7 @@ import {
     Stack,
     Typography,
 } from '@mui/material';
-import styled from '@emotion/styled';
+import { styled } from '@mui/system';
 import { useEffect, useState } from 'react';
 import {
     BsClipboardCheck,

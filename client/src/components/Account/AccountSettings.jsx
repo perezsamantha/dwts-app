@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import CoverPicUpload from '../shared/CoverPicUpload';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUserPic, updateUser } from '../../actions/auth';
+import { setAuthPic, updateAuth } from '../../actions/auth';
 import {
     days,
     monthNames,
@@ -29,7 +29,6 @@ function AccountSettings(props) {
     const [formData, setFormData] = useState(user);
     const [fileData, setFileData] = useState(null);
     const [editor, setEditor] = useState(null);
-    const id = props.user?.id;
     const dispatch = useDispatch();
     const [deleteOpen, setDeleteOpen] = useState(false);
 
@@ -56,11 +55,11 @@ function AccountSettings(props) {
                     `${Date.now()}-${fileData.name}`
                 );
 
-                dispatch(setUserPic(id, data));
+                dispatch(setAuthPic(data));
             });
         }
 
-        dispatch(updateUser(formData));
+        dispatch(updateAuth(formData));
 
         props.close();
     };

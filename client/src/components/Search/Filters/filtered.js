@@ -244,14 +244,14 @@ export const filterFans = (fans, filters) => {
                     if (filters.pros.length === 0) {
                         return true;
                     }
-                    return filters.pros.every((id) => {
+                    return filters.pros.some((id) => {
                         return fan.likes.pros.some((pro) => pro.id === id);
                     });
                 case 'teams':
                     if (filters.teams.length === 0) {
                         return true;
                     }
-                    return filters.teams.every((id) => {
+                    return filters.teams.some((id) => {
                         return fan.likes.teams.some((team) => team.id === id);
                     });
                 default:

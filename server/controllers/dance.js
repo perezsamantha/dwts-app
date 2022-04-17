@@ -119,7 +119,6 @@ export const addDance = async (req, res) => {
 
         res.status(200).json(dance.rows[0]);
     } catch (error) {
-        console.log(error);
         res.status(500).json({ message: error });
     }
 };
@@ -832,7 +831,6 @@ export const findDailyDance = async (req, res) => {
             typeof dance.rows[0] === 'undefined' ? {} : dance.rows[0]
         );
     } catch (error) {
-        console.log(error);
         res.status(500).json({ message: error.message });
     }
 };

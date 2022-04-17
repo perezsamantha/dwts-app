@@ -6,7 +6,7 @@ import {
     Box,
     Paper,
 } from '@mui/material';
-import styled from '@emotion/styled';
+import { styled } from '@mui/system';
 import { FiSearch, FiBarChart2, FiActivity } from 'react-icons/fi';
 import { AiOutlineUser } from 'react-icons/ai';
 import { BsStars } from 'react-icons/bs';

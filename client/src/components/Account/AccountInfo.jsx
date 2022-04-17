@@ -165,7 +165,6 @@ function AccountInfo(props) {
 
                 {settingsOpen && (
                     <AccountSettings
-                        user={user}
                         open={settingsOpen}
                         close={closeSettings}
                     />

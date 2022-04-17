@@ -70,7 +70,6 @@ export const fetchScores = async (req, res) => {
 
         res.status(200).json(scores.rows);
     } catch (error) {
-        console.log(error.message);
         res.status(500).json({ message: error.message });
     }
 };

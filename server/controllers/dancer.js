@@ -154,7 +154,6 @@ export const findDancerById = async (req, res) => {
 
         res.status(200).json(dancer.rows[0]);
     } catch (error) {
-        console.log(error.message);
         res.status(500).json({ message: error.message });
     }
 };

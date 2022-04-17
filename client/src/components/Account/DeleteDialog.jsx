@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { deleteUser } from '../../actions/auth';
+import { deleteAuth } from '../../actions/auth';
 import {
     Button,
     DialogActions,
@@ -19,7 +19,7 @@ function DeleteDialog(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        dispatch(deleteUser(navigate));
+        dispatch(deleteAuth(navigate));
 
         props.close();
     };

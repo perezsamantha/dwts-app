@@ -27,7 +27,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionType from '../../../constants/actionTypes';
 import { initialProState } from '../../../reducers/initialState';
-import styled from '@emotion/styled';
+import { styled } from '@mui/system';
 
 function ProFilters() {
     const [open, setOpen] = useState(false);
@@ -67,7 +67,6 @@ function ProFilters() {
 
     const handleClear = () => {
         setFilters(Object.assign({}, initialProState.filters));
-        console.log(filters);
     };
 
     return (

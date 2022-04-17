@@ -34,7 +34,7 @@ function AppInfo(props) {
                         </Typography>
                         <Typography>
                             Detailed information about the development process
-                            and additional credits can be viewd on the app's
+                            and additional credits can be viewed on the app's
                             documentation site here.
                         </Typography>
                     </Stack>
@@ -61,10 +61,12 @@ function AppInfo(props) {
                     <Typography>
                         No data is collected or used for tracking purposes in
                         this web application. The app uses one cookie essential
-                        for app functionality - a URL-safe JSON web token (JWT)
-                        used in every API call to the app's server to ensure the
-                        user is authenticated and authorized to access the
-                        requested server data.
+                        for app functionality - either a URL-safe JSON web token
+                        (JWT) or Google OAuth 2.0 access token dependent on the
+                        user's sign in method. The token is used in every API
+                        call to the app's server to ensure the user is
+                        authenticated and authorized to access the requested
+                        server data.
                     </Typography>
                 </Stack>
 

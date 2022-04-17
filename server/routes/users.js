@@ -21,6 +21,7 @@ import {
     resendVerificationEmail,
     forgotPassword,
     resetPassword,
+    setAuthPic,
 } from '../controllers/user.js';
 
 import uploadCoverPicture from '../middleware/uploadCoverPicture.js';
@@ -39,31 +40,28 @@ router.post('/resetPassword/:token', resetPassword);
 router.get('/authData', auth, fetchAuthData);
 router.post('/logout', logout);
 router.post('/add', auth, grantAccess('createAny', 'user'), addUser);
-router.get('/', auth, grantAccess('readAny', 'user_admin'), fetchUsers);
-router.get(
-    '/admin/:id',
-    auth,
-    grantAccess('readAny', 'user_admin'),
-    findUserById
-);
+router.get('/', auth, grantAccess('readAny', 'user'), fetchUsers);
+router.get('/admin/:id', auth, grantAccess('readAny', 'user'), findUserById);
 router.get(
     '/:username',
     auth,
-    grantAccess('readAny', 'user'),
+    grantAccess('readAny', 'profile'),
     findUserByUsername
 );
-router.post('/search', auth, grantAccess('readAny', 'user'), searchUsers);
+router.post('/search', auth, grantAccess('readAny', 'profile'), searchUsers);
 router.patch(
     '/update/auth',
     auth,
-    grantAccess('updateOwn', 'user'),
+    grantAccess('updateOwn', 'profile'),
     updateAuth
 );
+router.patch('/update/:id', auth, grantAccess('updateAny', 'user'), updateUser);
 router.patch(
-    '/update/:id',
+    '/setPic/auth',
     auth,
-    grantAccess('updateAny', 'user_admin'),
-    updateUser
+    grantAccess('updateOwn', 'profile'),
+    uploadCoverPicture,
+    setAuthPic
 );
 router.patch(
     '/setPic/:id',
@@ -75,13 +73,13 @@ router.patch(
 router.delete(
     '/delete/auth',
     auth,
-    grantAccess('deleteOwn', 'user'),
+    grantAccess('deleteOwn', 'profile'),
     deleteAuth
 );
 router.delete(
     '/delete/:id',
     auth,
-    grantAccess('deleteAny', 'user_admin'),
+    grantAccess('deleteAny', 'user'),
     deleteUser
 );
 

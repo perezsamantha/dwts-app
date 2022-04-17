@@ -58,7 +58,6 @@ const auth = async (req, res, next) => {
             res.status(200).json({});
         }
     } catch (error) {
-        console.log(error);
         res.cookie('da_token', '', {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',

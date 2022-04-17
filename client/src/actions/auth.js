@@ -140,7 +140,7 @@ export const fetchAuthData = () => async (dispatch) => {
     }
 };
 
-export const updateUser = (user) => async (dispatch) => {
+export const updateAuth = (user) => async (dispatch) => {
     dispatch({ type: actionType.AUTHUPDATE_REQUEST });
 
     try {
@@ -155,11 +155,11 @@ export const updateUser = (user) => async (dispatch) => {
     }
 };
 
-export const setUserPic = (id, image) => async (dispatch) => {
+export const setAuthPic = (image) => async (dispatch) => {
     dispatch({ type: actionType.AUTHUPDATE_REQUEST });
 
     try {
-        const { data } = await api.setUserPic(id, image);
+        const { data } = await api.setAuthPic(image);
 
         dispatch({ type: actionType.AUTHUPDATE_SUCCESS, payload: data });
     } catch (error) {
@@ -170,7 +170,7 @@ export const setUserPic = (id, image) => async (dispatch) => {
     }
 };
 
-export const deleteUser = (navigate) => async (dispatch) => {
+export const deleteAuth = (navigate) => async (dispatch) => {
     dispatch({ type: actionType.AUTHDELETE_REQUEST });
 
     try {

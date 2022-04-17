@@ -3,17 +3,14 @@ import SignIn from './SignIn';
 import SignUp from './SignUp';
 import { motion } from 'framer-motion';
 import { Box, Paper, Tab, Tabs, Typography } from '@mui/material';
-import styled from '@emotion/styled';
+import { styled } from '@mui/system';
 import useWindowDimensions from '../shared/useWindowDimensions';
-// import { useSelector } from 'react-redux';
 
 const LandingWrapper = () => {
     const [isExpanded, setExpanded] = useState(false);
     const [active, setActive] = useState('signin');
     const [wave, setWave] = useState(null);
     const { height, width } = useWindowDimensions();
-
-    //const error = useSelector((state) => state.errors.AUTH);
 
     useEffect(() => {
         setWave(

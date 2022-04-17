@@ -8,12 +8,17 @@ function FanPreview(props) {
     return (
         <Card sx={{ padding: 1, margin: 0 }}>
             <Stack direction="row" alignItems="center" spacing={1}>
-                <Avatar src={fan.cover_pic} sx={{ width: 30, height: 30 }} />
+                <Avatar src={fan.cover_pic} sx={{ width: 40, height: 40 }} />
                 <Stack>
                     <Typography variant="subtitle1">
                         {fan?.nickname || '.'}
                     </Typography>
-                    <Typography variant="subtitle2">@{fan.username}</Typography>
+                    <Typography
+                        variant="subtitle2"
+                        sx={{ color: 'text.secondary' }}
+                    >
+                        @{fan.username}
+                    </Typography>
                 </Stack>
             </Stack>
         </Card>

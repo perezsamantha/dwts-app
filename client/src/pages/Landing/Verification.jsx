@@ -1,5 +1,4 @@
-import { Stack, Typography } from '@mui/material';
-import { useEffect } from 'react';
+import { Button, Stack, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { verifyUser } from '../../actions/auth';
@@ -13,30 +12,30 @@ function Verification() {
 
     const loading = useSelector((state) => state.loading.AUTHVERIFY);
     const errorMsg = useSelector((state) => state.errors.AUTHVERIFY);
+    const user = useSelector((state) => state.auth.authData);
 
-    useEffect(() => {
+    const handleSubmit = () => {
         dispatch(verifyUser(token, navigate));
-    }, [dispatch, token, navigate]);
+    };
 
     return (
         <ExtraPage>
             <ExtraContainer elevation={4}>
                 {errorMsg ? (
-                    <Stack>
+                    <Stack spacing={1}>
                         <Typography variant="h4">{errorMsg}</Typography>
                         <Typography sx={{ color: 'text.secondary' }}>
-                            Return to sign in page{' '}
                             <Link
                                 to={{ pathname: `/` }}
                                 style={{
                                     color: 'inherit',
                                 }}
                             >
-                                here
+                                Return to sign in page
                             </Link>
                         </Typography>
                     </Stack>
-                ) : !loading ? (
+                ) : !loading && Object.keys(user).includes('id') ? (
                     <Stack spacing={1} alignItems="center">
                         <Progress />
                         <Typography variant="h4">Email Verified!</Typography>
@@ -44,8 +43,22 @@ function Verification() {
                             You will be automatically redirected in 5 seconds...
                         </Typography>
                     </Stack>
+                ) : loading ? (
+                    <Stack spacing={1} alignItems="center">
+                        <Progress />
+                        <Typography>Verifying...</Typography>
+                    </Stack>
                 ) : (
-                    <></>
+                    <Stack spacing={2} alignItems="center">
+                        <Typography variant="h4">Email Verification</Typography>
+                        <Button
+                            onClick={handleSubmit}
+                            size="large"
+                            variant="outlined"
+                        >
+                            Click to verify your email
+                        </Button>
+                    </Stack>
                 )}
             </ExtraContainer>
         </ExtraPage>

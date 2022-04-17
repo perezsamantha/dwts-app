@@ -3,9 +3,9 @@ import { AccessControl } from 'accesscontrol';
 const ac = new AccessControl();
 
 ac.grant('fan')
-    .readAny('user')
-    .updateOwn('user')
-    .deleteOwn('user')
+    .readAny('profile')
+    .updateOwn('profile')
+    .deleteOwn('profile')
     .readAny('celeb')
     .readAny('pro')
     .updateAny('pro_like')
@@ -27,9 +27,8 @@ ac.grant('fan')
 ac.grant('pro')
     .extend('fan')
     .createAny('user')
-    .updateAny('user')
     .readAny('user')
-    .readAny('user_admin')
+    .updateAny('user')
     .createAny('celeb')
     .updateAny('celeb')
     .createAny('pro')
@@ -67,6 +66,6 @@ ac.grant('moderator')
     .deleteAny('tour')
     .deleteAny('tour_cast');
 
-ac.grant('admin').extend(['fan', 'pro', 'moderator']).deleteAny('user_admin');
+ac.grant('admin').extend(['fan', 'pro', 'moderator']).deleteAny('user');
 
 export default ac;
