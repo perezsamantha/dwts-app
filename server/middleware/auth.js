@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { messages } from '../messages.js';
 import { OAuth2Client } from 'google-auth-library';
+import pool from '../api/pool.js';
 
 const client = new OAuth2Client(process.env.OAUTH_CLIENT_ID2);
 

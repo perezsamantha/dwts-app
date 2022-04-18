@@ -142,7 +142,7 @@ function SignUp() {
                     fullWidth
                     name="email"
                     placeholder="email"
-                    type="email"
+                    type="text"
                     size={height < 730 ? 'small' : 'normal'}
                     value={formData.email || ''}
                     onChange={handleChange}

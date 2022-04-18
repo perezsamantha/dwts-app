@@ -6,7 +6,7 @@ import {
     fetchAllJudges,
     findJudgeById,
     updateJudge,
-} from '../controllers/Judge.js';
+} from '../controllers/judge.js';
 import { grantAccess } from '../controllers/user.js';
 import auth from '../middleware/auth.js';
 

@@ -28,6 +28,7 @@ const transporter = nodemailer.createTransport({
         refreshToken: process.env.OAUTH_REFRESH_TOKEN,
         accessToken: accessToken,
     },
+    from: process.env.FROM_USER,
     tls: {
         rejectUnauthorized: false,
     },
@@ -41,7 +42,7 @@ transporter.verify((error) => {
 
 export const sendEmail = async (to, content) => {
     const contacts = {
-        from: process.env.MAIL_USER,
+        from: `DWTF App <${process.env.FROM_USER}>`,
         to,
     };
 

@@ -75,8 +75,7 @@ function AppInfo(props) {
                     <Divider />
                     <Typography>
                         Please send all questions, concerns, and suggestions for
-                        future development to dwtsapp@gmail.com or Samantha's
-                        twitter.
+                        future development to samantha@dwtf.app.
                     </Typography>
                 </Stack>
             </DialogContent>

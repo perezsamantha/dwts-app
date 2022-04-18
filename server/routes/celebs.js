@@ -7,7 +7,7 @@ import {
     findCelebById,
     updateCeleb,
     setCelebPic,
-} from '../controllers/Celeb.js';
+} from '../controllers/celeb.js';
 import { grantAccess } from '../controllers/user.js';
 
 import uploadCoverPicture from '../middleware/uploadCoverPicture.js';

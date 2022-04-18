@@ -7,7 +7,7 @@ import {
     findScoreById,
     setUserScore,
     updateScore,
-} from '../controllers/Score.js';
+} from '../controllers/score.js';
 import { grantAccess } from '../controllers/user.js';
 import auth from '../middleware/auth.js';
 
