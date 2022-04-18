@@ -39,10 +39,8 @@ function App() {
     const user = useSelector((state) => state.auth.initialAuth);
     const fetching = useSelector((state) => state.auth.initialFetching);
     const page = window.location.pathname.split('/')[1];
-    //const [fetching, setFetching] = useState(true);
 
     useEffect(() => {
-        console.log('why');
         setToggleDark(
             localStorage.getItem('theme')
                 ? localStorage.getItem('theme') === 'dark'
@@ -55,7 +53,6 @@ function App() {
             return;
         } else if (fetching) {
             dispatch(fetchInitialAuthData());
-            //setFetching(false);
         }
     }, [fetching, prefersDarkMode, page, dispatch]);
 
@@ -63,7 +60,6 @@ function App() {
         if (page === 'verify' || page === 'reset') {
             return <Outlet />;
         }
-        console.log(fetching);
 
         if (fetching) {
             return <Progress />;

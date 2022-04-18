@@ -30,19 +30,19 @@ import toursRouter from './routes/tours.js';
 import tourCastRouter from './routes/tourCast.js';
 import activityRouter from './routes/activity.js';
 
-app.use('/users', usersRouter);
-app.use('/teams', teamsRouter);
-app.use('/pros', prosRouter);
-app.use('/dances', dancesRouter);
-app.use('/seasons', seasonsRouter);
-app.use('/celebs', celebsRouter);
-app.use('/judges', judgesRouter);
-app.use('/episodes', episodesRouter);
-app.use('/scores', scoresRouter);
-app.use('/dancers', dancersRouter);
-app.use('/tours', toursRouter);
-app.use('/tour_cast', tourCastRouter);
-app.use('/activity', activityRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/teams', teamsRouter);
+app.use('/api/pros', prosRouter);
+app.use('/api/dances', dancesRouter);
+app.use('/api/seasons', seasonsRouter);
+app.use('/api/celebs', celebsRouter);
+app.use('/api/judges', judgesRouter);
+app.use('/api/episodes', episodesRouter);
+app.use('/api/scores', scoresRouter);
+app.use('/api/dancers', dancersRouter);
+app.use('/api/tours', toursRouter);
+app.use('/api/tour_cast', tourCastRouter);
+app.use('/api/activity', activityRouter);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`);
