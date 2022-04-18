@@ -82,7 +82,7 @@ function App() {
     const PrivateRoute = () => {
         return fetching ? (
             <Progress />
-        ) : user.role === 'admin' ? (
+        ) : Array.of('admin', 'moderator', 'pro').includes(user.role) ? (
             <Outlet />
         ) : (
             <Navigate to="/" />
