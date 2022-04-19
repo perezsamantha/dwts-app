@@ -4,14 +4,14 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const addSeason = async (req, res) => {
     try {
-        const { id, host, cohost, extra } = req.body;
+        const { id, host, cohost, weeks, extra } = req.body;
         const result = await pool.query(
             `
-            INSERT INTO seasons (id, host, cohost, extra) 
-            VALUES($1, $2, $3, $4) 
+            INSERT INTO seasons (id, host, cohost, weeks, extra) 
+            VALUES($1, $2, $3, $4, $5) 
             RETURNING *
             `,
-            [id, host, cohost, extra]
+            [id, host, cohost, weeks, extra]
         );
 
         res.status(200).json(result.rows[0]);
@@ -72,16 +72,16 @@ export const findSeasonById = async (req, res) => {
 
 export const updateSeason = async (req, res) => {
     const { id } = req.params;
-    const { host, cohost, extra } = req.body;
+    const { host, cohost, weeks, extra } = req.body;
 
     try {
         const result = await pool.query(
             `UPDATE seasons 
-            SET id = $1, host = $2, cohost = $3, extra = $4 
-            WHERE id = $5 
+            SET id = $1, host = $2, cohost = $3, weeks = $4, extra = $5 
+            WHERE id = $6
             RETURNING * 
             `,
-            [req.body.id, host, cohost, extra, id]
+            [req.body.id, host, cohost, weeks, extra, id]
         );
 
         res.status(200).json(result.rows[0]);

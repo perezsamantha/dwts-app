@@ -23,32 +23,35 @@ function StatsTable(props) {
         >
             <Table>
                 <TableBody>
-                    {arr.map((item, index) => (
-                        <TableRow
-                            key={index}
-                            sx={{
-                                'td, th': {
-                                    border: 0,
-                                },
-                            }}
-                        >
-                            <TableCell width={1}>{item.key}</TableCell>
-                            <TableCell>
-                                {item.data
-                                    .map((item) =>
-                                        type === 'pro'
-                                            ? getFullName(item)
-                                            : type === 'team'
-                                            ? getFullTeamName(
-                                                  item.celeb,
-                                                  item.pro
-                                              )
-                                            : ''
-                                    )
-                                    .join(', ')}
-                            </TableCell>
-                        </TableRow>
-                    ))}
+                    {arr.map(
+                        (item, index) =>
+                            item.key !== 0 && (
+                                <TableRow
+                                    key={index}
+                                    sx={{
+                                        'td, th': {
+                                            border: 0,
+                                        },
+                                    }}
+                                >
+                                    <TableCell width={1}>{item.key}</TableCell>
+                                    <TableCell>
+                                        {item.data
+                                            .map((item) =>
+                                                type === 'pro'
+                                                    ? getFullName(item)
+                                                    : type === 'team'
+                                                    ? getFullTeamName(
+                                                          item.celeb,
+                                                          item.pro
+                                                      )
+                                                    : ''
+                                            )
+                                            .join(', ')}
+                                    </TableCell>
+                                </TableRow>
+                            )
+                    )}
                 </TableBody>
             </Table>
         </TableContainer>

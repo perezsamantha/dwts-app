@@ -31,7 +31,10 @@ function ResetPassword() {
     const [showPass, setShowPass] = useState(false);
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value === '' ? null : e.target.value,
+        });
     };
 
     const handleSubmit = (e) => {

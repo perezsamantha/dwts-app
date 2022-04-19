@@ -57,7 +57,7 @@ export const fetchRecentLikes = async (req, res) => {
                 pro_likes
             ) tb
             ORDER BY liked_at DESC
-            LIMIT 10
+            LIMIT 25
             `
         );
 

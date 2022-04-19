@@ -3,8 +3,8 @@ import { monthNames } from '../../../constants/dropdowns';
 export const getCastBirthdays = (arr, today) => {
     const isToday = (date) => {
         return (
-            date.getDate() === today.getDate() &&
-            date.getMonth() === today.getMonth()
+            date.getUTCDate() === today.getDate() &&
+            date.getUTCMonth() === today.getMonth()
         );
     };
 

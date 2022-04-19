@@ -51,7 +51,10 @@ export const signUp = async (req, res) => {
         if (password != confirm_password)
             return res.status(400).json({ message: messages.passwordMismatch });
 
-        const hashed_password = await bcrypt.hash(password, 12);
+        const hashed_password = await bcrypt.hash(
+            password,
+            process.env.SALT_ROUNDS
+        );
 
         const result = await pool.query(
             `
@@ -59,10 +62,11 @@ export const signUp = async (req, res) => {
                 username, 
                 email, 
                 password, 
+                nickname,
                 email_verified, 
                 "role"
             ) 
-            VALUES($1, $2, $3, default, default) 
+            VALUES($1, $2, $3, default, default, default) 
             RETURNING id
             `,
             [username, email, hashed_password]
@@ -265,7 +269,7 @@ export const signIn = async (req, res) => {
                     id: user.rows[0].id,
                 },
                 process.env.SECRET_STRING,
-                { expiresIn: '1h' }
+                { expiresIn: '182d' }
             );
 
             res.cookie('da_token', token, {
@@ -336,10 +340,11 @@ export const googleAuth = async (req, res) => {
                 INSERT INTO users (
                     username, 
                     email, 
+                    nickname,
                     email_verified, 
                     "role"
                 ) 
-                VALUES($1, $2, true, default) 
+                VALUES($1, $2, default, true, default) 
                 RETURNING id
                 `,
                 [username, email]
@@ -683,7 +688,7 @@ export const verifyEmail = async (req, res) => {
                 id: user.rows[0].id,
             },
             process.env.SECRET_STRING,
-            { expiresIn: '1h' }
+            { expiresIn: '182d' }
         );
 
         res.cookie('da_token', token, {
@@ -868,7 +873,10 @@ export const resetPassword = async (req, res) => {
         if (password != confirm_password)
             return res.status(400).json({ message: messages.passwordMismatch });
 
-        const hashed_password = await bcrypt.hash(password, 12);
+        const hashed_password = await bcrypt.hash(
+            password,
+            process.env.SALT_ROUNDS
+        );
 
         await pool.query(
             `
@@ -1101,7 +1109,10 @@ export const addUser = async (req, res) => {
             return res.status(409).json({ message: messages.existingUsername });
         }
 
-        const hashed_password = await bcrypt.hash(password, 12);
+        const hashed_password = await bcrypt.hash(
+            password,
+            process.env.SALT_ROUNDS
+        );
 
         const result = await pool.query(
             `
@@ -1421,8 +1432,7 @@ export const searchUsers = async (req, res) => {
                 GROUP BY dl.user_id
             ) dl 
             ON u.id = dl.user_id
-            WHERE email_verified = true AND username || ' ' || nickname ILIKE $1 
-                OR nickname IS NULL
+            WHERE email_verified = true AND username || ' ' || nickname ILIKE $1
             GROUP BY u.id
             ORDER BY username
             `,

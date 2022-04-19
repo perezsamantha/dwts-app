@@ -157,7 +157,7 @@ function DanceFilters() {
                             </Select>
                         </FormControl>
 
-                        <Typography>Theme Weeks</Typography>
+                        <Typography>Theme Weeks/Nights</Typography>
                         <FormControl>
                             <Select
                                 multiple

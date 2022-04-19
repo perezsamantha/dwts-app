@@ -97,7 +97,9 @@ function AccountInfo(props) {
                         </Button>
                     </Box>
 
-                    {user.role === 'admin' && (
+                    {Array.of('pro', 'moderator', 'admin').includes(
+                        user.role
+                    ) && (
                         <Box>
                             <Button onClick={() => navigate('/admin')}>
                                 <Stack

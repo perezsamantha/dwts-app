@@ -59,8 +59,12 @@ function DailyDancesOverview() {
 
     const withinWeek = (date) => {
         return (
-            date >= startDate.setHours(0, 0, 0, 0) &&
-            date <= endDate.setHours(0, 0, 0, 0)
+            date.getUTCDate() >= startDate.getDate() &&
+            date.getUTCMonth() >= startDate.getMonth() &&
+            date.getUTCFullYear() >= startDate.getFullYear() &&
+            date.getUTCDate() <= endDate.getDate() &&
+            date.getUTCMonth() <= endDate.getMonth() &&
+            date.getUTCFullYear() <= endDate.getFullYear()
         );
     };
 
@@ -78,12 +82,14 @@ function DailyDancesOverview() {
             const dance = arr.find((d) => {
                 const dailyDate = new Date(d.daily_date);
                 date.setHours(0, 0, 0, 0);
-                if (dailyDate > date) {
-                    return false;
-                } else if (dailyDate < date) {
-                    return false;
-                } else {
+                if (
+                    date.getDate() === dailyDate.getUTCDate() &&
+                    date.getMonth() === dailyDate.getUTCMonth() &&
+                    date.getFullYear() === dailyDate.getUTCFullYear()
+                ) {
                     return true;
+                } else {
+                    return false;
                 }
             });
 

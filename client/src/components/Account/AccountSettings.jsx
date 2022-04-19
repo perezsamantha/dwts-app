@@ -37,18 +37,26 @@ function AccountSettings(props) {
     }, [user]);
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value === '' ? null : e.target.value,
+        });
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        if (!formData.username || !formData.nickname) {
+            return;
+        }
+
         if (editor != null) {
             const data = new FormData();
 
-            const canvas = editor.getImageScaledToCanvas();
+            const canvas = editor.getImage();
 
             canvas.toBlob(function (blob) {
+                console.log(blob);
                 data.append(
                     'cover_pic',
                     blob,

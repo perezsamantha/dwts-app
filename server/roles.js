@@ -28,7 +28,7 @@ ac.grant('pro')
     .extend('fan')
     .createAny('user')
     .readAny('user')
-    .updateAny('user')
+    //.updateAny('user')
     .createAny('celeb')
     .updateAny('celeb')
     .createAny('pro')
@@ -66,6 +66,9 @@ ac.grant('moderator')
     .deleteAny('tour')
     .deleteAny('tour_cast');
 
-ac.grant('admin').extend(['fan', 'pro', 'moderator']).deleteAny('user');
+ac.grant('admin')
+    .extend(['fan', 'pro', 'moderator'])
+    .updateAny('user')
+    .deleteAny('user');
 
 export default ac;

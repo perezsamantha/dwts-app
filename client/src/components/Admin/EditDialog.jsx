@@ -70,10 +70,14 @@ function EditDialog(props) {
     }, [props]);
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value === '' ? null : e.target.value,
+        });
     };
 
     const handleBirthday = (date) => {
+        console.log(date);
         setFormData({ ...formData, birthday: date });
     };
 

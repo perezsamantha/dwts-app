@@ -406,6 +406,7 @@ function Table(props) {
                 },
                 { field: 'host', headerName: 'Host', width: 125 },
                 { field: 'cohost', headerName: 'Co-host', width: 125 },
+                { field: 'weeks', headerName: 'Weeks', width: 75 },
                 { field: 'extra', headerName: 'Extra', minWidth: 150, flex: 1 },
                 {
                     field: 'actions',

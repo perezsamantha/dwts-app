@@ -15,6 +15,7 @@ import {
     getFullName,
     getFullTeamName,
 } from '../shared/functions';
+import { Link } from 'react-router-dom';
 
 function RecentLikes() {
     const dispatch = useDispatch();
@@ -54,13 +55,24 @@ function RecentLikes() {
                                 <Box key={index}>
                                     <Stack direction="row" spacing={2}>
                                         <Box>
-                                            <Avatar />
+                                            <Avatar src={like.user.cover_pic} />
                                         </Box>
                                         <Box>
                                             <Stack>
                                                 <Typography variant="body2">
-                                                    @{like.user.username} liked{' '}
-                                                    {getType(like)}
+                                                    <Link
+                                                        to={{
+                                                            pathname: `/fans/${like.user.username}`,
+                                                        }}
+                                                        style={{
+                                                            textDecoration:
+                                                                'inherit',
+                                                            color: 'inherit',
+                                                        }}
+                                                    >
+                                                        @{like.user.username}{' '}
+                                                    </Link>
+                                                    liked {getType(like)}
                                                 </Typography>
                                                 <Typography
                                                     color="text.secondary"

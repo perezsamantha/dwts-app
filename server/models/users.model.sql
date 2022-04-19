@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS users(
     username VARCHAR(30) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(60),
-    nickname VARCHAR(30),
+    nickname VARCHAR(30) NOT NULL DEFAULT '.',
     email_verified BOOLEAN DEFAULT FALSE NOT NULL,
     watching_since REAL,
     twitter VARCHAR(30),

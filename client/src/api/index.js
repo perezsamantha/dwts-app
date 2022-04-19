@@ -6,7 +6,7 @@ const isSameOrigin = (url) => {
 
 const baseURL =
     process.env.NODE_ENV === 'production'
-        ? 'https://dwtf.app/api'
+        ? process.env.REACT_APP_CLIENT_ORIGIN
         : 'http://localhost:5000/api';
 
 const API = axios.create({

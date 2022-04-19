@@ -77,9 +77,13 @@ function SeasonsOverview() {
                                                 component="th"
                                                 scope="row"
                                             >
-                                                {season.id}
+                                                {season.id === 27.5
+                                                    ? 'Juniors'
+                                                    : season.id}
                                             </TableCell>
-                                            <TableCell>12</TableCell>
+                                            <TableCell>
+                                                {season.weeks}
+                                            </TableCell>
                                             <TableCell>
                                                 {season.teams.length}
                                             </TableCell>

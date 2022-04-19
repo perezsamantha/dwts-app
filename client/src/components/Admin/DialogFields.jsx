@@ -243,6 +243,23 @@ function DialogFields(props) {
                 </TextField>
             )}
 
+            {Array.of(tableType.SEASON).includes(table) && (
+                <TextField
+                    name="weeks"
+                    label="Weeks"
+                    type="text"
+                    select
+                    value={formData.weeks || ''}
+                    onChange={handleChange}
+                >
+                    {weeks.map((week, index) => (
+                        <MenuItem key={index} value={week}>
+                            {week}
+                        </MenuItem>
+                    ))}
+                </TextField>
+            )}
+
             {Array.of(tableType.TOUR).includes(table) && (
                 <TextField
                     name="name"
@@ -466,37 +483,6 @@ function DialogFields(props) {
                 />
             )}
 
-            {Array.of(tableType.TEAM).includes(table) && (
-                <Autocomplete
-                    name="mentor_id"
-                    options={pros}
-                    autoHighlight
-                    value={autoValues.mentor || null}
-                    getOptionLabel={(option) =>
-                        option?.last_name
-                            ? `${option.first_name} ${option.last_name}`
-                            : option?.first_name
-                            ? `${option.first_name}`
-                            : ''
-                    }
-                    renderOption={(props, option) => (
-                        <Box component="li" {...props}>
-                            {option.first_name} {option.last_name}
-                        </Box>
-                    )}
-                    renderInput={(params) => (
-                        <TextField {...params} label="Mentor" />
-                    )}
-                    onChange={(e, newValue) => {
-                        setFormData({
-                            ...formData,
-                            mentor_id: newValue?.id,
-                        });
-                        setAutoValues({ ...autoValues, mentor: newValue });
-                    }}
-                />
-            )}
-
             {Array.of(
                 tableType.TEAM,
                 tableType.EPISODE,
@@ -549,6 +535,37 @@ function DialogFields(props) {
                                 #team
                             </InputAdornment>
                         ),
+                    }}
+                />
+            )}
+
+            {Array.of(tableType.TEAM).includes(table) && (
+                <Autocomplete
+                    name="mentor_id"
+                    options={pros}
+                    autoHighlight
+                    value={autoValues.mentor || null}
+                    getOptionLabel={(option) =>
+                        option?.last_name
+                            ? `${option.first_name} ${option.last_name}`
+                            : option?.first_name
+                            ? `${option.first_name}`
+                            : ''
+                    }
+                    renderOption={(props, option) => (
+                        <Box component="li" {...props}>
+                            {option.first_name} {option.last_name}
+                        </Box>
+                    )}
+                    renderInput={(params) => (
+                        <TextField {...params} label="Mentor" />
+                    )}
+                    onChange={(e, newValue) => {
+                        setFormData({
+                            ...formData,
+                            mentor_id: newValue?.id,
+                        });
+                        setAutoValues({ ...autoValues, mentor: newValue });
                     }}
                 />
             )}

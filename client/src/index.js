@@ -12,15 +12,17 @@ import thunk from 'redux-thunk';
 
 import { BrowserRouter } from 'react-router-dom';
 
-const store = createStore(
-    reducers,
-    compose(
-        applyMiddleware(thunk),
-        process.env.NODE_ENV === 'development' &&
-            window.__REDUX_DEVTOOLS_EXTENSION__ &&
-            window.__REDUX_DEVTOOLS_EXTENSION__()
-    )
-);
+// const store = createStore(
+//     reducers,
+//     compose(
+//         applyMiddleware(thunk),
+//         process.env.NODE_ENV === 'development' &&
+//             window.__REDUX_DEVTOOLS_EXTENSION__ &&
+//             window.__REDUX_DEVTOOLS_EXTENSION__()
+//     )
+// );
+
+const store = createStore(reducers, compose(applyMiddleware(thunk)));
 
 ReactDOM.render(
     <Provider store={store}>

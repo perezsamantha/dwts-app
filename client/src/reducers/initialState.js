@@ -57,6 +57,7 @@ export const initialSeasonState = {
         cover_pic: null,
         host: null,
         cohost: null,
+        weeks: null,
         extra: null,
     },
 };
@@ -191,7 +192,7 @@ export const initialUserState = {
         email: null,
         password: null,
         email_verified: false,
-        nickname: null,
+        nickname: '.',
         watching_since: null,
         instagram: null,
         twitter: null,

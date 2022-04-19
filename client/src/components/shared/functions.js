@@ -8,13 +8,13 @@ export const convertDate = (val) => {
     const date = new Date(val);
 
     return (
-        (date.getMonth() > 8
-            ? date.getMonth() + 1
-            : '0' + (date.getMonth() + 1)) +
+        (date.getUTCMonth() > 8
+            ? date.getUTCMonth() + 1
+            : '0' + (date.getUTCMonth() + 1)) +
         '/' +
-        (date.getDate() > 9 ? date.getDate() : '0' + date.getDate()) +
+        (date.getUTCDate() > 9 ? date.getUTCDate() : '0' + date.getUTCDate()) +
         '/' +
-        date.getFullYear()
+        date.getUTCFullYear()
     );
 };
 
@@ -26,42 +26,42 @@ export const getShortDate = (val) => {
     const date = new Date(val);
 
     return (
-        date.getMonth() +
+        date.getUTCMonth() +
         1 +
         '/' +
-        date.getDate() +
+        date.getUTCDate() +
         '/' +
-        (date.getFullYear() % 100)
+        (date.getUTCFullYear() % 100)
     );
 };
 
-export const getMonthAndDay = (val) => {
-    const date = new Date(val);
-    const month = date.getMonth();
-    const i = date.getDate();
+// export const getMonthAndDay = (val) => {
+//     const date = new Date(val);
+//     const month = date.getMonth();
+//     const i = date.getDate();
 
-    let monthStr,
-        dateStr = '';
+//     let monthStr,
+//         dateStr = '';
 
-    monthStr = monthNames[month];
+//     monthStr = monthNames[month];
 
-    if (i === null) {
-        dateStr = '';
-    }
-    var j = i % 10,
-        k = i % 100;
-    if (j === 1 && k !== 11) {
-        dateStr = i + 'st';
-    } else if (j === 2 && k !== 12) {
-        dateStr = i + 'nd';
-    } else if (j === 3 && k !== 13) {
-        dateStr = i + 'rd';
-    } else {
-        dateStr = i + 'th';
-    }
+//     if (i === null) {
+//         dateStr = '';
+//     }
+//     var j = i % 10,
+//         k = i % 100;
+//     if (j === 1 && k !== 11) {
+//         dateStr = i + 'st';
+//     } else if (j === 2 && k !== 12) {
+//         dateStr = i + 'nd';
+//     } else if (j === 3 && k !== 13) {
+//         dateStr = i + 'rd';
+//     } else {
+//         dateStr = i + 'th';
+//     }
 
-    return monthStr + ' ' + dateStr;
-};
+//     return monthStr + ' ' + dateStr;
+// };
 
 export const getUserBirthday = (month, day) => {
     if (month === null && day === null) {
@@ -95,9 +95,9 @@ export const getUserBirthday = (month, day) => {
 
 export const getMonthDayAndYear = (val) => {
     const date = new Date(val);
-    const month = date.getMonth();
-    const i = date.getDate();
-    const year = date.getFullYear();
+    const month = date.getUTCMonth();
+    const i = date.getUTCDate();
+    const year = date.getUTCFullYear();
 
     let monthStr,
         dateStr = '';
@@ -126,9 +126,9 @@ export const getMonthDayAndYear = (val) => {
 export const getAge = (dateString) => {
     var today = new Date();
     var birthDate = new Date(dateString);
-    var age = today.getFullYear() - birthDate.getFullYear();
-    var m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    var age = today.getFullYear() - birthDate.getUTCFullYear();
+    var m = today.getMonth() - birthDate.getUTCMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getUTCDate())) {
         age--;
     }
     return age;
@@ -312,7 +312,7 @@ export const getAveragePlacement = (teams) => {
         avgPlacement = placements.reduce((a, b) => a + b) / numPlacements;
     }
 
-    return avgPlacement;
+    return Math.round(avgPlacement * 100) / 100;
 };
 
 export const getNumberOfTens = (dances) => {

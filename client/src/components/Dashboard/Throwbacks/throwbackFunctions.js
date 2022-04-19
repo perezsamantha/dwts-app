@@ -6,13 +6,13 @@ export const getThrowbacks = (episodes, tours) => {
 
     const isToday = (date) => {
         return (
-            date.getDate() === today.getDate() &&
-            date.getMonth() === today.getMonth()
+            date.getUTCDate() === today.getDate() &&
+            date.getUTCMonth() === today.getMonth()
         );
     };
 
     const getYearsAgo = (date) => {
-        return today.getYear() - date.getYear();
+        return today.getYear() - date.getUTCYear();
     };
 
     episodes.forEach((episode) => {
