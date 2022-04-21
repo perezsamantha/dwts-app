@@ -48,14 +48,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 function DialogFields(props) {
-    const {
-        formData,
-        setFormData,
-        table,
-        handleChange,
-        //handleBirthday,
-        handleDate,
-    } = props;
+    const { formData, setFormData, table, handleChange } = props;
     const celebs = useSelector((state) => state.celebs.celebs);
     const pros = useSelector((state) => state.pros.pros);
     const seasons = useSelector((state) => state.seasons.seasons);
@@ -77,6 +70,10 @@ function DialogFields(props) {
 
     const [dates, setDates] = useState({
         birthday: null,
+        date: null,
+        first_show: null,
+        last_show: null,
+        daily_date: null,
     });
 
     const [filters, setFilters] = useState({
@@ -85,9 +82,20 @@ function DialogFields(props) {
 
     useEffect(() => {
         setDates({
-            ...dates,
             birthday: formData.birthday
                 ? new Date(formData.birthday).toUTCString().slice(0, -4)
+                : null,
+            date: formData.date
+                ? new Date(formData.date).toUTCString().slice(0, -4)
+                : null,
+            first_show: formData.first_show
+                ? new Date(formData.first_show).toUTCString().slice(0, -4)
+                : null,
+            last_show: formData.last_show
+                ? new Date(formData.last_show).toUTCString().slice(0, -4)
+                : null,
+            daily_date: formData.daily_date
+                ? new Date(formData.daily_date).toUTCString().slice(0, -4)
                 : null,
         });
         setFilters({
@@ -108,7 +116,7 @@ function DialogFields(props) {
             team: teams.find((team) => team.id === formData.team_id),
             dance: dances.find((dance) => dance.id === formData.dance_id),
         });
-    }, [formData, celebs, pros, teams, dances, table, dates]);
+    }, [formData, celebs, pros, teams, dances, table]);
 
     const handleShowPass = () => setShowPass((prevShowPass) => !prevShowPass);
 
@@ -685,10 +693,17 @@ function DialogFields(props) {
                 <DesktopDatePicker
                     label="Daily Date"
                     inputFormat="MM/dd/yyyy"
-                    value={formData.daily_date || null}
-                    onChange={(date) =>
-                        setFormData({ ...formData, daily_date: date })
-                    }
+                    value={dates.daily_date || null}
+                    onChange={(date) => {
+                        setFormData({
+                            ...formData,
+                            daily_date: date,
+                        });
+                        setDates({
+                            ...dates,
+                            daily_date: date,
+                        });
+                    }}
                     renderInput={(params) => <TextField {...params} />}
                 />
             )}
@@ -714,10 +729,17 @@ function DialogFields(props) {
                 <DesktopDatePicker
                     label="First Show"
                     inputFormat="MM/dd/yyyy"
-                    value={formData.first_show || null}
-                    onChange={(date) =>
-                        setFormData({ ...formData, first_show: date })
-                    }
+                    value={dates.first_show || null}
+                    onChange={(date) => {
+                        setFormData({
+                            ...formData,
+                            first_show: date,
+                        });
+                        setDates({
+                            ...dates,
+                            first_show: date,
+                        });
+                    }}
                     renderInput={(params) => <TextField {...params} />}
                 />
             )}
@@ -726,10 +748,17 @@ function DialogFields(props) {
                 <DesktopDatePicker
                     label="Last Show"
                     inputFormat="MM/dd/yyyy"
-                    value={formData.last_show || ''}
-                    onChange={(date) =>
-                        setFormData({ ...formData, last_show: date })
-                    }
+                    value={dates.last_show || null}
+                    onChange={(date) => {
+                        setFormData({
+                            ...formData,
+                            last_show: date,
+                        });
+                        setDates({
+                            ...dates,
+                            last_show: date,
+                        });
+                    }}
                     renderInput={(params) => <TextField {...params} />}
                 />
             )}
@@ -757,8 +786,7 @@ function DialogFields(props) {
                 <DesktopDatePicker
                     label="Birthday"
                     inputFormat="MM/dd/yyyy"
-                    value={dates.birthday}
-                    //onChange={handleBirthday}
+                    value={dates.birthday || ''}
                     onChange={(date) => {
                         setFormData({
                             ...formData,
@@ -766,7 +794,7 @@ function DialogFields(props) {
                         });
                         setDates({
                             ...dates,
-                            birthday: date.toUTCString().slice(0, -4),
+                            birthday: date,
                         });
                     }}
                     renderInput={(params) => {
@@ -832,8 +860,17 @@ function DialogFields(props) {
                 <DesktopDatePicker
                     label="Date"
                     inputFormat="MM/dd/yyyy"
-                    value={formData.date || null}
-                    onChange={handleDate}
+                    value={dates.date || null}
+                    onChange={(date) => {
+                        setFormData({
+                            ...formData,
+                            date: date,
+                        });
+                        setDates({
+                            ...dates,
+                            date: date,
+                        });
+                    }}
                     renderInput={(params) => <TextField {...params} />}
                 />
             )}

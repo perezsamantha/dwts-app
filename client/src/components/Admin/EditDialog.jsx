@@ -76,14 +76,6 @@ function EditDialog(props) {
         });
     };
 
-    const handleBirthday = (date) => {
-        setFormData({ ...formData, birthday: date });
-    };
-
-    const handleDate = (date) => {
-        setFormData({ ...formData, date: date });
-    };
-
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -184,8 +176,6 @@ function EditDialog(props) {
                             setFormData={setFormData}
                             table={table}
                             handleChange={handleChange}
-                            handleBirthday={handleBirthday}
-                            handleDate={handleDate}
                             editor={editor}
                             setEditor={setEditor}
                             fileData={fileData}
