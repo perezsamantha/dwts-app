@@ -53,7 +53,7 @@ function DialogFields(props) {
         setFormData,
         table,
         handleChange,
-        handleBirthday,
+        //handleBirthday,
         handleDate,
     } = props;
     const celebs = useSelector((state) => state.celebs.celebs);
@@ -75,11 +75,21 @@ function DialogFields(props) {
         dance: null,
     });
 
+    const [dates, setDates] = useState({
+        birthday: null,
+    });
+
     const [filters, setFilters] = useState({
         dancer: 'team',
     });
 
     useEffect(() => {
+        setDates({
+            ...dates,
+            birthday: formData.birthday
+                ? new Date(formData.birthday).toUTCString().slice(0, -4)
+                : null,
+        });
         setFilters({
             dancer: formData.team_id
                 ? 'team'
@@ -98,7 +108,7 @@ function DialogFields(props) {
             team: teams.find((team) => team.id === formData.team_id),
             dance: dances.find((dance) => dance.id === formData.dance_id),
         });
-    }, [formData, celebs, pros, teams, dances, table]);
+    }, [formData, celebs, pros, teams, dances, table, dates]);
 
     const handleShowPass = () => setShowPass((prevShowPass) => !prevShowPass);
 
@@ -747,9 +757,21 @@ function DialogFields(props) {
                 <DesktopDatePicker
                     label="Birthday"
                     inputFormat="MM/dd/yyyy"
-                    value={formData.birthday || null}
-                    onChange={handleBirthday}
-                    renderInput={(params) => <TextField {...params} />}
+                    value={dates.birthday}
+                    //onChange={handleBirthday}
+                    onChange={(date) => {
+                        setFormData({
+                            ...formData,
+                            birthday: date,
+                        });
+                        setDates({
+                            ...dates,
+                            birthday: date.toUTCString().slice(0, -4),
+                        });
+                    }}
+                    renderInput={(params) => {
+                        return <TextField {...params} />;
+                    }}
                 />
             )}
 
