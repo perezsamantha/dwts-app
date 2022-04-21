@@ -45,6 +45,7 @@ export const fetchAllTours = async (req, res) => {
                 LEFT JOIN celebs c 
                 ON tc.celeb_id = c.id 
                 GROUP BY tc.id, p.id, c.id 
+                ORDER BY p.first_name ASC, c.first_name ASC
             ) tc 
             ON t.id = tc.tour_id 
             GROUP BY t.id 

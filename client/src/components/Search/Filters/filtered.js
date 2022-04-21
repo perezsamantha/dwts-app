@@ -195,8 +195,8 @@ export const filterPros = (pros, filters) => {
     filtered.sort((a, b) => {
         switch (filters.sortBy) {
             case 'firstName':
-                let firstA = a.last_name.toUpperCase();
-                let firstB = b.last_name.toUpperCase();
+                let firstA = a.first_name.toUpperCase();
+                let firstB = b.first_name.toUpperCase();
                 if (firstA < firstB) {
                     return -1;
                 } else if (firstA > firstB) {
@@ -217,9 +217,9 @@ export const filterPros = (pros, filters) => {
             case 'age': //youngest to oldest
                 let birthdayA = a.birthday;
                 let birthdayB = b.birthday;
-                if (birthdayA < birthdayB) {
+                if (birthdayA > birthdayB) {
                     return -1;
-                } else if (birthdayA > birthdayB) {
+                } else if (birthdayA < birthdayB) {
                     return 1;
                 } else {
                     return 0;

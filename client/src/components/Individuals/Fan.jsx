@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Box, Divider, Stack, Typography } from '@mui/material';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { findUserByUsername } from '../../actions/users';
 import * as actionType from '../../constants/actionTypes';

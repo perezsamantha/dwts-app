@@ -12,8 +12,12 @@ import { messages } from '../messages.js';
 
 import { OAuth2Client } from 'google-auth-library';
 
+//import { DateTime } from 'luxon';
+
 const client = new OAuth2Client(process.env.OAUTH_CLIENT_ID2);
 const { randomBytes } = await import('crypto');
+
+let usernameRegex = /^(\w|\.|\_)+$/;
 
 export const signUp = async (req, res) => {
     try {
@@ -21,6 +25,9 @@ export const signUp = async (req, res) => {
 
         if (!username || !email || !password || !confirm_password)
             return res.status(409).json({ message: messages.missingFields });
+
+        if (!usernameRegex.test(username))
+            return res.status(409).json({ message: messages.invalidUsername });
 
         const existing_username = await pool.query(
             `
@@ -53,7 +60,7 @@ export const signUp = async (req, res) => {
 
         const hashed_password = await bcrypt.hash(
             password,
-            process.env.SALT_ROUNDS
+            parseInt(process.env.SALT_ROUNDS)
         );
 
         const result = await pool.query(
@@ -319,6 +326,11 @@ export const googleAuth = async (req, res) => {
                 return res.status(409).json({
                     message: messages.oauthUser,
                 });
+
+            if (!usernameRegex.test(username))
+                return res
+                    .status(409)
+                    .json({ message: messages.invalidUsername });
 
             const username_available = await pool.query(
                 `
@@ -875,7 +887,7 @@ export const resetPassword = async (req, res) => {
 
         const hashed_password = await bcrypt.hash(
             password,
-            process.env.SALT_ROUNDS
+            parseInt(process.env.SALT_ROUNDS)
         );
 
         await pool.query(
@@ -1083,6 +1095,9 @@ export const addUser = async (req, res) => {
             birthday_day,
         } = req.body;
 
+        if (!usernameRegex.test(username))
+            return res.status(409).json({ message: messages.invalidUsername });
+
         const existing_email = await pool.query(
             `
             SELECT id
@@ -1111,7 +1126,7 @@ export const addUser = async (req, res) => {
 
         const hashed_password = await bcrypt.hash(
             password,
-            process.env.SALT_ROUNDS
+            parseInt(process.env.SALT_ROUNDS)
         );
 
         const result = await pool.query(
@@ -1461,6 +1476,9 @@ export const updateAuth = async (req, res) => {
     } = req.body;
 
     try {
+        if (!usernameRegex.test(username))
+            return res.status(409).json({ message: messages.invalidUsername });
+
         const result = await pool.query(
             `
             UPDATE users 
@@ -1630,6 +1648,9 @@ export const updateUser = async (req, res) => {
     const { id } = req.params;
 
     try {
+        if (!usernameRegex.test(username))
+            return res.status(409).json({ message: messages.invalidUsername });
+
         const {
             username,
             email,

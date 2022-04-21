@@ -10,10 +10,12 @@ function TeamPreview(props) {
                     sx={{ height: 35, width: 35 }}
                     src={team.cover_pic}
                 ></Avatar>
-                <Typography sx={{ fontSize: 12 }}>
+                <Typography sx={{ fontSize: 12 }} noWrap>
                     {celeb.first_name} &
                 </Typography>
-                <Typography sx={{ fontSize: 12 }}>{pro.first_name}</Typography>
+                <Typography sx={{ fontSize: 12 }} noWrap>
+                    {pro.first_name}
+                </Typography>
             </Stack>
         </Box>
     );

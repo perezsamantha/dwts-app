@@ -14,7 +14,7 @@ import {
     IconButton,
     Stack,
 } from '@mui/material';
-import { MobileDatePicker } from '@mui/lab';
+import { DesktopDatePicker } from '@mui/lab';
 import * as tableType from '../../constants/tableTypes';
 import {
     genders,
@@ -672,7 +672,7 @@ function DialogFields(props) {
             )}
 
             {Array.of(tableType.DANCE).includes(table) && (
-                <MobileDatePicker
+                <DesktopDatePicker
                     label="Daily Date"
                     inputFormat="MM/dd/yyyy"
                     value={formData.daily_date || null}
@@ -701,7 +701,7 @@ function DialogFields(props) {
             )}
 
             {Array.of(tableType.TOUR).includes(table) && (
-                <MobileDatePicker
+                <DesktopDatePicker
                     label="First Show"
                     inputFormat="MM/dd/yyyy"
                     value={formData.first_show || null}
@@ -713,7 +713,7 @@ function DialogFields(props) {
             )}
 
             {Array.of(tableType.TOUR).includes(table) && (
-                <MobileDatePicker
+                <DesktopDatePicker
                     label="Last Show"
                     inputFormat="MM/dd/yyyy"
                     value={formData.last_show || ''}
@@ -744,7 +744,7 @@ function DialogFields(props) {
             {Array.of(tableType.CELEB, tableType.PRO, tableType.JUDGE).includes(
                 table
             ) && (
-                <MobileDatePicker
+                <DesktopDatePicker
                     label="Birthday"
                     inputFormat="MM/dd/yyyy"
                     value={formData.birthday || null}
@@ -807,7 +807,7 @@ function DialogFields(props) {
             )}
 
             {Array.of(tableType.EPISODE).includes(table) && (
-                <MobileDatePicker
+                <DesktopDatePicker
                     label="Date"
                     inputFormat="MM/dd/yyyy"
                     value={formData.date || null}

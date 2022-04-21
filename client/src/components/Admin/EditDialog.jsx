@@ -77,7 +77,6 @@ function EditDialog(props) {
     };
 
     const handleBirthday = (date) => {
-        console.log(date);
         setFormData({ ...formData, birthday: date });
     };
 

@@ -3,6 +3,7 @@ export const messages = {
     passwordMismatch: 'Passwords do not match',
     invalidCredentials: 'Incorrect username or password',
     invalidUser: 'User does not exist',
+    invalidUsername: "Username can only contain letters, numbers, '.', and '_'",
     invalidEmail: 'No account associated with this email',
     expiredToken: 'Link has expired',
     existingEmail: 'Account with email already exists',

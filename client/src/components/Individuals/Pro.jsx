@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Box, Divider, Grid, Stack, Typography } from '@mui/material';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { findProById, likePro } from '../../actions/pros';
 import { createLoadingSelector } from '../../api/selectors';
