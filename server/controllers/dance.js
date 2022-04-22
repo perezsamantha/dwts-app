@@ -751,15 +751,25 @@ export const likeDance = async (req, res) => {
 
 export const findDailyDance = async (req, res) => {
     let { day } = req.body;
-    let date;
+    let date, localDate;
 
     try {
         if (day === 'today') {
-            date = DateTime.local().toISO();
-            //console.log(date);
+            localDate = DateTime.local();
+            date = DateTime.utc(
+                localDate.year,
+                localDate.month,
+                localDate.day
+            ).toISO();
+            console.log(date);
         } else if (day === 'yesterday') {
-            date = DateTime.local().plus({ days: -1 }).toISO();
-            //console.log(date);
+            localDate = DateTime.local().plus({ days: -1 });
+            date = DateTime.utc(
+                localDate.year,
+                localDate.month,
+                localDate.day
+            ).toISO();
+            console.log(date);
         }
         const dance = await pool.query(
             `

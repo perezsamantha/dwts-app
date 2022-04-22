@@ -10,7 +10,9 @@ function CastPreview(props) {
                     sx={{ height: 30, width: 30 }}
                     src={item.cover_pic}
                 ></Avatar>
-                <Typography sx={{ fontSize: 12 }}>{item.first_name}</Typography>
+                <Typography sx={{ fontSize: 12 }} noWrap>
+                    {item.first_name}
+                </Typography>
             </Stack>
         </Box>
     );

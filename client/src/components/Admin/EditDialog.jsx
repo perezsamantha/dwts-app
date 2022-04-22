@@ -25,6 +25,8 @@ import { updateTour, updateTourCast, setTourPic } from '../../actions/tours';
 import { setUserPic, updateUser } from '../../actions/users';
 import Progress from '../shared/Progress';
 
+const pica = require('pica')();
+
 function EditDialog(props) {
     const [open, setOpen] = useState(props.open);
     const [formData, setFormData] = useState(props.item);
@@ -76,16 +78,24 @@ function EditDialog(props) {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (editor != null) {
             const data = new FormData();
 
             // const canvas = editor.getImageScaledToCanvas();
-            const canvas = editor.getImage();
+            //const canvas = editor.getImage();
 
-            canvas.toBlob(function (blob) {
+            const img = editor.getImage();
+            var canvas = document.createElement('canvas');
+
+            canvas.width = 400;
+            canvas.height = 400;
+
+            const picaCanvas = await pica.resize(img, canvas);
+
+            picaCanvas.toBlob(function (blob) {
                 data.append(
                     'cover_pic',
                     blob,

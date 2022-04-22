@@ -9,6 +9,8 @@ import { addProPic } from '../../actions/pros';
 import { useDispatch } from 'react-redux';
 import { addDancePic } from '../../actions/dances';
 
+const pica = require('pica')();
+
 function ExtraPicUpload(props) {
     const [fileData, setFileData] = useState(null);
     const [scaleValue, setScaleValue] = useState(1);
@@ -33,16 +35,24 @@ function ExtraPicUpload(props) {
         setEditor(editor);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (editor != null) {
             const data = new FormData();
 
             // const canvas = editor.getImageScaledToCanvas();
-            const canvas = editor.getImage();
+            //const canvas = editor.getImage();
 
-            canvas.toBlob(function (blob) {
+            const img = editor.getImage();
+            var canvas = document.createElement('canvas');
+
+            canvas.width = 400;
+            canvas.height = 400;
+
+            const picaCanvas = await pica.resize(img, canvas);
+
+            picaCanvas.toBlob(function (blob) {
                 data.append('pictures', blob, `${Date.now()}-${fileData.name}`);
                 switch (props.type) {
                     case tableType.TEAM:

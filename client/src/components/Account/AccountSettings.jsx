@@ -24,6 +24,8 @@ import {
 import { convertPlacement } from '../shared/functions';
 import DeleteDialog from './DeleteDialog';
 
+const pica = require('pica')();
+
 function AccountSettings(props) {
     const user = useSelector((state) => state.auth.authData);
     const [formData, setFormData] = useState(user);
@@ -43,7 +45,7 @@ function AccountSettings(props) {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!formData.username || !formData.nickname) {
@@ -54,9 +56,17 @@ function AccountSettings(props) {
             const data = new FormData();
 
             // const canvas = editor.getImageScaledToCanvas();
-            const canvas = editor.getImage();
+            //const canvas = editor.getImage();
 
-            canvas.toBlob(function (blob) {
+            const img = editor.getImage();
+            var canvas = document.createElement('canvas');
+
+            canvas.width = 400;
+            canvas.height = 400;
+
+            const picaCanvas = await pica.resize(img, canvas);
+
+            picaCanvas.toBlob(function (blob) {
                 console.log(blob);
                 data.append(
                     'cover_pic',
