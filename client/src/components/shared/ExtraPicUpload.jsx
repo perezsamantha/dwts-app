@@ -11,12 +11,12 @@ import { addDancePic } from '../../actions/dances';
 
 function ExtraPicUpload(props) {
     const [fileData, setFileData] = useState(null);
-    const [scaleValue, setScaleValue] = useState(10);
+    const [scaleValue, setScaleValue] = useState(1);
     const [editor, setEditor] = useState(null);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        setScaleValue(1);
+        //setScaleValue(1);
         setFileData(null);
     }, []);
 
@@ -39,7 +39,8 @@ function ExtraPicUpload(props) {
         if (editor != null) {
             const data = new FormData();
 
-            const canvas = editor.getImageScaledToCanvas();
+            // const canvas = editor.getImageScaledToCanvas();
+            const canvas = editor.getImage();
 
             canvas.toBlob(function (blob) {
                 data.append('pictures', blob, `${Date.now()}-${fileData.name}`);

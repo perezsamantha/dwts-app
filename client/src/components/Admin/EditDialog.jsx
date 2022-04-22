@@ -82,7 +82,8 @@ function EditDialog(props) {
         if (editor != null) {
             const data = new FormData();
 
-            const canvas = editor.getImageScaledToCanvas();
+            // const canvas = editor.getImageScaledToCanvas();
+            const canvas = editor.getImage();
 
             canvas.toBlob(function (blob) {
                 data.append(

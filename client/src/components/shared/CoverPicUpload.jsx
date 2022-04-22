@@ -5,11 +5,11 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import { Slider, Stack } from '@mui/material';
 
 function CoverPicUpload(props) {
-    const [scaleValue, setScaleValue] = useState(10);
+    const [scaleValue, setScaleValue] = useState(1);
     const { fileData, setFileData, setEditor } = props;
 
     useEffect(() => {
-        setScaleValue(1);
+        //setScaleValue(1);
     }, []);
 
     const handleFile = (e) => {

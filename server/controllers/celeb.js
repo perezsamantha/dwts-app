@@ -1,7 +1,6 @@
 import pool from '../api/pool.js';
 import { Storage } from '@google-cloud/storage';
 import { v4 as uuidv4 } from 'uuid';
-//import { DateTime } from 'luxon';
 
 export const addCeleb = async (req, res) => {
     try {
@@ -101,10 +100,6 @@ export const updateCeleb = async (req, res) => {
             tiktok,
             is_junior,
         } = req.body;
-        // console.log(birthday);
-        // console.log(new Date(birthday));
-        // console.log(DateTime.fromISO(birthday).toISO());
-        // console.log(DateTime.fromISO(birthday).toISODate());
 
         const result = await pool.query(
             `

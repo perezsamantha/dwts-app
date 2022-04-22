@@ -2,6 +2,7 @@ import { Storage } from '@google-cloud/storage';
 import { v4 as uuidv4 } from 'uuid';
 
 import pool from '../api/pool.js';
+import { DateTime } from 'luxon';
 
 export const addDance = async (req, res) => {
     try {
@@ -750,8 +751,16 @@ export const likeDance = async (req, res) => {
 
 export const findDailyDance = async (req, res) => {
     let { day } = req.body;
+    let date;
 
     try {
+        if (day === 'today') {
+            date = DateTime.local().toISO();
+            //console.log(date);
+        } else if (day === 'yesterday') {
+            date = DateTime.local().plus({ days: -1 }).toISO();
+            //console.log(date);
+        }
         const dance = await pool.query(
             `
             SELECT d.*,
@@ -818,13 +827,10 @@ export const findDailyDance = async (req, res) => {
                 GROUP BY us1.dance_id
             ) us
             ON d.id = us.dance_id
-            WHERE daily_date = 
-                CASE WHEN $2='today' THEN now()::date
-                ELSE now()::date - 1
-                END
+            WHERE daily_date = $2
             GROUP BY d.id
             `,
-            [req.userId, day]
+            [req.userId, date]
         );
 
         res.status(200).json(

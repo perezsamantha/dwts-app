@@ -693,7 +693,7 @@ function DialogFields(props) {
                 <DesktopDatePicker
                     label="Daily Date"
                     inputFormat="MM/dd/yyyy"
-                    value={dates.daily_date || null}
+                    value={dates.daily_date || ''}
                     onChange={(date) => {
                         setFormData({
                             ...formData,
@@ -729,7 +729,7 @@ function DialogFields(props) {
                 <DesktopDatePicker
                     label="First Show"
                     inputFormat="MM/dd/yyyy"
-                    value={dates.first_show || null}
+                    value={dates.first_show || ''}
                     onChange={(date) => {
                         setFormData({
                             ...formData,
@@ -748,7 +748,7 @@ function DialogFields(props) {
                 <DesktopDatePicker
                     label="Last Show"
                     inputFormat="MM/dd/yyyy"
-                    value={dates.last_show || null}
+                    value={dates.last_show || ''}
                     onChange={(date) => {
                         setFormData({
                             ...formData,
@@ -780,9 +780,7 @@ function DialogFields(props) {
                 </TextField>
             )}
 
-            {Array.of(tableType.CELEB, tableType.PRO, tableType.JUDGE).includes(
-                table
-            ) && (
+            {Array.of(tableType.CELEB, tableType.PRO).includes(table) && (
                 <DesktopDatePicker
                     label="Birthday"
                     inputFormat="MM/dd/yyyy"
@@ -860,7 +858,7 @@ function DialogFields(props) {
                 <DesktopDatePicker
                     label="Date"
                     inputFormat="MM/dd/yyyy"
-                    value={dates.date || null}
+                    value={dates.date || ''}
                     onChange={(date) => {
                         setFormData({
                             ...formData,
