@@ -225,8 +225,8 @@ export const signIn = async (req, res) => {
                             FROM dancers dc2 
                             LEFT JOIN (
                                 SELECT t2.*, 
-                                    ROW_TO_JSON(p) AS pro, 
-                                    ROW_TO_JSON(c) AS celeb 
+                                    TO_JSONB(p) AS pro, 
+                                    TO_JSONB(c) AS celeb 
                                 FROM teams t2 
                                 LEFT JOIN pros p 
                                 ON t2.pro_id = p.id 
@@ -455,8 +455,8 @@ export const googleAuth = async (req, res) => {
                         FROM dancers dc2 
                         LEFT JOIN (
                             SELECT t2.*, 
-                                ROW_TO_JSON(p) AS pro, 
-                                ROW_TO_JSON(c) AS celeb 
+                                TO_JSONB(p) AS pro, 
+                                TO_JSONB(c) AS celeb 
                             FROM teams t2 
                             LEFT JOIN pros p 
                             ON t2.pro_id = p.id 
@@ -641,8 +641,8 @@ export const verifyEmail = async (req, res) => {
                         FROM dancers dc2 
                         LEFT JOIN (
                             SELECT t2.*, 
-                                ROW_TO_JSON(p) AS pro, 
-                                ROW_TO_JSON(c) AS celeb 
+                                TO_JSONB(p) AS pro, 
+                                TO_JSONB(c) AS celeb 
                             FROM teams t2 
                             LEFT JOIN pros p 
                             ON t2.pro_id = p.id 
@@ -1001,8 +1001,8 @@ export const fetchAuthData = async (req, res) => {
                         FROM dancers dc2 
                         LEFT JOIN (
                             SELECT t2.*, 
-                                ROW_TO_JSON(p) AS pro, 
-                                ROW_TO_JSON(c) AS celeb 
+                                TO_JSONB(p) AS pro, 
+                                TO_JSONB(c) AS celeb 
                             FROM teams t2 
                             LEFT JOIN pros p 
                             ON t2.pro_id = p.id 
@@ -1349,8 +1349,8 @@ export const findUserByUsername = async (req, res) => {
                         FROM dancers dc2 
                         LEFT JOIN (
                             SELECT t2.*, 
-                                ROW_TO_JSON(p) AS pro, 
-                                ROW_TO_JSON(c) AS celeb 
+                                TO_JSONB(p) AS pro, 
+                                TO_JSONB(c) AS celeb 
                             FROM teams t2 
                             LEFT JOIN pros p 
                             ON t2.pro_id = p.id 
@@ -1592,8 +1592,8 @@ export const updateAuth = async (req, res) => {
                         FROM dancers dc2 
                         LEFT JOIN (
                             SELECT t2.*, 
-                                ROW_TO_JSON(p) AS pro, 
-                                ROW_TO_JSON(c) AS celeb 
+                                TO_JSONB(p) AS pro, 
+                                TO_JSONB(c) AS celeb 
                             FROM teams t2 
                             LEFT JOIN pros p 
                             ON t2.pro_id = p.id 
@@ -1648,9 +1648,6 @@ export const updateUser = async (req, res) => {
     const { id } = req.params;
 
     try {
-        if (!usernameRegex.test(username))
-            return res.status(409).json({ message: messages.invalidUsername });
-
         const {
             username,
             email,
@@ -1664,6 +1661,9 @@ export const updateUser = async (req, res) => {
             birthday_day,
             role,
         } = req.body;
+
+        if (!usernameRegex.test(username))
+            return res.status(409).json({ message: messages.invalidUsername });
 
         const result = await pool.query(
             `
@@ -1898,8 +1898,8 @@ export const setAuthPic = async (req, res) => {
                             FROM dancers dc2 
                             LEFT JOIN (
                                 SELECT t2.*, 
-                                    ROW_TO_JSON(p) AS pro, 
-                                    ROW_TO_JSON(c) AS celeb 
+                                    TO_JSON(p) AS pro, 
+                                    TO_JSON(c) AS celeb 
                                 FROM teams t2 
                                 LEFT JOIN pros p 
                                 ON t2.pro_id = p.id 

@@ -252,7 +252,7 @@ export const getAverageScore = (dances) => {
         avgScore = allScores.reduce((a, b) => a + b) / numScores;
     }
 
-    return avgScore;
+    return Math.round(avgScore * 1000) / 1000;
 };
 
 // ✅ using array of score objects instead of array of plain values
@@ -446,7 +446,7 @@ export const getAverageUserScore = (scores) => {
         avgScore = totalScores.reduce((a, b) => a + b) / numScores;
     }
 
-    return avgScore;
+    return Math.round(avgScore * 100) / 100;
 };
 
 export const isPerfect = (scores) => {

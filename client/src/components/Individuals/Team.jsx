@@ -1,5 +1,16 @@
 import React, { useEffect } from 'react';
-import { Avatar, Box, Divider, Grid, Stack, Typography } from '@mui/material';
+import {
+    Avatar,
+    Box,
+    Divider,
+    Grid,
+    Stack,
+    Table,
+    TableBody,
+    TableCell,
+    TableRow,
+    Typography,
+} from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { findTeamById } from '../../actions/teams';
 import { useParams, Link } from 'react-router-dom';
@@ -43,7 +54,7 @@ function Team() {
         dispatch(likeTeam(id));
     };
 
-    const { celeb, pro, dances, pictures } = team;
+    const { celeb, pro, dances } = team;
 
     return loading || Number(team?.id) !== Number(id) ? (
         <Progress />
@@ -87,7 +98,76 @@ function Team() {
                     Overview
                     <Divider />
                 </Typography>
-                <Stack spacing={2} my={1}>
+
+                <Table aria-label="team-overview-table">
+                    <TableBody
+                        sx={{
+                            'td, th': {
+                                border: 0,
+                            },
+                        }}
+                    >
+                        <TableRow
+                            sx={{
+                                '&:last-child td, &:last-child th': {
+                                    border: 0,
+                                },
+                            }}
+                        >
+                            <TableCell width={1}>
+                                <Avatar
+                                    sx={{ width: 50, height: 50 }}
+                                    src={celeb?.cover_pic}
+                                />
+                            </TableCell>
+                            <TableCell sx={{ paddingLeft: 2 }}>
+                                <Typography>
+                                    {convertHeight(celeb?.height)}
+                                </Typography>
+                            </TableCell>
+                            <TableCell sx={{ paddingLeft: 2 }}>
+                                <Typography>
+                                    {getAge(celeb?.birthday)} Years Old
+                                </Typography>
+                            </TableCell>
+                        </TableRow>
+
+                        <TableRow
+                            sx={{
+                                '&:last-child td, &:last-child th': {
+                                    border: 0,
+                                },
+                            }}
+                        >
+                            <TableCell width={1}>
+                                <Link
+                                    to={{ pathname: `/pros/${pro.id}` }}
+                                    style={{
+                                        textDecoration: 'inherit',
+                                        color: 'inherit',
+                                    }}
+                                >
+                                    <Avatar
+                                        sx={{ width: 50, height: 50 }}
+                                        src={pro?.cover_pic}
+                                    />
+                                </Link>
+                            </TableCell>
+                            <TableCell sx={{ paddingLeft: 2 }}>
+                                <Typography>
+                                    {convertHeight(pro?.height)}
+                                </Typography>
+                            </TableCell>
+                            <TableCell sx={{ paddingLeft: 2 }}>
+                                <Typography>
+                                    {getAge(pro?.birthday)} Years Old
+                                </Typography>
+                            </TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+
+                {/* <Stack spacing={2} my={1}>
                     <Stack direction="row" spacing={2} alignItems="center">
                         <Box>
                             <Avatar src={celeb?.cover_pic} />
@@ -118,7 +198,7 @@ function Team() {
                             </Stack>
                         </Box>
                     </Stack>
-                </Stack>
+                </Stack> */}
             </Stack>
 
             <Stack my={1}>
@@ -178,10 +258,13 @@ function Team() {
                     Socials
                     <Divider />
                 </Typography>
-                <Stack spacing={2} my={1}>
+                <Stack spacing={1} my={1}>
                     <Stack direction="row" spacing={2} alignItems="center">
                         <Box>
-                            <Avatar src={celeb?.cover_pic} />
+                            <Avatar
+                                sx={{ width: 50, height: 50 }}
+                                src={celeb?.cover_pic}
+                            />
                         </Box>
                         <Box>
                             <Stack direction="row" spacing={2}>
@@ -202,7 +285,10 @@ function Team() {
                     </Stack>
                     <Stack direction="row" spacing={2} alignItems="center">
                         <Box>
-                            <Avatar src={pro?.cover_pic} />
+                            <Avatar
+                                sx={{ width: 50, height: 50 }}
+                                src={pro?.cover_pic}
+                            />
                         </Box>
                         <Box>
                             <Stack direction="row" spacing={2}>
@@ -230,7 +316,13 @@ function Team() {
                     <Divider />
                 </Typography>
 
-                <PicturesGrid pictures={pictures} />
+                {team?.pictures ? (
+                    <PicturesGrid pictures={team.pictures} />
+                ) : (
+                    <Typography mb={1}>
+                        No pictures yet for this team
+                    </Typography>
+                )}
 
                 {user?.role === 'admin' && (
                     <ExtraPicUpload id={team.id} type={tableType.TEAM} />

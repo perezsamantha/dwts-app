@@ -96,13 +96,7 @@ function Search(props) {
         <Page>
             <MainContainer>
                 <SearchContainer elevation={0}>
-                    <Typography
-                        variant="h2"
-                        fontFamily="YesMargo, Urbanist, Roboto, Helvetica Neue, sans-serif"
-                        textTransform="uppercase"
-                    >
-                        Search
-                    </Typography>
+                    <Typography variant="h4">Search</Typography>
                     <SearchBoxContainer
                         direction="row"
                         spacing={1}

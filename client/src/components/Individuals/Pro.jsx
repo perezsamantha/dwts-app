@@ -1,5 +1,16 @@
 import React, { useEffect } from 'react';
-import { Box, Divider, Grid, Stack, Typography } from '@mui/material';
+import {
+    Avatar,
+    Box,
+    Divider,
+    Grid,
+    Stack,
+    Table,
+    TableBody,
+    TableCell,
+    TableRow,
+    Typography,
+} from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { findProById, likePro } from '../../actions/pros';
@@ -161,6 +172,70 @@ function Pro() {
                         Teams (In Order)
                         <Divider />
                     </Typography>
+
+                    <Table aria-label="pro-teams-table">
+                        <TableBody
+                            sx={{
+                                'td, th': {
+                                    border: 0,
+                                },
+                            }}
+                        >
+                            {pro.teams.map((team, index) => (
+                                <Link
+                                    key={index}
+                                    to={{ pathname: `/teams/${team.id}` }}
+                                    style={{
+                                        textDecoration: 'inherit',
+                                        color: 'inherit',
+                                    }}
+                                >
+                                    <Box
+                                        component={motion.div}
+                                        whileHover={{
+                                            scale: 1.05,
+                                            transition: { duration: 0.3 },
+                                        }}
+                                        whileTap={{
+                                            scale: 1.075,
+                                            transition: { duration: 0.3 },
+                                        }}
+                                    >
+                                        <TableRow
+                                            key={index}
+                                            sx={{
+                                                '&:last-child td, &:last-child th':
+                                                    {
+                                                        border: 0,
+                                                    },
+                                            }}
+                                        >
+                                            <TableCell>
+                                                <Avatar
+                                                    sx={{
+                                                        width: 50,
+                                                        height: 50,
+                                                    }}
+                                                    src={team?.cover_pic}
+                                                />
+                                            </TableCell>
+                                            <TableCell>
+                                                <Typography sx={{ padding: 1 }}>
+                                                    Season {team.season_id}
+                                                </Typography>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Typography>
+                                                    w/ {getFullName(team.celeb)}
+                                                </Typography>
+                                            </TableCell>
+                                        </TableRow>
+                                    </Box>
+                                </Link>
+                            ))}
+                        </TableBody>
+                    </Table>
+
                     {pro.teams.map((team, index) => (
                         <Link
                             key={index}

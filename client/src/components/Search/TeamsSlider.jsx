@@ -1,9 +1,10 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { Navigation } from 'swiper';
+import { Lazy, Navigation } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import 'swiper/css/lazy';
 import { Link } from 'react-router-dom';
 import TeamPreview from './Previews/TeamPreview';
 import { Box } from '@mui/material';
@@ -14,6 +15,8 @@ function TeamsSlider(props) {
 
     return (
         <Swiper
+            preloadImages={false}
+            lazy={true}
             slidesPerView={3}
             spaceBetween={10}
             navigation={true}
@@ -43,7 +46,7 @@ function TeamsSlider(props) {
                     spaceBetween: 15,
                 },
             }}
-            modules={[Navigation]}
+            modules={[Lazy, Navigation]}
             className="mySwiper"
         >
             {teams.map((team, index) => (

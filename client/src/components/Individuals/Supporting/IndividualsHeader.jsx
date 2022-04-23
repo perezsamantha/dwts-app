@@ -11,7 +11,7 @@ export function IndividualsHeader(props) {
     const navigate = useNavigate();
 
     return (
-        <Stack direction="row" alignItems="center" spacing={3} mt={2}>
+        <Stack direction="row" alignItems="center" spacing={3} mt={1}>
             <BackButton
                 color="primary"
                 sx={{
@@ -34,14 +34,19 @@ export function IndividualsHeader(props) {
             </BackButton>
             {type === 'dance' ? (
                 <Box
-                    sx={{ width: 'fit-content', height: 125, display: 'flex' }}
+                    sx={{
+                        width: 'fit-content',
+                        height: 125,
+                        display: 'flex',
+                    }}
                     justifyContent="center"
                     alignItems="center"
                 >
                     <Typography
                         variant="h2"
-                        fontFamily="YesMargo, Urbanist, Roboto, Helvetica Neue, sans-serif"
+                        fontFamily="Just Another Hand, Urbanist, Roboto, Helvetica Neue, sans-serif"
                         textTransform="uppercase"
+                        marginTop={1.5}
                     >
                         {item.style}
                     </Typography>

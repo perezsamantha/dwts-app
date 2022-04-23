@@ -23,6 +23,7 @@ body {
 .swiper-slide {
     padding: 0.5rem 0;
 }
+
 .mySwiper .swiper-button-prev,
 .mySwiper .swiper-button-next {
     /* margin-top: -22px !important; */
@@ -43,6 +44,12 @@ body {
     opacity: 0;
 }
 
+.mySwiper .swiper-lazy-preloader {
+    color: rgb(216, 208, 101);
+    position: relative;
+    opacity: 0;
+}
+
 @media screen and (max-width: 600px) {
     .mySwiper .swiper-button-prev,
     .mySwiper .swiper-button-next {
@@ -55,7 +62,7 @@ code {
         monospace;
 }
 
-@font-face {
+/* @font-face {
     font-family: 'YesMargo';
     src: local('YesMargo'), url('./fonts/Yes-Margo.otf') format('opentype');
-}
+} */

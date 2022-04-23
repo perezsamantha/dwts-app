@@ -106,9 +106,9 @@ function App() {
                 'Urbanist',
                 'Roboto',
                 'Helvetica Neue',
+                'Just Another Hand',
                 'Arial',
                 'sans-serif',
-                'YesMargo',
             ].join(','),
         },
     });

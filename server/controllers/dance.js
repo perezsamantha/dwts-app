@@ -67,8 +67,8 @@ export const addDance = async (req, res) => {
                 FROM dancers dc2 
                 LEFT JOIN (
                     SELECT t2.*, 
-                        ROW_TO_JSON(p) AS pro, 
-                        ROW_TO_JSON(c) AS celeb 
+                        TO_JSONB(p) AS pro, 
+                        TO_JSONB(c) AS celeb 
                     FROM teams t2 
                     LEFT JOIN pros p 
                     ON t2.pro_id = p.id 
@@ -146,8 +146,8 @@ export const fetchAllDances = async (req, res) => {
                 FROM dancers dc2 
                 LEFT JOIN (
                     SELECT t2.*, 
-                        ROW_TO_JSON(p) AS pro, 
-                        ROW_TO_JSON(c) AS celeb 
+                        TO_JSONB(p) AS pro, 
+                        TO_JSONB(c) AS celeb 
                     FROM teams t2 
                     LEFT JOIN pros p 
                     ON t2.pro_id = p.id 
@@ -222,8 +222,8 @@ export const findDanceById = async (req, res) => {
                 FROM dancers dc2 
                 LEFT JOIN (
                     SELECT t2.*, 
-                        ROW_TO_JSON(p) AS pro, 
-                        ROW_TO_JSON(c) AS celeb 
+                        TO_JSONB(p) AS pro, 
+                        TO_JSONB(c) AS celeb 
                     FROM teams t2 
                     LEFT JOIN pros p 
                     ON t2.pro_id = p.id 
@@ -307,8 +307,8 @@ export const searchDances = async (req, res) => {
                     FROM dancers dc2 
                     LEFT JOIN (
                         SELECT t2.*, 
-                            ROW_TO_JSON(p) AS pro, 
-                            ROW_TO_JSON(c) AS celeb 
+                            TO_JSONB(p) AS pro, 
+                            TO_JSONB(c) AS celeb 
                         FROM teams t2 
                         LEFT JOIN pros p 
                         ON t2.pro_id = p.id 
@@ -373,8 +373,8 @@ export const searchDances = async (req, res) => {
                     FROM dancers dc2 
                     LEFT JOIN (
                         SELECT t2.*, 
-                            ROW_TO_JSON(p) AS pro, 
-                            ROW_TO_JSON(c) AS celeb 
+                            TO_JSONB(p) AS pro, 
+                            TO_JSONB(c) AS celeb 
                         FROM teams t2 
                         LEFT JOIN pros p 
                         ON t2.pro_id = p.id 
@@ -420,8 +420,6 @@ export const searchDances = async (req, res) => {
                 `,
                 [`%${search}%`]
             );
-
-            // TODO: won't pattern match if one of song/artist is null
         }
 
         res.status(200).json(dances.rows);
@@ -494,8 +492,8 @@ export const updateDance = async (req, res) => {
                 FROM dancers dc2 
                 LEFT JOIN (
                     SELECT t2.*, 
-                        ROW_TO_JSON(p) AS pro, 
-                        ROW_TO_JSON(c) AS celeb 
+                        TO_JSONB(p) AS pro, 
+                        TO_JSONB(c) AS celeb 
                     FROM teams t2 
                     LEFT JOIN pros p 
                     ON t2.pro_id = p.id 
@@ -627,8 +625,8 @@ export const addPic = async (req, res) => {
                     FROM dancers dc2 
                     LEFT JOIN (
                         SELECT t2.*, 
-                            ROW_TO_JSON(p) AS pro, 
-                            ROW_TO_JSON(c) AS celeb 
+                            TO_JSONB(p) AS pro, 
+                            TO_JSONB(c) AS celeb 
                         FROM teams t2 
                         LEFT JOIN pros p 
                         ON t2.pro_id = p.id 
@@ -756,12 +754,12 @@ export const findDailyDance = async (req, res) => {
     try {
         if (day === 'today') {
             localDate = DateTime.local();
+            console.log(localDate);
             date = DateTime.utc(
                 localDate.year,
                 localDate.month,
                 localDate.day
             ).toISO();
-            console.log(date);
         } else if (day === 'yesterday') {
             localDate = DateTime.local().plus({ days: -1 });
             date = DateTime.utc(
@@ -769,7 +767,6 @@ export const findDailyDance = async (req, res) => {
                 localDate.month,
                 localDate.day
             ).toISO();
-            console.log(date);
         }
         const dance = await pool.query(
             `
@@ -797,8 +794,8 @@ export const findDailyDance = async (req, res) => {
                 FROM dancers dc2 
                 LEFT JOIN (
                     SELECT t2.*, 
-                        ROW_TO_JSON(p) AS pro, 
-                        ROW_TO_JSON(c) AS celeb 
+                        TO_JSONB(p) AS pro, 
+                        TO_JSONB(c) AS celeb 
                     FROM teams t2 
                     LEFT JOIN pros p 
                     ON t2.pro_id = p.id 

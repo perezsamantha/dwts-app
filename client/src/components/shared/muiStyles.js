@@ -182,3 +182,19 @@ export const PicturePreview = styled(Box)(({ theme }) => ({
     boxShadow:
         theme.palette.mode === 'light' ? '1px 3px 5px lightgrey' : 'none',
 }));
+
+export const LazyPicturePreview = styled('img')(({ theme }) => ({
+    height: '100%',
+    width: '100%',
+    borderRadius: 10,
+    boxShadow:
+        theme.palette.mode === 'light' ? '1px 3px 5px lightgrey' : 'none',
+}));
+
+export const LazyPlaceholder = styled(Box)(({ theme }) => ({
+    height: '100%',
+    width: '100%',
+    borderRadius: 10,
+    boxShadow:
+        theme.palette.mode === 'light' ? '1px 3px 5px lightgrey' : 'none',
+}));

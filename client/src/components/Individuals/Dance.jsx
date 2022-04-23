@@ -16,10 +16,12 @@ import { createLoadingSelector } from '../../api/selectors';
 import * as actionType from '../../constants/actionTypes';
 import { IndividualsContainer } from '../shared/muiStyles';
 import Progress from '../shared/Progress';
-import DanceLink from '../shared/DanceLink';
+//import DanceLink from '../shared/DanceLink';
 import PicturesGrid from './Supporting/PicturesGrid';
 import DancerPreview from './Supporting/DancerPreview';
 import IndividualsHeader from './Supporting/IndividualsHeader';
+
+import ReactPlayer from 'react-player';
 
 function Dance() {
     const dispatch = useDispatch();
@@ -157,17 +159,47 @@ function Dance() {
                 )}
             </Stack>
 
-            <Stack my={1}>
+            <Stack my={1} width={1} alignItems="center">
                 <Typography variant="h5">
                     Link
-                    <Divider />
+                    <Divider sx={{ width: 45 }} />
                 </Typography>
 
                 {dance?.link ? (
-                    <DanceLink link={dance.link} />
+                    <Box my={1} maxWidth={0.95} minWidth={0.9} minHeight={0.9}>
+                        <Box
+                            sx={{
+                                position: 'relative',
+                                paddingTop: '56.25%',
+                                minWidth: '100%',
+                                minHeight: '100%',
+                            }}
+                        >
+                            <ReactPlayer
+                                url={dance.link}
+                                width="100%"
+                                height="100%"
+                                light
+                                controls
+                                style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0,
+                                    transform: 'none',
+                                    margin: '0',
+                                }}
+                            />
+                        </Box>
+                    </Box>
                 ) : (
                     <Typography>No link yet for this dance</Typography>
                 )}
+
+                {/* {dance?.link ? (
+                    <DanceLink link={dance.link} />
+                ) : (
+                    <Typography>No link yet for this dance</Typography>
+                )} */}
             </Stack>
 
             {dance?.extra && (

@@ -77,13 +77,7 @@ function AdminDashboard(props) {
                     onClick={() => handleComponent(<AdminLanding key={0} />, 0)}
                 >
                     <ListItemText>
-                        <Typography
-                            variant="h4"
-                            fontFamily="YesMargo, Urbanist, Roboto, Helvetica Neue, sans-serif"
-                            textTransform="uppercase"
-                        >
-                            Overview
-                        </Typography>
+                        <Typography variant="h5">Overview</Typography>
                     </ListItemText>
                 </ListItemButton>
 

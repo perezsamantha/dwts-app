@@ -50,7 +50,7 @@ function SeasonsOverview() {
                             <Table size="small">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Season</TableCell>
+                                        <TableCell>#</TableCell>
                                         <TableCell>Weeks</TableCell>
                                         <TableCell>Teams</TableCell>
                                         <TableCell align="center">

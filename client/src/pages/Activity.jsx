@@ -12,13 +12,7 @@ function Activity() {
     return (
         <Page>
             <MainContainer>
-                <Typography
-                    variant="h2"
-                    fontFamily="YesMargo, Urbanist, Roboto, Helvetica Neue, sans-serif"
-                    textTransform="uppercase"
-                >
-                    Activity
-                </Typography>
+                <Typography variant="h4">Activity</Typography>
 
                 <RecentLikes />
 
