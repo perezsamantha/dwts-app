@@ -23,7 +23,10 @@ function DanceCard() {
     const loading = useSelector((state) => state.loading.DANCEFIND);
 
     useEffect(() => {
-        dispatch(findDailyDance({ day: 'yesterday' }));
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+        dispatch(findDailyDance({ day: yesterday }));
     }, [dispatch]);
 
     return (

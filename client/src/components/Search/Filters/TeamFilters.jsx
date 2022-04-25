@@ -79,22 +79,27 @@ function TeamFilters() {
                             <FormControlLabel
                                 value="seasonDesc"
                                 control={<Radio />}
-                                label="Season (↑ to ↓)"
+                                label="Season"
                             />
-                            <FormControlLabel
+                            {/* <FormControlLabel
                                 value="seasonAsc"
                                 control={<Radio />}
                                 label="Season (↓ to ↑)"
-                            />
+                            /> */}
                             <FormControlLabel
                                 value="placementAsc"
                                 control={<Radio />}
-                                label="Placement (↑ to ↓)"
+                                label="Placement"
                             />
-                            <FormControlLabel
+                            {/* <FormControlLabel
                                 value="placementDesc"
                                 control={<Radio />}
                                 label="Placement (↓ to ↑)"
+                            /> */}
+                            <FormControlLabel
+                                value="likes"
+                                control={<Radio />}
+                                label="Season Favs"
                             />
                             {/* <FormControlLabel
                                         value="avgScore"

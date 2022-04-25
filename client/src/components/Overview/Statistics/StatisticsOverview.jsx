@@ -12,6 +12,12 @@ import {
     getWinsByPro,
 } from './statsFunctions';
 import * as actionType from '../../../constants/actionTypes';
+import {
+    StyledAccordion,
+    StyledAccordionDetails,
+    StyledAccordionSummary,
+} from '../../shared/muiStyles';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 function StatisticsOverview() {
     const dispatch = useDispatch();
@@ -40,26 +46,36 @@ function StatisticsOverview() {
 
     return (
         <Card>
-            <Typography variant="h5">Statistics</Typography>
-            <Divider />
+            <StyledAccordion elevation={0} defaultExpanded>
+                <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography variant="h5">Statistics</Typography>
+                </StyledAccordionSummary>
+                <StyledAccordionDetails>
+                    <Divider />
 
-            {loading ? (
-                <Progress />
-            ) : (
-                <Box>
-                    <Typography variant="h6">Perfect Scores by team</Typography>
-                    <StatsTable arr={perfectsByTeam} type="team" />
+                    {loading ? (
+                        <Progress />
+                    ) : (
+                        <Box>
+                            <Typography variant="h6">
+                                Perfect Scores by team
+                            </Typography>
+                            <StatsTable arr={perfectsByTeam} type="team" />
 
-                    <Typography variant="h6">Perfect Scores by pro</Typography>
-                    <StatsTable arr={perfectsByPro} type="pro" />
+                            <Typography variant="h6">
+                                Perfect Scores by pro
+                            </Typography>
+                            <StatsTable arr={perfectsByPro} type="pro" />
 
-                    <Typography variant="h6">Wins by pro</Typography>
-                    <StatsTable arr={winsByPro} type="pro" />
+                            <Typography variant="h6">Wins by pro</Typography>
+                            <StatsTable arr={winsByPro} type="pro" />
 
-                    <Typography variant="h6">Seasons as pro</Typography>
-                    <StatsTable arr={seasonsAsPro} type="pro" />
-                </Box>
-            )}
+                            <Typography variant="h6">Seasons as pro</Typography>
+                            <StatsTable arr={seasonsAsPro} type="pro" />
+                        </Box>
+                    )}
+                </StyledAccordionDetails>
+            </StyledAccordion>
         </Card>
     );
 }

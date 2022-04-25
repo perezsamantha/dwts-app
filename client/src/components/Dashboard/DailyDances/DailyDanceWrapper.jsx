@@ -8,7 +8,8 @@ function DailyDanceWrapper() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(findDailyDance({ day: 'today' }));
+        const today = new Date();
+        dispatch(findDailyDance({ day: today }));
     }, [dispatch]);
 
     return (

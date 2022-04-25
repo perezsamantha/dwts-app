@@ -25,7 +25,7 @@ function BottomNavBar() {
         value !== 'account' &&
         value !== 'activity'
     ) {
-        setValue('home');
+        setValue('search');
     }
 
     const handleChange = (event, newValue) => {

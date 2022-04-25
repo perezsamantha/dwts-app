@@ -310,6 +310,17 @@ function Team() {
                 </Stack>
             </Stack>
 
+            {team?.extra && (
+                <Stack my={1}>
+                    <Typography variant="h5">
+                        Notes
+                        <Divider />
+                    </Typography>
+
+                    <Typography>{team.extra}</Typography>
+                </Stack>
+            )}
+
             <Stack my={1}>
                 <Typography variant="h5">
                     Pictures

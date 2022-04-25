@@ -33,18 +33,30 @@ function Teams(props) {
     if (!loading) {
         filteredTeams = filterTeams(teams, filters);
 
-        if (filters.sortBy === 'seasonAsc' || filters.sortBy === 'seasonDesc') {
+        if (filters.sortBy === 'seasonDesc' || filters.sortBy === 'likes') {
             sortType = 'season';
 
-            filteredTeams.sort((a, b) => {
-                if (a.placement < b.placement) {
-                    return -1;
-                } else if (a.placement > b.placement) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            });
+            if (filters.sortBy === 'seasonDesc') {
+                filteredTeams.sort((a, b) => {
+                    if (a.placement < b.placement) {
+                        return -1;
+                    } else if (a.placement > b.placement) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+            } else if (filters.sortBy === 'likes') {
+                filteredTeams.sort((a, b) => {
+                    if (a.likes.length > b.likes.length) {
+                        return -1;
+                    } else if (a.likes.length < b.likes.length) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+            }
 
             arr = filteredTeams.reduce((acc, item) => {
                 const found = acc.find((a) => a.key === item.season_id);
@@ -68,23 +80,21 @@ function Teams(props) {
                         return 0;
                     }
                 });
-            } else if (filters.sortBy === 'seasonAsc') {
-                arr.sort((a, b) => {
-                    if (a.key < b.key) {
-                        return -1;
-                    } else if (a.key > b.key) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                });
             }
+            // else if (filters.sortBy === 'seasonAsc') {
+            //     arr.sort((a, b) => {
+            //         if (a.key < b.key) {
+            //             return -1;
+            //         } else if (a.key > b.key) {
+            //             return 1;
+            //         } else {
+            //             return 0;
+            //         }
+            //     });
+            // }
         }
 
-        if (
-            filters.sortBy === 'placementAsc' ||
-            filters.sortBy === 'placementDesc'
-        ) {
+        if (filters.sortBy === 'placementAsc') {
             sortType = 'placement';
 
             filteredTeams.sort((a, b) => {
@@ -109,17 +119,18 @@ function Teams(props) {
                 return acc;
             }, []);
 
-            if (filters.sortBy === 'placementDesc') {
-                arr.sort((a, b) => {
-                    if (a.key > b.key) {
-                        return -1;
-                    } else if (a.key < b.key) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                });
-            } else if (filters.sortBy === 'placementAsc') {
+            // if (filters.sortBy === 'placementDesc') {
+            //     arr.sort((a, b) => {
+            //         if (a.key > b.key) {
+            //             return -1;
+            //         } else if (a.key < b.key) {
+            //             return 1;
+            //         } else {
+            //             return 0;
+            //         }
+            //     });
+            // } else
+            if (filters.sortBy === 'placementAsc') {
                 arr.sort((a, b) => {
                     if (a.key < b.key) {
                         return -1;

@@ -69,18 +69,18 @@ function Dance() {
                 </Typography>
 
                 {dance?.song_title && (
-                    <Typography>Song - {dance.song_title}</Typography>
-                )}
-                {dance?.song_artist && (
-                    <Typography>Artist - {dance.song_artist}</Typography>
-                )}
-
-                {dance?.running_order && (
-                    <Typography my={1}>Running Order - {ro}</Typography>
+                    <Typography>
+                        {dance.song_title}{' '}
+                        {dance?.song_artist && `by ${dance.song_artist}`}
+                    </Typography>
                 )}
 
                 {dance?.episode?.theme && (
                     <Typography>{dance.episode.theme} Night</Typography>
+                )}
+
+                {dance?.running_order && (
+                    <Typography>Running Order - {ro}</Typography>
                 )}
             </Stack>
 
@@ -194,12 +194,6 @@ function Dance() {
                 ) : (
                     <Typography>No link yet for this dance</Typography>
                 )}
-
-                {/* {dance?.link ? (
-                    <DanceLink link={dance.link} />
-                ) : (
-                    <Typography>No link yet for this dance</Typography>
-                )} */}
             </Stack>
 
             {dance?.extra && (
