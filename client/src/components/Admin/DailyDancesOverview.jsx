@@ -51,21 +51,26 @@ function DailyDancesOverview() {
         return month[monthIndex];
     };
 
-    const startDate = new Date();
+    let startDate = new Date();
     let endDate = new Date();
     endDate.setDate(endDate.getDate() + 7);
 
     const arrDates = getDates(startDate, 7);
 
     const withinWeek = (date) => {
-        return (
-            date.getUTCDate() >= startDate.getDate() &&
-            date.getUTCMonth() >= startDate.getMonth() &&
-            date.getUTCFullYear() >= startDate.getFullYear() &&
-            date.getUTCDate() <= endDate.getDate() &&
-            date.getUTCMonth() <= endDate.getMonth() &&
-            date.getUTCFullYear() <= endDate.getFullYear()
-        );
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setHours(0, 0, 0, 0);
+        const utcDate = new Date(date.toUTCString().slice(0, -4));
+
+        return utcDate <= endDate && utcDate >= startDate;
+        // return (
+        //     date.getUTCDate() >= startDate.getDate() &&
+        //     date.getUTCMonth() >= startDate.getMonth() &&
+        //     date.getUTCFullYear() >= startDate.getFullYear() &&
+        //     date.getUTCDate() <= endDate.getDate() &&
+        //     date.getUTCMonth() <= endDate.getMonth() &&
+        //     date.getUTCFullYear() <= endDate.getFullYear()
+        // );
     };
 
     let arr = [];

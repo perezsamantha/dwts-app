@@ -16,6 +16,7 @@ import {
     organizeDancers,
 } from '../shared/functions';
 import Progress from '../shared/Progress';
+import { DateTime } from 'luxon';
 
 function DanceCard() {
     const dispatch = useDispatch();
@@ -23,9 +24,9 @@ function DanceCard() {
     const loading = useSelector((state) => state.loading.DANCEFIND);
 
     useEffect(() => {
-        const today = new Date();
-        const yesterday = new Date(today);
-        yesterday.setDate(yesterday.getDate() - 1);
+        const yesterday = DateTime.now().plus({ days: -1 });
+        //const yesterday = new Date(today);
+        //yesterday.setDate(yesterday.getDate() - 1);
         dispatch(findDailyDance({ day: yesterday }));
     }, [dispatch]);
 
