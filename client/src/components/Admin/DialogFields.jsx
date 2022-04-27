@@ -833,6 +833,9 @@ function DialogFields(props) {
                     <MenuItem key={2} value={2}>
                         2
                     </MenuItem>
+                    <MenuItem key={3} value={3}>
+                        3
+                    </MenuItem>
                 </TextField>
             )}
 

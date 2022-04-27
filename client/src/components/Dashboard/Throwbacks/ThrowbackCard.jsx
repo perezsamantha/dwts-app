@@ -40,8 +40,8 @@ function ThrowbackCard() {
                 <Typography>No throwbacks today</Typography>
             ) : (
                 <>
-                    {throwbacks.map((tb) => (
-                        <Typography>
+                    {throwbacks.map((tb, index) => (
+                        <Typography key={index}>
                             {tb.yearsAgo}{' '}
                             {tb.yearsAgo === 1 ? `Year ago` : 'Years ago'} -{' '}
                             {tb.desc}

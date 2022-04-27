@@ -117,6 +117,12 @@ export const themes = [
     'Double-score',
     'Marathon',
     'Race to the Semifinals',
+    'Race to the Finals',
+    'Song from the Year I Was Born',
+    'Giving Thanks',
+    'Time Machine',
+    'Results Show',
+    'Exclusive First Look',
 ].sort((a, b) => a.localeCompare(b));
 
 // 4'0 to 7'3

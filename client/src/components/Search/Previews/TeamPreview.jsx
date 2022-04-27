@@ -25,7 +25,7 @@ function TeamPreview(props) {
                             : `Currently Competing`}
                     </Typography>
                     <Typography variant="caption" noWrap>
-                        {getAverageScore(team.dances)} Avg Score{' '}
+                        {getAverageScore(team.dances, team.season_id)} Avg Score{' '}
                         {team.likes.length === 0
                             ? ''
                             : team.likes.length === 1

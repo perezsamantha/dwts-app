@@ -89,7 +89,7 @@ function Team() {
                 )}
 
                 <Typography variant="h6">
-                    Average Score - {getAverageScore(dances)}
+                    Average Score - {getAverageScore(dances, team.season_id)}
                 </Typography>
             </Stack>
 

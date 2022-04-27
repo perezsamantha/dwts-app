@@ -77,9 +77,15 @@ export const fetchAllPros = async (req, res) => {
             ) t
             ON p.id = t.pro_id
             LEFT JOIN (
-                SELECT d1.team_id,
+                SELECT p.id AS pro_id,
                     COALESCE(JSON_AGG(d2) FILTER (WHERE d2.id IS NOT NULL), '[]') AS dances
                 FROM dancers d1
+                LEFT JOIN pros p
+                ON p.id = ( 
+                    SELECT pro_id 
+                    FROM teams t 
+                    WHERE t.id = d1.team_id 
+                )
                 LEFT JOIN (
                     SELECT d2.*,
                         COALESCE(JSON_AGG(s) FILTER (WHERE s.id IS NOT NULL), '[]') AS scores
@@ -89,13 +95,9 @@ export const fetchAllPros = async (req, res) => {
                     GROUP BY d2.id
                 ) d2
                 ON d1.dance_id = d2.id
-                GROUP BY d1.team_id
+                GROUP BY p.id
             ) d
-            ON p.id = ( 
-                SELECT pro_id 
-                FROM teams t 
-                WHERE t.id = d.team_id 
-            )
+            ON p.id = d.pro_id
             LEFT JOIN (
                 SELECT pl.pro_id,
                     COALESCE(JSON_AGG(JSON_BUILD_OBJECT('id', u.id, 'username', u.username)) FILTER (WHERE u.id IS NOT NULL), '[]') AS users
@@ -143,9 +145,15 @@ export const findProById = async (req, res) => {
             ) t
             ON p.id = t.pro_id
             LEFT JOIN (
-                SELECT d1.team_id,
+                SELECT p.id AS pro_id,
                     COALESCE(JSON_AGG(d2) FILTER (WHERE d2.id IS NOT NULL), '[]') AS dances
                 FROM dancers d1
+                LEFT JOIN pros p
+                ON p.id = ( 
+                    SELECT pro_id 
+                    FROM teams t 
+                    WHERE t.id = d1.team_id 
+                )
                 LEFT JOIN (
                     SELECT d2.*,
                         COALESCE(JSON_AGG(s) FILTER (WHERE s.id IS NOT NULL), '[]') AS scores
@@ -155,13 +163,9 @@ export const findProById = async (req, res) => {
                     GROUP BY d2.id
                 ) d2
                 ON d1.dance_id = d2.id
-                GROUP BY d1.team_id
+                GROUP BY p.id
             ) d
-            ON p.id = ( 
-                SELECT pro_id 
-                FROM teams t 
-                WHERE t.id = d.team_id 
-            )
+            ON p.id = d.pro_id
             LEFT JOIN (
                 SELECT pl.pro_id,
                     COALESCE(JSON_AGG(JSON_BUILD_OBJECT('id', u.id, 'username', u.username)) FILTER (WHERE u.id IS NOT NULL), '[]') AS users
@@ -417,9 +421,15 @@ export const addPic = async (req, res) => {
                 ) t
                 ON p.id = t.pro_id
                 LEFT JOIN (
-                    SELECT d1.team_id,
+                    SELECT p.id AS pro_id,
                         COALESCE(JSON_AGG(d2) FILTER (WHERE d2.id IS NOT NULL), '[]') AS dances
                     FROM dancers d1
+                    LEFT JOIN pros p
+                    ON p.id = ( 
+                        SELECT pro_id 
+                        FROM teams t 
+                        WHERE t.id = d1.team_id 
+                    )
                     LEFT JOIN (
                         SELECT d2.*,
                             COALESCE(JSON_AGG(s) FILTER (WHERE s.id IS NOT NULL), '[]') AS scores
@@ -429,13 +439,9 @@ export const addPic = async (req, res) => {
                         GROUP BY d2.id
                     ) d2
                     ON d1.dance_id = d2.id
-                    GROUP BY d1.team_id
+                    GROUP BY p.id
                 ) d
-                ON p.id = ( 
-                    SELECT pro_id 
-                    FROM teams t 
-                    WHERE t.id = d.team_id 
-                )
+                ON p.id = d.pro_id
                 LEFT JOIN (
                     SELECT pl.pro_id,
                         COALESCE(JSON_AGG(JSON_BUILD_OBJECT('id', u.id, 'username', u.username)) FILTER (WHERE u.id IS NOT NULL), '[]') AS users

@@ -220,7 +220,7 @@ export const getShortTeamName = (celeb, pro) => {
     return celebName + ' & ' + proName;
 };
 
-export const getAverageScore = (dances) => {
+export const getAverageScore = (dances, season) => {
     if (!dances || typeof dances === 'undefined' || dances.length === 0) {
         return 0;
     }
@@ -243,6 +243,13 @@ export const getAverageScore = (dances) => {
         if (scoresByDance.length !== 0) {
             totalScore = scoresByDance.reduce((a, b) => a + b);
 
+            // converting to respective scales
+            if (Array.of(19, 20, 23, 24, 30).includes(season)) {
+                totalScore = (totalScore / (scoresByDance.length * 10)) * 40;
+            } else {
+                totalScore = (totalScore / (scoresByDance.length * 10)) * 30;
+            }
+
             allScores.push(totalScore);
         }
     });
@@ -252,7 +259,7 @@ export const getAverageScore = (dances) => {
         avgScore = allScores.reduce((a, b) => a + b) / numScores;
     }
 
-    return Math.round(avgScore * 1000) / 1000;
+    return Math.round(avgScore * 100) / 100;
 };
 
 // ✅ using array of score objects instead of array of plain values

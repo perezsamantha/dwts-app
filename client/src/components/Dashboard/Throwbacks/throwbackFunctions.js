@@ -12,7 +12,7 @@ export const getThrowbacks = (episodes, tours) => {
     };
 
     const getYearsAgo = (date) => {
-        return today.getYear() - date.getUTCYear();
+        return today.getFullYear() - date.getUTCFullYear();
     };
 
     episodes.forEach((episode) => {

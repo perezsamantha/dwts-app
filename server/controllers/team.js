@@ -143,7 +143,7 @@ export const findTeamById = async (req, res) => {
                     ON d2.id = s.dance_id
                     WHERE e.id = d2.episode_id
                     GROUP BY d2.id, e.*, e.date
-                    ORDER BY e.date
+                    ORDER BY e.date ASC, d2.running_order ASC
                 ) d2
                 ON d1.dance_id = d2.id
                 WHERE d1.team_id = $1

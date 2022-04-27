@@ -750,11 +750,11 @@ export const likeDance = async (req, res) => {
 export const findDailyDance = async (req, res) => {
     let { day } = req.body;
     let date, localDate;
-    console.log(day);
-    console.log(DateTime.fromISO(day));
-    localDate = DateTime.fromISO(day);
+    //console.log(day);
+    //console.log(DateTime.fromISO(day, { setZone: true }));
+    localDate = DateTime.fromISO(day, { setZone: true });
     date = DateTime.utc(localDate.year, localDate.month, localDate.day).toISO();
-    console.log(date);
+    //console.log(date);
 
     try {
         const dance = await pool.query(
