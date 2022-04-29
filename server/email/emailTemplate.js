@@ -7,7 +7,7 @@ export const verify = (token) => ({
                 Click to verify your email.
             </a>
         `,
-    text: `Copy and paste this link: ${CLIENT_ORIGIN}/verify/${token}`,
+    text: `Click to verify your email.`,
 });
 
 export const reset = (token) => ({
@@ -17,5 +17,5 @@ export const reset = (token) => ({
                 Click to reset your password.
             </a>
         `,
-    text: `Copy and paste this link: ${CLIENT_ORIGIN}/reset/${token}`,
+    text: `Click to reset your password.`,
 });

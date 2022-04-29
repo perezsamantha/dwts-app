@@ -86,20 +86,20 @@ const LandingWrapper = () => {
                 <NewTop>
                     {active === 'signin' && (
                         <>
-                            <HeaderText variant={width > 400 ? 'h4' : 'h3'}>
+                            <HeaderText variant={width > 600 ? 'h4' : 'h3'}>
                                 Welcome
                             </HeaderText>
-                            <HeaderText variant={width > 400 ? 'h4' : 'h3'}>
+                            <HeaderText variant={width > 600 ? 'h4' : 'h3'}>
                                 Back
                             </HeaderText>
                         </>
                     )}
                     {active === 'signup' && (
                         <>
-                            <HeaderText variant={width > 400 ? 'h4' : 'h3'}>
+                            <HeaderText variant={width > 600 ? 'h4' : 'h3'}>
                                 Create
                             </HeaderText>
-                            <HeaderText variant={width > 400 ? 'h4' : 'h3'}>
+                            <HeaderText variant={width > 600 ? 'h4' : 'h3'}>
                                 Account
                             </HeaderText>
                         </>

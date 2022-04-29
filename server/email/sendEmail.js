@@ -28,7 +28,7 @@ const transporter = nodemailer.createTransport({
         refreshToken: process.env.OAUTH_REFRESH_TOKEN,
         accessToken: accessToken,
     },
-    from: process.env.FROM_USER,
+    from: process.env.MAIL_USER,
     tls: {
         rejectUnauthorized: false,
     },

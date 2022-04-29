@@ -69,18 +69,19 @@ function SignUp() {
         setPageSwitch(false);
     };
 
-    const handleOAuth = async (googleData) => {
+    const handleOAuth = (googleData) => {
         setFormData(initialState);
         setCreating(false);
-
-        dispatch(
-            googleAuth(
-                { token: googleData.tokenId, username: null, signup: true },
-                navigate
-            )
-        );
-        setToken(googleData.tokenId);
-        setPageSwitch(false);
+        if (googleData.tokenId) {
+            dispatch(
+                googleAuth(
+                    { token: googleData.tokenId, username: null, signup: true },
+                    navigate
+                )
+            );
+            setToken(googleData.tokenId);
+            setPageSwitch(false);
+        }
     };
 
     const handleOAuthNew = (e) => {

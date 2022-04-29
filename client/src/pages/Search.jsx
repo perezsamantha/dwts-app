@@ -24,8 +24,8 @@ import FanFilters from '../components/Search/Filters/FanFilters';
 function Search(props) {
     const [type, setType] = useState(props.type);
     const [searchVal, setSearchVal] = useState('');
-    const [key, setKey] = useState(1);
     const [placeholder, setPlaceholder] = useState('');
+    const [ready, setReady] = useState(false);
 
     localStorage.setItem('parentPath', window.location.pathname);
 
@@ -53,8 +53,13 @@ function Search(props) {
     };
 
     const searchChange = (e) => {
+        setReady(false);
         setSearchVal(e.target.value);
-        setKey(key + 1);
+        const delay = setTimeout(() => {
+            setReady(true);
+        }, 1000);
+
+        return () => clearTimeout(delay);
     };
 
     useEffect(() => {
@@ -73,7 +78,6 @@ function Search(props) {
             case searchType.FANS:
                 return <FanFilters />;
             default:
-                return <></>;
         }
     };
 
@@ -154,7 +158,7 @@ function Search(props) {
                 </SearchContainer>
                 <Divider sx={{ margin: 0 }} />
 
-                <SearchComponent />
+                {ready && <SearchComponent />}
             </MainContainer>
 
             <BottomNavBar />

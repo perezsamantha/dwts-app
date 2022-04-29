@@ -25,12 +25,8 @@ function Fans(props) {
 
     useEffect(() => {
         const input = { search: search };
-        const delay = setTimeout(() => {
-            dispatch(searchUsers(input));
-            setSlide(true);
-        }, 500);
-
-        return () => clearTimeout(delay);
+        dispatch(searchUsers(input));
+        setSlide(true);
     }, [dispatch, search]);
 
     let filteredFans = [];

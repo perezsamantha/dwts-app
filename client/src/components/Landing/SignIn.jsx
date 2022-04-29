@@ -61,10 +61,12 @@ function SignIn() {
         setPageSwitch(false);
     };
 
-    const handleOAuth = async (googleData) => {
+    const handleOAuth = (googleData) => {
         setFormData(initialState);
-        dispatch(googleAuth({ token: googleData.tokenId }, navigate));
-        setPageSwitch(false);
+        if (googleData.tokenId) {
+            dispatch(googleAuth({ token: googleData.tokenId }, navigate));
+            setPageSwitch(false);
+        }
     };
 
     const handleResend = () => {
