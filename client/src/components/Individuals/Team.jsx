@@ -247,7 +247,9 @@ function Team() {
                                 transition: { duration: 0.3 },
                             }}
                         >
-                            {dance.style} - {getTotalScore(dance.scores)}
+                            {dance.style}{' '}
+                            {getTotalScore(dance.scores) &&
+                                `- ${getTotalScore(dance.scores)}`}
                         </Box>
                     </Link>
                 ))}

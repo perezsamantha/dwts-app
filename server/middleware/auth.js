@@ -29,6 +29,17 @@ const auth = async (req, res, next) => {
                         .json({ message: 'Token Expired' });
                 }
 
+                const new_activity = new Date();
+
+                await pool.query(
+                    `
+                    UPDATE users 
+                    SET last_active = $1 
+                    WHERE id = $2
+                    `,
+                    [new_activity, id]
+                );
+
                 req.userId = id;
             } else {
                 const ticket = await client.verifyIdToken({
@@ -51,6 +62,17 @@ const auth = async (req, res, next) => {
                     return res
                         .status(401)
                         .json({ message: messages.invalidUser });
+
+                const new_activity = new Date();
+
+                await pool.query(
+                    `
+                    UPDATE users 
+                    SET last_active = $1 
+                    WHERE id = $2
+                    `,
+                    [new_activity, existing_user.rows[0].id]
+                );
 
                 req.userId = existing_user.rows[0].id;
             }

@@ -921,16 +921,17 @@ function DialogFields(props) {
                 />
             )}
 
-            {Array.of(tableType.USER).includes(table) && (
-                <TextField
-                    name="email"
-                    label="Email"
-                    type="text"
-                    required
-                    value={formData.email || ''}
-                    onChange={handleChange}
-                />
-            )}
+            {Array.of(tableType.USER).includes(table) &&
+                props.dialog === 'Add' && (
+                    <TextField
+                        name="email"
+                        label="Email"
+                        type="text"
+                        required
+                        value={formData.email || ''}
+                        onChange={handleChange}
+                    />
+                )}
 
             {Array.of(tableType.USER).includes(table) &&
                 props.dialog === 'Edit' && (

@@ -26,8 +26,12 @@ function Teams(props) {
 
     useEffect(() => {
         const input = { search: search };
-        dispatch(searchTeams(input));
-        setSlide(true);
+        const delay = setTimeout(() => {
+            dispatch(searchTeams(input));
+            setSlide(true);
+        }, 500);
+
+        return () => clearTimeout(delay);
     }, [dispatch, search]);
 
     if (!loading) {

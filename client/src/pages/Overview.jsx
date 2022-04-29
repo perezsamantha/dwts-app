@@ -4,7 +4,7 @@ import BottomNavBar from '../components/BottomNavBar/BottomNavBar';
 import { MainContainer, Page } from '../components/shared/muiStyles';
 import SeasonsOverview from '../components/Overview/Seasons/SeasonsOverview';
 import TourOverview from '../components/Overview/Tours/TourOverview';
-import TopTens from '../components/Overview/FanFavs/TopTens';
+//import TopTens from '../components/Overview/FanFavs/TopTens';
 import StatisticsOverview from '../components/Overview/Statistics/StatisticsOverview';
 
 function Overview() {
@@ -19,7 +19,7 @@ function Overview() {
 
                 <TourOverview />
 
-                <TopTens />
+                {/* <TopTens /> */}
 
                 <StatisticsOverview />
             </MainContainer>

@@ -74,8 +74,8 @@ function AdminOverview() {
                                         fill out as many fields as possible🤞
                                     </Typography>
                                     <Typography>
-                                        Only I have the ability to delete table
-                                        rows, mods have all other permissions
+                                        Only I have the ability to edit/delete
+                                        users, mods have all other permissions
                                     </Typography>
                                 </Stack>
                             </Box>

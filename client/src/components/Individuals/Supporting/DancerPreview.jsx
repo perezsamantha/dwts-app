@@ -108,8 +108,6 @@ function DancerPreview(props) {
         default:
             return <></>;
     }
-
-    // TODO: indicate if background dancer
 }
 
 export default DancerPreview;

@@ -121,6 +121,16 @@ const Container = styled(Paper)(({ theme }) => ({
         borderRadius: 0,
         minHeight: '100vh',
         maxHeight: '100vh',
+        overflowY: 'scroll',
+        '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
+            backgroundColor: 'inherit',
+            width: 0,
+            height: 0,
+        },
+        '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
+            borderRadius: 10,
+            backgroundColor: 'darkgrey',
+        },
     },
     [theme.breakpoints.up('sm')]: {
         borderRadius: 15,
@@ -221,10 +231,11 @@ const NewTop = styled(Box)(({ theme }) => ({
     marginLeft: 25,
     pointerEvents: 'none',
     [theme.breakpoints.down('sm')]: {
-        marginBottom: 75,
+        marginBottom: 100,
+        marginTop: -5,
     },
     [theme.breakpoints.up('sm')]: {
-        marginBottom: 100,
+        marginBottom: 125,
         marginTop: -25,
     },
 }));
@@ -239,7 +250,7 @@ const InnerContainer = styled(Box)({
     display: 'flex',
     flexDirection: 'column',
     padding: '1rem',
-    marginBottom: 50,
+    //marginBottom: 50,
 });
 
 export default LandingWrapper;

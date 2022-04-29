@@ -97,7 +97,7 @@ function DanceFilters() {
                             <FormControlLabel
                                 value="likes"
                                 control={<Radio />}
-                                label="Most Likes"
+                                label="Likes"
                             />
                         </RadioGroup>
 

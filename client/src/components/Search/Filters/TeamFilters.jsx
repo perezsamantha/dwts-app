@@ -99,7 +99,7 @@ function TeamFilters() {
                             <FormControlLabel
                                 value="likes"
                                 control={<Radio />}
-                                label="Season Favs"
+                                label="Season Favorites"
                             />
                             {/* <FormControlLabel
                                         value="avgScore"

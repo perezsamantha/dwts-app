@@ -26,8 +26,12 @@ function Dances(props) {
 
     useEffect(() => {
         const input = { search: search };
-        dispatch(searchDances(input));
-        setSlide(true);
+        const delay = setTimeout(() => {
+            dispatch(searchDances(input));
+            setSlide(true);
+        }, 500);
+
+        return () => clearTimeout(delay);
     }, [dispatch, search]);
 
     let filteredDances = [];

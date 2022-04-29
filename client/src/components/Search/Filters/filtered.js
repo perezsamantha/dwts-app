@@ -224,17 +224,25 @@ export const filterPros = (pros, filters) => {
                 } else {
                     return 0;
                 }
-            case 'height': //shortest to tallest
-                if (a.height < b.height) {
+            // case 'height': //shortest to tallest
+            //     if (a.height < b.height) {
+            //         return -1;
+            //     } else if (a.height > b.height) {
+            //         return 1;
+            //     } else {
+            //         return 0;
+            //     }
+            // case 'avgPlacement':
+            // case 'numPerfects':
+            // case 'wins':
+            case 'likes': // high to low
+                if (a.likes.length > b.likes.length) {
                     return -1;
-                } else if (a.height > b.height) {
+                } else if (a.likes.length < b.likes.length) {
                     return 1;
                 } else {
                     return 0;
                 }
-            // case 'avgPlacement':
-            // case 'numPerfects':
-            // case 'wins':
             default:
                 return 0;
         }
@@ -284,8 +292,14 @@ export const filterFans = (fans, filters) => {
                 let nicknameA = a.nickname.toUpperCase();
                 let nicknameB = b.nickname.toUpperCase();
                 if (nicknameA < nicknameB) {
+                    if (nicknameA === '.') {
+                        return 1;
+                    }
                     return -1;
                 } else if (nicknameA > nicknameB) {
+                    if (nicknameB === '.') {
+                        return -1;
+                    }
                     return 1;
                 } else {
                     return 0;

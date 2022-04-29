@@ -18,11 +18,11 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { convertHeight } from '../../shared/functions';
+//import { convertHeight } from '../../shared/functions';
 import {
     agesInYears,
     genders,
-    heightsInInches,
+    //heightsInInches,
 } from '../../../constants/dropdowns';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionType from '../../../constants/actionTypes';
@@ -104,6 +104,11 @@ function ProFilters() {
                                 control={<Radio />}
                                 label="Height"
                             />
+                            <FormControlLabel
+                                value="likes"
+                                control={<Radio />}
+                                label="Likes"
+                            />
                         </RadioGroup>
 
                         <Stack
@@ -155,7 +160,7 @@ function ProFilters() {
                             </Select>
                         </FormControl>
 
-                        <Typography>Height</Typography>
+                        {/* <Typography>Height</Typography>
                         <Stack direction="row" alignItems="center" spacing={1}>
                             <Box>
                                 <ScopedTextField
@@ -198,9 +203,9 @@ function ProFilters() {
                                     })}
                                 </ScopedTextField>
                             </Box>
-                        </Stack>
-                        <Typography>Age</Typography>
+                        </Stack> */}
 
+                        <Typography>Age</Typography>
                         <Stack direction="row" alignItems="center" spacing={1}>
                             <Box>
                                 <ScopedTextField

@@ -20,7 +20,7 @@ function DancePreview(props) {
                     <BsArrowRight />
                     <Typography variant="subtitle1">
                         Season {episode.season_id} &#8226; Week {episode.week}{' '}
-                        {episode?.night && `\u2022 ${episode.night}`}{' '}
+                        {episode?.night && `\u2022 Night ${episode.night}`}{' '}
                         {scores?.length !== 0 &&
                             `\u2022 ${getTotalScore(scores)}`}
                     </Typography>

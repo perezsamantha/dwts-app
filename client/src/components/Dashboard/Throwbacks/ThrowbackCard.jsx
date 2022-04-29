@@ -43,7 +43,7 @@ function ThrowbackCard() {
                     {throwbacks.map((tb, index) => (
                         <Typography key={index}>
                             {tb.yearsAgo}{' '}
-                            {tb.yearsAgo === 1 ? `Year ago` : 'Years ago'} -{' '}
+                            {tb.yearsAgo === 1 ? `year ago` : 'years ago'} -{' '}
                             {tb.desc}
                         </Typography>
                     ))}

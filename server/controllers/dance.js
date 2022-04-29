@@ -141,13 +141,13 @@ export const fetchAllDances = async (req, res) => {
             LEFT JOIN (
                 SELECT dc2.*, 
                     ROW_TO_JSON(t) AS team, 
-                    ROW_TO_JSON(p) AS pro, 
-                    ROW_TO_JSON(c) AS celeb 
+                    JSON_BUILD_OBJECT('first_name', p.first_name, 'last_name', p.last_name) AS pro, 
+                    JSON_BUILD_OBJECT('first_name', c.first_name, 'last_name', c.last_name) AS celeb 
                 FROM dancers dc2 
                 LEFT JOIN (
-                    SELECT t2.*, 
-                        TO_JSONB(p) AS pro, 
-                        TO_JSONB(c) AS celeb 
+                    SELECT t2.id, 
+                        TO_JSONB(JSON_BUILD_OBJECT('first_name', p.first_name, 'last_name', p.last_name)) AS pro,
+                        TO_JSONB(JSON_BUILD_OBJECT('first_name', c.first_name, 'last_name', c.last_name)) AS celeb
                     FROM teams t2 
                     LEFT JOIN pros p 
                     ON t2.pro_id = p.id 
@@ -302,13 +302,13 @@ export const searchDances = async (req, res) => {
                 LEFT JOIN (
                     SELECT dc2.*, 
                         ROW_TO_JSON(t) AS team, 
-                        ROW_TO_JSON(p) AS pro, 
-                        ROW_TO_JSON(c) AS celeb 
+                        JSON_BUILD_OBJECT('first_name', p.first_name, 'last_name', p.last_name) AS pro, 
+                        JSON_BUILD_OBJECT('first_name', c.first_name, 'last_name', c.last_name) AS celeb 
                     FROM dancers dc2 
                     LEFT JOIN (
-                        SELECT t2.*, 
-                            TO_JSONB(p) AS pro, 
-                            TO_JSONB(c) AS celeb 
+                        SELECT t2.id, 
+                            TO_JSONB(JSON_BUILD_OBJECT('first_name', p.first_name, 'last_name', p.last_name)) AS pro,
+                            TO_JSONB(JSON_BUILD_OBJECT('first_name', c.first_name, 'last_name', c.last_name)) AS celeb
                         FROM teams t2 
                         LEFT JOIN pros p 
                         ON t2.pro_id = p.id 
@@ -368,13 +368,13 @@ export const searchDances = async (req, res) => {
                 LEFT JOIN (
                     SELECT dc2.*, 
                         ROW_TO_JSON(t) AS team, 
-                        ROW_TO_JSON(p) AS pro, 
-                        ROW_TO_JSON(c) AS celeb 
+                        JSON_BUILD_OBJECT('first_name', p.first_name, 'last_name', p.last_name) AS pro, 
+                        JSON_BUILD_OBJECT('first_name', c.first_name, 'last_name', c.last_name) AS celeb 
                     FROM dancers dc2 
                     LEFT JOIN (
-                        SELECT t2.*, 
-                            TO_JSONB(p) AS pro, 
-                            TO_JSONB(c) AS celeb 
+                        SELECT t2.id, 
+                            TO_JSONB(JSON_BUILD_OBJECT('first_name', p.first_name, 'last_name', p.last_name)) AS pro,
+                            TO_JSONB(JSON_BUILD_OBJECT('first_name', c.first_name, 'last_name', c.last_name)) AS celeb
                         FROM teams t2 
                         LEFT JOIN pros p 
                         ON t2.pro_id = p.id 
@@ -487,13 +487,13 @@ export const updateDance = async (req, res) => {
             LEFT JOIN (
                 SELECT dc2.*, 
                     ROW_TO_JSON(t) AS team, 
-                    ROW_TO_JSON(p) AS pro, 
-                    ROW_TO_JSON(c) AS celeb 
+                    JSON_BUILD_OBJECT('first_name', p.first_name, 'last_name', p.last_name) AS pro, 
+                    JSON_BUILD_OBJECT('first_name', c.first_name, 'last_name', c.last_name) AS celeb 
                 FROM dancers dc2 
                 LEFT JOIN (
-                    SELECT t2.*, 
-                        TO_JSONB(p) AS pro, 
-                        TO_JSONB(c) AS celeb 
+                    SELECT t2.id, 
+                        TO_JSONB(JSON_BUILD_OBJECT('first_name', p.first_name, 'last_name', p.last_name)) AS pro,
+                        TO_JSONB(JSON_BUILD_OBJECT('first_name', c.first_name, 'last_name', c.last_name)) AS celeb
                     FROM teams t2 
                     LEFT JOIN pros p 
                     ON t2.pro_id = p.id 

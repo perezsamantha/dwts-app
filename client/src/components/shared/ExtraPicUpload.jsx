@@ -98,6 +98,7 @@ function ExtraPicUpload(props) {
                             sx={{ width: 200, marginTop: 1 }}
                             value={scaleValue}
                             onChange={handleScale}
+                            onChangeCommitted={handleScale}
                             min={1}
                             max={5}
                             step={0.01}

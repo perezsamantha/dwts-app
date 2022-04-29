@@ -280,6 +280,7 @@ export const signIn = async (req, res) => {
             );
 
             res.cookie('da_token', token, {
+                maxAge: 1000 * 60 * 60 * 24 * 190,
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: 'Strict',
@@ -502,6 +503,7 @@ export const googleAuth = async (req, res) => {
         );
 
         res.cookie('da_token', token, {
+            maxAge: 1000 * 60 * 60 * 24 * 190,
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'Strict',
@@ -704,6 +706,7 @@ export const verifyEmail = async (req, res) => {
         );
 
         res.cookie('da_token', token, {
+            maxAge: 1000 * 60 * 60 * 24 * 190,
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'Strict',
@@ -1047,16 +1050,16 @@ export const fetchAuthData = async (req, res) => {
             [id]
         );
 
-        const new_activity = new Date();
+        // const new_activity = new Date();
 
-        await pool.query(
-            `
-            UPDATE users 
-            SET last_active = $1 
-            WHERE id = $2
-            `,
-            [new_activity, id]
-        );
+        // await pool.query(
+        //     `
+        //     UPDATE users
+        //     SET last_active = $1
+        //     WHERE id = $2
+        //     `,
+        //     [new_activity, id]
+        // );
 
         res.status(200).json(user.rows[0]);
     } catch (error) {
@@ -1067,6 +1070,7 @@ export const fetchAuthData = async (req, res) => {
 export const logout = async (req, res) => {
     try {
         res.cookie('da_token', '', {
+            maxAge: 1000 * 60 * 60 * 24 * 190,
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'Strict',
@@ -1893,13 +1897,13 @@ export const setAuthPic = async (req, res) => {
                         LEFT JOIN (
                             SELECT dc2.*, 
                                 ROW_TO_JSON(t) AS team, 
-                                ROW_TO_JSON(p) AS pro, 
-                                ROW_TO_JSON(c) AS celeb 
+                                JSON_BUILD_OBJECT('first_name', p.first_name, 'last_name', p.last_name) AS pro, 
+                                JSON_BUILD_OBJECT('first_name', c.first_name, 'last_name', c.last_name) AS celeb 
                             FROM dancers dc2 
                             LEFT JOIN (
-                                SELECT t2.*, 
-                                    TO_JSON(p) AS pro, 
-                                    TO_JSON(c) AS celeb 
+                                SELECT t2.id, 
+                                    TO_JSONB(JSON_BUILD_OBJECT('first_name', p.first_name, 'last_name', p.last_name)) AS pro,
+                                    TO_JSONB(JSON_BUILD_OBJECT('first_name', c.first_name, 'last_name', c.last_name)) AS celeb
                                 FROM teams t2 
                                 LEFT JOIN pros p 
                                 ON t2.pro_id = p.id 

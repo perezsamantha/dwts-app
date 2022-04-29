@@ -117,7 +117,7 @@ export const themes = [
     'Double-score',
     'Marathon',
     'Race to the Semifinals',
-    'Race to the Finals',
+    'Road to the Finals',
     'Song from the Year I Was Born',
     'Giving Thanks',
     'Time Machine',

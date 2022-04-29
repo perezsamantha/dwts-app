@@ -24,8 +24,12 @@ function Pros(props) {
 
     useEffect(() => {
         const input = { search: search };
-        dispatch(searchPros(input));
-        setSlide(true);
+        const delay = setTimeout(() => {
+            dispatch(searchPros(input));
+            setSlide(true);
+        }, 500);
+
+        return () => clearTimeout(delay);
     }, [dispatch, search]);
 
     let filteredPros = [];

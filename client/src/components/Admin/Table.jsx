@@ -879,7 +879,7 @@ function Table(props) {
                     renderCell: (params) => <Avatar src={params.value} />,
                 },
                 { field: 'username', headerName: 'Username', width: 100 },
-                { field: 'email', headerName: 'Email', width: 100 },
+                // { field: 'email', headerName: 'Email', width: 100 },
                 {
                     field: 'email_verified',
                     headerName: 'Email Verified?',
