@@ -7,6 +7,7 @@ import {
     Typography,
     Divider,
     Stack,
+    Link,
 } from '@mui/material';
 
 function AppInfo(props) {
@@ -35,7 +36,17 @@ function AppInfo(props) {
                         <Typography>
                             Detailed information about the development process
                             and additional credits can be viewed on the app's
-                            documentation site here.
+                            documentation site{' '}
+                            <Link
+                                href={
+                                    'https://perezsamantha.github.io/dwts-app/'
+                                }
+                                color="inherit"
+                                underline="always"
+                            >
+                                here
+                            </Link>
+                            .
                         </Typography>
                     </Stack>
                 </Stack>

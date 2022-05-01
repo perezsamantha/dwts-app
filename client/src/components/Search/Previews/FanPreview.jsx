@@ -9,7 +9,7 @@ function FanPreview(props) {
     return (
         <Card sx={{ padding: 1, margin: 0 }}>
             <Stack direction="row" alignItems="center" spacing={1}>
-                <LazyLoad height={100}>
+                <LazyLoad height={50}>
                     <Avatar
                         src={fan.cover_pic}
                         sx={{ width: 40, height: 40 }}

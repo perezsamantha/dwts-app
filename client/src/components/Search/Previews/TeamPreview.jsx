@@ -8,10 +8,6 @@ function TeamPreview(props) {
     const { team, sortType } = props;
     const placement = convertPlacement(team.placement);
 
-    if (team.season_id === 27.5) {
-        console.log(team.cover_pic);
-    }
-
     return (
         <Stack>
             <LazyLoad height={100}>

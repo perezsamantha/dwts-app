@@ -307,8 +307,8 @@ export const searchDances = async (req, res) => {
                     FROM dancers dc2 
                     LEFT JOIN (
                         SELECT t2.id, 
-                            TO_JSONB(JSON_BUILD_OBJECT('first_name', p.first_name, 'last_name', p.last_name)) AS pro,
-                            TO_JSONB(JSON_BUILD_OBJECT('first_name', c.first_name, 'last_name', c.last_name)) AS celeb
+                            TO_JSONB(JSON_BUILD_OBJECT('id', p.id, 'first_name', p.first_name, 'last_name', p.last_name)) AS pro,
+                            TO_JSONB(JSON_BUILD_OBJECT('id', c.id, 'first_name', c.first_name, 'last_name', c.last_name)) AS celeb
                         FROM teams t2 
                         LEFT JOIN pros p 
                         ON t2.pro_id = p.id 
@@ -373,8 +373,8 @@ export const searchDances = async (req, res) => {
                     FROM dancers dc2 
                     LEFT JOIN (
                         SELECT t2.id, 
-                            TO_JSONB(JSON_BUILD_OBJECT('first_name', p.first_name, 'last_name', p.last_name)) AS pro,
-                            TO_JSONB(JSON_BUILD_OBJECT('first_name', c.first_name, 'last_name', c.last_name)) AS celeb
+                            TO_JSONB(JSON_BUILD_OBJECT('id', p.id, 'first_name', p.first_name, 'last_name', p.last_name)) AS pro,
+                            TO_JSONB(JSON_BUILD_OBJECT('id', c.id, 'first_name', c.first_name, 'last_name', c.last_name)) AS celeb
                         FROM teams t2 
                         LEFT JOIN pros p 
                         ON t2.pro_id = p.id 

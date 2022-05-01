@@ -72,7 +72,9 @@ function DanceCard() {
                     </Stack>
 
                     <Stack direction="row" spacing={1} alignItems="center">
-                        <MdOutlineQueueMusic />
+                        <Stack>
+                            <MdOutlineQueueMusic />
+                        </Stack>
                         <Typography variant="subtitle1">
                             {dance.song_title}{' '}
                             {dance?.song_artist && `by ${dance.song_artist}`}

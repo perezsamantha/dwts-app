@@ -34,7 +34,7 @@ export const filterDances = (dances, filters) => {
                     // });
                     return dance.dancers.some((dancer) => {
                         if (dancer.team) {
-                            return filters.pros.includes(dancer.team.pro_id);
+                            return filters.pros.includes(dancer.team.pro.id);
                         }
                         return filters.pros.includes(dancer.pro_id);
                     });

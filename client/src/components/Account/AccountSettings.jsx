@@ -61,8 +61,8 @@ function AccountSettings(props) {
             const img = editor.getImage();
             var canvas = document.createElement('canvas');
 
-            canvas.width = 400;
-            canvas.height = 400;
+            canvas.width = 300;
+            canvas.height = 300;
 
             const picaCanvas = await pica.resize(img, canvas);
 
