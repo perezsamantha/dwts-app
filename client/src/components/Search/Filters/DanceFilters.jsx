@@ -396,7 +396,7 @@ function DanceFilters() {
                             </Select>
                         </FormControl>
 
-                        <Typography>Must Have Pictures?</Typography>
+                        {/* <Typography>Must Have Pictures?</Typography>
                         <RadioGroup
                             name="hasPictures"
                             value={filters.hasPictures}
@@ -413,7 +413,7 @@ function DanceFilters() {
                                 control={<Radio />}
                                 label="No"
                             />
-                        </RadioGroup>
+                        </RadioGroup> */}
 
                         <Typography>Must Have Link?</Typography>
                         <RadioGroup

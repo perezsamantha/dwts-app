@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Avatar, Box, Divider, Grid, Stack, Typography } from '@mui/material';
+import { Box, Divider, Grid, Stack, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { findProById, likePro } from '../../actions/pros';
@@ -7,6 +7,7 @@ import { createLoadingSelector } from '../../api/selectors';
 import * as actionType from '../../constants/actionTypes';
 import {
     convertHeight,
+    convertPlacement,
     getAge,
     getAveragePlacement,
     getFullName,
@@ -188,7 +189,7 @@ function Pro() {
                                     spacing={1}
                                     alignItems="center"
                                 >
-                                    <Box>
+                                    {/* <Box>
                                         <Avatar
                                             sx={{
                                                 width: 50,
@@ -196,13 +197,15 @@ function Pro() {
                                             }}
                                             src={team?.cover_pic}
                                         />
-                                    </Box>
+                                    </Box> */}
                                     <Box>
                                         <Typography>
                                             {team.season_id === '27.5'
                                                 ? `Juniors`
                                                 : `Season ${team.season_id}`}{' '}
-                                            &#8226; {getFullName(team.celeb)}
+                                            &#8226; {getFullName(team.celeb)} (
+                                            {convertPlacement(team.placement)}{' '}
+                                            Place)
                                         </Typography>
                                     </Box>
                                 </Stack>

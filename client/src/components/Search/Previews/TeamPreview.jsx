@@ -1,22 +1,33 @@
 import { Stack, Typography } from '@mui/material';
 import React from 'react';
 import { convertPlacement, getAverageScore } from '../../shared/functions.js';
-import { PicturePreview } from '../../shared/muiStyles.js';
+import { LazyPicturePreview } from '../../shared/muiStyles.js';
+import LazyLoad from 'react-lazyload';
 
 function TeamPreview(props) {
     const { team, sortType } = props;
     const placement = convertPlacement(team.placement);
 
+    if (team.season_id === 27.5) {
+        console.log(team.cover_pic);
+    }
+
     return (
         <Stack>
-            <PicturePreview
-                component="img"
-                onError={({ currentTarget }) => {
-                    currentTarget.onerror = null;
-                    currentTarget.src = '/defaultPic.png';
-                }}
-                src={team.cover_pic ? team.cover_pic : '/defaultPic.png'}
-            />
+            <LazyLoad height={100}>
+                <LazyPicturePreview
+                    alt=""
+                    className="swiper-lazy"
+                    onError={({ currentTarget }) => {
+                        currentTarget.onerror = null;
+                        currentTarget.src = '/defaultPic.png';
+                    }}
+                    data-src={
+                        team.cover_pic ? team.cover_pic : '/defaultPic.png'
+                    }
+                    src={'/defaultPic.png'}
+                />
+            </LazyLoad>
             <Typography variant="subtitle1" noWrap mt={0.25}>
                 {team.celeb.first_name} & {team.pro.first_name}
             </Typography>

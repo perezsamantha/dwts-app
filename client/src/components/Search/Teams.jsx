@@ -9,6 +9,7 @@ import { ContentContainer, ResultsContainer } from '../shared/muiStyles';
 import Progress from '../shared/Progress';
 import TeamsSlider from './TeamsSlider';
 import { convertPlacement } from '../shared/functions';
+import LazyLoad from 'react-lazyload';
 
 function Teams(props) {
     const { search } = props;
@@ -28,7 +29,7 @@ function Teams(props) {
         const input = { search: search };
         dispatch(searchTeams(input));
         setSlide(true);
-    }, [dispatch, search]);
+    }, [dispatch, search, filters]);
 
     if (!loading) {
         filteredTeams = filterTeams(teams, filters);
@@ -177,7 +178,12 @@ function Teams(props) {
                         <Typography variant="h5" my={1}>
                             {sliderTitle(item, sortType)}
                         </Typography>
-                        <TeamsSlider teams={item.data} sortType={sortType} />
+                        <LazyLoad height={100}>
+                            <TeamsSlider
+                                teams={item.data}
+                                sortType={sortType}
+                            />
+                        </LazyLoad>
                     </ContentContainer>
                 ))}
             </ResultsContainer>

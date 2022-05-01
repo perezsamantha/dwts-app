@@ -144,7 +144,7 @@ function Dance() {
                 </Typography>
 
                 {dance?.scores.length === 0 ? (
-                    <Typography>No scores yet for this dance</Typography>
+                    <Typography>No scores for this dance</Typography>
                 ) : (
                     <>
                         {dance.scores.map((score, index) => (

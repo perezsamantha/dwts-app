@@ -1,9 +1,9 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { Navigation } from 'swiper';
+import { Lazy, Navigation } from 'swiper';
 import 'swiper/css';
+import 'swiper/css/lazy';
 import 'swiper/css/navigation';
-import 'swiper/css/pagination';
 import { Box } from '@mui/material';
 import ProPreview from './ProPreview';
 import { Link } from 'react-router-dom';
@@ -14,6 +14,8 @@ function ProFavorites(props) {
 
     return (
         <Swiper
+            lazy={{ loadPrevNext: true }}
+            preloadImages={false}
             slidesPerView={3}
             spaceBetween={10}
             navigation={true}
@@ -47,7 +49,7 @@ function ProFavorites(props) {
                     spaceBetween: 15,
                 },
             }}
-            modules={[Navigation]}
+            modules={[Lazy, Navigation]}
             className="mySwiper"
         >
             {pros.map((pro, index) => (

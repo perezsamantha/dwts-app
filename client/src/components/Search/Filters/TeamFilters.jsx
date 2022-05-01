@@ -264,7 +264,7 @@ function TeamFilters() {
                             </Select>
                         </FormControl>
 
-                        <Typography>Must Have Pictures?</Typography>
+                        {/* <Typography>Must Have Pictures?</Typography>
                         <RadioGroup
                             name="hasPictures"
                             value={filters.hasPictures}
@@ -281,7 +281,7 @@ function TeamFilters() {
                                 control={<Radio />}
                                 label="No"
                             />
-                        </RadioGroup>
+                        </RadioGroup> */}
                     </FormControl>
                 </DialogContent>
                 <DialogActions>
