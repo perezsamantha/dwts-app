@@ -80,7 +80,11 @@ function Team() {
             </Stack>
 
             <Stack my={1}>
-                <Typography variant="h5">Season {team.season_id}</Typography>
+                <Typography variant="h5">
+                    {team.season_id === '27.5'
+                        ? `Juniors`
+                        : `Season ${team.season_id}`}
+                </Typography>
 
                 {team.placement && (
                     <Typography variant="h6">

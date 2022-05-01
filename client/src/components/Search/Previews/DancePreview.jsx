@@ -14,12 +14,16 @@ function DancePreview(props) {
         <Card sx={{ padding: 1, margin: 0 }}>
             <Stack>
                 <Stack direction="row" spacing={1} alignItems="center">
-                    <BsStars />
+                    <Stack>
+                        <BsStars />
+                    </Stack>
                     <Typography>{dance.style}</Typography>
                 </Stack>
 
                 <Stack direction="row" spacing={1} alignItems="center">
-                    <BsArrowRight />
+                    <Stack>
+                        <BsArrowRight />
+                    </Stack>
                     <Typography variant="subtitle1" noWrap>
                         Season {episode.season_id} &#8226; Week {episode.week}{' '}
                         {episode?.night && `\u2022 Night ${episode.night}`}{' '}
@@ -29,21 +33,27 @@ function DancePreview(props) {
                 </Stack>
 
                 <Stack direction="row" spacing={1} alignItems="center">
-                    <MdOutlineQueueMusic />
+                    <Stack>
+                        <MdOutlineQueueMusic />
+                    </Stack>
                     <Typography noWrap>
                         {dance.song_title} - {dance.song_artist}
                     </Typography>
                 </Stack>
 
                 <Stack direction="row" spacing={1} alignItems="center">
-                    <BsPersonCircle />
+                    <Stack>
+                        <BsPersonCircle />
+                    </Stack>
                     <Typography noWrap>
                         {organizeDancers(dance.dancers).join(', ')}
                     </Typography>
                 </Stack>
 
                 <Stack direction="row" spacing={1} alignItems="center">
-                    <FiHeart />
+                    <Stack>
+                        <FiHeart />
+                    </Stack>
                     <Typography>{dance.likes.length}</Typography>
                 </Stack>
             </Stack>

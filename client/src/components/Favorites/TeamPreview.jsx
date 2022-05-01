@@ -10,7 +10,11 @@ function TeamPreview(props) {
         <Box>
             <PicturePreview
                 component="img"
-                src={team.cover_pic ? team.cover_pic : '/defaultPic.jpeg'}
+                onError={({ currentTarget }) => {
+                    currentTarget.onerror = null;
+                    currentTarget.src = '/defaultPic.png';
+                }}
+                src={team.cover_pic ? team.cover_pic : '/defaultPic.png'}
             />
             <Typography variant="body1" align="left" noWrap>
                 {celeb.first_name} & {pro.first_name}

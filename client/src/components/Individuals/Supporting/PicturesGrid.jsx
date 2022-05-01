@@ -23,7 +23,14 @@ function PicturesGrid(props) {
                             transition: { duration: 0.3 },
                         }}
                     >
-                        <ExtraPic component="img" src={picture} />
+                        <ExtraPic
+                            component="img"
+                            onError={({ currentTarget }) => {
+                                currentTarget.onerror = null;
+                                currentTarget.src = '/defaultPic.png';
+                            }}
+                            src={picture}
+                        />
                     </Box>
                 </Grid>
             ))}

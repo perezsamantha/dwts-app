@@ -170,11 +170,11 @@ export const filterPros = (pros, filters) => {
                         return true;
                     }
                     return filters.gender.includes(pro.gender) ? true : false;
-                case 'height':
-                    return pro.height >= filters.height[0] &&
-                        pro.height <= filters.height[1]
-                        ? true
-                        : false;
+                // case 'height':
+                //     return pro.height >= filters.height[0] &&
+                //         pro.height <= filters.height[1]
+                //         ? true
+                //         : false;
                 case 'age':
                     const age = getAge(pro.birthday);
                     return age >= filters.age[0] && age <= filters.age[1]

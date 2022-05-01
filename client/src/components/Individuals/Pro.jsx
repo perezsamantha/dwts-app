@@ -199,8 +199,10 @@ function Pro() {
                                     </Box>
                                     <Box>
                                         <Typography>
-                                            Season {team.season_id} &#8226;{' '}
-                                            {getFullName(team.celeb)}
+                                            {team.season_id === '27.5'
+                                                ? `Juniors`
+                                                : `Season ${team.season_id}`}{' '}
+                                            &#8226; {getFullName(team.celeb)}
                                         </Typography>
                                     </Box>
                                 </Stack>

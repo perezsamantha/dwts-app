@@ -54,7 +54,11 @@ export function IndividualsHeader(props) {
             ) : (
                 <CoverPicture
                     component="img"
-                    src={item.cover_pic ? item.cover_pic : '/defaultPic.jpeg'}
+                    onError={({ currentTarget }) => {
+                        currentTarget.onerror = null;
+                        currentTarget.src = '/defaultPic.png';
+                    }}
+                    src={item.cover_pic ? item.cover_pic : '/defaultPic.png'}
                 />
             )}
             {type === 'fan' ? (

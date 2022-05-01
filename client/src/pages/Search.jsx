@@ -57,12 +57,13 @@ function Search(props) {
         setSearchVal(e.target.value);
         const delay = setTimeout(() => {
             setReady(true);
-        }, 1000);
+        }, 500);
 
         return () => clearTimeout(delay);
     };
 
     useEffect(() => {
+        setReady(true);
         setType(type);
         placeholderText(type);
     }, [type]);

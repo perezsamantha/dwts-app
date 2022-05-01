@@ -54,7 +54,7 @@ function CoverPicUpload(props) {
                             onChange={handleScale}
                             onChangeCommitted={handleScale}
                             min={1}
-                            max={5}
+                            max={2}
                             step={0.01}
                         />
                     </Stack>

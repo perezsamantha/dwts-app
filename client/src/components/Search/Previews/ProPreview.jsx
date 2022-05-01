@@ -9,7 +9,11 @@ function ProPreview(props) {
         <Box>
             <PicturePreview
                 component="img"
-                src={pro.cover_pic ? pro.cover_pic : '/defaultPic.jpeg'}
+                onError={({ currentTarget }) => {
+                    currentTarget.onerror = null;
+                    currentTarget.src = '/defaultPic.png';
+                }}
+                src={pro.cover_pic ? pro.cover_pic : '/defaultPic.png'}
             />
             <Typography variant="subtitle1" noWrap>
                 {pro.first_name} {pro.last_name}

@@ -1,4 +1,4 @@
-import { Avatar, Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 
 function TeamPreview(props) {
     const { team } = props;
@@ -6,10 +6,10 @@ function TeamPreview(props) {
     return (
         <Box>
             <Stack alignItems="center">
-                <Avatar
+                {/* <Avatar
                     sx={{ height: 35, width: 35 }}
                     src={team.cover_pic}
-                ></Avatar>
+                ></Avatar> */}
                 <Typography sx={{ fontSize: 12 }} noWrap>
                     {celeb.first_name} &
                 </Typography>

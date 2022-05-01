@@ -11,7 +11,11 @@ function TeamPreview(props) {
         <Stack>
             <PicturePreview
                 component="img"
-                src={team.cover_pic ? team.cover_pic : '/defaultPic.jpeg'}
+                onError={({ currentTarget }) => {
+                    currentTarget.onerror = null;
+                    currentTarget.src = '/defaultPic.png';
+                }}
+                src={team.cover_pic ? team.cover_pic : '/defaultPic.png'}
             />
             <Typography variant="subtitle1" noWrap mt={0.25}>
                 {team.celeb.first_name} & {team.pro.first_name}
