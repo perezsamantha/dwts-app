@@ -35,7 +35,10 @@ function TourOverview() {
 
     return (
         <Card>
-            <StyledAccordion elevation={0}>
+            <StyledAccordion
+                elevation={0}
+                TransitionProps={{ unmountOnExit: true }}
+            >
                 <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography variant="h5">Tour Overview</Typography>
                 </StyledAccordionSummary>

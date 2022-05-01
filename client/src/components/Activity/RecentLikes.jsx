@@ -16,6 +16,7 @@ import {
     getFullTeamName,
 } from '../shared/functions';
 import { Link } from 'react-router-dom';
+import LazyLoad from 'react-lazyload';
 
 function RecentLikes() {
     const dispatch = useDispatch();
@@ -55,7 +56,11 @@ function RecentLikes() {
                                 <Box key={index}>
                                     <Stack direction="row" spacing={2}>
                                         <Box>
-                                            <Avatar src={like.user.cover_pic} />
+                                            <LazyLoad height={50}>
+                                                <Avatar
+                                                    src={like.user.cover_pic}
+                                                />
+                                            </LazyLoad>
                                         </Box>
                                         <Box>
                                             <Stack>

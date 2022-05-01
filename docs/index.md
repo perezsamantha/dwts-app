@@ -12,7 +12,7 @@ Fans also have the option to add their birthday, link their social media account
 
 ## Developer Introduction
 
-My name is Samantha Perez and I graduated from the University of Central Florida in August '21 with my Bachelors in Computer Science. I graduated Summa Cum Laude in the College of Engineering and Computer Science and first in my major, excited to begin applying my skills outside of the classroom post-graduation.
+My name is Samantha Perez and I graduated from the University of Central Florida in August '21 with my Bachelors in Computer Science. I graduated _Summa Cum Laude_ in the College of Engineering and Computer Science and first in my major, excited to begin applying my skills outside of the classroom post-graduation.
 
 To be clear, I am not affiliated with Dancing with the Stars. I am merely just an avid fan who wanted to apply her software developer skills to a real-world interest. While in college, I was determined to create an app as a personal project to add to my resume and wanted the subject of the app to be something I am passionate about. The app is not monetized and I am not profiting off of it in any way. The [content credit](/credit/content/) section makes it clear that I do not claim to own any of the content or images seen within the app. My code is currently stored in a private GitHub repository, although I hope to make it open-source in the future.
 
