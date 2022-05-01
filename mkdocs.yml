@@ -1,25 +1,51 @@
-site_name: DWTS App Docs
-# site_url: https://samantha238.github.io/dwts-app/
+site_name: DWTF App Docs
+# site_url: https://perezsamantha.github.io/dwts-app/
 site_author: Samantha Perez
 site_description: >-
     Overview of development process that went into
-    making the DWTS App
+    making the DWTF App
 
 copyright: Copyright &copy; 2022 Samantha Perez
 
 theme:
     name: material
+    logo: visuals/mirrorball_icon.png
     palette:
         - media: '(prefers-color-scheme: light)'
           scheme: default
+          primary: blue grey
+          accent: blue
           toggle:
               icon: material/weather-sunny
               name: Switch to dark mode
         - media: '(prefers-color-scheme: dark)'
           scheme: slate
+          accent: yellow
           toggle:
               icon: material/weather-night
               name: Switch to light mode
+    features:
+        - navigation.expand
+    icon:
+        admonition:
+            note: octicons/tag-16
+            abstract: octicons/checklist-16
+            info: octicons/info-16
+            tip: octicons/squirrel-16
+            success: octicons/check-16
+            question: octicons/question-16
+            warning: octicons/alert-16
+            failure: octicons/x-circle-16
+            danger: octicons/zap-16
+            bug: octicons/bug-16
+            example: octicons/beaker-16
+            quote: octicons/quote-16
+extra_css:
+    - stylesheets/extra.css
+markdown_extensions:
+    - admonition
+    - pymdownx.details
+    - pymdownx.superfences
 
 nav:
     - Home: index.md

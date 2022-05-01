@@ -1,3 +1,15 @@
 # Features
 
-(gifs of app features)
+!!! info
+
+    This page is currently under construction and not yet completed
+
+## Search Portal
+
+### Dances
+
+### Teams
+
+### Pros
+
+### Fans

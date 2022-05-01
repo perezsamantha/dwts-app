@@ -1,7 +1,21 @@
 # Challenges
 
-Read about part of the reason why the app took longer than expected to complete
+Read about part of the reason why the app took quite longer than expected to complete🙃
+
+Disclaimer: It may seem unconventional to include my challenges and failures on this documentation site but as this is the first solo project of my career, I wanted to encompass my entire journey to eventually look back on. I am aware many of my challenges would have been avoided had I done a little bit more research or had more experience in the field. However, each obstacle was part of the learning process and helped me grow as a developer.
 
 ## Database
 
-## Frameworks
+My original idea was to make a web application using the MERN (MongoDB, ExpressJS, ReactJS, NodeJS) stack so the app's database happened to be MongoDB for several months. It wasn't until I realized just how much relational data I was going to be working with when I acknowledged Mongo was not the right choice the app. At this point, I had around a dozen schemas and fully functioning API controllers/routes and began my research on relational database management systems. I had very little familiarity with both PostgreSQL and MySQL through college and ultimately decided on PostgreSQL. It took me about a month to convert my entire backend and add many new table schemas/controllers/routes. Though I wish I had done more research on relational databases from the start, I gained a lot of experience with MongoDB and hope to work with it again in the future.
+
+Another challenge surrounding the database were my queries. I went back and forth on whether or not to utilize an ORM, such as Sequelize, to make handling my API much easier but ultimately decided against it. I never had much interest in databases but learning raw SQL ended up being an enjoyable experience. The issue arose when I needed data connected by foreign keys in the frontend. SQL joins were extremely overwhelming at first so to avoid them altogether I loaded **all** my data in at once using a custom action creator and then many JavaScript functions to filter the data to only what I needed. Once I accepted that this was a lazy workaround, I began incorporating left joins into my queries. Because of my lack of experience with databases, some days were extremely discouraging and many queries became too complex to debug.
+
+## Frameworks / Libraries
+
+The app's frontend is almost entirely built using Material UI but it wasn't until a few months in when I finally incorporated MUI into the project. I was originally hard coding CSS in every component due to my excitement to use styled components. Once text and containers began to be an issue, I knew I needed a reusable library to make my life easier and MUI did just that and more. I still ran into many minor issues with unexpected behavior from MUI components but I cannot imagine how much time and stress I have saved myself by adapting the project to the library.
+
+## Timezones...
+
+One obstacle I was not expecting to put a damper on things after I first deployed the app was the battle with timezones. Though I was cautious of timezones during development and made sure any time data type in the database was timezone inclusive, developing in east coast time on an east coast server did not prepare me for production. My friends began entering the pros and celebrities into the database when they noticed a glitch where the birthday they entered would automatically go back a day. Not knowing why this was happening, I told them to just set the birthdays a day ahead as a workaround and learned yet again that workarounds are rarely the answer. The dates ended up being entered to the database correctly but as they were stored in Coordinated Universal Time (UTC), they returned to the frontend in the user's local timezone causing the "glitch" where they appeared a day behind.
+
+I also struggled trying to find a solution as to why daily dances weren't refreshing at midnight in the user's local timezone. It took far too long for me to realize JavaScript `Date()` objects would only help me so much, especially when the backend server is set to UTC. **Many** articles online guided developers into using [MomentJS](https://momentjs.com/) but the package is now deprecated. I eventually took advantage of [Luxon](https://moment.github.io/luxon/api-docs/index.html) in both the frontend and backend to give me the solution I was looking for.
