@@ -22,6 +22,8 @@ ac.grant('fan')
     .readAny('tour')
     .readAny('tour_cast')
     .readAny('like')
+    .readAny('poll')
+    .updateAny('poll_option')
     .deleteOwn('user');
 
 ac.grant('pro')
@@ -50,7 +52,9 @@ ac.grant('pro')
     .createAny('tour')
     .updateAny('tour')
     .createAny('tour_cast')
-    .updateAny('tour_cast');
+    .updateAny('tour_cast')
+    .createAny('poll')
+    .updateAny('poll');
 
 ac.grant('moderator')
     .extend(['fan', 'pro'])
@@ -64,7 +68,8 @@ ac.grant('moderator')
     .deleteAny('score')
     .deleteAny('dancer')
     .deleteAny('tour')
-    .deleteAny('tour_cast');
+    .deleteAny('tour_cast')
+    .deleteAny('poll');
 
 ac.grant('admin')
     .extend(['fan', 'pro', 'moderator'])

@@ -211,3 +211,16 @@ export const initialUserState = {
 export const initialActivityState = {
     likes: [],
 };
+
+export const initialPollState = {
+    polls: [],
+    poll: {
+        title: null,
+        expires_in: null,
+        options: [],
+    },
+    option: {
+        poll_id: null,
+        data: null,
+    },
+};

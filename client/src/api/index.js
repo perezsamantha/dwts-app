@@ -160,3 +160,10 @@ export const setUserScore = (id, value) =>
     API.patch(`/scores/user/${id}`, value);
 
 export const fetchRecentLikes = () => API.get(`/activity/likes`);
+
+export const addPoll = (poll) => API.post('/polls/add', poll);
+export const addPollOption = (option) => API.post('/polls/addOption', option);
+export const fetchPolls = () => API.get('/polls/');
+export const deletePoll = (id) => API.delete(`/polls/delete/${id}`);
+export const deletePollOption = (id) => API.delete(`/polls/deleteOption/${id}`);
+export const voteOption = (id) => API.post(`/polls/${id}/vote`);

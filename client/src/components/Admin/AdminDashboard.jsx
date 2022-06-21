@@ -27,6 +27,7 @@ import { useDispatch } from 'react-redux';
 
 import AdminLanding from './AdminLanding';
 import { logout } from '../../actions/auth';
+import Polls from './Polls/Polls';
 
 const drawerWidth = 180;
 
@@ -123,6 +124,12 @@ function AdminDashboard(props) {
                         )}
                     </ListItemButton>
                 ))}
+
+                <ListItemButton
+                    onClick={() => handleComponent(<Polls key={13} />, 13)}
+                >
+                    <ListItemText>Polls</ListItemText>
+                </ListItemButton>
             </List>
             <Divider />
             <List>

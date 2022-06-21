@@ -6,6 +6,7 @@ import DailyDanceWrapper from '../components/Dashboard/DailyDances/DailyDanceWra
 import Introduction from '../components/Dashboard/Intro/Introduction';
 import { MainContainer, Page } from '../components/shared/muiStyles';
 import ThrowbackCard from '../components/Dashboard/Throwbacks/ThrowbackCard';
+import PollCard from '../components/Dashboard/Polls/PollCard';
 
 function Dashboard() {
     localStorage.setItem('parentPath', window.location.pathname);
@@ -22,6 +23,8 @@ function Dashboard() {
                 <DailyDanceWrapper />
 
                 <ThrowbackCard />
+
+                <PollCard />
             </MainContainer>
             <BottomNavBar />
         </Page>

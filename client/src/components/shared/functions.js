@@ -1,5 +1,5 @@
 import { monthNames } from '../../constants/dropdowns';
-
+import { DateTime } from 'luxon';
 export const convertDate = (val) => {
     if (val === null) {
         return '';
@@ -471,4 +471,31 @@ export const isPerfect = (scores) => {
     } else {
         return false;
     }
+};
+
+export const expiresIn = (expires) => {
+    if (!expires || typeof expires === 'undefined') {
+        return '';
+    }
+
+    const now = DateTime.now();
+
+    let delta = Math.abs(DateTime.fromISO(expires) - now) / 1000;
+
+    const days = Math.floor(delta / 86400);
+    delta -= days * 86400;
+
+    const hours = Math.floor(delta / 3600) % 24;
+    delta -= hours * 3600;
+
+    const minutes = Math.floor(delta / 60) % 60;
+    delta -= minutes * 60;
+
+    return (
+        (days === 1 ? '1 day' : days > 0 ? `${days} days` : '') +
+        (days > 0 && hours > 0 ? ' ' : '') +
+        (hours === 1 ? '1 hour' : hours > 0 ? `${hours} hours` : '') +
+        (hours > 0 && minutes > 0 ? ' ' : '') +
+        (minutes === 1 ? '1 minute' : minutes > 0 ? `${minutes} minutes` : '')
+    );
 };

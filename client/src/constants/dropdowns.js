@@ -25,6 +25,17 @@ export const styles = [
     'Lindy Hop',
     'Fusion',
     'Team Dance',
+    'Burlesque',
+    'Broadway',
+    'Swing',
+    'Megamix',
+    'Afro-Jazz',
+    "Rock n' Roll",
+    'Hustle',
+    'Bhangra',
+    'Lambada',
+    'Two-step',
+    'West Coast Swing',
 ].sort((a, b) => a.localeCompare(b));
 
 let seasons = Array.from({ length: 30 }, (_, i) => i + 1);
@@ -38,7 +49,11 @@ export const placements = Array.from({ length: 16 }, (_, i) => i + 1);
 
 export const runningOrders = Array.from({ length: 16 }, (_, i) => i + 1);
 
-export const scores = Array.from({ length: 10 }, (_, i) => i + 1);
+//export const scores = Array.from({ length: 10 }, (_, i) => i + 1);
+export const scores = [
+    0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5,
+    10,
+];
 
 export const themes = [
     'Disney',
@@ -169,3 +184,5 @@ export const monthNames = [
 export const months = Array.from({ length: 12 }, (_, i) => i + 1);
 
 export const days = Array.from({ length: 31 }, (_, i) => i + 1);
+
+export const pollDays = Array.from({ length: 7 }, (_, i) => i + 1);

@@ -29,6 +29,7 @@ import dancersRouter from './routes/dancers.js';
 import toursRouter from './routes/tours.js';
 import tourCastRouter from './routes/tourCast.js';
 import activityRouter from './routes/activity.js';
+import pollsRouter from './routes/polls.js';
 
 app.use('/api/users', usersRouter);
 app.use('/api/teams', teamsRouter);
@@ -43,6 +44,7 @@ app.use('/api/dancers', dancersRouter);
 app.use('/api/tours', toursRouter);
 app.use('/api/tour_cast', tourCastRouter);
 app.use('/api/activity', activityRouter);
+app.use('/api/polls', pollsRouter);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`);

@@ -142,11 +142,11 @@ function DanceCard() {
                         <Box>
                             <Stack direction="row" spacing={2} my={1}>
                                 <StyledRating
-                                    defaultValue={dance.user_score || 0}
+                                    //defaultValue={dance.user_score || 0}
                                     precision={0.5}
                                     min={0}
                                     max={10}
-                                    value={score}
+                                    value={score || 0}
                                     onChange={handleChange}
                                 />
                                 <Typography>{score}</Typography>
