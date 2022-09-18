@@ -9,5 +9,6 @@ export const EPISODE = 'Episode';
 export const DANCER = 'Dancer';
 export const TOUR = 'Tour';
 export const TOURCAST = 'Tour Cast';
+export const POLL = 'Poll';
 export const USER = 'User';
 export const AUTH = 'Auth';

@@ -2,9 +2,10 @@ import React from 'react';
 import { Typography } from '@mui/material';
 import BottomNavBar from '../components/BottomNavBar/BottomNavBar';
 import { MainContainer, Page } from '../components/shared/muiStyles';
-import Announcement from '../components/Activity/Announcement';
+// import Announcement from '../components/Activity/Announcement';
 import RecentLikes from '../components/Activity/RecentLikes';
 import DanceCard from '../components/Activity/DanceCard';
+import PollCard from '../components/Activity/Polls/PollCard';
 
 function Activity() {
     localStorage.setItem('parentPath', window.location.pathname);
@@ -18,7 +19,9 @@ function Activity() {
 
                 <DanceCard />
 
-                <Announcement />
+                <PollCard />
+
+                {/* <Announcement /> */}
             </MainContainer>
             <BottomNavBar />
         </Page>

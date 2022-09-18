@@ -4,9 +4,9 @@ import {
     addPollOption,
     deletePoll,
     deletePollOption,
-    fetchAllPolls,
+    fetchPolls,
     voteOption,
-} from '../controllers/polls.js';
+} from '../controllers/poll.js';
 import { grantAccess } from '../controllers/user.js';
 
 import auth from '../middleware/auth.js';
@@ -20,7 +20,7 @@ router.post(
     grantAccess('createAny', 'poll'),
     addPollOption
 );
-router.get('/', auth, grantAccess('readAny', 'poll'), fetchAllPolls);
+router.post('/', auth, grantAccess('readAny', 'poll'), fetchPolls);
 router.delete(
     '/delete/:id',
     auth,

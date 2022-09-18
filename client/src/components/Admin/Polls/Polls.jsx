@@ -39,7 +39,7 @@ function Polls() {
     });
 
     useEffect(() => {
-        dispatch(fetchPolls());
+        dispatch(fetchPolls({ type: 'all' }));
     }, [dispatch]);
 
     const handleClose = () => {

@@ -128,7 +128,28 @@ function AdminDashboard(props) {
                 <ListItemButton
                     onClick={() => handleComponent(<Polls key={13} />, 13)}
                 >
-                    <ListItemText>Polls</ListItemText>
+                    {selectedIndex === 13 ? (
+                        <ListItemText>
+                            <Stack
+                                direction="row"
+                                spacing={1}
+                                alignItems="center"
+                            >
+                                <Paper
+                                    sx={{
+                                        backgroundColor: 'primary.main',
+                                        zIndex: 10,
+                                        width: 4,
+                                        height: 20,
+                                        borderRadius: 0,
+                                    }}
+                                />
+                                <Typography>Polls</Typography>
+                            </Stack>
+                        </ListItemText>
+                    ) : (
+                        <ListItemText>Polls</ListItemText>
+                    )}
                 </ListItemButton>
             </List>
             <Divider />

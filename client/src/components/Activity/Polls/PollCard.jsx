@@ -15,18 +15,18 @@ function PollCard() {
 
     useEffect(() => {
         const today = DateTime.now();
-        dispatch(fetchPolls({ type: 'active', day: today }));
+        dispatch(fetchPolls({ type: 'expired', day: today }));
     }, [dispatch]);
 
     return (
         <Card>
-            <Typography variant="h5">This Week's Polls</Typography>
+            <Typography variant="h5">Recent Polls</Typography>
             <Divider />
 
             {loading ? (
                 <Progress />
             ) : polls.length === 0 ? (
-                <Typography>No polls this week</Typography>
+                <Typography>No recent polls</Typography>
             ) : (
                 <>
                     <Stack spacing={3}>

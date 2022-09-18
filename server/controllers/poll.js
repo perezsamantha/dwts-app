@@ -1,4 +1,5 @@
 import pool from '../api/pool.js';
+import { DateTime } from 'luxon';
 
 export const addPoll = async (req, res) => {
     try {
@@ -56,7 +57,12 @@ export const addPollOption = async (req, res) => {
 //             GROUP BY p.id
 //             `
 
-export const fetchAllPolls = async (req, res) => {
+export const fetchPolls = async (req, res) => {
+    let { type, day } = req.body;
+    let date, localDate;
+    localDate = DateTime.fromISO(day, { setZone: true });
+    date = DateTime.utc(localDate.year, localDate.month, localDate.day).toISO();
+
     try {
         const polls = await pool.query(
             `
@@ -72,8 +78,16 @@ export const fetchAllPolls = async (req, res) => {
                 GROUP BY o.id
             ) o
             ON p.id = o.poll_id
+            WHERE 
+                CASE 
+                    WHEN $1 = 'active' THEN expires > $2
+                    WHEN $1 = 'expired' THEN expires < $2
+                    ELSE expires >= '2022-01-01'
+                END
             GROUP BY p.id
-            `
+            ORDER BY p.id DESC
+            `,
+            [type, date]
         );
 
         res.status(200).json(polls.rows);

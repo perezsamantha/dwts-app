@@ -38,7 +38,7 @@ export const styles = [
     'West Coast Swing',
 ].sort((a, b) => a.localeCompare(b));
 
-let seasons = Array.from({ length: 30 }, (_, i) => i + 1);
+let seasons = Array.from({ length: 31 }, (_, i) => i + 1);
 seasons.splice(27, 0, 27.5);
 
 export const seasonNumbers = seasons;

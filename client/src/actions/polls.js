@@ -33,11 +33,11 @@ export const addPollOption = (option) => async (dispatch) => {
     }
 };
 
-export const fetchPolls = () => async (dispatch) => {
+export const fetchPolls = (type, day) => async (dispatch) => {
     dispatch({ type: actionType.POLLSEARCH_REQUEST });
 
     try {
-        const { data } = await api.fetchPolls();
+        const { data } = await api.fetchPolls(type, day);
 
         dispatch({ type: actionType.POLLSEARCH_SUCCESS, payload: data });
     } catch (error) {
