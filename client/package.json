@@ -34,7 +34,7 @@
         "redux-thunk": "^2.4.1",
         "source-map-explorer": "^2.5.2",
         "swiper": "^8.1.1",
-        "web-vitals": "^1.1.2"
+        "web-vitals": "^3.0.4"
     },
     "scripts": {
         "analyze": "source-map-explorer 'build/static/js/*.js'",
