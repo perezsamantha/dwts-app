@@ -14,7 +14,11 @@ import { OAuth2Client } from 'google-auth-library';
 
 //import { DateTime } from 'luxon';
 
-const client = new OAuth2Client(process.env.OAUTH_CLIENT_ID2);
+const client = new OAuth2Client(
+    process.env.OAUTH_CLIENT_ID2,
+    process.env.OAUTH_CLIENT_SECRET2,
+    'postmessage'
+);
 const { randomBytes } = await import('crypto');
 
 let usernameRegex = /^(\w|\.|\_)+$/;
@@ -299,8 +303,16 @@ export const googleAuth = async (req, res) => {
     try {
         const { token, username, signup } = req.body;
 
+        if (signup && !username)
+            return res.status(409).json({
+                message: messages.oauthUser,
+            });
+
+        const { tokens } = await client.getToken(token.code);
+        client.setCredentials(tokens);
+
         const ticket = await client.verifyIdToken({
-            idToken: token,
+            idToken: tokens.id_token,
             audience: process.env.OAUTH_CLIENT_ID2,
         });
 
@@ -502,7 +514,7 @@ export const googleAuth = async (req, res) => {
             [user_id]
         );
 
-        res.cookie('da_token', token, {
+        res.cookie('da_token', tokens.id_token, {
             maxAge: 1000 * 60 * 60 * 24 * 190,
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
@@ -1969,7 +1981,7 @@ export const deleteUser = async (req, res) => {
             [id]
         );
 
-        res.status(200).json({ message: 'User successfully deleted.' });
+        res.status(200).json({ message: messages.deleteSuccess });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -1987,7 +1999,14 @@ export const deleteAuth = async (req, res) => {
             [id]
         );
 
-        res.status(200).json({ message: 'User successfully deleted.' });
+        res.cookie('da_token', '', {
+            maxAge: 1000 * 60 * 60 * 24 * 190,
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Strict',
+        })
+            .status(200)
+            .json({ message: messages.deleteSuccess });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

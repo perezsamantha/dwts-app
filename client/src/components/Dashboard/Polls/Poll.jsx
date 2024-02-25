@@ -39,8 +39,10 @@ function Poll(props) {
                 >
                     {option.votes && (
                         <Percentage
-                            percent={(option.votes.length / totalVotes) * 100}
-                            visible={typeof voted === 'object'}
+                            percent={
+                                (option.votes.length / totalVotes) * 100 || 0
+                            }
+                            visible={(typeof voted === 'object').toString()}
                         />
                     )}
                     <Stack

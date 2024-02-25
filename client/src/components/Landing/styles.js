@@ -26,20 +26,27 @@ export const SubmitButton = styled(Button)(({ theme }) => ({
 }));
 
 export const GoogleButton = styled(Button)(({ theme }) => ({
+    backgroundColor:
+        theme.palette.mode === 'light'
+            ? theme.palette.grey[50]
+            : theme.palette.grey[800],
     width: '100%',
     padding: 8,
     textTransform: 'none',
     '&:hover': {
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor:
+            theme.palette.mode === 'light'
+                ? theme.palette.grey[50]
+                : theme.palette.grey[800],
         boxShadow:
             theme.palette.mode === 'light'
                 ? '0px 0px 15px 2px rgba(150, 150, 150, 0.2)'
-                : 'none',
+                : '0px 0px 15px 2px rgba(0, 0, 0, 0.2)',
     },
     boxShadow:
         theme.palette.mode === 'light'
             ? '0px 0px 15px 2px rgba(150, 150, 150, 0.2)'
-            : 'none',
+            : '0px 0px 15px 2px rgba(0, 0, 0, 0.2)',
 }));
 
 export const Line = styled('hr')({

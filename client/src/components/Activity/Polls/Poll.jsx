@@ -21,8 +21,10 @@ function Poll(props) {
                 <StyledButton variant="outlined" key={index} disabled={true}>
                     {option.votes && (
                         <Percentage
-                            percent={(option.votes.length / totalVotes) * 100}
-                            visible={true}
+                            percent={
+                                (option.votes.length / totalVotes) * 100 || 0
+                            }
+                            visible="true"
                         />
                     )}
                     <Stack

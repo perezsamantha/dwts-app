@@ -29,11 +29,47 @@ function RecentLikes() {
 
     const getType = (like) => {
         if (like.dance_id) {
-            return getDanceName(like.dance);
+            return (
+                <Link
+                    to={{
+                        pathname: `/dances/${like.dance_id}`,
+                    }}
+                    style={{
+                        textDecoration: 'inherit',
+                        color: 'inherit',
+                    }}
+                >
+                    {getDanceName(like.dance)}
+                </Link>
+            );
         } else if (like.team_id) {
-            return getFullTeamName(like.team.celeb, like.team.pro);
+            return (
+                <Link
+                    to={{
+                        pathname: `/teams/${like.team_id}`,
+                    }}
+                    style={{
+                        textDecoration: 'inherit',
+                        color: 'inherit',
+                    }}
+                >
+                    {getFullTeamName(like.team.celeb, like.team.pro)}
+                </Link>
+            );
         } else if (like.pro_id) {
-            return getFullName(like.pro);
+            return (
+                <Link
+                    to={{
+                        pathname: `/pros/${like.pro_id}`,
+                    }}
+                    style={{
+                        textDecoration: 'inherit',
+                        color: 'inherit',
+                    }}
+                >
+                    {getFullName(like.pro)}
+                </Link>
+            );
         } else {
             return '';
         }
@@ -55,29 +91,30 @@ function RecentLikes() {
                             {likes.map((like, index) => (
                                 <Box key={index}>
                                     <Stack direction="row" spacing={2}>
-                                        <Box>
-                                            <LazyLoad height={50}>
-                                                <Avatar
-                                                    src={like.user.cover_pic}
-                                                />
-                                            </LazyLoad>
-                                        </Box>
+                                        <Link
+                                            to={{
+                                                pathname: `/fans/${like.user.username}`,
+                                            }}
+                                            style={{
+                                                textDecoration: 'inherit',
+                                                color: 'inherit',
+                                            }}
+                                        >
+                                            <Box>
+                                                <LazyLoad height={50}>
+                                                    <Avatar
+                                                        src={
+                                                            like.user.cover_pic
+                                                        }
+                                                    />
+                                                </LazyLoad>
+                                            </Box>
+                                        </Link>
                                         <Box>
                                             <Stack>
                                                 <Typography variant="body2">
-                                                    <Link
-                                                        to={{
-                                                            pathname: `/fans/${like.user.username}`,
-                                                        }}
-                                                        style={{
-                                                            textDecoration:
-                                                                'inherit',
-                                                            color: 'inherit',
-                                                        }}
-                                                    >
-                                                        @{like.user.username}{' '}
-                                                    </Link>
-                                                    liked {getType(like)}
+                                                    @{like.user.username} liked{' '}
+                                                    {getType(like)}
                                                 </Typography>
                                                 <Typography
                                                     color="text.secondary"

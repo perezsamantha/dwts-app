@@ -1,12 +1,17 @@
 import React from 'react';
-import GoogleLogin from 'react-google-login';
 import { Typography, Stack, Box } from '@mui/material';
-import { SiGoogle } from 'react-icons/si';
+import { FcGoogle } from 'react-icons/fc';
 import { GoogleButton, Line, SubmitButton } from './styles';
 import { motion } from 'framer-motion';
+import { useGoogleLogin } from '@react-oauth/google';
 
 function Submit(props) {
     const { type, handleSubmit, handleOAuth } = props;
+
+    const login = useGoogleLogin({
+        onSuccess: (codeResponse) => handleOAuth(codeResponse),
+        flow: 'auth-code',
+    });
 
     return (
         <Stack width={1} spacing={2} alignItems="center">
@@ -44,50 +49,33 @@ function Submit(props) {
                 <Line />
             </Stack>
 
-            <GoogleLogin
-                clientId={process.env.REACT_APP_OAUTH_CLIENT_ID}
-                render={(renderProps) => (
-                    <Box
-                        component={motion.div}
-                        whileHover={{
-                            scale: 1.025,
-                            transition: { duration: 0.3 },
-                        }}
-                        whileTap={{
-                            scale: 1.03,
-                            transition: { duration: 0.3 },
-                        }}
-                        width={1}
-                    >
-                        <GoogleButton
-                            onClick={renderProps.onClick}
-                            disabled={renderProps.disabled}
-                            variant="contained"
-                            color="secondary"
-                        >
-                            <Stack
-                                direction="row"
-                                spacing={1}
-                                alignItems="center"
-                            >
-                                <SiGoogle style={{ width: 20, height: 20 }} />
-                                <Typography color="inherit">
-                                    Sign{' '}
-                                    {type === 'signin'
-                                        ? 'in'
-                                        : type === 'signup'
-                                        ? 'up'
-                                        : ''}{' '}
-                                    with Google
-                                </Typography>
-                            </Stack>
-                        </GoogleButton>
-                    </Box>
-                )}
-                onSuccess={handleOAuth}
-                onFailure={handleOAuth}
-                cookiePolicy="single_host_origin"
-            />
+            <Box
+                component={motion.div}
+                whileHover={{
+                    scale: 1.025,
+                    transition: { duration: 0.3 },
+                }}
+                whileTap={{
+                    scale: 1.03,
+                    transition: { duration: 0.3 },
+                }}
+                width={1}
+            >
+                <GoogleButton onClick={() => login()} variant="contained">
+                    <Stack direction="row" spacing={1} alignItems="center">
+                        <FcGoogle style={{ width: 20, height: 20 }} />
+                        <Typography>
+                            Sign{' '}
+                            {type === 'signin'
+                                ? 'in'
+                                : type === 'signup'
+                                ? 'up'
+                                : ''}{' '}
+                            with Google
+                        </Typography>
+                    </Stack>
+                </GoogleButton>
+            </Box>
         </Stack>
     );
 }

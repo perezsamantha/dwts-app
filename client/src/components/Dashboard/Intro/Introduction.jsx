@@ -19,7 +19,7 @@ function Introduction() {
                 <StyledAccordionDetails sx={{ padding: 0 }}>
                     <Divider />
 
-                    <Stack spacing={0.5}>
+                    <Stack spacing={0.5} mb={1}>
                         <Stack direction="row" spacing={1} alignItems="center">
                             <BsStars />
                             <Typography variant="h6">Dashboard</Typography>
@@ -52,7 +52,7 @@ function Introduction() {
                         </Stack>
                     </Stack>
 
-                    <Stack spacing={0.5}>
+                    <Stack spacing={0.5} mb={1}>
                         <Stack direction="row" spacing={1} alignItems="center">
                             <FiBarChart2 />
                             <Typography variant="h6">Overview</Typography>
@@ -78,7 +78,7 @@ function Introduction() {
                         </Stack>
                     </Stack>
 
-                    <Stack spacing={0.5}>
+                    <Stack spacing={0.5} mb={1}>
                         <Stack direction="row" spacing={1} alignItems="center">
                             <FiSearch />
                             <Typography variant="h6">Search</Typography>
@@ -109,7 +109,7 @@ function Introduction() {
                         </Stack>
                     </Stack>
 
-                    <Stack spacing={0.5}>
+                    <Stack spacing={0.5} mb={1}>
                         <Stack direction="row" spacing={1} alignItems="center">
                             <FiActivity />
                             <Typography variant="h6">Activity</Typography>

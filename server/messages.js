@@ -24,4 +24,5 @@ export const messages = {
 
     loginSuccess: 'Login successful',
     logoutSuccess: 'Logout successful',
+    deleteSuccess: 'User successfully deleted',
 };

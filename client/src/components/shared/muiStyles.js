@@ -14,7 +14,7 @@ import {
 
 // main pages
 export const Page = styled(Box)({
-    paddingBottom: 60,
+    paddingBottom: 70,
 });
 
 export const MainContainer = styled(Box)({
@@ -85,6 +85,7 @@ export const AccountContainer = styled(Paper)({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    marginBottom: 10,
 });
 
 // individuals

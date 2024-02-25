@@ -53,6 +53,9 @@ function SignUp() {
         if (errorMsg === 'OAuth user') {
             setCreating(true);
         }
+        if (errorMsg === 'Account with email already exists') {
+            setCreating(false);
+        }
     }, [errorMsg]);
 
     const handleChange = (e) => {
@@ -69,17 +72,17 @@ function SignUp() {
         setPageSwitch(false);
     };
 
-    const handleOAuth = (googleData) => {
+    const handleOAuth = (code) => {
         setFormData(initialState);
         setCreating(false);
-        if (googleData.tokenId) {
+        if (code) {
             dispatch(
                 googleAuth(
-                    { token: googleData.tokenId, username: null, signup: true },
+                    { token: code, username: null, signup: true },
                     navigate
                 )
             );
-            setToken(googleData.tokenId);
+            setToken(code);
             setPageSwitch(false);
         }
     };

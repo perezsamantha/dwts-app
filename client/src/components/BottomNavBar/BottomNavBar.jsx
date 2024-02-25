@@ -34,7 +34,11 @@ function BottomNavBar() {
 
     return (
         <NavBarContainer elevation={4}>
-            <BottomNavigation value={value} onChange={handleChange}>
+            <BottomNavigation
+                value={value}
+                onChange={handleChange}
+                sx={{ paddingBottom: 2 }}
+            >
                 <BottomNavigationAction
                     component={Link}
                     label={null}
@@ -148,9 +152,10 @@ const NavBarContainer = styled(Paper)({
     position: 'fixed',
     width: '100%',
     zIndex: 10,
-    //padding: 5,
-    borderTopLeftRadius: 15,
+    borderTopLeftRadius: 40,
     borderTopRightRadius: 15,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
 });
 
 const CustomSearch = styled(Paper)(({ theme }) => ({
