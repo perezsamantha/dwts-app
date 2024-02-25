@@ -7,7 +7,7 @@ import {
     DialogActions,
     Button,
 } from '@mui/material';
-import { LocalizationProvider } from '@mui/lab';
+import { LocalizationProvider } from '@mui/x-date-pickers';
 import DateAdapter from '@mui/lab/AdapterDateFns';
 
 import * as tableType from '../../constants/tableTypes';

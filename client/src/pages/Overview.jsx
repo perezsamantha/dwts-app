@@ -13,7 +13,9 @@ function Overview() {
     return (
         <Page>
             <MainContainer>
-                <Typography variant="h4">Overview</Typography>
+                <Typography align="center" variant="h4">
+                    Overview
+                </Typography>
 
                 <SeasonsOverview />
 

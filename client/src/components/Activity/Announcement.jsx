@@ -1,4 +1,4 @@
-import { Card, Divider, Stack, Typography } from '@mui/material';
+import { Card, Divider, Link, Stack, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
     StyledAccordion,
@@ -20,19 +20,34 @@ function Announcement() {
                     <Stack spacing={1}>
                         <Stack direction="row" spacing={1} alignItems="center">
                             <VscVersions />
-                            <Typography>Version 1.0 (as of 5/1/22)</Typography>
+                            <Typography>Version 2.0 (as of 2/24/22)</Typography>
                         </Stack>
                         <Typography>
-                            With 480 episodes over the course of 30 seasons,
+                            Hello again everybody! I can't thank you enough for
+                            being here and supporting this app. This project is
+                            still a work in progress and I hope to continue
+                            improving it during off-season and as we head into
+                            season 33.
+                        </Typography>
+                        <Typography>
+                            With 500 episodes over the course of 32 seasons,
                             getting every dance into the app will take some
                             time. Thank you for your patience as we work on
                             inputting data!
                         </Typography>
                         <Typography>
-                            Future development plans include individual
-                            season/tour pages, incorporation of tour dances,
-                            interactive rankings amongst teams and dances, and
-                            an extensive activity feed.
+                            Be sure to check out the newly released DWTS
+                            Simulator located{' '}
+                            <Link
+                                href={'https://www.dancingsim.app'}
+                                color="inherit"
+                                underline="always"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                here
+                            </Link>
+                            ! 🪩✨
                         </Typography>
                     </Stack>
                 </StyledAccordionDetails>

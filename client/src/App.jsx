@@ -175,7 +175,7 @@ function App() {
             MuiCssBaseline: {
                 styleOverrides: {
                     body: {
-                        scrollbarColor: 'transparent darkgrey',
+                        //scrollbarColor: 'transparent darkgrey',
                         '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
                             backgroundColor: 'inherit',
                             [theme.breakpoints.down('sm')]: {
@@ -189,7 +189,7 @@ function App() {
                         },
                         '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb':
                             {
-                                borderRadius: 10,
+                                borderRadius: 30,
                                 backgroundColor: 'darkgrey',
                             },
                     },

@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
 import { Avatar, Box, Snackbar, Stack, Typography } from '@mui/material';
-import { LocalizationProvider } from '@mui/lab';
+import { LocalizationProvider } from '@mui/x-date-pickers';
 import DateAdapter from '@mui/lab/AdapterDateFns';
 
 import {

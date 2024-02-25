@@ -59,13 +59,13 @@ function AccountInfo(props) {
             open={open}
             onClose={props.handleClose}
         >
-            <DialogActions>
+            <DialogActions sx={{ paddingBottom: 0 }}>
                 <Button onClick={props.handleClose}>
                     <CloseIcon />
                 </Button>
             </DialogActions>
 
-            <DialogContent>
+            <DialogContent sx={{ paddingTop: 0 }}>
                 <Stack alignContent="left">
                     <Box>
                         <Button onClick={() => handleDarkMode(!toggleDark)}>

@@ -14,7 +14,9 @@ function Dashboard() {
     return (
         <Page>
             <MainContainer>
-                <Typography variant="h4">Dashboard</Typography>
+                <Typography align="center" variant="h4">
+                    Dashboard
+                </Typography>
 
                 <Introduction />
 

@@ -60,8 +60,9 @@ export const addPollOption = async (req, res) => {
 export const fetchPolls = async (req, res) => {
     let { type, day } = req.body;
     let date, localDate;
-    localDate = DateTime.fromISO(day, { setZone: true });
-    date = DateTime.utc(localDate.year, localDate.month, localDate.day).toISO();
+    //localDate = DateTime.fromISO(day, { setZone: true });
+    //date = DateTime.utc(localDate.year, localDate.month, localDate.day).toISO();
+    date = day;
 
     try {
         const polls = await pool.query(

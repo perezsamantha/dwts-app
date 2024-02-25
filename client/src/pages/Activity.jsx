@@ -2,7 +2,7 @@ import React from 'react';
 import { Typography } from '@mui/material';
 import BottomNavBar from '../components/BottomNavBar/BottomNavBar';
 import { MainContainer, Page } from '../components/shared/muiStyles';
-// import Announcement from '../components/Activity/Announcement';
+import Announcement from '../components/Activity/Announcement';
 import RecentLikes from '../components/Activity/RecentLikes';
 import DanceCard from '../components/Activity/DanceCard';
 import PollCard from '../components/Activity/Polls/PollCard';
@@ -13,15 +13,17 @@ function Activity() {
     return (
         <Page>
             <MainContainer>
-                <Typography variant="h4">Activity</Typography>
+                <Typography align="center" variant="h4">
+                    Activity
+                </Typography>
+
+                <Announcement />
 
                 <RecentLikes />
 
                 <DanceCard />
 
                 <PollCard />
-
-                {/* <Announcement /> */}
             </MainContainer>
             <BottomNavBar />
         </Page>

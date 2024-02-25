@@ -113,6 +113,8 @@ function DanceCard() {
                                     href={dance.link}
                                     color="inherit"
                                     underline="always"
+                                    target="_blank"
+                                    rel="noopener"
                                 >
                                     here
                                 </Link>

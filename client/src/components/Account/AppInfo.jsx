@@ -43,6 +43,8 @@ function AppInfo(props) {
                                 }
                                 color="inherit"
                                 underline="always"
+                                target="_blank"
+                                rel="noopener"
                             >
                                 here
                             </Link>

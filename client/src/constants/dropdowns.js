@@ -38,7 +38,7 @@ export const styles = [
     'West Coast Swing',
 ].sort((a, b) => a.localeCompare(b));
 
-let seasons = Array.from({ length: 31 }, (_, i) => i + 1);
+let seasons = Array.from({ length: 32 }, (_, i) => i + 1);
 seasons.splice(27, 0, 27.5);
 
 export const seasonNumbers = seasons;
@@ -138,6 +138,16 @@ export const themes = [
     'Time Machine',
     'Results Show',
     'Exclusive First Look',
+    'Elvis',
+    'James Bond',
+    'Disney+',
+    'Michael Bublé',
+    '90s',
+    'Disney100',
+    'Monster',
+    'Music Video',
+    'Whitney Houston',
+    'Taylor Swift',
 ].sort((a, b) => a.localeCompare(b));
 
 // 4'0 to 7'3
@@ -146,7 +156,12 @@ export const heightsInInches = Array.from({ length: 40 }, (_, i) => i + 48);
 
 export const agesInYears = Array.from({ length: 101 }, (_, i) => i);
 
-export const hosts = ['Tom Bergeron', 'Tyra Banks', 'Jordan Fisher'];
+export const hosts = [
+    'Tom Bergeron',
+    'Tyra Banks',
+    'Jordan Fisher',
+    'Alfonso Ribeiro',
+];
 
 export const cohosts = [
     'Lisa Canning',
@@ -154,6 +169,8 @@ export const cohosts = [
     'Brooke Burke',
     'Erin Andrews',
     'Frankie Muniz',
+    'Alfonso Ribeiro',
+    'Julianne Hough',
 ];
 
 export const genders = [

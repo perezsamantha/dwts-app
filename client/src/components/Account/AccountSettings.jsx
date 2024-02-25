@@ -222,7 +222,7 @@ function AccountSettings(props) {
                         <Button
                             onClick={openDelete}
                             color="error"
-                            variant="outlined"
+                            //variant="outlined"
                         >
                             Delete Account
                         </Button>
