@@ -14,7 +14,7 @@ import { OAuth2Client } from 'google-auth-library';
 
 //import { DateTime } from 'luxon';
 
-const client = new OAuth2Client(
+export const client = new OAuth2Client(
     process.env.OAUTH_CLIENT_ID2,
     process.env.OAUTH_CLIENT_SECRET2,
     'postmessage'
@@ -514,7 +514,7 @@ export const googleAuth = async (req, res) => {
             [user_id]
         );
 
-        res.cookie('da_token', tokens.id_token, {
+        res.cookie('da_access_token', tokens.access_token, {
             maxAge: 1000 * 60 * 60 * 24 * 190,
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
@@ -1087,6 +1087,12 @@ export const logout = async (req, res) => {
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'Strict',
         })
+            .cookie('da_access_token', '', {
+                maxAge: 1000 * 60 * 60 * 24 * 190,
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'Strict',
+            })
             .status(200)
             .json({ message: messages.logoutSuccess });
     } catch (error) {
@@ -2005,6 +2011,12 @@ export const deleteAuth = async (req, res) => {
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'Strict',
         })
+            .cookie('da_access_token', '', {
+                maxAge: 1000 * 60 * 60 * 24 * 190,
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'Strict',
+            })
             .status(200)
             .json({ message: messages.deleteSuccess });
     } catch (error) {

@@ -7,6 +7,7 @@ import { likeDance } from '../../actions/dances';
 import * as tableType from '../../constants/tableTypes';
 import {
     convertPlacement,
+    getAverageUserScore,
     getFullName,
     getSeasonAndWeek,
     getTotalScore,
@@ -22,6 +23,7 @@ import DancerPreview from './Supporting/DancerPreview';
 import IndividualsHeader from './Supporting/IndividualsHeader';
 
 import ReactPlayer from 'react-player';
+import Scoring from '../shared/Scoring';
 
 function Dance() {
     const dispatch = useDispatch();
@@ -157,6 +159,27 @@ function Dance() {
                         ))}
                     </>
                 )}
+            </Stack>
+
+            <Stack my={1}>
+                <Typography variant="h5">
+                    Fans Score
+                    <Divider />
+                </Typography>
+
+                {dance.user_scores.length > 0 ? (
+                    <Typography fontSize={20}>
+                        {getAverageUserScore(dance.user_scores)}
+                    </Typography>
+                ) : (
+                    <Typography>No fans score yet for this dance</Typography>
+                )}
+
+                <Typography mt={2}>Your Score</Typography>
+
+                <Box alignItems="center">
+                    <Scoring />
+                </Box>
             </Stack>
 
             <Stack my={1} width={1} alignItems="center">

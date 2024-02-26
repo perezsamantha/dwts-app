@@ -14,7 +14,7 @@ import {
     IconButton,
     Stack,
 } from '@mui/material';
-import { DesktopDatePicker } from '@mui/lab';
+import { DesktopDatePicker } from '@mui/x-date-pickers';
 import * as tableType from '../../constants/tableTypes';
 import {
     genders,

@@ -132,13 +132,13 @@ function DanceCard() {
                                         {getAverageUserScore(dance.user_scores)}
                                     </Typography>
 
-                                    <Typography variant="body2">
+                                    {/* <Typography variant="body2">
                                         (Based on {dance.user_scores.length}{' '}
                                         {dance.user_scores.length === 1
                                             ? 'score'
                                             : 'scores'}
                                         )
-                                    </Typography>
+                                    </Typography> */}
                                 </Box>
                             </Stack>
                         </Box>

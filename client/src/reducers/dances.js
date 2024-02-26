@@ -61,6 +61,20 @@ const danceReducer = (state = initialDanceState, action) => {
                 ...state,
                 dance: {
                     ...state.dance,
+                    user_scores: state.dance.user_score
+                        ? state.dance.user_scores.map((score) =>
+                              score.user_id === action.payload.userId
+                                  ? { ...score, value: action.payload.value }
+                                  : score
+                          )
+                        : [
+                              ...state.dance.user_scores,
+                              {
+                                  dance_id: action.payload.id,
+                                  user_id: action.payload.userId,
+                                  value: action.payload.value,
+                              },
+                          ],
                     user_score: action.payload.value,
                 },
             };

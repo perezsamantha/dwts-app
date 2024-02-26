@@ -214,7 +214,7 @@ export const setUserScore = async (req, res) => {
             );
         }
 
-        res.status(200).json({ id, value });
+        res.status(200).json({ id, value, userId: req.userId });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

@@ -1,18 +1,14 @@
 import jwt from 'jsonwebtoken';
 import { messages } from '../messages.js';
-import { OAuth2Client } from 'google-auth-library';
 import pool from '../api/pool.js';
-
-const client = new OAuth2Client(process.env.OAUTH_CLIENT_ID2);
+import { client } from '../controllers/user.js';
 
 const auth = async (req, res, next) => {
     try {
         if (req.cookies.da_token) {
             const token = req.cookies.da_token;
 
-            const isCustomAuth = token.length < 500;
-
-            if (token && isCustomAuth) {
+            if (token) {
                 const { id, exp } = jwt.verify(
                     token,
                     process.env.SECRET_STRING
@@ -41,41 +37,37 @@ const auth = async (req, res, next) => {
                 );
 
                 req.userId = id;
-            } else {
-                const ticket = await client.verifyIdToken({
-                    idToken: token,
-                    audience: process.env.OAUTH_CLIENT_ID2,
-                });
+            }
+            next();
+        } else if (req.cookies.da_access_token) {
+            const token = req.cookies.da_access_token;
+            const tokenInfo = await client.getTokenInfo(token);
+            const { email } = tokenInfo;
 
-                const { email } = ticket.getPayload();
-
-                const existing_user = await pool.query(
-                    `
+            const existing_user = await pool.query(
+                `
                     SELECT id
                     FROM users 
                     WHERE email = $1
                     `,
-                    [email]
-                );
+                [email]
+            );
 
-                if (existing_user.rows.length === 0)
-                    return res
-                        .status(401)
-                        .json({ message: messages.invalidUser });
+            if (existing_user.rows.length === 0)
+                return res.status(401).json({ message: messages.invalidUser });
 
-                const new_activity = new Date();
+            const new_activity = new Date();
 
-                await pool.query(
-                    `
+            await pool.query(
+                `
                     UPDATE users 
                     SET last_active = $1 
                     WHERE id = $2
                     `,
-                    [new_activity, existing_user.rows[0].id]
-                );
+                [new_activity, existing_user.rows[0].id]
+            );
 
-                req.userId = existing_user.rows[0].id;
-            }
+            req.userId = existing_user.rows[0].id;
             next();
         } else {
             res.status(200).json({});
@@ -86,6 +78,12 @@ const auth = async (req, res, next) => {
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'Strict',
         })
+            .cookie('da_access_token', '', {
+                maxAge: 1000 * 60 * 60 * 24 * 190,
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'Strict',
+            })
             .status(401)
             .json({ message: 'Token expired' });
     }

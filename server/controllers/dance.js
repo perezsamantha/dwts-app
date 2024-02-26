@@ -212,7 +212,14 @@ export const findDanceById = async (req, res) => {
                 ) AS episode,
                 COALESCE((ARRAY_AGG(s.scores))[1], '[]') AS scores,
                 COALESCE(JSON_AGG(dc) FILTER (WHERE dc.id IS NOT NULL), '[]') AS dancers,
-                COALESCE((ARRAY_AGG(l.users))[1], '[]') AS likes
+                COALESCE((ARRAY_AGG(l.users))[1], '[]') AS likes,
+                (
+                    SELECT value
+                    FROM user_scores us
+                    WHERE us.dance_id = d.id
+                        AND us.user_id = $2
+                ) as user_score,
+                COALESCE((ARRAY_AGG(us.scores))[1], '[]') AS user_scores
             FROM dances d
             LEFT JOIN (
                 SELECT dc2.*, 
@@ -267,10 +274,17 @@ export const findDanceById = async (req, res) => {
                 GROUP BY dl.dance_id
             ) l
             ON d.id = l.dance_id
+            LEFT JOIN (
+                SELECT us1.dance_id,
+                    COALESCE(JSON_AGG(ROW_TO_JSON(us1)) FILTER (WHERE us1.dance_id IS NOT NULL), '[]') AS scores
+                FROM user_scores us1
+                GROUP BY us1.dance_id
+            ) us
+            ON d.id = us.dance_id
             WHERE d.id = $1
             GROUP BY d.id
             `,
-            [id]
+            [id, req.userId]
         );
 
         res.status(200).json(dance.rows[0]);

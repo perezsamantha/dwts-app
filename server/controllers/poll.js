@@ -82,7 +82,7 @@ export const fetchPolls = async (req, res) => {
             WHERE 
                 CASE 
                     WHEN $1 = 'active' THEN expires > $2
-                    WHEN $1 = 'expired' THEN expires < $2
+                    WHEN $1 = 'expired' THEN expires < $2 AND expires > '2024-01-01'
                     ELSE expires >= '2022-01-01'
                 END
             GROUP BY p.id

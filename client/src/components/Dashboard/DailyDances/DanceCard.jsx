@@ -1,15 +1,4 @@
-import {
-    Box,
-    Button,
-    Card,
-    Divider,
-    Link,
-    Rating,
-    Stack,
-    Typography,
-} from '@mui/material';
-import { styled } from '@mui/system';
-import { useEffect, useState } from 'react';
+import { Box, Card, Divider, Link, Stack, Typography } from '@mui/material';
 import {
     BsClipboardCheck,
     BsPersonCircle,
@@ -18,40 +7,14 @@ import {
     BsArrowRight,
 } from 'react-icons/bs';
 import { MdOutlineQueueMusic } from 'react-icons/md';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getTotalScore, organizeDancers } from '../../shared/functions';
-import { setUserScore } from '../../../actions/scores';
 import Progress from '../../shared/Progress';
+import Scoring from '../../shared/Scoring';
 
 function DanceCard() {
-    const dispatch = useDispatch();
     const dance = useSelector((state) => state.dances.dance);
-    const [score, setScore] = useState(dance.user_score || 0);
-    const [alreadyScored, setAlreadyScored] = useState(false);
-    const scoreLoading = useSelector((state) => state.loading.USERSCORE);
     const loading = useSelector((state) => state.loading.DANCEFIND);
-
-    useEffect(() => {
-        setScore(dance.user_score);
-        setAlreadyScored(dance.user_score ? true : false);
-    }, [dispatch, dance.user_score]);
-
-    const handleChange = (e, newValue) => {
-        setScore(newValue);
-    };
-
-    const handleSubmit = () => {
-        if (!score) {
-            return;
-        }
-
-        dispatch(setUserScore(dance.id, { value: score }));
-        setAlreadyScored(true);
-    };
-
-    const handleRescore = () => {
-        setAlreadyScored(false);
-    };
 
     return (
         <Card>
@@ -127,50 +90,11 @@ function DanceCard() {
                         <Typography variant="subtitle1">Your Score</Typography>
                     </Stack>
 
-                    {alreadyScored && !scoreLoading ? (
-                        <Typography variant="body2" my={1}>
-                            Score of {dance.user_score} has been recorded -
-                            change score{' '}
-                            <Link
-                                onClick={handleRescore}
-                                color="inherit"
-                                underline="always"
-                                sx={{ cursor: 'pointer' }}
-                            >
-                                here.
-                            </Link>
-                        </Typography>
-                    ) : (
-                        <Box>
-                            <Stack direction="row" spacing={2} my={1}>
-                                <StyledRating
-                                    //defaultValue={dance.user_score || 0}
-                                    precision={0.5}
-                                    min={0}
-                                    max={10}
-                                    value={score || 0}
-                                    onChange={handleChange}
-                                />
-                                <Typography>{score}</Typography>
-                            </Stack>
-                            <Button size="small" onClick={handleSubmit}>
-                                Submit Score
-                            </Button>
-                        </Box>
-                    )}
+                    <Scoring />
                 </Box>
             )}
         </Card>
     );
 }
-
-const StyledRating = styled(Rating)(({ theme }) => ({
-    '& .MuiRating-iconFilled': {
-        color: theme.palette.primary.main,
-    },
-    '& .MuiRating-iconHover': {
-        color: theme.palette.primary.main,
-    },
-}));
 
 export default DanceCard;
