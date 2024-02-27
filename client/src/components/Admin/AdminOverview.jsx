@@ -39,9 +39,9 @@ function AdminOverview() {
                                         we all brainstorm together
                                     </Typography>
                                     <Typography>
-                                        View recent likes by users - same feed
-                                        that can be seen on activity page in
-                                        main app
+                                        View recent scores and likes by users -
+                                        same feed that can be seen on activity
+                                        page in main app
                                     </Typography>
                                 </Stack>
                             </Box>

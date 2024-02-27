@@ -2,6 +2,7 @@ import RecentLikes from '../Activity/RecentLikes';
 import DailyDancesOverview from './DailyDancesOverview';
 import AdminOverview from './AdminOverview';
 import { Box } from '@mui/material';
+import RecentScores from '../Activity/RecentScores';
 
 function AdminLanding() {
     return (
@@ -9,6 +10,8 @@ function AdminLanding() {
             <AdminOverview />
 
             <DailyDancesOverview />
+
+            <RecentScores />
 
             <RecentLikes />
         </Box>

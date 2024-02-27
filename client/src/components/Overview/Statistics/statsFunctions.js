@@ -4,6 +4,15 @@ export const getPerfectsByTeam = (teams) => {
     if (!teams || teams.length === 0) {
         return [];
     }
+    teams.sort((a, b) => {
+        if (a.season_id > b.season_id) {
+            return 1;
+        } else if (a.season_id < b.season_id) {
+            return -1;
+        } else {
+            return 0;
+        }
+    });
 
     const categorizeByPerfects = teams.reduce((acc, item) => {
         const numPerfects = getNumberOfPerfects(item.dances);

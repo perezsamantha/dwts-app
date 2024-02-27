@@ -39,8 +39,8 @@ function Announcement() {
                         <Typography>
                             Please note that daily dances and polls will not be
                             generated during off-season. In the meantime, be
-                            sure to check out the newly released DWTS Simulator
-                            located{' '}
+                            sure to use the new scoring feature or check out the
+                            recently released DWTS Simulator located{' '}
                             <Link
                                 href={'https://www.dancingsim.app'}
                                 color="inherit"

@@ -48,7 +48,7 @@ function AppInfo(props) {
                             >
                                 here
                             </Link>{' '}
-                            and the app's code repository can be viewed{' '}
+                            while the app's code repository can be viewed{' '}
                             <Link
                                 href={
                                     'https://github.com/perezsamantha/dwts-app'
