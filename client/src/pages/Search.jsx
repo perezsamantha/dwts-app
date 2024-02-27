@@ -130,16 +130,16 @@ function Search(props) {
                         <Tab
                             disableRipple
                             component={Link}
-                            to="/search/dances"
-                            label="DANCES"
-                            value={searchType.DANCES}
+                            to="/search/teams"
+                            label="TEAMS"
+                            value={searchType.TEAMS}
                         />
                         <Tab
                             disableRipple
                             component={Link}
-                            to="/search/teams"
-                            label="TEAMS"
-                            value={searchType.TEAMS}
+                            to="/search/dances"
+                            label="DANCES"
+                            value={searchType.DANCES}
                         />
                         <Tab
                             disableRipple

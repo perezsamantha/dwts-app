@@ -96,6 +96,7 @@ function Teams(props) {
         }
 
         if (filters.sortBy === 'placementAsc') {
+            console.log('hello');
             sortType = 'placement';
 
             filteredTeams.sort((a, b) => {
@@ -108,7 +109,7 @@ function Teams(props) {
                 }
             });
 
-            arr = teams.reduce((acc, item) => {
+            arr = filteredTeams.reduce((acc, item) => {
                 const found = acc.find((a) => a.key === item.placement);
 
                 if (found) {

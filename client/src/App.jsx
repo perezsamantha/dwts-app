@@ -376,7 +376,7 @@ function App() {
                                 <Route
                                     path=""
                                     element={
-                                        <Navigate to="/search/dances" replace />
+                                        <Navigate to="/search/teams" replace />
                                     }
                                 />
                                 <Route

@@ -64,7 +64,7 @@ function Dance() {
                 </Typography>
             </Stack>
 
-            <Stack my={1}>
+            <Stack my={1} width={1} alignItems="center">
                 <Typography variant="h5">
                     Overview
                     <Divider />
@@ -88,7 +88,7 @@ function Dance() {
 
             <Stack my={1} alignItems="center">
                 <Typography variant="h5">
-                    Danced by
+                    Danced By
                     <Divider />
                 </Typography>
 
@@ -139,7 +139,7 @@ function Dance() {
                 </Grid>
             </Stack>
 
-            <Stack my={1}>
+            <Stack my={1} width={1} alignItems="center">
                 <Typography variant="h5">
                     Judges Scores
                     <Divider />
@@ -161,12 +161,10 @@ function Dance() {
                 )}
             </Stack>
 
-            <Stack my={1}>
+            <Stack my={1} width={1} alignItems="center">
                 <Typography variant="h5">
-                    Fans Score
-                    <Divider />
+                    Fans Score <Divider />
                 </Typography>
-
                 {dance.user_scores.length > 0 ? (
                     <Typography fontSize={20}>
                         {getAverageUserScore(dance.user_scores)}
@@ -220,7 +218,7 @@ function Dance() {
             </Stack>
 
             {dance?.extra && (
-                <Stack my={1}>
+                <Stack my={1} width={1} alignItems="center">
                     <Typography variant="h5">
                         Notes
                         <Divider />
@@ -230,7 +228,7 @@ function Dance() {
                 </Stack>
             )}
 
-            <Stack my={1}>
+            <Stack my={1} width={1} alignItems="center">
                 <Typography variant="h5">
                     Pictures
                     <Divider />

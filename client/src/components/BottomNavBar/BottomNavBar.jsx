@@ -82,7 +82,7 @@ function BottomNavBar() {
                 />
                 <BottomNavigationAction
                     component={Link}
-                    to="/search/dances"
+                    to="/search/teams"
                     value="search"
                     icon={
                         <MotionBox
