@@ -520,6 +520,12 @@ export const googleAuth = async (req, res) => {
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'Strict',
         })
+            .cookie('da_refresh_token', tokens.refresh_token, {
+                maxAge: 1000 * 60 * 60 * 24 * 190,
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'Strict',
+            })
             .status(200)
             .json(user.rows[0]);
     } catch (error) {
@@ -1088,6 +1094,12 @@ export const logout = async (req, res) => {
             sameSite: 'Strict',
         })
             .cookie('da_access_token', '', {
+                maxAge: 1000 * 60 * 60 * 24 * 190,
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'Strict',
+            })
+            .cookie('da_refresh_token', '', {
                 maxAge: 1000 * 60 * 60 * 24 * 190,
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
@@ -2012,6 +2024,12 @@ export const deleteAuth = async (req, res) => {
             sameSite: 'Strict',
         })
             .cookie('da_access_token', '', {
+                maxAge: 1000 * 60 * 60 * 24 * 190,
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'Strict',
+            })
+            .cookie('da_refresh_token', '', {
                 maxAge: 1000 * 60 * 60 * 24 * 190,
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
