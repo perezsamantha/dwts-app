@@ -15,7 +15,7 @@ function NotFound() {
                                 color: 'inherit',
                             }}
                         >
-                            Return to sign in page
+                            Return to home
                         </Link>
                     </Typography>
                 </Stack>

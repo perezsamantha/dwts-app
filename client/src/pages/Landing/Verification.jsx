@@ -31,7 +31,7 @@ function Verification() {
                                     color: 'inherit',
                                 }}
                             >
-                                Return to sign in page
+                                Return to home
                             </Link>
                         </Typography>
                     </Stack>
@@ -54,9 +54,12 @@ function Verification() {
                         <Button
                             onClick={handleSubmit}
                             size="large"
-                            variant="outlined"
+                            variant="contained"
+                            color="primary"
                         >
-                            Click to verify your email
+                            <Typography color="black">
+                                Click to verify
+                            </Typography>
                         </Button>
                     </Stack>
                 )}
