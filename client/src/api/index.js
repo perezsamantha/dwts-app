@@ -160,6 +160,7 @@ export const setUserScore = (id, value) =>
     API.patch(`/scores/user/${id}`, value);
 
 export const fetchRecentLikes = () => API.get(`/activity/likes`);
+export const fetchRecentScores = () => API.get(`/activity/scores`);
 
 export const addPoll = (poll) => API.post('/polls/add', poll);
 export const addPollOption = (option) => API.post('/polls/addOption', option);

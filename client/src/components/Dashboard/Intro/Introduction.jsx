@@ -12,7 +12,7 @@ import {
 function Introduction() {
     return (
         <Card>
-            <StyledAccordion elevation={0}>
+            <StyledAccordion elevation={0} defaultExpanded>
                 <StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography variant="h5">App Overview</Typography>
                 </StyledAccordionSummary>
@@ -46,6 +46,9 @@ function Introduction() {
                                     </Typography>
                                     <Typography>
                                         Reminisce on today's throwbacks
+                                    </Typography>
+                                    <Typography>
+                                        Vote in this week's polls
                                     </Typography>
                                 </Stack>
                             </Box>
@@ -98,7 +101,7 @@ function Introduction() {
                                         fans
                                     </Typography>
                                     <Typography>
-                                        Filter / sort for more precise results
+                                        Filter and sort for more precise results
                                     </Typography>
                                     <Typography>
                                         Click each dance/team/pro for more
@@ -125,10 +128,11 @@ function Introduction() {
                             <Box>
                                 <Stack spacing={0.8}>
                                     <Typography>
-                                        Recent likes by fans
+                                        Recent scores and likes by fans
                                     </Typography>
                                     <Typography>
-                                        Results from previous day's daily dance
+                                        Results from yesterday's daily dance and
+                                        recent polls
                                     </Typography>
                                 </Stack>
                             </Box>

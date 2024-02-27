@@ -66,3 +66,39 @@ export const fetchRecentLikes = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+export const fetchRecentScores = async (req, res) => {
+    try {
+        const result = await pool.query(
+            `
+            SELECT tb.*,
+                (
+                    SELECT JSON_BUILD_OBJECT('id', u.id, 'cover_pic', u.cover_pic, 'username', u.username)
+                    FROM users u
+                    WHERE u.id = tb.user_id
+                ) AS user,
+                (
+                    SELECT ROW_TO_JSON(d)
+                    FROM (
+                        SELECT d.*, 
+                        (
+                            SELECT ROW_TO_JSON(e.*)
+                            FROM episodes e
+                            WHERE e.id = d.episode_id
+                        ) AS episode
+                        FROM dances d
+                    ) d
+                    WHERE d.id = tb.dance_id
+                        AND tb.dance_id IS NOT NULL
+                ) AS dance
+            FROM user_scores AS tb
+            ORDER BY scored_at DESC
+            LIMIT 25
+            `
+        );
+
+        res.status(200).json(result.rows);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

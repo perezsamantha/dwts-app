@@ -67,7 +67,6 @@ function AccountSettings(props) {
             const picaCanvas = await pica.resize(img, canvas);
 
             picaCanvas.toBlob(function (blob) {
-                console.log(blob);
                 data.append(
                     'cover_pic',
                     blob,

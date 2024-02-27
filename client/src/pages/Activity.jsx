@@ -6,6 +6,7 @@ import Announcement from '../components/Activity/Announcement';
 import RecentLikes from '../components/Activity/RecentLikes';
 import DanceCard from '../components/Activity/DanceCard';
 import PollCard from '../components/Activity/Polls/PollCard';
+import RecentScores from '../components/Activity/RecentScores';
 
 function Activity() {
     localStorage.setItem('parentPath', window.location.pathname);
@@ -18,6 +19,8 @@ function Activity() {
                 </Typography>
 
                 <Announcement />
+
+                <RecentScores />
 
                 <RecentLikes />
 

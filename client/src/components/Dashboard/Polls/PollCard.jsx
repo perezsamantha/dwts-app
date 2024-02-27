@@ -20,7 +20,7 @@ function PollCard() {
 
     return (
         <Card>
-            <Typography variant="h5">This Week's Polls</Typography>
+            <Typography variant="h5">Weekly Polls</Typography>
             <Divider />
 
             {loading ? (

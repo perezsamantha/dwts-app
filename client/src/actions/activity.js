@@ -16,3 +16,19 @@ export const fetchRecentLikes = () => async (dispatch) => {
         });
     }
 };
+
+export const fetchRecentScores = () => async (dispatch) => {
+    dispatch({ type: actionType.RECENTSCORES_REQUEST });
+
+    try {
+        const { data } = await api.fetchRecentScores();
+
+        dispatch({ type: actionType.RECENTSCORES_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({
+            type: actionType.RECENTSCORES_FAILURE,
+            payload: error,
+            error: true,
+        });
+    }
+};

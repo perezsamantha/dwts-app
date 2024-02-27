@@ -35,11 +35,23 @@ function AppInfo(props) {
                         </Typography>
                         <Typography>
                             Detailed information about the development process
-                            and additional credits can be viewed on the app's
+                            and additional credits can be seen on the app's
                             documentation site{' '}
                             <Link
                                 href={
                                     'https://perezsamantha.github.io/dwts-app/'
+                                }
+                                color="inherit"
+                                underline="always"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                here
+                            </Link>{' '}
+                            and the app's code repository can be viewed{' '}
+                            <Link
+                                href={
+                                    'https://github.com/perezsamantha/dwts-app'
                                 }
                                 color="inherit"
                                 underline="always"

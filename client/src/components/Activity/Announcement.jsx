@@ -20,7 +20,7 @@ function Announcement() {
                     <Stack spacing={1}>
                         <Stack direction="row" spacing={1} alignItems="center">
                             <VscVersions />
-                            <Typography>Version 2.0 (as of 2/24/22)</Typography>
+                            <Typography>Version 2.0 (as of 2/27/24)</Typography>
                         </Stack>
                         <Typography>
                             Hello again everybody! I can't thank you enough for
@@ -32,12 +32,15 @@ function Announcement() {
                         <Typography>
                             With 500 episodes over the course of 32 seasons,
                             getting every dance into the app will take some
-                            time. Thank you for your patience as we work on
-                            inputting data!
+                            time. As of right now, all data for seasons 16 - 32
+                            has been entered. Thank you for your patience as we
+                            work on inputting data!
                         </Typography>
                         <Typography>
-                            Be sure to check out the newly released DWTS
-                            Simulator located{' '}
+                            Please note that daily dances and polls will not be
+                            generated during off-season. In the meantime, be
+                            sure to check out the newly released DWTS Simulator
+                            located{' '}
                             <Link
                                 href={'https://www.dancingsim.app'}
                                 color="inherit"

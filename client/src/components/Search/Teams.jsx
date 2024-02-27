@@ -96,7 +96,6 @@ function Teams(props) {
         }
 
         if (filters.sortBy === 'placementAsc') {
-            console.log('hello');
             sortType = 'placement';
 
             filteredTeams.sort((a, b) => {
