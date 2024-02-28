@@ -37,7 +37,7 @@ function BottomNavBar() {
             <BottomNavigation
                 value={value}
                 onChange={handleChange}
-                sx={{ paddingBottom: 2 }}
+                sx={{ paddingBottom: '20px' }}
             >
                 <BottomNavigationAction
                     component={Link}

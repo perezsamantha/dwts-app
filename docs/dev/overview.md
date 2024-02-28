@@ -183,7 +183,7 @@ export const likeDance = async (req, res) => {
 
 Below are a few plans for future development I hope to achieve:
 
--   [ ] Users can score any dance - not restricted to daily dances
+-   [x] Users can score any dance - not restricted to daily dances
 -   [ ] Individual season pages
 -   [ ] Individual tour pages
     -   [ ] Incorporation of tour dances

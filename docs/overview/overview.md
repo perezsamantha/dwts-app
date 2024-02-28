@@ -32,7 +32,7 @@ The search page is main hub of the app, consisting of every dance, team, and pro
 
 ## Activity
 
-The activity page shows the 25 most recent likes from fans along with yesterday's daily dance and its resulting average score.
+The activity page shows the 25 most recent scores and 25 most recent likes from fans along with yesterday's daily dance and its resulting average score.
 
 ![Activity Page Gif](/dwts-app/visuals/activity.gif)
 
