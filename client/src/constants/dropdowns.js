@@ -38,7 +38,7 @@ export const styles = [
     'West Coast Swing',
 ].sort((a, b) => a.localeCompare(b));
 
-let seasons = Array.from({ length: 32 }, (_, i) => i + 1);
+let seasons = Array.from({ length: 33 }, (_, i) => i + 1);
 seasons.splice(27, 0, 27.5);
 
 export const seasonNumbers = seasons;
@@ -148,6 +148,9 @@ export const themes = [
     'Music Video',
     'Whitney Houston',
     'Taylor Swift',
+    'Oscars',
+    'Soul Train',
+    'Hair Metal',
 ].sort((a, b) => a.localeCompare(b));
 
 // 4'0 to 7'3
