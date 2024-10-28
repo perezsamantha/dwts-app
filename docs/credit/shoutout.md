@@ -6,17 +6,15 @@ Shoutout to the incredible people who assisted with data entry, provided quality
 
 Huge thank you to Ashley, Karolina, Graysen, Anyon, and T for helping input all the data needed to bring the app to its full functionality.
 
-As of February 27th, 2024
+As of October 28th, 2024:
 
--   11 tours
--   32 seasons
+-   12 tours
+-   33 seasons
 -   66 pros
--   393 celebs
--   406 teams
--   1966 dances
--   6561 scores
-
-We still have a long way to go but getting all of this data into the app would not have been possible without your help :)
+-   406 celebs
+-   419 teams
+-   3471 dances
+-   11019 scores
 
 ## Usability Testing
 
