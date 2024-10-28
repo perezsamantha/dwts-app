@@ -20,27 +20,26 @@ function Announcement() {
                     <Stack spacing={1}>
                         <Stack direction="row" spacing={1} alignItems="center">
                             <VscVersions />
-                            <Typography>Version 2.0 (as of 2/27/24)</Typography>
+                            <Typography>
+                                Version 2.0 (as of 10/28/24)
+                            </Typography>
                         </Stack>
                         <Typography>
-                            Hello again everybody! I can't thank you enough for
-                            being here and supporting this app. This project is
-                            still a work in progress and I hope to continue
-                            improving it during off-season and as we head into
-                            season 33.
+                            I am happy to announce that every team, dance, and
+                            individual score across 33 seasons (+ juniors) has
+                            been entered in the app!
                         </Typography>
                         <Typography>
-                            With 500 episodes over the course of 32 seasons,
-                            getting every dance into the app will take some
-                            time. As of right now, all data for seasons 16 - 32
-                            has been entered. Thank you for your patience as we
-                            work on inputting data!
+                            Please note that some YouTube/DailyMotion links may
+                            be broken as many dances were entered a while back
+                            and those links may been have deleted/privated. I
+                            will do my best to update these links as soon as
+                            possible.
                         </Typography>
                         <Typography>
-                            Please note that daily dances and polls will not be
-                            generated during off-season. In the meantime, be
-                            sure to use the new scoring feature or check out the
-                            recently released DWTS Simulator located{' '}
+                            Be sure to use the scoring feature to submit your
+                            personal score for dances and check out the DWTS
+                            Simulator located{' '}
                             <Link
                                 href={'https://www.dancingsim.app'}
                                 color="inherit"

@@ -151,6 +151,7 @@ export const themes = [
     'Oscars',
     'Soul Train',
     'Hair Metal',
+    'Dedication',
 ].sort((a, b) => a.localeCompare(b));
 
 // 4'0 to 7'3

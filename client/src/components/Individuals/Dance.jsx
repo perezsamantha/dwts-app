@@ -186,14 +186,31 @@ function Dance() {
                     <Divider sx={{ width: 45 }} />
                 </Typography>
 
-                {dance?.link ? (
-                    <Box my={1} maxWidth={0.95} minWidth={0.9} minHeight={0.9}>
+                {dance?.link &&
+                dance.link.startsWith('https://www.dailymotion') ? (
+                    <Box my={1}>
+                        <iframe
+                            src={
+                                'https://geo.dailymotion.com/player.html?video=' +
+                                dance.link.slice(34)
+                            }
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                border: 'none',
+                            }}
+                            allowFullScreen
+                            title="Dailymotion Video Player"
+                            allow="web-share"
+                        ></iframe>
+                    </Box>
+                ) : dance?.link ? (
+                    <Box my={1}>
                         <Box
                             sx={{
                                 position: 'relative',
                                 paddingTop: '56.25%',
-                                minWidth: '100%',
-                                minHeight: '100%',
+                                minWidth: '350px',
                             }}
                         >
                             <ReactPlayer

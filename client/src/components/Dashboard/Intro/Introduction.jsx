@@ -40,9 +40,7 @@ function Introduction() {
                                     </Typography>
                                     <Typography>
                                         One dance from a previous season is
-                                        generated daily - submit your personal
-                                        score and check back tomorrow to see how
-                                        other fans scored in comparison
+                                        generated daily for fans to score
                                     </Typography>
                                     <Typography>
                                         Reminisce on today's throwbacks
@@ -106,6 +104,9 @@ function Introduction() {
                                     <Typography>
                                         Click each dance/team/pro for more
                                         information and like your favorites
+                                    </Typography>
+                                    <Typography>
+                                        Submit your personal score for dances
                                     </Typography>
                                 </Stack>
                             </Box>
